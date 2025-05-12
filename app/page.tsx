@@ -1,7 +1,7 @@
 import Intro from "@/components/Intro"
 
 export const metadata = {
-  title: 'msliwowski.net',
+  title: 'msliwowski.net | WebDev, SEO, Security',
   description: 'Webdev, SEO, Security'
 }
 

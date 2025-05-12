@@ -1,9 +1,12 @@
 'use client';
 
-import TypingLine from "./TypingLine";
-import { useState } from "react";
-import { type Line } from "@/types/IntroTypes";
+import { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
+
+import TypingLine from "./TypingLine";
+import { type Line } from "@/types/IntroTypes";
+import { getBrowserStorage, setBrowserStorage } from "@/lib/browserStorage";
+
 
 const linesDynamic: Line[] = [
     { type: 'typing', text: 'npm start' },
@@ -24,12 +27,29 @@ export default function Intro() {
     const [currentLine, setCurrentLine] = useState<number>(0);
     const [cleared, setCleared] = useState<boolean>(false);
 
+    useEffect(() => {
+        const introCompleted = getBrowserStorage('intro', 'session') === 'true';
+        if (introCompleted) {
+            redirect('/home');
+        }
+    }, []);
+
+    useEffect(() => {
+        if (cleared) {
+            const timeout = setTimeout(() => {
+                redirect('/home');
+            }, 1000);
+            return () => clearTimeout(timeout);
+        }
+    }, [cleared]);
+
     const handleComplete = () => {
         const lineJustCompleted = linesDynamic[currentLine];
         const lastString = 'Server running on port 443';
 
         if (lineJustCompleted?.text === lastString) {
             setTimeout(() => {
+                setBrowserStorage('intro', 'true', 'session');
                 setCleared(true);
             }, 500);
         } else {
@@ -38,9 +58,6 @@ export default function Intro() {
     };
 
     if (cleared) {
-        setTimeout(() => {
-            redirect('/home')
-        }, 1000);
         return (
             <div className="h-screen flex justify-center items-center bg-black">
                 <p className="w-fit h-fit flex justify-center items-center text-4xl text-green-400">
