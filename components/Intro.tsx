@@ -3,6 +3,7 @@
 import TypingLine from "./TypingLine";
 import { useState } from "react";
 import { type Line } from "@/types/IntroTypes";
+import { redirect } from "next/navigation";
 
 const linesDynamic: Line[] = [
     { type: 'typing', text: 'npm start' },
@@ -37,13 +38,15 @@ export default function Intro() {
     };
 
     if (cleared) {
+        setTimeout(() => {
+            redirect('/home')
+        }, 1000);
         return (
             <div className="h-screen flex justify-center items-center bg-black">
                 <p className="w-fit h-fit flex justify-center items-center text-4xl text-green-400">
                     Welcome!
                 </p>
             </div>
-
         );
     }
 

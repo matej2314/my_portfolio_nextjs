@@ -1,5 +1,9 @@
 import Intro from "@/components/Intro"
 
+export const metadata = {
+  title: 'msliwowski.net',
+  description: 'Webdev, SEO, Security'
+}
 
 export default function IntroPage() {
   return (
