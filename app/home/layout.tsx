@@ -11,10 +11,10 @@ export const metadata = {
 export default function HomePageLayout({ children }: { children: ReactNode }) {
 
     return (
-        <main className="w-screen h-screen bg-black pt-5 flex justify-center">
-            <div id="mainSection" className="bg-slate-900 w-11/12 h-full flex flex-col justify-start gap-10">
-                <HomePageHeader />
-                <div className="flex-1 overflow-y-auto px-4 flex">
+        <main className="w-screen h-screen bg-[#0c0c0c] pt-5 flex justify-center">
+            <div id="mainSection" className=" w-[90%] h-full flex flex-col justify-start gap-4">
+                <div className="flex-1 overflow-y-auto px-4 flex flex-col bg-">
+                    <HomePageHeader />
                     {children}
                 </div>
             </div>

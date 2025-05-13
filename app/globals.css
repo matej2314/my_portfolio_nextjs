@@ -118,3 +118,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+.text-glow {
+  text-shadow: 0 0 8px rgba(255,238,46,1), 0 0 16px rgba(255,238,46,1);
+}
+
