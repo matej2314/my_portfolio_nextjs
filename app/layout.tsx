@@ -12,7 +12,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="no-scrollbar bg-[#0c0c0c] scroll-smooth">
       <body
       >
         {children}

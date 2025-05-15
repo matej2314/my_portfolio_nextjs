@@ -1,17 +1,10 @@
 'use client';
 
-import { type ReactNode, ComponentProps } from "react";
 import { useRouter } from "next/navigation";
-
 import { Button } from "./ui/button";
 import { Icon } from '@iconify/react';
 
-type IconButtonType = {
-    iconCode: string;
-    redirectPath?: string;
-    children?: ReactNode;
-    iconClass?: string;
-} & ComponentProps<typeof Button>
+import { type IconButtonType } from "@/types/iconButtonTypes";
 
 export default function IconButton({ iconCode, children, redirectPath, iconClass, ...props }: IconButtonType) {
 

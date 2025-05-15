@@ -3,12 +3,9 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
-type HomesubHeaderType = {
-    texts: string[];
-    typingSpeed?: number;
-    deletingSpeed?: number;
-    pauseTime?: number;
-}
+import { type HomesubHeaderType } from '@/types/homeSubHeaderTypes';
+
+
 
 export default function HomeSubHeader({ texts, typingSpeed = 100, deletingSpeed = 60, pauseTime = 1000 }: HomesubHeaderType) {
 

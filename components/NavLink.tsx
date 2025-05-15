@@ -3,11 +3,9 @@
 import { ReactNode } from "react";
 import Link from "next/link";
 
-type NavLinkType = {
-    children?: ReactNode;
-    pathName: string;
-    linkClass?: string;
-};
+import { type NavLinkType } from "@/types/navLinkTypes";
+
+
 
 export default function NavLink({ children, pathName, linkClass }: NavLinkType) {
 

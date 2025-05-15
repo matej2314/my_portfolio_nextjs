@@ -1,5 +1,7 @@
 'use server';
 
+import { executeQuery } from "@/lib/db";
+
 export async function getBlogPosts() {
 
 };
