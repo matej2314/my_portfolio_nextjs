@@ -1,13 +1,7 @@
-'use server';
+'use server'
 
 import { executeQuery } from "@/lib/db";
-
-type Skill = {
-    skill_name: string;
-    skill_cat: string;
-    icon_name: string;
-    icon_color: string;
-};
+import { type Skill } from "@/types/actionsTypes/skillsTypes";
 
 export async function getSkills(): Promise<{skills: Skill[]} | {error: string}>{
 

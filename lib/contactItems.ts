@@ -1,4 +1,4 @@
-import { type ListItemType } from "@/components/ListItem"
+import { type ListItemType } from "@/types/ListItemTypes"
 
 
 export const contactItems: ListItemType[] = [

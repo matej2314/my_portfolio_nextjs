@@ -1,23 +1,30 @@
 'use client';
 
 import { Icon } from '@iconify/react';
+import { motion } from 'framer-motion';
 
-export type ListItemType = {
-    itemClass: string;
-    iconName: string;
-    linkClass: string;
-    label: string;
-    pathName: string;
+
+import { type ListItemType } from '@/types/ListItemTypes';
+import { duration } from 'moment';
+
+const itemVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.3, ease: 'easeOut' } },
+    exit: { opacity: 0, scale: 0.5 }
 }
+
 
 export const ListItem = ({ itemClass, linkClass, iconName, label, pathName }: ListItemType) => {
 
     return (
-        <li className={itemClass}>
+        <motion.li
+            variants={itemVariants}
+            className={itemClass}
+        >
             <a href={pathName} className={linkClass}>
                 <Icon icon={iconName} width={30} />
                 <span className='text-lg'>{label}</span>
             </a>
-        </li>
+        </motion.li>
     )
 }

@@ -1,0 +1,1 @@
+export const sections: string[] = ['baseSection','aboutSection', 'skillsSection', 'projectsSection', 'contactSection']; 

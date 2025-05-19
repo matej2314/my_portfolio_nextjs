@@ -2,6 +2,7 @@
 
 import { useActionState } from "react"
 import { useFormStatus } from "react-dom"
+import { motion } from 'framer-motion';
 
 import { contactMe } from "@/actions/contact"
 
@@ -16,7 +17,7 @@ function SubmitBtn() {
         <Button
             className="w-1/2 h-fit flex items-center justify-center bg-yellow-200 rounded-md mt-6 text-slate-950 text-3xl hover-shadow hover:bg-yellow-300"
         >
-            {pending ? 'Sending...' : 'Submit'}
+            {pending ? 'Sending...' : 'Send message'}
         </Button>
     )
 }

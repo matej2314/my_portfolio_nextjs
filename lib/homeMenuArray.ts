@@ -4,12 +4,11 @@ type MenuItem = {
     label: string;
 };
 
-
 export const homeMenuArray: MenuItem[] = [
-    {path: "", label: 'About me'},
-    {path: "", label: 'Skills'},
-    {path: "", label: 'Project'},
+    {path: "#aboutSection", label: 'About me'},
+    {path: "#skillsSection", label: 'Skills'},
+    {path: "#projectsSection", label: 'Projects'},
     {path: "", label: 'Blog'},
-    {path: "", label: 'Contact'},
+    {path: "#contactSection", label: 'Contact'},
     {path: "", label: 'Resume'},
 ]

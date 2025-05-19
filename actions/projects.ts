@@ -1,23 +1,20 @@
 'use server';
 
 import { executeQuery } from "@/lib/db";
+import { type Project } from "@/types/actionsTypes/projectsTypes";
 
-type Project = {
-    project_name: string;
-    project_category: string;
-    project_URL: string;
-    project_screenName: string;
-    goal: string;
-    project_description: string;
-    repo: string;
-    technologies: string;
-    difficulty: string;
-    end_date: string;
-    long_text: string;
-};
 
-export async function getProjects() {
 
+export async function getProjects(): Promise<{projects: Project[]} | {error: string}> {
+
+    try {
+        const result = await executeQuery<Project[]>("SELECT * FROM projects ORDER BY end_date ASC");
+
+        return { projects: result };
+    } catch(error) {
+        console.error(`getProjects error: ${String(error)}`);
+        return { error: 'Failed to fetch projects' };
+    }
 };
 
 export async function saveProject() {

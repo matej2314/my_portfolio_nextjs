@@ -1,4 +1,4 @@
-import HomePageMenu from "./home-page-sections/HomePageMenu";
+import HomePageMenu from "./home-page-components/HomePageMenu";
 
 export default function HomePageHeader() {
     return (

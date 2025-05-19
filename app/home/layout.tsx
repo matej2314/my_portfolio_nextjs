@@ -11,7 +11,7 @@ export const metadata = {
 export default function HomePageLayout({ children }: { children: ReactNode }) {
     return (
         <main className="h-screen bg-[#0c0c0c] pt-8 flex justify-center items-center no-scrollbar relative">
-            <div className="fixed right-5 top-1/3 transform -translate-y-1/2 z-50">
+            <div className="fixed right-10 top-1/3 transform -translate-y-1/2 z-50">
                 <DotNavigation />
             </div>
             <div id="mainSection" className="w-[90%] h-full flex flex-col justify-start gap-4">
