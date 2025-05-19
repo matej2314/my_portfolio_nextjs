@@ -1,6 +1,6 @@
 'use server';
 
-import { executeQuery } from "@/lib/db";
+import prisma from "@/lib/db";
 import { type AboutTextType } from "@/types/actionsTypes/aboutMeTypes";
 
 
@@ -8,7 +8,7 @@ import { type AboutTextType } from "@/types/actionsTypes/aboutMeTypes";
 export async function getAboutMe():Promise<{aboutMe: AboutTextType[]} | {error: string}> {
 
     try {
-        const result = await executeQuery<AboutTextType[]>('SELECT about_text FROM about_me ORDER BY id LIMIT 1');
+        const result = await prisma.about_me.findMany();
 
         return { aboutMe: result };
     } catch (error) {

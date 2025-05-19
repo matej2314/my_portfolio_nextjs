@@ -1,12 +1,12 @@
 'use server'
 
-import { executeQuery } from "@/lib/db";
+import prisma from "@/lib/db";
 import { type Skill } from "@/types/actionsTypes/skillsTypes";
 
 export async function getSkills(): Promise<{skills: Skill[]} | {error: string}>{
 
     try {
-        const result = await executeQuery<Skill[]>('SELECT skill_name, skill_cat, icon_name, icon_color from skills');
+        const result = await prisma.skills.findMany();
 
         return {skills: result};
     } catch (error) {

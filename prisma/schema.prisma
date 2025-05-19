@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model about_me {
+  id         String @id @db.VarChar(350)
+  about_text String @db.Text
+}
+
+model courses {
+  id               String   @id @db.VarChar(300)
+  course_name      String   @db.VarChar(300)
+  course_date      DateTime @db.Date
+  course_organizer String   @db.VarChar(300)
+  course_category  String   @db.VarChar(100)
+}
+
+model interests {
+  id            String @id @db.VarChar(350)
+  interest_name String @db.Text
+}
+
+model posts {
+  id             String   @id @db.VarChar(500)
+  post_title     String   @db.VarChar(200)
+  post_lead      String?  @db.VarChar(250)
+  post_content   String   @db.Text
+  post_date      DateTime @default(now()) @db.DateTime(0)
+  post_imageName String?  @db.VarChar(200)
+}
+
+model projects {
+  id                  String    @id @db.VarChar(500)
+  project_name        String    @db.VarChar(300)
+  project_category    String    @db.VarChar(300)
+  project_URL         String    @db.VarChar(300)
+  project_screenName  String    @db.VarChar(100)
+  goal                String?   @db.Text
+  project_description String?   @db.VarChar(300)
+  repo                String?   @db.VarChar(100)
+  technologies        String?   @db.VarChar(250)
+  difficulty          String?   @db.VarChar(10)
+  end_date            DateTime? @db.Date
+  long_text           String?   @db.Text
+}
+
+model services {
+  id                 String @id @db.VarChar(500)
+  serviceName        String @db.VarChar(300)
+  serviceDescription String @db.VarChar(300)
+}
+
+model skills {
+  id         String  @id @db.VarChar(300)
+  skill_name String  @db.VarChar(100)
+  skill_cat  String  @db.VarChar(100)
+  icon_name  String? @db.VarChar(100)
+  icon_color String? @db.VarChar(100)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model users {
+  id       String @id @db.VarChar(350)
+  role     String @db.VarChar(10)
+  name     String @db.VarChar(100)
+  password String @db.VarChar(350)
+  email    String @db.VarChar(100)
+}

@@ -1,3 +1,4 @@
-export type AboutTextType = {
-    about_text: string;
-};
+import { about_me as PrismaAboutMeType } from "@prisma/client";
+
+
+export type AboutTextType = PrismaAboutMeType;
