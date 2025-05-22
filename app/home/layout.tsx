@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
 
-import HomePageHeader from "@/components/HomePageHeader";
-import DotNavigation from "@/components/DotNavigation";
+import HomePageHeader from "@/components/home-page-components/HomePageHeader";
+import DotNavigation from "@/components/home-page-components/DotNavigation";
 
 export const metadata = {
     title: 'msliwowski.net | WebDev, SEO, Security',
