@@ -1,6 +1,6 @@
-import { Button } from "../ui/button"
-import HomeSubHeader from "../HomeSubHeader"
-import IconButton from "../IconButton"
+import { Button } from "../../ui/button"
+import HomeSubHeader from "./components/HomeSubHeader"
+import IconButton from "../../IconButton"
 import { contentArray } from "@/lib/subHeaderContentArray"
 
 export default function BaseSection() {

@@ -1,8 +1,9 @@
-import BaseSection from "@/components/home-page-components/BaseSection";
-import AboutSection from "@/components/home-page-components/AboutSection";
-import SkillsSection from "@/components/home-page-components/SkillsSection";
-import ProjectsSection from "@/components/home-page-components/ProjectsSection";
-import ContactSection from "@/components/home-page-components/ContactSection";
+import BaseSection from "@/components/home-page-components/base-section/BaseSection";
+import AboutSection from "@/components/home-page-components/about-section/AboutSection";
+import SkillsSection from "@/components/home-page-components/skills-section/SkillsSection";
+import ProjectsSection from "@/components/home-page-components/projects-section/ProjectsSection";
+import CertsCoursesSection from "@/components/home-page-components/certs-courses-section/CertsCoursesSection";
+import ContactSection from "@/components/home-page-components/contact-section/ContactSection";
 
 export default function HomePage() {
 
@@ -11,6 +12,7 @@ export default function HomePage() {
             <BaseSection />
             <AboutSection />
             <SkillsSection />
+            <CertsCoursesSection />
             <ProjectsSection />
             <ContactSection />
         </main>

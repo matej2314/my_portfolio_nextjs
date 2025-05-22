@@ -1,7 +1,5 @@
-'use server'
-
 import prisma from "@/lib/db";
-import { type Skill } from "@/types/actionsTypes/skillsTypes";
+import { type Skill } from "@/types/actionsTypes/actionsTypes";
 
 export async function getSkills(): Promise<{skills: Skill[]} | {error: string}>{
 

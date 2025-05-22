@@ -1,7 +1,7 @@
 'use server';
 
 import prisma from "@/lib/db";
-import { type AboutTextType } from "@/types/actionsTypes/aboutMeTypes";
+import { type AboutTextType } from "@/types/actionsTypes/actionsTypes";
 
 
 

@@ -10,7 +10,7 @@ export default function HomePageMenu() {
                     <NavLink
                         pathName={item.path}
                     >
-                        {`${index}`}.{item.label}
+                        {`${index + 1}`}.{item.label}
                     </NavLink>
                     {index < homeMenuArray.length - 1 && <span>|</span>}
                 </li>

@@ -1,4 +1,4 @@
-
+import { getProject } from "@/actions/projects";
 
 type DetailsPageProps = {
     params: {
@@ -6,13 +6,15 @@ type DetailsPageProps = {
     };
 }
 
-export default function ProjectDetailsPage({ params }: DetailsPageProps) {
+export default async function ProjectDetailsPage({ params }: DetailsPageProps) {
 
     const projectName = params.pname;
 
+    const selectedProject = await getProject(projectName);
+
     return (
         <main>
-            <p>Projects details</p>
+            <p>Project details</p>
         </main>
     )
 }

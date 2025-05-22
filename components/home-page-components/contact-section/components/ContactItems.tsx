@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 
 import { contactItems } from "@/lib/contactItems";
-import { ListItem } from "./ListItem";
+import { ListItem } from '@/components/ListItem';
 
 const contactItemsVariants = {
     hidden: { opacity: 0, scale: 0.8 },

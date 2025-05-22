@@ -1,4 +1,4 @@
-import { type Project } from "./actionsTypes/projectsTypes";
+import { type Project } from "./actionsTypes/actionsTypes";
 
 type ImageData = {
     id: string;

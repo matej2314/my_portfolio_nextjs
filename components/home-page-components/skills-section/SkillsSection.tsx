@@ -1,6 +1,6 @@
 import { getSkills } from "@/actions/skills";
 
-import SkillsList from "../SkillsList";
+import SkillsList from "./components/SkillsList";
 
 export default async function SkillsSection() {
     const skills = await getSkills();

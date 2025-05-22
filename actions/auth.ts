@@ -1,1 +1,1 @@
-import { executeTransaction, executeQuery } from "@/lib/db";
+import prisma from "@/lib/db";

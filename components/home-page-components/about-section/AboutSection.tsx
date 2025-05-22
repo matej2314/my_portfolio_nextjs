@@ -1,6 +1,6 @@
 import { getAboutMe } from "@/actions/aboutMe";
 import { type MetricItem } from "@/types/metricTypes";
-import MetricsSection from "./MetricsSection";
+import MetricsSection from "./components/MetricsSection";
 
 export const metrics: MetricItem[] = [
     { label: 'Learning focus', value: 'Web Dev / Web security' },

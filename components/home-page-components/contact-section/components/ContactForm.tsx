@@ -6,10 +6,10 @@ import { motion } from 'framer-motion';
 
 import { contactMe } from "@/actions/contact"
 
-import { Button } from "./ui/button"
-import { Label } from "./ui/label"
-import { Input } from "./ui/input"
-import { Textarea } from "./ui/textarea"
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 function SubmitBtn() {
     const { pending } = useFormStatus();

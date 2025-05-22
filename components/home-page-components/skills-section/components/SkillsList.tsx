@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { motion } from 'framer-motion'
 
-import { type Skill } from '@/types/actionsTypes/skillsTypes';
+import { type Skill } from '@/types/actionsTypes/actionsTypes';
 import SkillSelector from './SkillSelector';
 
 export default function SkillsList({ skills }: { skills: Skill[] }) {
@@ -30,8 +30,8 @@ export default function SkillsList({ skills }: { skills: Skill[] }) {
                     >
                         <span>
                             <Icon
-                                icon={skill.icon_name}
-                                color={skill.icon_color}
+                                icon={skill.icon_name as string}
+                                color={skill.icon_color as string}
                                 width={28}
                                 height={28}
                             />
