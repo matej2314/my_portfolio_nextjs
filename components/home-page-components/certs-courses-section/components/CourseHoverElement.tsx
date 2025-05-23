@@ -9,7 +9,7 @@ export default function CourseHoverElement({ course, isVisible }: CourseHoverTyp
 
     return (
         <div
-            className="relative bottom-[12rem] w-fit h-[11rem] flex flex-col items-center justify-start text-slate-200 rounded-md gap-6">
+            className="relative top-[3rem] w-fit h-[11rem] flex flex-col items-center justify-start text-slate-200 rounded-md gap-6">
             <h2
                 className="text-[0.9rem] w-[22rem] flex justify-center flex-nowrap font-semibold text-yellow-300"
             >

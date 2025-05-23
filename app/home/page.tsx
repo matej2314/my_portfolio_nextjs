@@ -8,7 +8,7 @@ import ContactSection from "@/components/home-page-components/contact-section/Co
 export default function HomePage() {
 
     return (
-        <main className="w-full h-full overflow-y-auto no-scrollbar">
+        <main className="w-full h-screen">
             <BaseSection />
             <AboutSection />
             <SkillsSection />

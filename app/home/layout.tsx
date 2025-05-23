@@ -15,9 +15,9 @@ export default function HomePageLayout({ children }: { children: ReactNode }) {
                 <DotNavigation />
             </div>
             <div id="mainSection" className="w-[90%] h-full flex flex-col justify-start gap-4">
-                <div className="flex-1 flex flex-col scroll-pt-[-10rem]">
+                <div className="flex-1 flex flex-col">
                     <HomePageHeader />
-                    <div className="overflow-y-auto w-full h-full flex flex-col no-scrollbar scroll-smooth scroll-mt-auto">
+                    <div className="w-full flex flex-col">
                         {children}
                     </div>
                 </div>

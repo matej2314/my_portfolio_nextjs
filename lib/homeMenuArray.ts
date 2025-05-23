@@ -5,7 +5,7 @@ type MenuItem = {
 };
 
 export const homeMenuArray: MenuItem[] = [
-    {path: "#aboutSection", label: 'About me'},
+    {path: "#aboutSection", label: 'About'},
     { path: "#skillsSection", label: 'Skills' },
     {path: '#certsSection', label: 'Courses'},
     {path: "#projectsSection", label: 'Projects'},

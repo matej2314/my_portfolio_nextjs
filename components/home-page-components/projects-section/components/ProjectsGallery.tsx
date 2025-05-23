@@ -30,7 +30,7 @@ export default function ProjectsGallery({ projects, images }: ProjectsGalleryPro
                                 key={project.id}
                                 className="md:basis-1/2 lg:basis-1/3 px-2">
                                 <Link
-                                    href={`/project/${project.project_name}`}
+                                    href={`/home/project/${project.id}`}
                                     className="block group"
                                 >
                                     <div className="relative w-full h-64 overflow-hidden rounded-xl shadow-md">

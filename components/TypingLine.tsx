@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+
 import PulsingCursor from './PulsingCursor';
+
 import { type TypingLineType } from '@/types/TypingLineType';
 
 const TypingLine = ({ text, speed = 40, onComplete, cursor }: TypingLineType) => {

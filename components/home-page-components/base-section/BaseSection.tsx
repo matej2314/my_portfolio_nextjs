@@ -6,7 +6,7 @@ import { contentArray } from "@/lib/subHeaderContentArray"
 export default function BaseSection() {
 
     return (
-        <section id="baseSection" className="w-full h-[100dvh] flex justify-between pt-5 pl-2">
+        <section id="baseSection" className="w-full h-[100dvh] flex justify-between pl-2 snap-start">
             <div className="w-fit h-fit flex flex-col">
                 <p className="w-fit h-fit text-[3.6rem] text-yellow-300 text-glow font-normal tracking-wider">Mateusz</p>
                 <HomeSubHeader texts={contentArray} typingSpeed={55} deletingSpeed={30} />

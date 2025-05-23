@@ -11,6 +11,7 @@ const contactItemsVariants = {
         opacity: 1,
         scale: 1,
         transition: {
+            delay: 0.2,
             staggerChildren: 0.2
         }
     },

@@ -19,12 +19,12 @@ export async function getProjects(): Promise<{projects: Project[]} | {error: str
     }
 };
 
-export async function getProject(projectName: string): Promise<{project: Project} | {error: string}>{
+export async function getProject(id: string): Promise<{project: Project} | {error: string}>{
 
     try {
         const project = await prisma.projects.findFirst({
             where: {
-                project_name: projectName,
+                id: id,
             }
         });
 

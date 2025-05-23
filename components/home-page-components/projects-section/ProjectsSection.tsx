@@ -9,7 +9,7 @@ export default async function ProjectsSection() {
     if ("error" in response) {
         console.log(response.error);
         return (
-            <section className="w-full h-[100dvh] flex justify-center items-center text-red-500">
+            <section className="w-full h-[100dvh] flex justify-center items-center text-red-500 snap-center">
                 <p>Nie udało się pobrać projektów.</p>
             </section>
         );

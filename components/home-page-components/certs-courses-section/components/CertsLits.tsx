@@ -51,14 +51,14 @@ export default function CertsList({ courses }: { courses: Course[] }) {
                 <YearLabelSpan year={2023} />
                 <div
                     ref={containerRef}
-                    className="relative w-full max-w-4xl h-2 bg-green-400 rounded-full mb-10 shadow-2xl shadow-green-400"
+                    className="relative w-10/12 h-2 bg-green-400 rounded-full mb-10 shadow-2xl shadow-green-400"
                 >
                     <motion.div
-                        className="absolute top-0 left-0 h-2 bg-yellow-300 rounded-full"
+                        className="absolute top-0 h-2 bg-yellow-300 rounded-full"
                         animate={{ width: (hoverData.highLightWidth as number) }}
                         transition={{ duration: 0.3 }}
                     />
-                    <div className="absolute top-1/2 left-0 w-full flex justify-between -translate-y-1/2 px-1">
+                    <div className="absolute top-1/2 left-[2.5rem] w-11/12 flex justify-between -translate-y-1/2 px-1">
                         {sortedCourses.map((course, index) => (
                             <CourseDot
                                 key={course.id}
