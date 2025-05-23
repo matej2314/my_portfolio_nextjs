@@ -4,24 +4,8 @@ import { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
 
 import TypingLine from "./TypingLine";
-import { type Line } from "@/types/IntroTypes";
+import { linesDynamic, linesStatic } from "@/lib/introLinesArrays";
 import { getBrowserStorage, setBrowserStorage } from "@/lib/browserStorage";
-
-
-const linesDynamic: Line[] = [
-    { type: 'typing', text: 'npm start' },
-    { type: 'typing', text: 'Starting server...' },
-    { type: 'typing', text: 'Server running on port 443' },
-];
-
-const linesStatic: Line[] = [
-    { type: 'static', text: '(kali@kali)-[~]: $ cd my_portfolio' },
-    { type: 'static', text: '(kali@kali)-[~/my_portfolio]: $ ls' },
-    {
-        type: 'static',
-        text: '(kali@kali)-[~/my_portfolio]: $ package-lock.json package.json index.html index.css index.js public/ tsconfig.json next.config.ts'
-    },
-];
 
 export default function Intro() {
     const [currentLine, setCurrentLine] = useState<number>(0);

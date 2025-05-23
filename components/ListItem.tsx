@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 
 
 import { type ListItemType } from '@/types/ListItemTypes';
-import { duration } from 'moment';
 
 const itemVariants = {
     hidden: { opacity: 0, scale: 0.8 },

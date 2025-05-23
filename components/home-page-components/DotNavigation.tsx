@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 
-import NavLink from "./NavLink";
+import NavLink from '../NavLink';
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { sections } from "@/lib/homePageSectionsArr";
 

@@ -26,9 +26,11 @@ export default function ProjectsGallery({ projects, images }: ProjectsGalleryPro
                         if (!coverImage) return null;
 
                         return (
-                            <CarouselItem key={project.id} className="md:basis-1/2 lg:basis-1/3 px-2">
+                            <CarouselItem
+                                key={project.id}
+                                className="md:basis-1/2 lg:basis-1/3 px-2">
                                 <Link
-                                    href={`/project/${project.id}`}
+                                    href={`/project/${project.project_name}`}
                                     className="block group"
                                 >
                                     <div className="relative w-full h-64 overflow-hidden rounded-xl shadow-md">

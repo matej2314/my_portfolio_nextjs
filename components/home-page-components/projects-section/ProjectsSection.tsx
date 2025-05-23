@@ -1,6 +1,5 @@
 import { getProjects } from "@/actions/projects"
 import ProjectsGallery from "./components/ProjectsGallery";
-import { Project } from "@/types/actionsTypes/projectsTypes";
 import { getFilesList } from "@/lib/getFilesList";
 
 export default async function ProjectsSection() {
