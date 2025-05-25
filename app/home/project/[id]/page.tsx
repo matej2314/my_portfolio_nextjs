@@ -1,13 +1,10 @@
 import { getProject } from "@/actions/projects";
 
-import BadgeList from "@/components/BadgeList";
+import DetailsHeader from "@/components/project-details-page/components/DetailsHeader";
+import DisplayGoalDescription from "@/components/project-details-page/components/DisplayGoalDescription";
+import GallerySection from "@/components/project-details-page/components/GallerySection";
 
-import { type BadgeItem } from "@/components/BadgeList";
-
-
-type DetailsPageProps = {
-    params: Promise<{ id: string }>
-}
+import { type DetailsPageProps } from "@/types/detailsPageTypes";
 
 export default async function ProjectDetailsPage({ params }: DetailsPageProps) {
 
@@ -20,20 +17,22 @@ export default async function ProjectDetailsPage({ params }: DetailsPageProps) {
         return <div>Failed to display details.</div>
     }
 
-    const techArray: BadgeItem[] = (selectedProject.project.technologies ?? '').split(',').map((label) => ({
-        label: label.trim(),
-    })).filter((item) => item.label.length > 0)
-
-
     return (
-        <main className="w-full h-full flex items-start">
-            <section className="w-full h-full flex flex-col justify-center items-center pt-8 gap-5">
-                <h2
-                    className="w-full h-fit flex justify-center text-yellow-300 text-2xl tracking-wide"
+        <main className="w-full h-full flex items-start mb-4">
+            <section className="w-full h-full flex flex-col justify-center items-center pt-8 gap-8">
+                <DetailsHeader selectedProject={selectedProject.project} />
+                <section
+                    className="w-[98%] h-full flex flex-col items-center justify-center text-slate-200 px-[12rem] gap-7"
                 >
-                    {selectedProject.project.project_name}
-                </h2>
-                <BadgeList items={techArray} />
+                    <DisplayGoalDescription selectedProject={selectedProject.project} />
+                    <GallerySection projectId={selectedProject.project.id} />
+                    <div className="w-full h-fit flex flex-col items-center justify-center gap-4">
+                        <h2 className="text-3xl text-yellow-300">Conclusion</h2>
+                        <p className="font-mono tracking-wide text-justify font-semibold">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur nostrum nihil consectetur hic culpa! Numquam quaerat voluptatem omnis? Praesentium mollitia corporis dolor ad doloremque obcaecati fuga distinctio ratione eligendi sit.
+                        </p>
+                    </div>
+                </section>
             </section>
         </main>
     )

@@ -15,6 +15,7 @@
     "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.10.5",
     "googleapis": "^148.0.0",
@@ -30,7 +31,8 @@
     "recharts": "^2.15.3",
     "tailwind-merge": "^3.3.0",
     "uuid": "^11.1.0",
-    "winston": "^3.17.0"
+    "winston": "^3.17.0",
+    "zod": "^3.25.28"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

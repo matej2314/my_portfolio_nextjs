@@ -13,3 +13,5 @@ export type Project = PrismaProjectType;
 export type Skill = PrismaSkillType;
 
 export type User = PrismaUserType;
+
+export type GetShotsResult = { success: true, files: string[] } | { success: false, error: string };

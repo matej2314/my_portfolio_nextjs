@@ -1,5 +1,6 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 
 import NavLink from '../NavLink';
@@ -8,6 +9,8 @@ import { sections } from "@/lib/homePageSectionsArr";
 
 const DotNavigation = () => {
 
+    const pathName = usePathname();
+
     const activeSection = useActiveSection(sections);
 
     return (
@@ -15,7 +18,7 @@ const DotNavigation = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4, ease: 'easeIn' }}
-            className="w-fit h-full flex pt-[9rem] flex-col gap-3">
+            className={`w-fit h-full flex pt-[9rem] flex-col gap-3 ${pathName?.startsWith('/home/project') ? 'hidden' : 'block'}`}>
             {sections.map((section) => (
                 <li
                     key={section}

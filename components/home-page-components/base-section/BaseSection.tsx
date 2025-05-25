@@ -25,6 +25,7 @@ export default function BaseSection() {
                         iconCode="maki:arrow"
                         iconClass="mt-1 ml-1"
                         className="w-fit h-fit flex justify-center items-center font-bold text-2xl pt-2 pb-3 bg-transparent border-2 border-yellow-300 text-yellow-300 hover:bg-transparent hover-shadow"
+                        redirectPath="#aboutSection"
                     >
                         Learn more
 

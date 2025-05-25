@@ -1,10 +1,10 @@
 'use client';
 
-import { Badge } from "./ui/badge";
+import { Badge } from "../../ui/badge";
 
 export interface BadgeItem {
     label: string;
-    variant?: 'default' | 'secondary' | 'destructive' | 'outline';
+    variant?: "default" | "secondary" | "destructive" | "outline" | null | undefined;
     badgeClass?: string;
 };
 
