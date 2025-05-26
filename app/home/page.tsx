@@ -4,18 +4,23 @@ import SkillsSection from "@/components/home-page-components/skills-section/Skil
 import ProjectsSection from "@/components/home-page-components/projects-section/ProjectsSection";
 import CertsCoursesSection from "@/components/home-page-components/certs-courses-section/CertsCoursesSection";
 import ContactSection from "@/components/home-page-components/contact-section/ContactSection";
+import SiteHeader from "@/components/home-page-components/SiteHeader";
 
 export default function HomePage() {
 
     return (
-        <main className="w-full h-screen">
-            <BaseSection />
-            <AboutSection />
-            <SkillsSection />
-            <CertsCoursesSection />
-            <ProjectsSection />
-            <ContactSection />
-        </main>
-
+        <div id="mainSection" className="w-[90%] h-full flex flex-col justify-start gap-4">
+            <div className="flex-1 h-screen flex flex-col">
+                <SiteHeader variant="home" />
+                <div className="w-full flex flex-col">
+                    <BaseSection />
+                    <AboutSection />
+                    <SkillsSection />
+                    <CertsCoursesSection />
+                    <ProjectsSection />
+                    <ContactSection />
+                </div>
+            </div>
+        </div>
     )
 }

@@ -29,6 +29,7 @@ const DotNavigation = () => {
                         isActive={activeSection === section}
                         linkClass="w-4 h-4 bg-white border-1 border-black rounded-full hover:bg-yellow-200 cursor-pointer"
                         activeClass="bg-yellow-200"
+                        variant='home'
                     />
                 </li>
             ))}
