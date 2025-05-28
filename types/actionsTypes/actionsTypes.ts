@@ -3,15 +3,28 @@ import { type courses as PrismaCourseType } from "@prisma/client";
 import { type projects as PrismaProjectType } from "@prisma/client";
 import { type skills as PrismaSkillType } from "@prisma/client";
 import { type users as PrismaUserType } from "@prisma/client";
+import { type posts as PrismaPostType } from "@prisma/client";
 
 export type AboutTextType = PrismaAboutMeType;
 
+export type GetAboutMeType = { aboutMe: AboutTextType[] } | { error: string };
+
 export type Course = PrismaCourseType;
+
+export type GetCoursesType = { courses: Course[] } | { error: string };
 
 export type Project = PrismaProjectType;
 
+export type GetProjectsType = { projects: Project[] } | { error: string };
+
+export type GetProjectType = { project: Project } | { error: string };
+
 export type Skill = PrismaSkillType;
+
+export type GetSkillsType = { skills: Skill[] } | { error: string };
 
 export type User = PrismaUserType;
 
 export type GetShotsResult = { success: true, files: string[] } | { success: false, error: string };
+
+export type ReturnedType = { success: true, message: string } | { success: false, error: string };

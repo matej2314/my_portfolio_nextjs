@@ -16,7 +16,7 @@ export default function MetricsSection({ metrics }: { metrics: MetricItem[] }) {
             id="metrics"
             className="w-1/2 h-full text-green-300 font-mono flex justify-center pl-8">
             <div className="w-full h-full flex flex-col">
-                <ul className="w-full h-full flex flex-col">
+                <ul className="w-full h-full flex flex-col justify-center">
                     {metrics.map((metric) => (
                         <li key={metric.label}
                             className="text-lg"

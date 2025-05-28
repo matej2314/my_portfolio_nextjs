@@ -23,17 +23,20 @@ export default async function AboutSection() {
     const description = aboutMe?.[0]?.about_text || error || 'No description found';
 
     return (
-        <section id="aboutSection" className="w-full h-[100dvh] flex flex-col mb-5">
+        <div id="aboutSection" className="w-full h-screen flex flex-col justify-between items-start mb-5">
             <span className="text-4xl text-green-400 ml-2">About &#123;</span>
-            <div className="w-full h-full flex justify-around mt-10">
-                <MetricsSection metrics={metrics} />
-                <section className="w-1/2 h-full">
-                    <div className="w-full h-fit flex flex-col items-center text-slate-200 ">
-                        <p className="text-xl text-justify leading-9 pr-[5rem]">{description}</p>
-                    </div>
-                </section>
-            </div>
+            <section className="w-full h-fit flex flex-col">
+                <div className="w-full h-full flex justify-around mt-10">
+                    <MetricsSection metrics={metrics} />
+                    <section className="w-1/2 h-full">
+                        <div className="w-full h-fit flex flex-col items-center text-slate-200 ">
+                            <p className="text-xl text-justify leading-9 pr-[5rem]">{description}</p>
+                        </div>
+                    </section>
+                </div>
+            </section>
             <span className="text-green-400 text-4xl ml-2 mt-5">&#125;</span>
-        </section >
+        </div>
+
     )
 }

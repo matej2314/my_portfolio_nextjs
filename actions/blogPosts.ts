@@ -1,6 +1,6 @@
 'use server';
 
-import { executeQuery } from "@/lib/db";
+import prisma from "@/lib/db";
 
 export async function getBlogPosts() {
 

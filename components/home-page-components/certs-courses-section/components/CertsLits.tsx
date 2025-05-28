@@ -56,7 +56,7 @@ export default function CertsList({ courses }: { courses: Course[] }) {
                     <motion.div
                         className="absolute top-0 h-2 bg-yellow-300 rounded-full"
                         animate={{ width: (hoverData.highLightWidth as number) }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.2 }}
                     />
                     <div className="absolute top-1/2 left-[2.5rem] w-11/12 flex justify-between -translate-y-1/2 px-1">
                         {sortedCourses.map((course, index) => (
