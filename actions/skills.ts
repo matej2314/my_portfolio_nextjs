@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { convertFormData } from "@/lib/formDataToObjectConvert";
 
 import { type ReturnedType, GetSkillsType } from "@/types/actionsTypes/actionsTypes";
-import { skillSchema } from "@/lib/zod-schemas/skillSchema";
+import { baseSkillSchema, updateSkillSchema } from "@/lib/zod-schemas/skillSchema";
 import { idSchema } from "@/lib/zod-schemas/idSchema";
 
 export async function getSkills(): Promise<GetSkillsType>{
@@ -22,8 +22,8 @@ export async function saveSkill(formData: FormData): Promise<ReturnedType> {
 
     try {
         const id = uuidv4();
-        const skillObject = convertFormData(formData);
-        const validSkillObject = skillSchema.safeParse(skillObject);
+        const inputSkillObject = convertFormData(formData);
+        const validSkillObject = baseSkillSchema.safeParse(inputSkillObject);
         
         if (!validSkillObject.success) {
             console.error('SaveSkill. Invalid input data error:', validSkillObject.error.flatten());
@@ -44,9 +44,9 @@ export async function updateSkill(formData: FormData): Promise<ReturnedType> {
     
     try {
         const newSkillObject = convertFormData(formData);
-        const validNewSkillObj = skillSchema.safeParse(newSkillObject);
+        const validNewSkillObj = updateSkillSchema.safeParse(newSkillObject);
 
-        const id = formData.get("id");
+        const id = formData.get("id") as string;
         const validID = idSchema.safeParse(id);
 
         if (!validNewSkillObj.success || !validID.success) {
@@ -69,7 +69,7 @@ export async function updateSkill(formData: FormData): Promise<ReturnedType> {
 export async function deleteSkill(formData: FormData): Promise<ReturnedType> {
 
     try {
-        const id = formData.get("id");
+        const id = formData.get("id") as string;
         const validId = idSchema.safeParse(id);
 
         if (!validId.success) {

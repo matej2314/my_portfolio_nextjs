@@ -1,8 +1,13 @@
-export default function ControlPage() {
+
+import SignInForm from "@/components/control-panel-components/forms/SignInForm"
+
+
+export default async function ControlPage() {
+
 
     return (
-        <main className="w-screen h-screen flex justify-center items-center text-slate-200">
-            <p className="text-slate-200">control panel</p>
+        <main className="w-[90%] h-[95dvh] flex flex-col justify-center items-center gap-4 rounded-md text-slate-200">
+            <SignInForm />
         </main>
     )
 }

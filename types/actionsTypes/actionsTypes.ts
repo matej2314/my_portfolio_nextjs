@@ -23,6 +23,12 @@ export type Skill = PrismaSkillType;
 
 export type GetSkillsType = { skills: Skill[] } | { error: string };
 
+export type Post = PrismaPostType;
+
+export type GetPostsType = { posts: Post[] } | { error: string };
+
+export type GetPostType = { post: Post } | { error: string };
+
 export type User = PrismaUserType;
 
 export type GetShotsResult = { success: true, files: string[] } | { success: false, error: string };

@@ -65,9 +65,22 @@ model skills {
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model users {
-  id       String @id @db.VarChar(350)
-  role     String @db.VarChar(10)
-  name     String @db.VarChar(100)
-  password String @db.VarChar(350)
-  email    String @db.VarChar(100)
+  id       String     @id @db.VarChar(350)
+  role     String     @db.VarChar(10)
+  name     String     @db.VarChar(100)
+  password String     @db.VarChar(350)
+  email    String     @unique(map: "unique_email_idx") @db.VarChar(100)
+  sessions sessions[]
+}
+
+model sessions {
+  id             String    @id @db.VarChar(100)
+  userId         String    @db.VarChar(350)
+  active_expires BigInt
+  expiresAt      DateTime? @db.DateTime(0)
+  idle_expires   BigInt
+  attributes     Json
+  users          users     @relation(fields: [userId], references: [id], map: "sessions_ibfk_1")
+
+  @@index([userId], map: "userId")
 }

@@ -1,8 +1,9 @@
 import { z } from 'zod';
 import { validatedString } from './basicValidation';
+import { idSchema } from './idSchema';
 
 
-export const projectSchema = z.object({
+export const baseProjectSchema = z.object({
     project_name: validatedString(1,300),
     project_category: validatedString(1,300),
     project_URL: validatedString(1,300),
@@ -14,4 +15,8 @@ export const projectSchema = z.object({
     difficulty: validatedString(1,10).nullable(),
     end_date: z.string().trim().optional().transform(val => val ? new Date(val) : null),
     long_text: z.string().trim().nullable(),
+});
+
+export const updateProjectSchema = baseProjectSchema.extend({
+    id: idSchema,
 });

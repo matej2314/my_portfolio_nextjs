@@ -1,8 +1,6 @@
 'use client'
 
 import { useActionState } from "react"
-import { useFormStatus } from "react-dom"
-import { motion } from 'framer-motion';
 
 import { contactMe } from "@/actions/contact"
 
@@ -11,16 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-function SubmitBtn() {
-    const { pending } = useFormStatus();
-    return (
-        <Button
-            className="w-1/2 h-fit flex items-center justify-center bg-yellow-200 rounded-md mt-6 text-slate-950 text-3xl hover-shadow hover:bg-yellow-300"
-        >
-            {pending ? 'Sending...' : 'Send message'}
-        </Button>
-    )
-}
+import SubmitBtn from "@/components/SubmitButton";
 
 export default function ContactForm() {
     const initialState: { success?: string, error?: any } = {};
@@ -84,7 +73,12 @@ export default function ContactForm() {
             />
             {state.error && <p>{String(state.error)}</p>}
             {state.success && <p>{state.success}</p>}
-            <SubmitBtn />
+            <SubmitBtn
+                pendingTxt="Sending..."
+                idleTxt="Send Message"
+                backgroundColor="bg-yellow-200"
+                hoverClass="hover:bg-yellow-300"
+            />
         </form>
     )
 }

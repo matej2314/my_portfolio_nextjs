@@ -25,7 +25,7 @@ export async function saveAboutMe(formData: FormData): Promise<ReturnedType> {
         const id = uuidv4();
         const about_text = formData.get("about_text") as string;
 
-        const newAboutMe = { about_text };
+        const newAboutMe = { id,about_text };
 
         const validNewAboutMe = aboutMeSchema.safeParse(newAboutMe);
 
@@ -34,7 +34,7 @@ export async function saveAboutMe(formData: FormData): Promise<ReturnedType> {
             return { success: false, error: 'Invalid input data.' };
         };
 
-        const aboutText = { id, ...validNewAboutMe.data };
+        const aboutText = { ...validNewAboutMe.data };
 
         await prisma.about_me.create({
             data: aboutText,
@@ -50,23 +50,24 @@ export async function saveAboutMe(formData: FormData): Promise<ReturnedType> {
 export async function updateAboutMe(formData: FormData): Promise<ReturnedType> {
 
     try {
-        const id = uuidv4();
-        const validId = idSchema.safeParse(id);
 
         const updatedDescription = {
+            id: formData.get("id") as string,
             about_text: formData.get("about_text") as string,
         };
 
         const validUpdatedDescription = aboutMeSchema.safeParse(updatedDescription);
 
-        if (!validId.success || !validUpdatedDescription.success) {
-            console.error('UpdateAboutMe validation error:', validId.error?.flatten() || validUpdatedDescription.error?.flatten());
+        if (!validUpdatedDescription.success) {
+            console.error('updateAboutMe validation error:', validUpdatedDescription.error.flatten());
             return { success: false, error: 'Invalid input data.' };
         };
 
+        const newDescription = {...validUpdatedDescription.data };
+
         await prisma.about_me.update({
-            where: { id: validId.data },
-            data: updatedDescription,
+            where: { id: newDescription.id },
+            data: newDescription,
         });
         return { success: true, message: 'About description updated correctly.' };
     } catch (error) {

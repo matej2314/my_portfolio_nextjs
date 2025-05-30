@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { convertFormData } from "@/lib/formDataToObjectConvert";
 
-import { courseSchema } from "@/lib/zod-schemas/courseSchema";
+import { baseCourseSchema, updateCourseSchema} from "@/lib/zod-schemas/courseSchema";
 import { idSchema } from "@/lib/zod-schemas/idSchema";
 
 import { type GetCoursesType, ReturnedType } from "@/types/actionsTypes/actionsTypes";
@@ -22,19 +22,20 @@ export async function getCourses(): Promise<GetCoursesType> {
 
 export async function saveCourse(formData: FormData): Promise<ReturnedType> {
     try {
-        const id = String(uuidv4);
-        const courseData = convertFormData(formData);
-
-        const course = { id, ...courseData };
-        const validCourse = courseSchema.safeParse(course);
+        const inputCourseData = convertFormData(formData);
+        const validCourse = baseCourseSchema.safeParse(inputCourseData);
 
         if (!validCourse.success) {
-            console.error(`saveCourse error:`, validCourse.error.flatten());
-            return { success: false, error: 'Failed to add new course.' };
-        }
+            console.error('saveCourse validation error:', validCourse.error.flatten());
+            return { success: false, error: 'Invalid input data' };
+        };
+
+        const id = uuidv4();
+
+        const course = {id,...validCourse.data };
         
         await prisma.courses.create({
-            data: validCourse.data,
+            data: course,
         });
 
         return { success: true, message: 'New course added correctly' };
@@ -42,6 +43,27 @@ export async function saveCourse(formData: FormData): Promise<ReturnedType> {
     } catch (error) {
         console.error('saveCourse error:', error);
         return { success: false, error: 'Failed to add new course.' };
+    };
+};
+
+export async function updateCourse(formData: FormData): Promise<ReturnedType> {
+    try {
+        const inputData = convertFormData(formData);
+        const validInputData = updateCourseSchema.safeParse(inputData);
+
+        if (!validInputData.success) {
+            console.error('updateCourse validation error:', validInputData.error.flatten());
+            return { success: false, error: 'Invalid input data.' };
+        };
+        await prisma.courses.update({
+            where: { id: validInputData.data.id },
+            data: { ...validInputData.data },
+        });
+
+        return { success: true, message: 'Course updated correctly.' };
+    } catch (error) {
+        console.error(`updateCourse error:`, error);
+        return { success: false, error: 'Failed to update course.' };
     };
 };
 
