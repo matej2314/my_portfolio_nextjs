@@ -9,13 +9,11 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 export default function DashboardLayout({ children }: { children: ReactNode }) {
 
     return (
-        <section className="w-full h-full flex justify-between">
-            <section className="w-full h-full flex justify-start items-start">
+        <section className="w-full h-screen flex items-center justify-center">
+            <section className="relative w-[90%] h-[90vh] flex justify-center items-center bg-slate-900 rounded-md text-slate-200">
                 <SidebarProvider>
                     <ControlSidebar />
                 </SidebarProvider>
-            </section>
-            <section className="w-full h-full flex justify-center items-center">
                 {children}
             </section>
         </section>
