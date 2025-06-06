@@ -34,7 +34,7 @@ export default function NavLink({ children, pathName, linkClass, isActive, activ
             )
         case 'project':
             return <Link
-                href={pathName}
+                href={pathName ?? undefined}
                 className={finalClassName}
             >
                 {children}

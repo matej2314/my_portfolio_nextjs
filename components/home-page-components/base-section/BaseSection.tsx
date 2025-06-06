@@ -1,4 +1,5 @@
 import { Button } from "../../ui/button"
+import NavLink from "@/components/NavLink"
 import HomeSubHeader from "./components/HomeSubHeader"
 import IconButton from "../../IconButton"
 import { contentArray } from "@/lib/subHeaderContentArray"
@@ -7,20 +8,25 @@ export default function BaseSection() {
 
     return (
         <section id="baseSection" className="w-full h-screen flex justify-between pl-2 snap-start">
-            <div className="w-fit h-fit flex flex-col">
+            <div className="w-fit h-fit flex flex-col ml-10 mt-9">
                 <p className="w-fit h-fit text-[3.6rem] text-yellow-300 text-glow font-normal tracking-wider">Mateusz</p>
                 <HomeSubHeader texts={contentArray} typingSpeed={55} deletingSpeed={30} />
                 <p
-                    className="w-8/12 text-xl text-white mb-5"
+                    className="w-8/12 text-xl text-white mb-5 tracking-wide"
                 >
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis distinctio iste eligendi quia, porro ipsam saepe doloribus sunt officia reiciendis odit magnam sint dolor perferendis dolore facere eius quam! Placeat!
+                    Self-taught programmer passionate about cybersecurity, especially in web application security. Always ready to take on new challenges — the more difficult, the better.
                 </p>
-                <div className="w-8/12 flex justify-start items-start h-fit gap-5">
-                    <Button
-                        className="w-fit h-fit  flex hover:bg-yellow-300 hover:text-slate-600 justify-center items-center bg-yellow-200 text-slate-900 font-bold text-3xl"
+                <div className="w-7/12 flex justify-start items-start h-fit gap-5">
+                    <NavLink
+                        variant="home"
+                        pathName="#contactSection"
                     >
-                        Contact me
-                    </Button>
+                        <Button
+                            className="w-fit h-fit  flex hover:bg-yellow-300 hover:text-slate-600 justify-center items-center bg-yellow-200 text-slate-900 font-bold text-3xl"
+                        >
+                            Contact me
+                        </Button>
+                    </NavLink>
                     <IconButton
                         iconCode="maki:arrow"
                         iconClass="mt-1 ml-1"

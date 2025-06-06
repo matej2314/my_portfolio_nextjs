@@ -1,44 +1,16 @@
 'use client';
 
-import { Sidebar } from "@/components/ui/sidebar";
-
-import SidebarContentElement from "./SidebarContentElement";
-import SidebarFooterElement from "./SidebarFooterElement";
-import SidebarHeaderElement from "./SidebarHeaderElement";
+import SidebarMenuList from "./SidebarMenuList";
 
 export default function ControlSidebar() {
     return (
-        <Sidebar
-            className="absolute w-1/3 h-full flex flex-col justify-center items-center bg-slate-900 text-slate-200 mt-0.5"
-            side="left"
-            variant="sidebar"
-        >
-            <SidebarHeaderElement className="bg-slate-900">
-                <div className="w-full h-full">
-                    <p className="w-full h-full flex justify-center">msliwowski.net - control panel</p>
-                </div>
-            </SidebarHeaderElement>
-            <SidebarContentElement
-                className="bg-slate-900"
-            >
-                <ul className="w-full h-full flex flex-col items-center justify-center gap-4 text-sm">
-                    <li className="w-11/12 h-fit flex justify-center items-center border-2 rounded-md border-slate-500 py-3 mb-3 hover:bg-slate-700">Home</li>
-                    <li className="w-11/12 h-fit flex justify-center items-center border-2 rounded-md border-slate-500 py-3 hover:bg-slate-700">About</li>
-                    <li className="w-11/12 h-fit flex justify-center items-center border-2 rounded-md border-slate-500 py-3 hover:bg-slate-700">Courses</li>
-                    <li className="w-11/12 h-fit flex justify-center items-center border-2 rounded-md border-slate-500 py-3 hover:bg-slate-700">Projects</li>
-                    <li className="w-11/12 h-fit flex justify-center items-center border-2 rounded-md border-slate-500 py-3 hover:bg-slate-700">Skills</li>
-                    <li className="w-11/12 h-fit flex justify-center items-center border-2 rounded-md border-slate-500 py-3 hover:bg-slate-700">Blog</li>
-                    <li className="w-11/12 h-fit flex justify-center items-center border-2 rounded-md border-slate-500 py-3 hover:bg-slate-700">Curriculum vitae</li>
-                    <li className="w-11/12 h-fit flex justify-center items-center border-2 rounded-md border-slate-500 py-3 hover:bg-slate-700">Stats</li>
-                </ul>
-            </SidebarContentElement>
-            <SidebarFooterElement
-                className="bg-slate-900"
-            >
-                <div className="w-full h-full flex justify-center">
-                    <p>Copyright@mateo2314</p>
-                </div>
-            </SidebarFooterElement>
-        </Sidebar>
+        <section id="dashboardSidebar" className="overflow-hidden relative w-[20rem] h-full flex flex-col justify-start items-center text-slate-200 rounded-md board-sidebar-gradient border-2 border-blue-950">
+            <header id="sidebarHeader" className="w-full h-[3rem] flex justify-center items-center">
+                <p className="text-lg font-semibold text-green-500">Dashboard</p>
+            </header>
+            <section id="sidebarContent" className="pb-3 mt-4 overflow-hidden">
+                <SidebarMenuList />
+            </section>
+        </section>
     )
 }

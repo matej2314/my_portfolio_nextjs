@@ -10,7 +10,7 @@ export default function HomePage() {
 
     return (
         <div id="mainSection" className="w-[90%] h-full flex flex-col justify-start gap-4">
-            <div className="flex-1 h-screen flex flex-col">
+            <div className=" h-screen flex flex-col">
                 <SiteHeader variant="home" />
                 <div className="w-full flex flex-col">
                     <BaseSection />

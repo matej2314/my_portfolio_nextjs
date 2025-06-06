@@ -5,6 +5,7 @@ import { compare } from 'bcryptjs';
 import { redirect } from 'next/navigation';
 
 import prisma from '@/lib/db';
+import { sign } from 'jsonwebtoken';
 import { lucia } from '@/lib/auth';
 import { loginSchema } from '@/lib/zod-schemas/authSchemas';
 import { convertFormData } from '@/lib/formDataToObjectConvert';
@@ -24,7 +25,7 @@ export async function login(prevState: any, formData: FormData) {
 	const email = validUserData.data.email;
 	const password = validUserData.data.password;
 
-	const user = await prisma?.users.findUnique({ where: { email } });
+	const user = await prisma.users.findUnique({ where: { email } });
 
 	if (!user || !(await compare(password, user.password))) {
 		return { error: 'Invalid credentials.' };
@@ -36,11 +37,20 @@ export async function login(prevState: any, formData: FormData) {
 		idle_expires: nowInSeconds + expiresInSeconds,
 		expiresAt: expiresDate,
 	});
-	const sessionCookie = await lucia.createSessionCookie(session.userId);
+
+	const token = sign({ userId: user.id, email: user.email }, process.env.AUTH_SECRET!, { expiresIn: expiresInSeconds });
+
+	const sessionCookie = await lucia.createSessionCookie(token);
 
 	const cookieStore = await cookies();
 
-	cookieStore.set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+	cookieStore.set('SESSID', token, {
+		httpOnly: true,
+		path: '/control',
+		sameSite: 'lax',
+		secure: false,
+		expires: expiresDate,
+	});
 
 	redirect('/control/dashboard');
 }

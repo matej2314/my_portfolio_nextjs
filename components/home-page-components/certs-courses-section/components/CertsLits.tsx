@@ -4,7 +4,6 @@ import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 
 import YearLabelSpan from "./YearLabelSpan";
-import CourseHoverElement from "./CourseHoverElement";
 import CourseDot from "./CourseDot";
 
 import { type Course } from "@/types/actionsTypes/actionsTypes";

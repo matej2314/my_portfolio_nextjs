@@ -6,18 +6,26 @@ import { Icon } from '@iconify/react';
 
 import { type IconButtonType } from "@/types/iconButtonTypes";
 
-export default function IconButton({ iconCode, children, redirectPath, iconClass, ...props }: IconButtonType) {
+export default function IconButton({ iconCode, children, redirectPath, iconClass, onClick, ...props }: IconButtonType) {
 
     const router = useRouter();
+
+    const handleClick = () => {
+        if (onClick) {
+            onClick();
+        } else if (redirectPath) {
+            router.push(redirectPath);
+        }
+    }
 
     return (
         <Button
             type="button"
-            onClick={() => router.push(redirectPath as string)}
+            onClick={handleClick}
             {...props}
         >
             {children}
-            <Icon className={iconClass} icon={iconCode} />
+            <Icon className={iconClass} icon={iconCode as string} />
         </Button>
     )
 }
