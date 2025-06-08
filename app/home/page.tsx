@@ -1,3 +1,5 @@
+import { delay } from "@/lib/delay";
+
 import BaseSection from "@/components/home-page-components/base-section/BaseSection";
 import AboutSection from "@/components/home-page-components/about-section/AboutSection";
 import SkillsSection from "@/components/home-page-components/skills-section/SkillsSection";
@@ -6,7 +8,9 @@ import CertsCoursesSection from "@/components/home-page-components/certs-courses
 import ContactSection from "@/components/home-page-components/contact-section/ContactSection";
 import SiteHeader from "@/components/home-page-components/SiteHeader";
 
-export default function HomePage() {
+export default async function HomePage() {
+
+    await delay(5000);
 
     return (
         <div id="mainSection" className="w-[90%] h-full flex flex-col justify-start gap-4">

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from "react";
+import { useTranslations } from "next-intl";
 
 import { useClickOutside } from "@/hooks/useClickOutside";
 
@@ -11,6 +12,7 @@ import { type MenuItem } from "@/lib/menuArrays"
 
 export default function BaseMenu({ array }: { array: MenuItem[] }) {
     const [isCvOpen, setIsCvOpen] = useState<boolean>(false);
+    const t = useTranslations();
     const selectorRef = useRef<HTMLDivElement>(null);
 
     const toggleCvSelector = () => {
@@ -28,13 +30,21 @@ export default function BaseMenu({ array }: { array: MenuItem[] }) {
                 >
                     {item.label === 'Resume' ? (
                         <button onClick={toggleCvSelector}>
-                            <NavLink pathName={item.path as string} variant={item.variant}>
-                                {`${index + 1}`}.{item.label}
+                            <NavLink
+                                pathName={item.path as string}
+                                variant={item.variant}
+                                title={t(`mainMenu.${item.label}`)}
+                            >
+                                {`${index + 1}`}.{t(`mainMenu.${item.label}`)}
                             </NavLink>
                         </button>
                     ) : (
-                        <NavLink pathName={item.path as string} variant={item.variant}>
-                            {`${index + 1}`}.{item.label}
+                        <NavLink
+                            pathName={item.path as string}
+                            variant={item.variant}
+                            title={t(`mainMenu.${item.label}`)}
+                        >
+                            {`${index + 1}`}.{t(`mainMenu.${item.label}`)}
                         </NavLink>
                     )}
                     {index < array.length - 1 && <span>|</span>}

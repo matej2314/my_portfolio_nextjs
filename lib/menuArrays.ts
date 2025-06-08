@@ -9,7 +9,7 @@ export const homeMenuArray: MenuItem[] = [
 	{ path: '#skillsSection', label: 'Skills', variant: 'home' },
 	{ path: '#certsSection', label: 'Courses', variant: 'home' },
 	{ path: '#projectsSection', label: 'Projects', variant: 'home' },
-	{ path: '', label: 'Blog', variant: 'home' },
+	// { path: '', label: 'Blog', variant: 'home' },
 	{ path: '#contactSection', label: 'Contact', variant: 'home' },
 	{ path: '#', label: 'Resume', variant: 'project' },
 ];

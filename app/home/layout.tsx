@@ -1,3 +1,5 @@
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
 import DotNavigation from "@/components/home-page-components/DotNavigation";
 
 import { type ReactNode } from "react";
@@ -8,13 +10,20 @@ export const metadata: Metadata = {
     description: 'Webdev, SEO, Security'
 }
 
-export default function HomePageLayout({ children }: { children: ReactNode }) {
+export default async function HomePageLayout({ children, params }: { children: ReactNode, params: { locale: string } }) {
+
+    const { locale } = params;
+
+    const messages = await getMessages({ locale });
+
     return (
         <main className="h-screen bg-[#0c0c0c] pt-8 flex justify-center items-center relative">
             <div className="fixed right-10 top-1/3 transform -translate-y-1/2 z-50">
                 <DotNavigation />
             </div>
-            {children}
+            <NextIntlClientProvider messages={messages}>
+                {children}
+            </NextIntlClientProvider>
         </main>
     )
 }

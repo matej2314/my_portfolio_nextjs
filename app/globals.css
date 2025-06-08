@@ -162,3 +162,14 @@
 		@apply bg-background text-foreground;
 	}
 }
+
+[data-highlighted] {
+	background-color: #76d266 !important;
+	color: rgb(0, 0, 0) !important;
+}
+
+[data-state='checked'] {
+	background-color: transparent !important;
+	color: inherit !important;
+	appearance: 'none';
+}

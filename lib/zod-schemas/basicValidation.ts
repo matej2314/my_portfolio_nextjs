@@ -1,15 +1,11 @@
 import { z } from 'zod';
 
 export function validatedString(min: number = 1, max?: number) {
-    let base = z.string().trim().min(min);
+	let base = z.string().trim().min(min);
 
-    if (typeof max === "number") {
-        base = base.max(max)
-    }
+	if (typeof max === 'number') {
+		base = base.max(max);
+	}
 
-    return base;
-};
-
-export function validContactObj(min: number) {
-
-};
+	return base;
+}

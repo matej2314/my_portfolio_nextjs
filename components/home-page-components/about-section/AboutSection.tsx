@@ -1,3 +1,6 @@
+import { getTranslations } from "next-intl/server";
+
+
 import { getAboutMe } from "@/actions/aboutMe";
 import { type MetricItem } from "@/types/metricTypes";
 import MetricsSection from "./components/MetricsSection";
@@ -20,7 +23,9 @@ export default async function AboutSection() {
         error?: string;
     };
 
-    const description = aboutMe?.[0]?.about_text || error || 'No description found';
+    const loadedSuccessfully = aboutMe && !error;
+
+    const t = await getTranslations("homePage");
 
     return (
         <div id="aboutSection" className="w-full h-screen flex flex-col justify-between items-start mb-5">
@@ -30,7 +35,11 @@ export default async function AboutSection() {
                     <MetricsSection metrics={metrics} />
                     <section className="w-1/2 h-full">
                         <div className="w-full h-fit flex flex-col items-center text-slate-200 ">
-                            <p className="text-xl text-justify leading-9 pr-[5rem]">{description}</p>
+                            <p
+                                className="text-xl text-justify leading-9 pr-[5rem]"
+                            >
+                                {loadedSuccessfully ? t("aboutSection.description") : 'Failed to load text.'}
+                            </p>
                         </div>
                     </section>
                 </div>

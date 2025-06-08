@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { type ReactNode } from "react";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale } from "next-intl/server";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -7,17 +9,22 @@ export const metadata: Metadata = {
   description: 'Webdev, SEO, Security'
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
+
+  const locale = await getLocale();
+
   return (
-    <html lang="en" className="no-scrollbar bg-[#0c0c0c] scroll-smooth">
+    <html lang={locale} className="no-scrollbar bg-[#0c0c0c] scroll-smooth">
       <body
         id="#__next"
       >
-        {children}
+        <NextIntlClientProvider locale={locale}>
+          {children}
+        </NextIntlClientProvider>
       </body>
     </html>
   );

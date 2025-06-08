@@ -9,9 +9,10 @@ type NavLinkProps = NavLinkType & {
     isActive?: boolean;
     activeClass?: string;
     variant: 'home' | 'project' | 'external';
+    title: string
 }
 
-export default function NavLink({ children, pathName, linkClass, isActive, activeClass, variant }: NavLinkProps) {
+export default function NavLink({ children, pathName, linkClass, isActive, activeClass, variant, title }: NavLinkProps) {
 
     const baseClass = linkClass ?? "w-full h-full flex justify-center items-center hover:text-green-500/80 active:text-green-500/80 cursor-pointer";
 
@@ -26,7 +27,7 @@ export default function NavLink({ children, pathName, linkClass, isActive, activ
                     offset={pathName === '#baseSection' ? -60 : 0}
                     duration={80}
                     className={finalClassName}
-                    title={pathName}
+                    title={title}
                     spy={true}
                 >
                     {children}
@@ -36,6 +37,7 @@ export default function NavLink({ children, pathName, linkClass, isActive, activ
             return <Link
                 href={pathName ?? undefined}
                 className={finalClassName}
+                title={title}
             >
                 {children}
             </Link>
@@ -44,6 +46,7 @@ export default function NavLink({ children, pathName, linkClass, isActive, activ
                 <a
                     href={pathName}
                     className={finalClassName}
+                    title={title}
                 >
                     {children}
                 </a>

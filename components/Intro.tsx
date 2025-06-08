@@ -1,31 +1,32 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import TypingLine from "./TypingLine";
+
 import { linesDynamic, linesStatic } from "@/lib/introLinesArrays";
 import { getBrowserStorage, setBrowserStorage } from "@/lib/browserStorage";
 
 export default function Intro() {
     const [currentLine, setCurrentLine] = useState<number>(0);
     const [cleared, setCleared] = useState<boolean>(false);
+    const router = useRouter();
 
     useEffect(() => {
         const introCompleted = getBrowserStorage('intro', 'session') === 'true';
         if (introCompleted) {
-            redirect('/home');
+            router.replace(`/home`);
         }
-    }, []);
 
-    useEffect(() => {
         if (cleared) {
             const timeout = setTimeout(() => {
-                redirect('/home');
+                router.replace(`/home`);
             }, 1000);
             return () => clearTimeout(timeout);
         }
-    }, [cleared]);
+
+    }, [router, cleared]);
 
     const handleComplete = () => {
         const lineJustCompleted = linesDynamic[currentLine];

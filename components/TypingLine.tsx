@@ -23,7 +23,7 @@ const TypingLine = ({ text, speed = 40, onComplete, cursor }: TypingLineType) =>
                 return () => clearTimeout(timeout);
             }
         }
-    }, [index, text]);
+    }, [index, text, onComplete, speed]);
 
     return (
         <span className='whitespace-pre font-mono text-green-400'>

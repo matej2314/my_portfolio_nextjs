@@ -10,7 +10,7 @@ import TextAreaElement from "@/components/ui/elements/TextareaElement";
 import SubmitBtn from "@/components/SubmitButton";
 
 export default function ContactForm() {
-    const initialState: { success?: string, error?: any } = {};
+    const initialState: { success?: string, error?: string } = {};
 
     const [state, formAction] = useActionState(contactMe, initialState);
 
@@ -69,7 +69,7 @@ export default function ContactForm() {
                 className="w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md"
                 required
             />
-            {state.error && <p>{String(state.error)}</p>}
+            {state.error && <p>{state.error}</p>}
             {state.success && <p>{state.success}</p>}
             <SubmitBtn
                 pendingTxt="Sending..."

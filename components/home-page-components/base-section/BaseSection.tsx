@@ -1,10 +1,14 @@
+import { getTranslations } from "next-intl/server"
+
 import { Button } from "../../ui/button"
 import NavLink from "@/components/NavLink"
 import HomeSubHeader from "./components/HomeSubHeader"
 import IconButton from "../../IconButton"
 import { contentArray } from "@/lib/subHeaderContentArray"
 
-export default function BaseSection() {
+export default async function BaseSection() {
+
+    const t = await getTranslations("homePage");
 
     return (
         <section id="baseSection" className="w-full h-screen flex justify-between pl-2 snap-start">
@@ -14,17 +18,18 @@ export default function BaseSection() {
                 <p
                     className="w-8/12 text-xl text-white mb-5 tracking-wide"
                 >
-                    Self-taught programmer passionate about cybersecurity, especially in web application security. Always ready to take on new challenges — the more difficult, the better.
+                    {t("baseSection.baseDescription")}
                 </p>
                 <div className="w-7/12 flex justify-start items-start h-fit gap-5">
                     <NavLink
                         variant="home"
                         pathName="#contactSection"
+                        title='Contact me'
                     >
                         <Button
                             className="w-fit h-fit  flex hover:bg-yellow-300 hover:text-slate-600 justify-center items-center bg-yellow-200 text-slate-900 font-bold text-3xl"
                         >
-                            Contact me
+                            {t("baseSection.contactTxt")}
                         </Button>
                     </NavLink>
                     <IconButton
@@ -33,7 +38,7 @@ export default function BaseSection() {
                         className="w-fit h-fit flex justify-center items-center font-bold text-2xl pt-2 pb-3 bg-transparent border-2 border-yellow-300 text-yellow-300 hover:bg-transparent hover-shadow"
                         redirectPath="#aboutSection"
                     >
-                        Learn more
+                        {t("baseSection.learnMoreTxt")}
 
                     </IconButton>
                 </div>
