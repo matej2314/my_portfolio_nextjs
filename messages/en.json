@@ -14,10 +14,16 @@
 		"certsSection": {
 			"description": "I am constantly expanding my knowledge as a web developer and security enthusiast. The selected courses and certifications below reflect my commitment to growth and security in the dynamic world of technology."
 		},
-		"projectsSection": {},
-		"contactSection": {}
+		"contactSection": {
+			"title": "Have a project to complete?",
+			"subTitle": "Feel free to contact me anytime with new opportunities.",
+			"contactForm": {}
+		}
 	},
 	"mainMenu": {
+		"Home": "Home",
+		"Demo": "Demo",
+		"Github": "Repo",
 		"About": "About",
 		"Skills": "Skills",
 		"Courses": "Courses",
@@ -26,6 +32,5 @@
 		"Contact": "Contact",
 		"Resume": "Resume"
 	},
-	"projectDetailsPage": {},
-	"contactForm": {}
+	"projectDetailsPage": {}
 }

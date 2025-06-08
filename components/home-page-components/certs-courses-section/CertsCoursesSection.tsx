@@ -3,16 +3,15 @@ import { getTranslations } from "next-intl/server";
 import { getCourses } from "@/actions/courses"
 import CertsList from "./components/CertsLits";
 
+import { type GetCoursesType } from "@/types/actionsTypes/actionsTypes";
 
-export default async function CertsCoursesSection() {
+
+export default async function CertsCoursesSection({ courses }: { courses: GetCoursesType | undefined }) {
 
     const t = await getTranslations("homePage");
 
-    const courses = await getCourses();
-
-    if ('error' in courses) {
-        console.error(courses.error)
-        return <div>Failed to fetch courses data.</div>
+    if (!courses || 'error' in courses) {
+        return <p>Failed to fetch courses</p>
     }
 
     return (

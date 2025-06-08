@@ -1,6 +1,7 @@
 'use client'
 
 import { useActionState } from "react"
+import { useTranslations } from "next-intl";
 
 import { contactMe } from "@/actions/contact"
 
@@ -13,6 +14,7 @@ export default function ContactForm() {
     const initialState: { success?: string, error?: string } = {};
 
     const [state, formAction] = useActionState(contactMe, initialState);
+    const t = useTranslations();
 
     return (
         <form

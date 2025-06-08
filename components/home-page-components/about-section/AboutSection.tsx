@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 
 
-import { getAboutMe } from "@/actions/aboutMe";
+import { type GetAboutMeType } from "@/types/actionsTypes/actionsTypes";
 import { type MetricItem } from "@/types/metricTypes";
 import MetricsSection from "./components/MetricsSection";
 
@@ -16,14 +16,7 @@ export const metrics: MetricItem[] = [
 
 ]
 
-export default async function AboutSection() {
-
-    const { aboutMe, error } = await getAboutMe() as {
-        aboutMe?: { about_text: string }[];
-        error?: string;
-    };
-
-    const loadedSuccessfully = aboutMe && !error;
+export default async function AboutSection({ aboutText }: { aboutText: GetAboutMeType | undefined }) {
 
     const t = await getTranslations("homePage");
 
@@ -38,7 +31,7 @@ export default async function AboutSection() {
                             <p
                                 className="text-xl text-justify leading-9 pr-[5rem]"
                             >
-                                {loadedSuccessfully ? t("aboutSection.description") : 'Failed to load text.'}
+                                {aboutText ? t("aboutSection.description") : 'Failed to load text.'}
                             </p>
                         </div>
                     </section>

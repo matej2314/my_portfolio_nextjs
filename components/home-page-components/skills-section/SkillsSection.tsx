@@ -1,17 +1,15 @@
 import { getTranslations } from "next-intl/server";
 
-import { getSkills } from "@/actions/skills";
+import { type GetSkillsType } from "@/types/actionsTypes/actionsTypes";
 
 import SkillsList from "./components/SkillsList";
 
-export default async function SkillsSection() {
+export default async function SkillsSection({ skills }: { skills: GetSkillsType | undefined }) {
 
     const t = await getTranslations("homePage");
-    const skills = await getSkills();
 
-    if ('error' in skills) {
-        console.log(skills.error);
-        return <div>Failed to fetch skills data</div>
+    if (!skills || 'error' in skills) {
+        return <p>Failed to fetch skills</p>
     }
 
     return (
