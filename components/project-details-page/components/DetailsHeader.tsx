@@ -1,3 +1,5 @@
+import { getTranslations } from "next-intl/server";
+
 import BadgeList from "./BadgeList";
 import ExternalLink from "@/components/ExternalLink";
 import DisplayDifficulty from "./DisplayProjectDifficulty";
@@ -6,6 +8,8 @@ import { type DetailsHeaderProps } from "@/types/detailsPageTypes";
 import { type BadgeItem } from "./BadgeList";
 
 export default async function DetailsHeader({ selectedProject }: DetailsHeaderProps) {
+
+    const t = await getTranslations("projectDetailsPage");
 
     const techArray: BadgeItem[] = (selectedProject.technologies ?? '').split(',').map((label, index) => ({
         label: label.trim(),
@@ -25,12 +29,16 @@ export default async function DetailsHeader({ selectedProject }: DetailsHeaderPr
             </h2>
             <DisplayDifficulty selectedProject={selectedProject} />
             <div className="w-fit h-fit flex gap-3">
-                <span className="text-slate-200 font-semibold">Stack:</span>
+                <span
+                    className="text-slate-200 font-semibold"
+                >
+                    {t("stackLabel")}
+                </span>
                 <BadgeList items={techArray} />
             </div>
             <p className="w-fit h-fit flex flex-col justify-center items-center gap-3">
                 <span className="text-md font-semibold text-slate-200">
-                    Link to the project:
+                    {t("demoLabel")}
                 </span>
                 <ExternalLink
                     initialColor='#4ade80'

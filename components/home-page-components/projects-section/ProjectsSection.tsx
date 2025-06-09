@@ -1,4 +1,3 @@
-import { getProjects } from "@/actions/projects"
 import ProjectsGallery from "./components/ProjectsGallery";
 import { getFilesList } from "@/lib/getFilesList";
 import { GetProjectsType } from "@/types/actionsTypes/actionsTypes";

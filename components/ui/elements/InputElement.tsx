@@ -9,14 +9,16 @@ type InputElementProps = {
     id: string;
     className: string;
     required: boolean;
+    title?: string;
 }
 
-export default function InputElement({ type, placeholder, name, id, className, required }: InputElementProps) {
+export default function InputElement({ type, placeholder, name, id, title, className, required }: InputElementProps) {
 
 
     return (
         <Input
             type={type}
+            title={title}
             name={name}
             placeholder={placeholder}
             id={id}

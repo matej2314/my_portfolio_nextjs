@@ -14,7 +14,7 @@ export default function ContactForm() {
     const initialState: { success?: string, error?: string } = {};
 
     const [state, formAction] = useActionState(contactMe, initialState);
-    const t = useTranslations();
+    const t = useTranslations("homePage.contactSection");
 
     return (
         <form
@@ -25,10 +25,11 @@ export default function ContactForm() {
                 htmlFor="client-name"
                 className="font-bold pb-1 ml-2 text-lg"
             >
-                Name:
+                {t("contactForm.nameLabel")}
             </LabelElement>
             <InputElement
                 type="text"
+                title={t("contactForm.nameLabel")}
                 name="client-name"
                 id="client-name"
                 className="w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md"
@@ -43,6 +44,7 @@ export default function ContactForm() {
             <InputElement
                 type="email"
                 name="client-mail"
+                title='E-mail:'
                 id="client-mail"
                 className="w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md"
                 required
@@ -51,11 +53,12 @@ export default function ContactForm() {
                 htmlFor="msg-subject"
                 className="font-bold pb-1 ml-2 text-lg mt-2"
             >
-                Subject:
+                {t("contactForm.subjectLabel")}
             </LabelElement>
             <InputElement
                 type="text"
                 name="msg-subject"
+                title={t("contactForm.subjectLabel")}
                 id="msg-subject"
                 className="w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md"
                 required
@@ -64,18 +67,19 @@ export default function ContactForm() {
                 htmlFor="msg-content"
                 className="font-bold pb-1 ml-2 text-lg mt-2"
             >
-                Message:
+                {t("contactForm.messageLabel")}
             </LabelElement>
             <TextAreaElement
                 id="msg-content"
+                title={t("contactForm.messageLabel")}
                 className="w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md"
                 required
             />
             {state.error && <p>{state.error}</p>}
             {state.success && <p>{state.success}</p>}
             <SubmitBtn
-                pendingTxt="Sending..."
-                idleTxt="Send Message"
+                pendingTxt={t("contactForm.submitBtn.pendingTxt")}
+                idleTxt={t("contactForm.submitBtn.idleTxt")}
                 backgroundColor="bg-yellow-200"
                 hoverClass="hover:bg-yellow-300"
             />

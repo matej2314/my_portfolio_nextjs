@@ -36,7 +36,7 @@ export default function Intro() {
         if (introState.cleared) {
             const timeout = setTimeout(() => {
                 router.replace(`/home`);
-            }, 1000);
+            }, 1500);
             return () => clearTimeout(timeout);
         }
     }, [introState.cleared, router]);
@@ -49,7 +49,7 @@ export default function Intro() {
             setTimeout(() => {
                 setBrowserStorage('intro', 'true', 'session');
                 setIntroState(prev => ({ ...prev, cleared: true }));
-            }, 1000);
+            }, 2000);
         } else {
             setIntroState(prev => ({ ...prev, currentLine: prev.currentLine + 1 }));
         }

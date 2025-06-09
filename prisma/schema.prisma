@@ -41,12 +41,17 @@ model projects {
   project_URL         String    @db.VarChar(300)
   project_screenName  String    @db.VarChar(100)
   goal                String?   @db.Text
+  goal_pl             String?   @db.Text
   project_description String?   @db.VarChar(300)
+  description_pl      String?   @db.VarChar(400)
   repo                String?   @db.VarChar(100)
   technologies        String?   @db.VarChar(250)
   difficulty          String?   @db.VarChar(10)
   end_date            DateTime? @db.Date
   long_text           String?   @db.Text
+  long_text_pl        String?   @db.Text
+  conclusion          String?   @db.Text
+  conclusion_pl       String?   @db.Text
 }
 
 model services {

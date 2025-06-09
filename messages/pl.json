@@ -17,7 +17,15 @@
 		"contactSection": {
 			"title": "Masz projekt do zrealizowania?",
 			"subTitle": "Z przyjemnością porozmawiam o nowych możliwościach współpracy.",
-			"contactForm": {}
+			"contactForm": {
+				"nameLabel": "Imię:",
+				"subjectLabel": "Temat:",
+				"messageLabel": "Wiadomość:",
+				"submitBtn": {
+					"pendingTxt": "Wysyłanie...",
+					"idleTxt": "Wyślij wiadomość"
+				}
+			}
 		}
 	},
 	"mainMenu": {
@@ -32,5 +40,12 @@
 		"Contact": "Kontakt",
 		"Resume": "CV"
 	},
-	"projectDetailsPage": {}
+	"projectDetailsPage": {
+		"stackLabel": "Stos technologiczny:",
+		"difficultyLabel": "Stopień trudności:",
+		"conclusion": "Podsumowanie",
+		"demoLabel": "Demo projektu:",
+		"goalLabel": "Cel projektu:",
+		"descriptionLabel": "Opis projektu:"
+	}
 }

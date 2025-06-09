@@ -1,6 +1,5 @@
 import { getTranslations } from "next-intl/server";
 
-import { getCourses } from "@/actions/courses"
 import CertsList from "./components/CertsLits";
 
 import { type GetCoursesType } from "@/types/actionsTypes/actionsTypes";
