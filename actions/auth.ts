@@ -40,8 +40,6 @@ export async function login(prevState: any, formData: FormData) {
 
 	const token = sign({ userId: user.id, email: user.email }, process.env.AUTH_SECRET!, { expiresIn: expiresInSeconds });
 
-	const sessionCookie = await lucia.createSessionCookie(token);
-
 	const cookieStore = await cookies();
 
 	cookieStore.set('SESSID', token, {
