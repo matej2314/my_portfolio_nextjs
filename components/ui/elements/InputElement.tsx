@@ -1,6 +1,7 @@
 'use client';
 
 import { Input } from "../input";
+import { cn } from "@/lib/utils";
 
 type InputElementProps = {
     type: string;
@@ -22,7 +23,10 @@ export default function InputElement({ type, placeholder, name, id, title, class
             name={name}
             placeholder={placeholder}
             id={id}
-            className={className}
+            className={cn(
+                "focus-visible:ring-0 ring-offset-0 focus:outline-none",
+                className
+            )}
             required={required}
         />
     )

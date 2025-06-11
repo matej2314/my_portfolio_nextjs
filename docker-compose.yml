@@ -1,12 +1,15 @@
 version: '3.8'
 
 services:
-    my-portfolio:
+    myportfolio:
         build:
             context: .
             dockerfile: Dockerfile
         ports:
-            - '8085:8085'
+            - '5055:5055'
+        volumes:
+            - /root/main/portfolio_nextjs/.env:/app/.env
+            - /root/main/portfolio_nextjs/emaildata.ts:/app/emaildata.ts
         environment:
             - NODE_ENV=production
             - PORT=8085

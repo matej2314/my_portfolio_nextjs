@@ -5,7 +5,7 @@ import { useMediaQuery } from 'react-responsive';
 
 type DeviceType = 'mobile' | 'tablet' | 'desktop' | 'unknown';
 
-export const useIsMobile = (): DeviceType => {
+export const useDeviceType = (): DeviceType => {
 	const isMobile = useMediaQuery({ minWidth: 360, maxWidth: 767 });
 	const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1024 });
 	const isDesktop = useMediaQuery({ minWidth: 1025 });

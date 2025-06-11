@@ -76,6 +76,7 @@ export default function Intro() {
                 <li className="w-full" key={`${line.text}-${index}`}>
                     <TypingLine
                         text={line.text}
+                        speed={25}
                         cursor={index === introState.currentLine}
                         onComplete={handleComplete}
                     />

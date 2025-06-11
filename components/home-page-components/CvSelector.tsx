@@ -1,10 +1,17 @@
 'use client';
 
+import { useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+
+import { useClickOutside } from '@/hooks/useClickOutside';
 
 import IconButton from '../IconButton';
 
-export default function CvSelector({ isOpen }: { isOpen: boolean }) {
+export default function CvSelector({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
+
+    const cvRef = useRef<HTMLDivElement>(null);
+
+    useClickOutside(cvRef, () => onClose());
 
     const selectorVariant = {
         initial: { opacity: 0, y: -10 },
@@ -23,6 +30,7 @@ export default function CvSelector({ isOpen }: { isOpen: boolean }) {
             {isOpen && (
                 <motion.div
                     key="cv-selector"
+                    ref={cvRef}
                     variants={selectorVariant}
                     initial="initial"
                     animate="animate"

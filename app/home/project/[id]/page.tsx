@@ -8,7 +8,7 @@ import GallerySection from "@/components/project-details-page/components/Gallery
 import SiteHeader from "@/components/home-page-components/SiteHeader";
 
 import { type DetailsPageProps } from "@/types/detailsPageTypes";
-
+import ContactModal from "@/components/ContactModal";
 
 export default async function ProjectDetailsPage({ params }: DetailsPageProps) {
 
@@ -23,7 +23,7 @@ export default async function ProjectDetailsPage({ params }: DetailsPageProps) {
     }
 
     return (
-        <div className="flex-1 flex flex-col">
+        <div className="relative flex-1 flex flex-col">
             <SiteHeader
                 variant="project"
                 github={selectedProject.project.repo as string}
@@ -43,6 +43,7 @@ export default async function ProjectDetailsPage({ params }: DetailsPageProps) {
                     </section>
                 </main>
             </div>
+            <ContactModal />
         </div>
     )
 }

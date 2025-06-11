@@ -1,25 +1,21 @@
 'use client';
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 
-import { useClickOutside } from "@/hooks/useClickOutside";
-
 import NavLink from "./NavLink"
-import CvSelector from "./home-page-components/CvSelector"
 
 import { type MenuItem } from "@/lib/menuArrays"
+import CvSelectorWrapper from "./CvSelectorWrapper";
+
 
 export default function BaseMenu({ array }: { array: MenuItem[] }) {
     const [isCvOpen, setIsCvOpen] = useState<boolean>(false);
     const t = useTranslations();
-    const selectorRef = useRef<HTMLDivElement>(null);
 
     const toggleCvSelector = () => {
         setIsCvOpen(prevState => !prevState);
     }
-
-    useClickOutside(selectorRef, () => toggleCvSelector);
 
     return (
         <ul className="text-zinc-100 text-xl flex items-center gap-x-4 mr-3 mt-1">
@@ -29,7 +25,10 @@ export default function BaseMenu({ array }: { array: MenuItem[] }) {
                     className="w-full h-full flex mx-auto text-nowrap gap-4 font-mono items-center relative"
                 >
                     {item.label === 'Resume' ? (
-                        <button onClick={toggleCvSelector}>
+                        <button onClick={(e) => {
+                            toggleCvSelector();
+                            e.stopPropagation();
+                        }}>
                             <NavLink
                                 pathName={item.path as string}
                                 variant={item.variant}
@@ -49,9 +48,7 @@ export default function BaseMenu({ array }: { array: MenuItem[] }) {
                     )}
                     {index < array.length - 1 && <span>|</span>}
                     {item.label === 'Resume' && isCvOpen && (
-                        <div ref={selectorRef} className="absolute top-full left-0 z-10">
-                            <CvSelector isOpen={isCvOpen} />
-                        </div>
+                        <CvSelectorWrapper onClose={() => setIsCvOpen(false)} />
                     )}
                 </li>
             ))}

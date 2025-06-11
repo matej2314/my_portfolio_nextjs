@@ -19,7 +19,12 @@ export const getProjectMenuArray = (github: string, demo: string): MenuItem[] =>
 		{ path: '/home', label: 'Home', variant: 'project' },
 		{ path: demo, label: 'Demo', variant: 'external' },
 		{ path: github, label: 'Github', variant: 'external' },
-		{ path: '#', label: 'Contact', variant: 'project' },
+		{ path: '?modal=contact', label: 'Contact', variant: 'project' },
 		{ path: '#', label: 'Resume', variant: 'project' },
 	];
 };
+
+export const blogMenuArray: MenuItem[] = [
+	{ path: '/home', label: 'Home', variant: 'project' },
+	{ path: '/home/blog', label: 'Blog', variant: 'project' },
+];

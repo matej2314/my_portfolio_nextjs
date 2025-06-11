@@ -1,11 +1,13 @@
-import { getTranslations } from "next-intl/server";
+'use client';
+
+import { useTranslations } from "next-intl";
 
 import ContactItems from "./components/ContactItems";
 import ContactForm from "./components/ContactForm";
 
-export default async function ContactSection() {
+export default function ContactSection() {
 
-    const t = await getTranslations("homePage");
+    const t = useTranslations("homePage");
 
     return (
         <section id="contactSection" className="w-full h-[100dvh] flex flex-col pb-2">

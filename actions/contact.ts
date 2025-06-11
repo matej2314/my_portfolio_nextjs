@@ -14,12 +14,12 @@ export async function contactMe(prevState: any, formData: FormData) {
 	const validatedContactObj = contactSchema.safeParse(contactObject);
 
 	if (!validatedContactObj.success) {
-		return { error: 'Invalid input data.' };
+		return { error: `Invalid input data. : ${JSON.stringify(validatedContactObj.error.flatten())}` };
 	}
 
 	try {
 		await sendMail({
-			to: process.env.DEL_MAIL,
+			to: process.env.DEL_MAIL as string,
 			subject: `Nowa wiadomość od użytkownika ${validatedContactObj.data.client}`,
 			html: `
             Wiadomość od użytkownika: ${validatedContactObj.data.client}
