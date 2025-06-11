@@ -11,7 +11,7 @@ export default async function DetailsHeader({ selectedProject }: DetailsHeaderPr
 
     const t = await getTranslations("projectDetailsPage");
 
-    const techArray: BadgeItem[] = (selectedProject.technologies ?? '').split(',').map((label, index) => ({
+    const techArray: BadgeItem[] = (selectedProject.technologies ?? '').split(',').map((label: string, index: number) => ({
         label: label.trim(),
         variant: (index % 2 === 0 ? "secondary" : "outline") as "secondary" | "outline",
         badgeClass: index % 2 === 0 ?
