@@ -2,6 +2,9 @@ services:
     myportfolio:
         build:
             context: .
+        container_name: portfolioNext
+        networks:
+            - main_network
         ports:
             - '5055:5055'
         volumes:
@@ -11,3 +14,8 @@ services:
             - NODE_ENV=production
             - PORT=5055
         restart: unless-stopped
+
+networks:
+    main_network:
+        external: true
+        name: main_network
