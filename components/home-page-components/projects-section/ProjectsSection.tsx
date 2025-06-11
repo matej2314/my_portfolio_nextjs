@@ -2,6 +2,8 @@ import ProjectsGallery from "./components/ProjectsGallery";
 import { getFilesList } from "@/lib/getFilesList";
 import { GetProjectsType } from "@/types/actionsTypes/actionsTypes";
 
+export const dynamic = 'force-dynamic';
+
 export default async function ProjectsSection({ projects }: { projects: GetProjectsType | undefined }) {
 
     if (!projects || 'error' in projects) {

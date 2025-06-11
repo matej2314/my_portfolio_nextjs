@@ -4,6 +4,8 @@ import { type GetSkillsType } from "@/types/actionsTypes/actionsTypes";
 
 import SkillsList from "./components/SkillsList";
 
+export const dynamic = 'force-dynamic';
+
 export default async function SkillsSection({ skills }: { skills: GetSkillsType | undefined }) {
 
     const t = await getTranslations("homePage");
