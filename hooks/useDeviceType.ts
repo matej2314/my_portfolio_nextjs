@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
 
-type DeviceType = 'mobile' | 'tablet' | 'desktop' | 'unknown';
+import { type DeviceType } from '@/types/deviceTypes';
 
 export const useDeviceType = (): DeviceType => {
 	const isMobile = useMediaQuery({ minWidth: 360, maxWidth: 767 });
