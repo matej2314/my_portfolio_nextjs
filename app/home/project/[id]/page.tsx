@@ -10,6 +10,8 @@ import SiteHeader from "@/components/home-page-components/SiteHeader";
 import { type DetailsPageProps } from "@/types/detailsPageTypes";
 import ContactModal from "@/components/ContactModal";
 
+export const dynamic = 'force-dynamic';
+
 export default async function ProjectDetailsPage({ params }: DetailsPageProps) {
 
     const { id } = await params;
