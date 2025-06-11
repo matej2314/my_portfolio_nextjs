@@ -17,7 +17,7 @@ export default async function DetailsHeader({ selectedProject }: DetailsHeaderPr
         badgeClass: index % 2 === 0 ?
             'bg-green-500 text-slate-900 border-[0.15rem] border-slate-400 hover:scale-110 transition-transform transform duration-300'
             : 'bg-yellow-400 text-slate-900 border-[0.15rem] border-slate-400 hover:scale-125 transition-transform transform duration-300'
-    })).filter((item) => item.label.length > 0)
+    })).filter((item: BadgeItem) => item.label.length > 0)
 
 
     return (
