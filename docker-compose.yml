@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
     myportfolio:
         build:
@@ -12,5 +10,5 @@ services:
             - /root/main/portfolio_nextjs/emaildata.ts:/app/emaildata.ts
         environment:
             - NODE_ENV=production
-            - PORT=8085
+            - PORT=5055
         restart: unless-stopped
