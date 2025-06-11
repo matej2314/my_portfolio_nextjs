@@ -4,8 +4,6 @@ import CertsList from "./components/CertsLits";
 
 import { type GetCoursesType } from "@/types/actionsTypes/actionsTypes";
 
-export const dynamic = 'force-dynamic';
-
 
 export default async function CertsCoursesSection({ courses }: { courses: GetCoursesType | undefined }) {
 

@@ -1,4 +1,4 @@
-FROM node:24.1.0-alpine AS builder
+FROM node:24.1.0 AS builder
 
 WORKDIR /app
 
@@ -11,7 +11,7 @@ RUN npx prisma generate
 
 RUN npx next build
 
-FROM node:24.1.0-alpine AS runner
+FROM node:24.1.0 AS runner
 
 WORKDIR /app
 
