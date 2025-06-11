@@ -2,6 +2,7 @@ services:
     myportfolio:
         build:
             context: .
+            dockerfile: Dockerfile
         container_name: portfolioNext
         networks:
             - main_network
