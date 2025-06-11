@@ -3,13 +3,13 @@ FROM node:24.1.0-alpine AS builder
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 
 COPY . .
 
 RUN npx prisma generate
 
-RUN npm run build
+RUN npx next build
 
 FROM node:24.1.0-alpine AS runner
 
