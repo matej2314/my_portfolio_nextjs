@@ -7,6 +7,8 @@ RUN npm ci
 
 COPY . .
 
+RUN npx prisma generate
+
 RUN npm run build
 
 FROM node:24.1.0-alpine AS runner
@@ -20,8 +22,7 @@ COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/next.config.ts ./
 
 EXPOSE 5055
 
-CMD ["npm", "run", "prod"]
+CMD ["npx", "next", "start", "-p", "5055"]
