@@ -1,5 +1,5 @@
 
-export default async function BlogPage() {
+export default function BlogPage() {
 
     return (
         <div className="relative flex-1 flex flex-col">
