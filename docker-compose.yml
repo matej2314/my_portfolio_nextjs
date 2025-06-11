@@ -10,7 +10,6 @@ services:
             - '5055:5055'
         volumes:
             - /root/main/portfolio_nextjs/.env:/app/.env
-            - /root/main/portfolio_nextjs/emaildata.ts:/app/emaildata.ts
         environment:
             - NODE_ENV=production
             - PORT=5055
