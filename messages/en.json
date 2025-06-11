@@ -41,7 +41,7 @@
 		"Resume": "Resume"
 	},
 	"projectDetailsPage": {
-		"stackLabel": "Stack:",
+		"stackLabel": "Tech stack:",
 		"difficultyLabel": "Difficulty:",
 		"conclusion": "Conclusion:",
 		"demoLabel": "Link to the project:",
