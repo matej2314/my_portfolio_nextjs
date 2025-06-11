@@ -1,10 +1,4 @@
-FROM node:24.1.0-slim AS builder
-
-RUN apt-get update && apt-get install -y \
-    python3 \
-    build-essential \
-    openssl \
-    && rm -rf /var/lib/apt/lists/*
+FROM node:24.1.0 AS builder
 
 WORKDIR /app
 
@@ -12,11 +6,12 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
+
 RUN npx prisma generate
+
 RUN npx next build
 
-
-FROM node:24.1.0-slim AS runner
+FROM node:24.1.0 AS runner
 
 WORKDIR /app
 
@@ -27,7 +22,6 @@ COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
-# COPY --from=builder /app/prisma ./prisma
 
 EXPOSE 5055
 
