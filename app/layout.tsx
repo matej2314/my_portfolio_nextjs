@@ -18,7 +18,7 @@ export default async function RootLayout({
   const locale = await getLocale();
 
   return (
-    <html lang={locale} className="no-scrollbar bg-[#0c0c0c] scroll-smooth">
+    <html lang={locale} className="max-w-screen h-screen no-scrollbar bg-[#0c0c0c] scroll-smooth">
       <body
         id="#__next"
       >

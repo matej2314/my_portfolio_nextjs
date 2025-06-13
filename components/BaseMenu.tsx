@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { useDeviceType } from "@/hooks/useDeviceType";
 
 import NavLink from "./NavLink"
 
@@ -12,13 +13,14 @@ import CvSelectorWrapper from "./CvSelectorWrapper";
 export default function BaseMenu({ array }: { array: MenuItem[] }) {
     const [isCvOpen, setIsCvOpen] = useState<boolean>(false);
     const t = useTranslations();
+    const device = useDeviceType();
 
     const toggleCvSelector = () => {
         setIsCvOpen(prevState => !prevState);
     }
 
     return (
-        <ul className="text-zinc-100 text-xl flex items-center gap-x-4 mr-3 mt-1">
+        <ul className={`w-full text-zinc-100 text-sm xl:text-xl flex items-center gap-x-4 mr-3 mt-1 ${device === 'mobile' ? 'hidden' : ''}`}>
             {array.map((item, index) => (
                 <li
                     key={index}

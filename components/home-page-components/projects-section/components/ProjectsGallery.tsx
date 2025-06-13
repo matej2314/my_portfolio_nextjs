@@ -15,9 +15,9 @@ export default function ProjectsGallery({ projects, images }: ProjectsGalleryPro
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
             viewport={{ amount: 0.4, once: false }}
-            className="w-full h-full flex justify-center items-center px-4"
+            className="w-[90dvw] h-full flex justify-center items-center px-4"
         >
-            <Carousel className="w-full max-w-5xl">
+            <Carousel className="w-10/12 md:w-full max-w-5xl">
                 <CarouselContent>
                     {projects.map((project) => {
                         const projectImages = images.find(img => img.id === project.id);

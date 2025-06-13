@@ -39,12 +39,12 @@ export default function CvSelector({ isOpen, onClose }: { isOpen: boolean, onClo
                     className="relative right-[2rem] top-1 w-[10rem] h-fit flex flex-col items-center gap-3"
                 >
                     <a href="/cv/CV - Mateusz Śliwowski_en.pdf" download>
-                        <IconButton className="w-[5rem] bg-yellow-400 hover:bg-yellow-500 hover:text-slate-950 text-slate-600 font-semibold text-[0.9rem] flex justify-center items-center">
+                        <IconButton className="w-[5rem] bg-yellow-400 hover:bg-yellow-500 hover:text-slate-950 text-slate-600 font-semibold font-mono text-[0.9rem] flex justify-center items-center">
                             English
                         </IconButton>
                     </a>
                     <a href="/cv/CV - Mateusz Śliwowski.pdf" download>
-                        <IconButton className="w-[5rem] bg-yellow-400 hover:bg-yellow-500 hover:text-slate-950 text-slate-600 font-semibold text-[0.9rem] flex justify-center items-center">
+                        <IconButton className="w-[5rem] bg-yellow-400 hover:bg-yellow-500 hover:text-slate-950 text-slate-600 font-semibold font-mono text-[0.9rem] flex justify-center items-center">
                             Polish
                         </IconButton>
                     </a>

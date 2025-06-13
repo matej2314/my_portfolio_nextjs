@@ -14,11 +14,11 @@ export default async function CertsCoursesSection({ courses }: { courses: GetCou
     }
 
     return (
-        <section id="certsSection" className="w-full h-[100dvh] flex flex-col mb-5">
+        <section id="certsSection" className="w-full min-h-screen h-fit flex flex-col justify-center gap-3 font-mono">
             <span className="text-4xl text-green-400 ml-2">Certs & Courses &#123;</span>
-            <section className=" h-full flex flex-col justify-center items-center gap-2">
+            <section className="w-full h-screen flex flex-col justify-center items-center gap-2 mb-5">
                 <p
-                    className="w-10/12 ml-[5rem] flex justify-center items-center text-slate-200 text-xl tracking-wide"
+                    className="w-full h-fit px-[6rem] ml-[4rem] flex justify-center items-center text-slate-200 text-xl tracking-wide"
                 >
                     {t("certsSection.description")}
                 </p>

@@ -2,10 +2,15 @@
 
 import { motion } from 'framer-motion';
 
+import { useDeviceType } from '@/hooks/useDeviceType';
+
 import { type MetricItem } from "@/types/metricTypes"
 
 export default function MetricsSection({ metrics }: { metrics: MetricItem[] }) {
 
+    const device = useDeviceType();
+
+    const dotsCount = device === 'mobile' ? 20 : 25;
 
     return (
         <motion.section
@@ -19,10 +24,10 @@ export default function MetricsSection({ metrics }: { metrics: MetricItem[] }) {
                 <ul className="w-full h-full flex flex-col justify-center">
                     {metrics.map((metric) => (
                         <li key={metric.label}
-                            className="text-lg"
+                            className="xl:text-lg"
                         >
                             {metric.label}
-                            {' ' + '.'.repeat(25 - metric.label.length)}
+                            {' ' + '.'.repeat(dotsCount - metric.label.length)}
                             {' ' + metric.value}
                         </li>
                     ))}

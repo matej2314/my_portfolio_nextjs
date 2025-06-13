@@ -1,4 +1,5 @@
 export type Line = {
-    type: 'static' | 'typing';
-    text: string;
+	type: 'static' | 'typing';
+	text: string;
+	delayAfter?: number;
 };

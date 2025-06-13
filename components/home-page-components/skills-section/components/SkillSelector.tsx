@@ -31,7 +31,7 @@ export default function SkillSelector({ clickAction, selectedCategory }: SkillSe
                         className={`w-fit h-fit ${selectedCategory === category.name
                             ? 'bg-yellow-400'
                             : 'bg-yellow-200'
-                            } text-slate-950 hover:bg-yellow-300 hover:shadow-md hover:scale-110`}
+                            } text-slate-950 hover:bg-yellow-300 hover:shadow-md text-[0.75rem] font-semibold md:font-normal md:text-base hover:scale-110`}
                     >
                         {category.label}
                     </Button>

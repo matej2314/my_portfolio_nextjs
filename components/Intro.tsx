@@ -43,6 +43,7 @@ export default function Intro() {
 
     const handleComplete = () => {
         const lineJustCompleted = linesDynamic[introState.currentLine];
+        const delay = lineJustCompleted?.delayAfter || 500;
         const lastString = 'Server running on port 443';
 
         if (lineJustCompleted?.text === lastString) {
@@ -51,7 +52,12 @@ export default function Intro() {
                 setIntroState(prev => ({ ...prev, cleared: true }));
             }, 2000);
         } else {
-            setIntroState(prev => ({ ...prev, currentLine: prev.currentLine + 1 }));
+            setTimeout(() => {
+                setIntroState(prev => ({
+                    ...prev,
+                    currentLine: prev.currentLine + 1
+                }));
+            }, delay);
         }
     };
 
@@ -76,7 +82,7 @@ export default function Intro() {
                 <li className="w-full" key={`${line.text}-${index}`}>
                     <TypingLine
                         text={line.text}
-                        speed={25}
+                        speed={40}
                         cursor={index === introState.currentLine}
                         onComplete={handleComplete}
                     />

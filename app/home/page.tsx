@@ -18,10 +18,10 @@ export default async function HomePage() {
     };
 
     return (
-        <div id="mainSection" className="w-[90%] h-full flex flex-col justify-start gap-4">
-            <div className=" h-screen flex flex-col">
+        <div id="mainSection" className="w-full flex flex-col items-center px-4 sm:px-8">
+            <div className="w-full max-w-6xl flex flex-col items-center">
                 <SiteHeader variant="home" />
-                <div className="w-full flex flex-col">
+                <div className="w-full flex flex-col gap-16 sm:gap-20 mt-6 sm:mt-10">
                     <BaseSection />
                     <AboutSection aboutText={data?.aboutMe} />
                     <SkillsSection skills={data?.skills} />
@@ -30,6 +30,6 @@ export default async function HomePage() {
                     <ContactSection />
                 </div>
             </div>
-        </div >
+        </div>
     )
 }
