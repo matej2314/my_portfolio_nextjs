@@ -3,13 +3,9 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
-import { useDeviceType } from '@/hooks/useDeviceType';
-
 import { type HomesubHeaderType } from '@/types/homeSubHeaderTypes';
 
 export default function HomeSubHeader({ texts, typingSpeed = 100, deletingSpeed = 60, pauseTime = 1000 }: HomesubHeaderType) {
-
-    const device = useDeviceType();
 
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [currentText, setCurrentText] = useState<string | null>('');
