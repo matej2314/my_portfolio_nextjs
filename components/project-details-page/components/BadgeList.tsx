@@ -14,12 +14,12 @@ type BadgeListProps = {
 
 export default function BadgeList({ items, ...props }: BadgeListProps) {
     return (
-        <div className="flex flex-nowrap gap-3">
+        <div className="flex flex-nowrap gap-1 sm:gap-3">
             {items.map((item) => (
                 <Badge
                     key={item.label}
                     variant={item.variant ?? 'default'}
-                    className={item.badgeClass || 'bg-slate-200 text-slate-950 border-2 border-green-500'}
+                    className={item.badgeClass || 'bg-slate-200 text-slate-950 border-2 border-green-500 font-kanit'}
                     {...props}
                 >
                     {item.label}

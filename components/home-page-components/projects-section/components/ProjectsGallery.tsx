@@ -43,7 +43,7 @@ export default function ProjectsGallery({ projects, images }: ProjectsGalleryPro
                                         />
                                     </div>
                                     <div className="mt-2 text-center">
-                                        <h3 className="text-lg font-semibold text-slate-200 hover:scale-110">
+                                        <h3 className="text-lg font-kanit font-semibold text-slate-200 hover:scale-110">
                                             {project.project_name}
                                         </h3>
                                     </div>

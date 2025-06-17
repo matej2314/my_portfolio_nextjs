@@ -27,7 +27,7 @@ export default function ContactForm() {
         >
             <LabelElement
                 htmlFor="client-name"
-                className="font-bold pb-1 ml-2 text-lg"
+                className="font-bold pb-1 ml-2 text-lg tracking-wide"
             >
                 {t("contactForm.nameLabel")}
             </LabelElement>
@@ -41,7 +41,7 @@ export default function ContactForm() {
             />
             <LabelElement
                 htmlFor="client-mail"
-                className="font-bold pb-1 ml-2 text-lg mt-2"
+                className="font-bold pb-1 ml-2 text-lg mt-2 tracking-wide"
             >
                 E-mail:
             </LabelElement>
@@ -55,7 +55,7 @@ export default function ContactForm() {
             />
             <LabelElement
                 htmlFor="msg-subject"
-                className="font-bold pb-1 ml-2 text-lg mt-2"
+                className="font-bold pb-1 ml-2 text-lg mt-2 tracking-wide"
             >
                 {t("contactForm.subjectLabel")}
             </LabelElement>
@@ -69,7 +69,7 @@ export default function ContactForm() {
             />
             <LabelElement
                 htmlFor="msg-content"
-                className="font-bold pb-1 ml-2 text-lg mt-2"
+                className="font-bold pb-1 ml-2 text-lg mt-2 tracking-wide"
             >
                 {t("contactForm.messageLabel")}
             </LabelElement>

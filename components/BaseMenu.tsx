@@ -20,11 +20,11 @@ export default function BaseMenu({ array }: { array: MenuItem[] }) {
     }
 
     return (
-        <ul className={`w-full text-zinc-100 text-sm xl:text-xl flex items-center gap-x-4 mr-3 mt-1 ${device === 'mobile' ? 'hidden' : ''}`}>
+        <ul className={`w-fit h-[2rem] text-zinc-100 text-sm xl:text-xl flex items-center gap-x-4 mr-3 mt-1 ${device === 'mobile' ? 'hidden' : ''}`}>
             {array.map((item, index) => (
                 <li
                     key={index}
-                    className="w-full h-full flex mx-auto text-nowrap gap-4 font-mono items-center relative"
+                    className="w-full h-full flex mx-auto text-nowrap gap-4 font-kanit font-semibold tracking-wide items-center relative"
                 >
                     {item.label === 'Resume' ? (
                         <button onClick={(e) => {

@@ -6,9 +6,8 @@ import Autoplay from 'embla-carousel-autoplay';
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-
-
 export default function ScreenshotsGallery({ paths }: { paths: string[] }) {
+
 
     const autoplay = useRef(
         Autoplay({ delay: 2000, stopOnInteraction: true })

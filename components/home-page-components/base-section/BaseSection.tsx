@@ -12,8 +12,8 @@ export default async function BaseSection() {
     const t = await getTranslations("homePage");
 
     return (
-        <section id="baseSection" className="w-full min-h-screen flex justify-center gap-4 font-mono">
-            <div className="max-w-5xl w-full flex flex-col items-start mt-6 md:mt-10">
+        <section id="baseSection" className="w-full min-h-screen flex justify-center px-5 gap-4 font-kanit">
+            <div className=" w-full flex flex-col items-start mt-6 md:mt-10">
                 <p className="text-4xl sm:text-5xl md:text-6xl text-yellow-300 text-glow">
                     Mateusz
                 </p>
@@ -32,7 +32,7 @@ export default async function BaseSection() {
                         title='Contact me'
                     >
                         <Button
-                            className="w-10/12 md:w-fit h-fit mt-1 xl:mt-0 text-md flex hover:bg-yellow-300 hover:text-slate-600 justify-center items-center bg-yellow-200 text-slate-900 font-bold xl:text-3xl"
+                            className="w-10/12 md:w-fit h-fit mt-1 xl:mt-0 text-md flex hover:bg-yellow-300 hover:text-slate-600 justify-center items-center bg-yellow-200 text-slate-900 font-bold tracking-wide xl:text-3xl"
                         >
                             {t("baseSection.contactTxt")}
                         </Button>
@@ -41,7 +41,7 @@ export default async function BaseSection() {
                     <IconButton
                         iconCode="maki:arrow"
                         iconClass="mt-1 ml-1"
-                        className="w-10/12 md:w-fit h-fit flex justify-center items-center font-bold xl:text-2xl pt-2 pb-3 bg-transparent border-2 border-yellow-300 text-yellow-300 hover:bg-transparent hover-shadow"
+                        className="w-10/12 md:w-fit h-fit flex justify-center items-center font-bold tracking-wide xl:text-2xl pt-2 pb-3 bg-transparent border-2 border-yellow-300 text-yellow-300 hover:bg-transparent hover-shadow"
                         redirectPath="#aboutSection"
                     >
                         {t("baseSection.learnMoreTxt")}

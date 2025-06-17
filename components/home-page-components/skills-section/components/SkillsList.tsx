@@ -22,7 +22,7 @@ export default function SkillsList({ skills }: { skills: Skill[] }) {
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
                 viewport={{ amount: 0.4, once: false }}
-                className='w-full grid grid-cols-3 gap-x-[12rem] gap-y-6 mr-[8rem]'
+                className='w-full grid grid-cols-3 gap-x-[2rem] sm:gap-x-[12rem] gap-y-6 sm:mr-[8rem]'
             >
                 <AnimatePresence mode='wait'>
                     {filteredSkills.map(skill => (
@@ -42,7 +42,7 @@ export default function SkillsList({ skills }: { skills: Skill[] }) {
                                     height={28}
                                 />
                             </span>
-                            <span className='text-sm md:text-xl'>
+                            <span className='text-[0.8rem] md:text-xl'>
                                 {skill.skill_name}
                             </span>
                         </motion.li>

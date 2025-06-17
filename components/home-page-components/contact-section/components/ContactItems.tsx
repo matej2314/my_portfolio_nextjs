@@ -27,7 +27,7 @@ export default function ContactItems() {
                 initial='hidden'
                 whileInView='visible'
                 exit='exit'
-                className="w-fit h-fit flex flex-col gap-7 pl-20"
+                className="w-fit h-fit flex flex-col gap-7 pl-20 font-kanit"
             >
                 {contactItems.map((item) =>
                     <ListItem

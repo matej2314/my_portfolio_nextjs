@@ -9,7 +9,7 @@ export default async function DisplayConclusion({ selectedProject, locale }: { s
     return (
         <div className="w-full h-fit flex flex-col items-center justify-center gap-4">
             <h2 className="text-3xl text-yellow-300">{t("conclusion")}</h2>
-            <p className="font-mono tracking-wide text-justify font-semibold">
+            <p className="font-kanit tracking-wide text-justify font-semibold">
                 {locale === 'en' ? selectedProject.conclusion : selectedProject.conclusion_pl}
             </p>
         </div>

@@ -20,7 +20,7 @@ export default function SubmitBtn({ pendingTxt, idleTxt, backgroundColor, hoverC
 
     return (
         <Button
-            className={`w-1/2 h-fit flex items-center justify-center rounded-md mt-6 text-slate-950 text-md md:text-3xl hover-shadow ${extraClass}`}
+            className={`w-1/2 h-fit flex items-center tracking-wide justify-center rounded-md mt-6 text-slate-950 text-md md:text-3xl hover-shadow ${extraClass}`}
         >
             {pending ? pendingTxt : idleTxt}
         </Button>

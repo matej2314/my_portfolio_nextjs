@@ -5,9 +5,9 @@ export default async function DisplayDifficulty({ selectedProject }: { selectedP
     const t = await getTranslations("projectDetailsPage");
 
     return (
-        <p className="flex justify-center items-center gap-3 text-slate-200">
+        <p className="w-fit flex justify-center items-center gap-3 text-slate-200 font-kanit">
             <span
-                className="text-md font-semibold"
+                className="text-md font-semibold tracking-wide"
             >
                 {t("difficultyLabel")}
             </span>

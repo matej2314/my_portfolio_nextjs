@@ -7,15 +7,15 @@ export default async function DisplayGoalDescription({ selectedProject, locale }
 
     return (
         <div className="w-full flex flex-col items-center gap-4">
-            <h2 className="text-3xl text-yellow-300">{t("goalLabel")}</h2>
+            <h2 className="font-kanit tracking-wide text-3xl text-yellow-300">{t("goalLabel")}</h2>
             <p
-                className="font-mono tracking-wide text-justify font-semibold"
+                className="font-kanit tracking-wide text-justify font-semibold"
             >
                 {locale === 'en' ? selectedProject.goal : selectedProject.goal_pl}
             </p>
-            <h2 className="text-3xl text-yellow-300">{t("descriptionLabel")}</h2>
+            <h2 className="font-kanit tracking-wide text-3xl text-yellow-300">{t("descriptionLabel")}</h2>
             <p
-                className="font-mono tracking-wide text-justify font-semibold leading-[1.7rem]"
+                className="font-kanit tracking-wide text-justify font-semibold leading-[1.7rem]"
             >
                 {locale === 'en' ? selectedProject.long_text : selectedProject.long_text_pl}
             </p>

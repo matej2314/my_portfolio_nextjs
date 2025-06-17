@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function DetailsPageLayout({ children }: { children: ReactNode }) {
 
     return (
-        <main className="h-screen bg-[#0c0c0c] pt-8 flex justify-center items-center no-scrollbar relative">
+        <main className="w-full bg-[#0c0c0c] pt-8 flex justify-center items-center no-scrollbar relative">
             <div id="mainSection" className="w-[90%] h-full flex flex-col justify-start gap-4">
                 {children}
             </div>

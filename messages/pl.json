@@ -41,7 +41,7 @@
 		"Resume": "CV"
 	},
 	"projectDetailsPage": {
-		"stackLabel": "Stos technologiczny:",
+		"stackLabel": "Stack:",
 		"difficultyLabel": "Stopień trudności:",
 		"conclusion": "Podsumowanie",
 		"demoLabel": "Demo projektu:",

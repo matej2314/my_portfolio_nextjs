@@ -23,18 +23,18 @@ export default async function ProjectDetailsPage({ params }: DetailsPageProps) {
     }
 
     return (
-        <div className="relative flex-1 flex flex-col">
+        <div className="w-full relative flex-1 flex flex-col">
             <SiteHeader
                 variant="project"
                 github={selectedProject.project.repo as string}
                 demo={selectedProject.project.project_URL}
             />
             <div className="w-full flex flex-col">
-                <main className="w-full h-full flex items-start mb-4">
+                <main className="w-full h-full flex items-start mb-4 font-kanit">
                     <section className="w-full h-full flex flex-col justify-center items-center pt-8 gap-8">
                         <DetailsHeader selectedProject={selectedProject.project} />
                         <section
-                            className="w-[98%] h-full flex flex-col items-center justify-center text-slate-200 px-[12rem] gap-7"
+                            className="w-[98%] h-full flex flex-col items-center justify-center text-slate-200 px-1 sm:px-[12rem] gap-7"
                         >
                             <DisplayGoalDescription selectedProject={selectedProject.project} locale={locale} />
                             <GallerySection projectId={selectedProject.project.id} />

@@ -7,9 +7,9 @@ export default function ProjectDetailsMenu({ github, demo }: { github: string, d
     const projectMenuArray = getProjectMenuArray(github, demo);
 
     return (
-        <>
+        <div className="flex w-fit justify-end items-center">
             <BaseMenu array={projectMenuArray} />
             <LanguageSwitcher />
-        </>
+        </div>
     )
 }

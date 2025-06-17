@@ -42,7 +42,7 @@ export default function HomeSubHeader({ texts, typingSpeed = 100, deletingSpeed 
 
     return (
         <motion.p
-            className="h-[2.25rem] mb-1 text-2xl xl:text-4xl text-green-600 font-mono"
+            className="h-[2.25rem] mb-1 text-2xl xl:text-4xl text-green-600 font-kanit mt-1"
         >
             {currentText}
         </motion.p>
