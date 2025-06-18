@@ -74,7 +74,7 @@ export default function Intro() {
     }
 
     return (
-        <ul className="w-full max-w-full md:w-fit h-full flex flex-col gap-2 pt-20 md:pl-9 text-sm indirect-xl:text-xl">
+        <ul className="w-full max-w-full md:w-fit h-full flex flex-col gap-2 pt-20 md:pl-9 text-sm xl:text-xl">
             {linesStatic.map((line, index) => (
                 <li key={index} className="w-fit h-fit text-green-400 flex items-center">{line.text}</li>
             ))}

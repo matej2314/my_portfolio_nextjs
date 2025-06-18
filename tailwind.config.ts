@@ -7,10 +7,6 @@ const config: Config = {
 			fontFamily: {
 				kanit: ['var(--font-kanit)', 'sans-serif'],
 			},
-			screens: {
-				indirect: '550px',
-				middle: '450px',
-			},
 		},
 	},
 	plugins: [],

@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useDeviceType } from "@/hooks/useDeviceType";
 
 import NavLink from "./NavLink"
+import MobileMenu from "./MobileMenu";
 
 import { type MenuItem } from "@/lib/menuArrays"
 import CvSelectorWrapper from "./CvSelectorWrapper";
@@ -15,12 +16,14 @@ export default function BaseMenu({ array }: { array: MenuItem[] }) {
     const t = useTranslations();
     const device = useDeviceType();
 
+    if (device === 'mobile') return <MobileMenu array={array} />
+
     const toggleCvSelector = () => {
         setIsCvOpen(prevState => !prevState);
     }
 
     return (
-        <ul className={`w-fit h-[2rem] text-zinc-100 text-sm xl:text-xl flex items-center gap-x-4 mr-3 mt-1 ${device === 'mobile' ? 'hidden' : ''}`}>
+        <ul className={`w-fit h-[2rem] text-zinc-100 text-sm xl:text-xl flex items-center gap-x-4 mr-3 mt-1`}>
             {array.map((item, index) => (
                 <li
                     key={index}

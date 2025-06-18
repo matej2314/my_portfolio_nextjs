@@ -29,7 +29,7 @@ export default function SiteHeader({ variant, github, demo }: SiteHeaderProps) {
 
 
     return (
-        <header id="headerSection" className="w-full h-fit flex justify-end">
+        <header id="headerSection" className="w-full h-fit flex justify-end overflow-y-auto">
             {SelectedMenu}
         </header>
     );

@@ -1,7 +1,9 @@
+export type Variant = 'home' | 'project' | 'external';
+
 export type MenuItem = {
 	path?: string;
 	label: string;
-	variant: 'home' | 'project' | 'external';
+	variant: Variant;
 };
 
 export const homeMenuArray: MenuItem[] = [

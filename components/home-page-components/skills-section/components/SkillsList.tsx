@@ -22,7 +22,7 @@ export default function SkillsList({ skills }: { skills: Skill[] }) {
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
                 viewport={{ amount: 0.4, once: false }}
-                className='w-full text-center grid grid-cols-3 gap-x-[2rem] sm:gap-x-[10rem] xl:gap-x-[12rem] gap-y-6 sm:mr-[12.5rem] md:mr-[9rem]'
+                className='w-full text-center grid grid-cols-3 mr-2 gap-x-[2rem] sm:gap-x-[10rem] xl:gap-x-[12rem] gap-y-6 sm:mx-auto sm:-translate-x-2/3 md:-translate-x-1/5  md:mr-[9rem]'
             >
                 <AnimatePresence mode='wait'>
                     {filteredSkills.map(skill => (

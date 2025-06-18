@@ -1,5 +1,6 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+
 import DotNavigation from "@/components/home-page-components/DotNavigation";
 import HomeContent from "@/components/home-page-components/HomeContent";
 
@@ -18,9 +19,9 @@ export default async function HomePageLayout({ children, params }: { children: R
     const messages = await getMessages({ locale });
 
     return (
-        <main className="min-h-screen w-full bg-[#0c0c0c] pt-4 sm:pt-8 flex justify-center items-start relative">
+        <main className="min-h-screen w-full bg-[#0c0c0c] pt-4 sm:pt-8 flex justify-center items-start">
             <HomeContent>
-                <div className="fixed right-4 sm:right-10 top-1/3 transform -translate-y-1/2 z-50">
+                <div className="fixed right-4 sm:right-10 top-1/3 transform -translate-y-1/2 z-50 ">
                     <DotNavigation />
                 </div>
                 <NextIntlClientProvider messages={messages}>
@@ -28,6 +29,5 @@ export default async function HomePageLayout({ children, params }: { children: R
                 </NextIntlClientProvider>
             </HomeContent>
         </main>
-
     )
 }
