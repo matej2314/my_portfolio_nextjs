@@ -19,12 +19,12 @@ export default function MetricsSection({ metrics }: { metrics: MetricItem[] }) {
             transition={{ duration: 0.5, ease: 'easeOut' }}
             viewport={{ amount: 0.4, once: false }}
             id="metrics"
-            className="w-1/2 h-full text-green-300 font-mono flex justify-center pl-8">
+            className="w-full sm:w-1/2 h-full text-green-300 font-mono flex justify-center pl-8">
             <div className="w-full h-full flex flex-col">
                 <ul className="w-full h-full flex flex-col justify-center">
                     {metrics.map((metric) => (
                         <li key={metric.label}
-                            className="xl:text-lg"
+                            className="text-md xl:text-lg"
                         >
                             {metric.label}
                             {' ' + '.'.repeat(dotsCount - metric.label.length)}

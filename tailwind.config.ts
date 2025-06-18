@@ -8,7 +8,7 @@ const config: Config = {
 				kanit: ['var(--font-kanit)', 'sans-serif'],
 			},
 			screens: {
-				'indirect-xl': '550px',
+				indirect: '550px',
 				middle: '450px',
 			},
 		},

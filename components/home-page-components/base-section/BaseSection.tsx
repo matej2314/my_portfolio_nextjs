@@ -24,7 +24,7 @@ export default async function BaseSection() {
                     {t("baseSection.baseDescription")}
                 </p>
 
-                <div className="w-full flex flex-col items-center sm:flex-row sm:items-center gap-4 sm:gap-5 mt-4">
+                <div className="w-full flex flex-col items-center justify-center sm:flex-row sm:items-center gap-4 sm:gap-5 mt-4">
 
                     <NavLink
                         variant="home"
@@ -32,7 +32,7 @@ export default async function BaseSection() {
                         title='Contact me'
                     >
                         <Button
-                            className="w-10/12 md:w-fit h-fit mt-1 xl:mt-0 text-md flex hover:bg-yellow-300 hover:text-slate-600 justify-center items-center bg-yellow-200 text-slate-900 font-bold tracking-wide xl:text-3xl"
+                            className="w-1/2 md:w-fit h-fit xl:mt-0 text-md flex hover:bg-yellow-300 hover:text-slate-600 justify-center items-center bg-yellow-200 text-slate-900 font-bold tracking-wide xl:text-3xl"
                         >
                             {t("baseSection.contactTxt")}
                         </Button>
@@ -41,7 +41,7 @@ export default async function BaseSection() {
                     <IconButton
                         iconCode="maki:arrow"
                         iconClass="mt-1 ml-1"
-                        className="w-10/12 md:w-fit h-fit flex justify-center items-center font-bold tracking-wide xl:text-2xl pt-2 pb-3 bg-transparent border-2 border-yellow-300 text-yellow-300 hover:bg-transparent hover-shadow"
+                        className="w-1/2 md:w-fit h-fit flex justify-center items-center font-bold tracking-wide xl:text-2xl pt-2 pb-3 bg-transparent border-2 border-yellow-300 text-yellow-300 hover:bg-transparent hover-shadow"
                         redirectPath="#aboutSection"
                     >
                         {t("baseSection.learnMoreTxt")}

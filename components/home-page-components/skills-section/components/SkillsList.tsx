@@ -14,7 +14,7 @@ export default function SkillsList({ skills }: { skills: Skill[] }) {
         : skills;
 
     return (
-        <div className="relative w-full min-h-[15rem] h-[15rem] text-white flex flex-col items-center gap-5 mb-[6rem]">
+        <div className="relative max-w-screen sm:w-full min-h-[15rem] h-[15rem] text-white flex flex-col items-center gap-5 mb-[6rem]">
             <SkillSelector clickAction={setSelectedCategory} selectedCategory={selectedCategory} />
             <motion.ul
                 layout
@@ -22,7 +22,7 @@ export default function SkillsList({ skills }: { skills: Skill[] }) {
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
                 viewport={{ amount: 0.4, once: false }}
-                className='w-full grid grid-cols-3 gap-x-[2rem] sm:gap-x-[12rem] gap-y-6 sm:mr-[8rem]'
+                className='w-full text-center grid grid-cols-3 gap-x-[2rem] sm:gap-x-[10rem] xl:gap-x-[12rem] gap-y-6 sm:mr-[12.5rem] md:mr-[9rem]'
             >
                 <AnimatePresence mode='wait'>
                     {filteredSkills.map(skill => (

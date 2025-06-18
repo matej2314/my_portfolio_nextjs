@@ -74,12 +74,12 @@ export default function Intro() {
     }
 
     return (
-        <ul className="w-fit h-full flex flex-col gap-2 pt-20 pl-9 text-xl">
+        <ul className="w-full max-w-full md:w-fit h-full flex flex-col gap-2 pt-20 md:pl-9 text-sm indirect-xl:text-xl">
             {linesStatic.map((line, index) => (
                 <li key={index} className="w-fit h-fit text-green-400 flex items-center">{line.text}</li>
             ))}
             {linesDynamic.slice(0, introState.currentLine + 1).map((line, index) => (
-                <li className="w-full" key={`${line.text}-${index}`}>
+                <li className="w-full h-fit flex flex-wrap sm:flex-nowrap" key={`${line.text}-${index}`}>
                     <TypingLine
                         text={line.text}
                         speed={40}

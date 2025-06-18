@@ -15,7 +15,7 @@ export default function SkillSelector({ clickAction, selectedCategory }: SkillSe
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
             viewport={{ amount: 0.4, once: false }}
-            className='h-fit flex gap-2 sm:gap-7'
+            className='w-full h-fit flex justify-center gap-2 sm:gap-7'
         >
             {categories.map(category => (
                 <li

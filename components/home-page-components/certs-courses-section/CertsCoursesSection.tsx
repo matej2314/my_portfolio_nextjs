@@ -18,7 +18,7 @@ export default async function CertsCoursesSection({ courses }: { courses: GetCou
             <span className="text-4xl text-green-400 ml-2">Certs & Courses &#123;</span>
             <section className="w-full h-screen flex flex-col justify-center items-center gap-2 mb-5">
                 <p
-                    className="w-full h-fit px-[1rem] text-justify sm:px-[8rem] flex justify-center items-center text-slate-200 sm:text-xl tracking-wide"
+                    className="w-full h-fit px-[1rem] text-justify sm:px-[8rem] flex justify-center items-center text-slate-200 text-lg sm:text-xl tracking-wide"
                 >
                     {t("certsSection.description")}
                 </p>
