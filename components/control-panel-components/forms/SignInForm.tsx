@@ -6,7 +6,7 @@ import { login } from "@/actions/auth";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import SubmitBtn from "@/components/SubmitButton";
+import SubmitBtn from "@/components/ui/elements/SubmitButton";
 
 export default function SignInForm() {
 

@@ -28,7 +28,7 @@ export default function LanguageSwitcher() {
             value={currentLocale}
             onChange={handleChange}
             options={langOptions}
-            className="min-w-[6rem] h-[2rem] bg-black hidden  border-green-300 border-[1px] text-slate-300 rounded-full px-3 py-1 text-sm font-semibold xl:flex justify-center appearance-none focus:border-[1px] focus:border-green-300"
+            className="md:min-w-[6rem] flex items-center md:h-[2rem] bg-black  border-green-300 border-[1px] text-slate-300 rounded-full px-3 py-1 text-sm font-semibold xl:flex justify-center appearance-none focus:border-[1px] focus:border-green-300"
 
         />
     )

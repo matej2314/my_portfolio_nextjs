@@ -36,7 +36,7 @@ export default function ScreenshotsGallery({ paths }: { paths: string[] }) {
             <Carousel
                 plugins={[autoplay.current]}
                 opts={{ loop: true }}
-                className="w-full max-w-4xl">
+                className="w-full h-full items-center max-w-4xl">
                 <CarouselContent>
                     {paths.map((path, index) => (
                         <CarouselItem

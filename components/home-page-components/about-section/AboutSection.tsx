@@ -1,6 +1,5 @@
 import { getTranslations } from "next-intl/server";
 
-
 import { type GetAboutMeType } from "@/types/actionsTypes/actionsTypes";
 import { type MetricItem } from "@/types/metricTypes";
 import MetricsSection from "./components/MetricsSection";
@@ -14,7 +13,7 @@ export const metrics: MetricItem[] = [
     { label: 'Languages', value: 'English, Russian' },
     { label: 'Hobbies', value: 'new technologies, TV series' }
 
-]
+];
 
 export default async function AboutSection({ aboutText }: { aboutText: GetAboutMeType | undefined }) {
 

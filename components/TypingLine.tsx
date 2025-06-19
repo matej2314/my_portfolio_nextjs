@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import PulsingCursor from './PulsingCursor';
+import PulsingCursor from './ui/elements/PulsingCursor';
 
 import { type TypingLineType } from '@/types/TypingLineType';
 

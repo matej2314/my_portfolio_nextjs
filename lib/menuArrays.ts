@@ -1,7 +1,7 @@
 export type Variant = 'home' | 'project' | 'external';
 
 export type MenuItem = {
-	path?: string;
+	path?: string | '';
 	label: string;
 	variant: Variant;
 };
@@ -13,7 +13,7 @@ export const homeMenuArray: MenuItem[] = [
 	{ path: '#projectsSection', label: 'Projects', variant: 'home' },
 	// { path: '', label: 'Blog', variant: 'home' },
 	{ path: '#contactSection', label: 'Contact', variant: 'home' },
-	{ path: '#', label: 'Resume', variant: 'project' },
+	{ path: '', label: 'Resume', variant: 'project' },
 ];
 
 export const getProjectMenuArray = (github: string, demo: string): MenuItem[] => {
@@ -22,7 +22,7 @@ export const getProjectMenuArray = (github: string, demo: string): MenuItem[] =>
 		{ path: demo, label: 'Demo', variant: 'external' },
 		{ path: github, label: 'Github', variant: 'external' },
 		{ path: '?modal=contact', label: 'Contact', variant: 'project' },
-		{ path: '#', label: 'Resume', variant: 'project' },
+		{ path: '', label: 'Resume', variant: 'project' },
 	];
 };
 

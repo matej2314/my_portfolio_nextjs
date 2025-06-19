@@ -9,7 +9,7 @@ import { contactMe } from "@/actions/contact"
 import LabelElement from "@/components/ui/elements/LabelElement";
 import InputElement from "@/components/ui/elements/InputElement";
 import TextAreaElement from "@/components/ui/elements/TextareaElement";
-import SubmitBtn from "@/components/SubmitButton";
+import SubmitBtn from "@/components/ui/elements/SubmitButton";
 
 export default function ContactForm() {
     const initialState: { success?: string, error?: string } = {};

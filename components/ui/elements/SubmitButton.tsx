@@ -2,14 +2,9 @@
 
 import { useFormStatus } from "react-dom";
 
-import { Button } from "./ui/button";
+import { Button } from "../button";
 
-type SubmitBtnProps = {
-    pendingTxt: string;
-    idleTxt: string;
-    backgroundColor: string;
-    hoverClass: string;
-}
+import { type SubmitBtnProps } from "@/types/SubmitButtonTypes";
 
 export default function SubmitBtn({ pendingTxt, idleTxt, backgroundColor, hoverClass }: SubmitBtnProps) {
     const { pending } = useFormStatus();

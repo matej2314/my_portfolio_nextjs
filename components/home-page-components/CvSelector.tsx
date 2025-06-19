@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import { useClickOutside } from '@/hooks/useClickOutside';
 
-import IconButton from '../IconButton';
+import IconButton from '../ui/elements/IconButton';
 
 export default function CvSelector({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
 

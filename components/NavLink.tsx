@@ -3,16 +3,9 @@
 import { Link as ScrollLink } from "react-scroll";
 import Link from "next/link";
 
-import { type NavLinkType } from "@/types/navLinkTypes";
+import { type NavLinkProps } from "@/types/navLinkTypes";
 
-type NavLinkProps = NavLinkType & {
-    isActive?: boolean;
-    activeClass?: string;
-    variant: 'home' | 'project' | 'external';
-    title: string
-}
-
-export default function NavLink({ children, pathName, linkClass, isActive, activeClass, variant, title }: NavLinkProps) {
+export default function NavLink({ children, pathName, linkClass, isActive, activeClass, variant, title, onClick }: NavLinkProps) {
 
     const baseClass = linkClass ?? "w-full h-full flex justify-center items-center hover:text-green-500/80 active:text-green-500/80 cursor-pointer";
 
@@ -28,16 +21,18 @@ export default function NavLink({ children, pathName, linkClass, isActive, activ
                     duration={80}
                     className={finalClassName}
                     title={title}
-                    spy={true}
+                    spy={false}
+                    onClick={onClick as unknown as () => void}
                 >
                     {children}
                 </ScrollLink>
             )
         case 'project':
             return <Link
-                href={pathName ?? undefined}
+                href={pathName ?? ''}
                 className={finalClassName}
                 title={title}
+                onClick={onClick}
             >
                 {children}
             </Link>
@@ -47,6 +42,7 @@ export default function NavLink({ children, pathName, linkClass, isActive, activ
                     href={pathName}
                     className={finalClassName}
                     title={title}
+                    onClick={onClick}
                 >
                     {children}
                 </a>

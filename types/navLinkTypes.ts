@@ -1,7 +1,15 @@
-import { type ReactNode } from "react";
+import { type ReactNode, MouseEventHandler, MouseEvent } from 'react';
 
-export type NavLinkType = {
-    children?: ReactNode;
-    pathName: string;
-    linkClass?: string;
+type NavLinkType = {
+	children?: ReactNode;
+	pathName: string;
+	linkClass?: string;
+};
+
+export type NavLinkProps = NavLinkType & {
+	isActive?: boolean;
+	activeClass?: string;
+	variant: 'home' | 'project' | 'external';
+	title: string;
+	onClick?: (e: MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
 };

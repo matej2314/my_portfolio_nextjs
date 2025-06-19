@@ -1,13 +1,9 @@
 import HomePageMenu from "./HomePageMenu";
 import ProjectDetailsMenu from "../project-details-page/components/ProjectDetailsMenu";
 import BlogPageMenu from "../blog-page-components/BlogPageMenu";
-import { ReactNode } from "react";
 
-type SiteHeaderProps = {
-    variant: 'home' | 'project' | 'blog';
-    github?: string;
-    demo?: string
-}
+import { type ReactNode } from "react";
+import { type SiteHeaderProps } from "@/types/siteHeaderTypes";
 
 export default function SiteHeader({ variant, github, demo }: SiteHeaderProps) {
 
@@ -29,7 +25,7 @@ export default function SiteHeader({ variant, github, demo }: SiteHeaderProps) {
 
 
     return (
-        <header id="headerSection" className="w-full h-fit flex justify-end overflow-y-auto">
+        <header id="headerSection" className="w-full h-fit flex justify-end z-10">
             {SelectedMenu}
         </header>
     );

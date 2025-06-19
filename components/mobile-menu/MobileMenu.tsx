@@ -2,19 +2,16 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { useTranslations } from "next-intl";
 
-import NavLink from "./NavLink";
-// import LanguageSwitcher from "./LanguageSwitcher";
-import CvSelectorWrapper from "./CvSelectorWrapper";
+import NavLink from "../NavLink";
+import LanguageSwitcher from "../LanguageSwitcher";
+import CvSelectorWrapper from "../CvSelectorWrapper";
+import MLetter from "../ui/elements/MLetterElement";
 
 import { type MenuItem } from "@/lib/menuArrays";
-
-interface OpenState {
-    menu: boolean;
-    cv: boolean;
-}
+import { type OpenState } from "@/types/mobileMenuTypes";
 
 export default function MobileMenu({ array }: { array: MenuItem[] }) {
     const [isOpen, setIsOpen] = useState<OpenState>({
@@ -24,53 +21,56 @@ export default function MobileMenu({ array }: { array: MenuItem[] }) {
     const t = useTranslations()
 
     return (
-        <div className="w-full">
-            <div className="flex justify-end items-center">
-
+        <div className="fixed top-0 left-0.5 w-full z-10 bg-black">
+            <div className="w-full flex justify-end items-center">
                 <Button
                     variant='ghost'
                     onClick={() => setIsOpen((prev) => ({ ...prev, menu: !prev.menu }))}
-                    className={`w-fit h-fit flex flex-col ${isOpen.menu ? 'rotate-90' : 'rotate-0'} ${isOpen.menu ? 'gap-2' : 'gap-1'} p-1 hover:bg-transparent`}
+                    className={`w-fit h-fit flex flex-col ${isOpen.menu ? 'scale-115' : 'scale-150'} hover:bg-transparent mt-2`}
                 >
-                    <span className="w-5 h-1 bg-green-400" />
-                    <span className="w-5 h-1 bg-green-400" />
+                    <MLetter
+                        mode="button"
+                    />
                 </Button>
             </div>
             <AnimatePresence>
                 {isOpen.menu && (
                     <motion.ul
                         key='mobile-menu'
-                        initial={{ height: 0, opacity: 0 }}
+                        initial={{ height: 0, opacity: 1 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.3, ease: 'easeInOut', type: 'tween', }}
                         className="w-screen flex flex-col gap-3 px-2 py-2 text-green-400"
                     >
+                        <li className="w-full flex justify-end items-center">
+                            <LanguageSwitcher />
+                        </li>
                         {array.map((item, index) => (
                             <li
                                 key={index}
                                 className="w-full h-[2rem] flex justify-center text-nowrap gap-4 font-kanit font-semibold tracking-wide items-center relative"
                             >
                                 {item.label === 'Resume' ? (
-                                    <button onClick={(e) => {
-                                        setIsOpen((prev) => ({ ...prev, cv: !prev.cv }))
-                                        e.stopPropagation();
-                                    }}>
-                                        <NavLink
-                                            pathName={item.path as string}
-                                            variant={item.variant}
-                                            title={t(`mainMenu.${item.label}`)}
-                                        >
-                                            {`${index + 1}`}.{t(`mainMenu.${item.label}`)}
-                                        </NavLink>
-                                    </button>
-                                ) : (
                                     <NavLink
                                         pathName={item.path as string}
                                         variant={item.variant}
                                         title={t(`mainMenu.${item.label}`)}
                                     >
-                                        {`${index + 1}`}.{t(`mainMenu.${item.label}`)}
+                                        {`${index + 1}`}.&nbsp;{t(`mainMenu.${item.label}`)}
+                                    </NavLink>
+                                ) : (
+                                    <NavLink
+                                        pathName={item.path as string}
+                                        variant={item.variant}
+                                        title={t(`mainMenu.${item.label}`)}
+                                        onClick={() => {
+                                            if (item.label !== 'Resume') {
+                                                setIsOpen(prev => ({ ...prev, menu: false }))
+                                            }
+                                        }}
+                                    >
+                                        {`${index + 1}`}.&nbsp;{t(`mainMenu.${item.label}`)}
                                     </NavLink>
                                 )}
                                 {item.label === 'Resume' && isOpen.cv && (
@@ -81,6 +81,6 @@ export default function MobileMenu({ array }: { array: MenuItem[] }) {
                     </motion.ul>
                 )}
             </AnimatePresence>
-        </div>
+        </div >
     )
 }

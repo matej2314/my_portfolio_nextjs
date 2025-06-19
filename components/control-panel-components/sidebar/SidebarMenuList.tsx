@@ -1,6 +1,6 @@
 'use client';
 
-import IconButton from "@/components/IconButton";
+import IconButton from "@/components/ui/elements/IconButton";
 
 
 export default function SidebarMenuList() {

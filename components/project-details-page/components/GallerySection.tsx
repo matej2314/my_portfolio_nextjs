@@ -12,7 +12,7 @@ export default async function GallerySection({ projectId }: { projectId: string 
     }
 
     return (
-        <section className="w-full h-fit flex justify-center items-center">
+        <section className="w-11/12 h-full flex justify-center items-center">
             <ScreenshotsGallery paths={screenshots.files} />
         </section>
     )

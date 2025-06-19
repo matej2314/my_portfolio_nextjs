@@ -4,7 +4,7 @@ import { Button } from "../../ui/button"
 import NavLink from "@/components/NavLink"
 import HomeSubHeader from "./components/HomeSubHeader"
 import SloganWrapper from "./components/SloganWrapper"
-import IconButton from "../../IconButton"
+import IconButton from "@/components/ui/elements/IconButton"
 import { contentArray } from "@/lib/subHeaderContentArray"
 
 export default async function BaseSection() {
@@ -12,7 +12,7 @@ export default async function BaseSection() {
     const t = await getTranslations("homePage");
 
     return (
-        <section id="baseSection" className="w-full min-h-screen flex justify-center px-5 gap-4 font-kanit">
+        <section id="baseSection" className="w-full min-h-screen flex flex-col md:flex-row justify-center px-5 gap-4 font-kanit">
             <div className=" w-full flex flex-col items-start mt-6 md:mt-10">
                 <p className="text-4xl sm:text-5xl md:text-6xl text-yellow-300 text-glow">
                     Mateusz
@@ -41,7 +41,7 @@ export default async function BaseSection() {
                     <IconButton
                         iconCode="maki:arrow"
                         iconClass="mt-1 ml-1"
-                        className="w-1/2 md:w-fit h-fit flex justify-center items-center font-bold tracking-wide xl:text-2xl pt-2 pb-3 bg-transparent border-2 border-yellow-300 text-yellow-300 hover:bg-transparent hover-shadow"
+                        className="w-fit md:w-fit h-fit flex px-4 sm:px-0 justify-center items-center font-bold tracking-wide xl:text-2xl pt-2 pb-3 bg-transparent border-2 border-yellow-300 text-yellow-300 hover:bg-transparent hover-shadow"
                         redirectPath="#aboutSection"
                     >
                         {t("baseSection.learnMoreTxt")}

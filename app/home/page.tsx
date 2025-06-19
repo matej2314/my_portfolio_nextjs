@@ -5,7 +5,7 @@ import ProjectsSection from "@/components/home-page-components/projects-section/
 import CertsCoursesSection from "@/components/home-page-components/certs-courses-section/CertsCoursesSection";
 import ContactSection from "@/components/home-page-components/contact-section/ContactSection";
 import SiteHeader from "@/components/home-page-components/SiteHeader";
-import ScrollToTop from "@/components/ScrollToTopBtn";
+import ScrollToTop from "@/components/ui/elements/ScrollToTopBtn";
 
 import { getHomePageData } from "@/actions/homePage";
 
@@ -19,8 +19,8 @@ export default async function HomePage() {
     };
 
     return (
-        <div id="mainSection" className="w-full flex flex-col items-center px-4 sm:px-8 overflow-y-auto">
-            <div className="w-full max-w-6xl flex flex-col items-center">
+        <div id="mainSection" className="w-full flex flex-col items-center px-4 sm:px-8 overflow-x-hidden z-0">
+            <div className="w-full max-w-6xl flex flex-col">
                 <SiteHeader variant="home" />
                 <div className="w-full flex flex-col gap-16 sm:gap-20 mt-6 sm:mt-10">
                     <BaseSection />

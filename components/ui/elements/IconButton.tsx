@@ -1,10 +1,10 @@
 'use client';
 
 import { useRouter } from "next/navigation";
-import { Button } from "./ui/button";
+import { Button } from "../button";
 import { Icon } from '@iconify/react';
 
-import NavLink from "./NavLink";
+import NavLink from "@/components/NavLink";
 
 import { type IconButtonType } from "@/types/iconButtonTypes";
 
