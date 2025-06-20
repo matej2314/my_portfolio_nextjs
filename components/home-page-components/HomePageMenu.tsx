@@ -1,13 +1,11 @@
 import { homeMenuArray } from "@/lib/menuArrays";
 import BaseMenu from "../BaseMenu";
-import LanguageSwitcher from "../LanguageSwitcher";
 
 export default function HomePageMenu() {
 
     return (
-        <section className="w-full md:h-[3rem] flex justify-end items-start fixed bg-[#0c0c0c] top-0">
+        <section id="home-page-menu" className="w-screen md:h-[5rem] relative top-0 flex justify-end items-center md:translate-x-9.5 md:items-end md:fixed bg-[#000905]">
             <BaseMenu array={homeMenuArray} />
-            <LanguageSwitcher />
         </section>
     )
 }

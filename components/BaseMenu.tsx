@@ -10,6 +10,7 @@ import MobileMenu from "./mobile-menu/MobileMenu";
 import { type MenuItem } from "@/lib/menuArrays"
 import { type MouseEvent } from "react";
 import CvSelectorWrapper from "./CvSelectorWrapper";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 
 export default function BaseMenu({ array }: { array: MenuItem[] }) {
@@ -25,6 +26,7 @@ export default function BaseMenu({ array }: { array: MenuItem[] }) {
 
     return (
         <ul className={`w-fit h-[2rem] text-zinc-100 text-sm xl:text-xl flex items-center gap-x-4 mr-3`}>
+
             {array.map((item, index) => (
                 <li
                     key={index}
@@ -57,6 +59,9 @@ export default function BaseMenu({ array }: { array: MenuItem[] }) {
                     )}
                 </li>
             ))}
+            <li>
+                <LanguageSwitcher />
+            </li>
         </ul>
     );
 }

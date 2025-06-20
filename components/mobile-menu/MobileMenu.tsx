@@ -18,69 +18,60 @@ export default function MobileMenu({ array }: { array: MenuItem[] }) {
         menu: false,
         cv: false
     });
-    const t = useTranslations()
+    const t = useTranslations();
 
     return (
-        <div className="fixed top-0 left-0.5 w-full z-10 bg-black">
-            <div className="w-full flex justify-end items-center">
-                <Button
-                    variant='ghost'
-                    onClick={() => setIsOpen((prev) => ({ ...prev, menu: !prev.menu }))}
-                    className={`w-fit h-fit flex flex-col ${isOpen.menu ? 'scale-115' : 'scale-150'} hover:bg-transparent mt-2`}
-                >
-                    <MLetter
-                        mode="button"
-                    />
-                </Button>
-            </div>
+        <>
+            <Button
+                variant="ghost"
+                onClick={() => setIsOpen(prev => ({ ...prev, menu: !prev.menu }))}
+                className={`fixed top-4 right-0.5 z-50 w-fit h-fit flex flex-col transition-transform ${isOpen.menu ? 'scale-115' : 'scale-150'} hover:bg-transparent`}
+            >
+                <MLetter mode="button" />
+            </Button>
+
             <AnimatePresence>
                 {isOpen.menu && (
                     <motion.ul
-                        key='mobile-menu'
-                        initial={{ height: 0, opacity: 1 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut', type: 'tween', }}
-                        className="w-screen flex flex-col gap-3 px-2 py-2 text-green-400"
+                        key="mobile-menu"
+                        initial={{ clipPath: 'inset(0% 0% 100% 0%)', opacity: 1 }}
+                        animate={{ clipPath: 'inset(0% 0% 0% 0%)', opacity: 1 }}
+                        exit={{ clipPath: 'inset(0% 0% 100% 0%)', opacity: 0 }}
+                        transition={{ duration: 0.5, ease: 'easeInOut', type: 'tween' }}
+                        className="fixed inset-0 z-40 bg-[#000905] pt-24 px-4 text-green-400 flex flex-col gap-4 overflow-y-auto"
                     >
-                        <li className="w-full flex justify-end items-center">
+                        <li className="w-full flex justify-end">
                             <LanguageSwitcher />
                         </li>
+
                         {array.map((item, index) => (
                             <li
                                 key={index}
-                                className="w-full h-[2rem] flex justify-center text-nowrap gap-4 font-kanit font-semibold tracking-wide items-center relative"
+                                className="w-full h-[2rem] flex justify-center gap-4 items-center font-kanit font-semibold tracking-wide text-nowrap relative"
                             >
-                                {item.label === 'Resume' ? (
-                                    <NavLink
-                                        pathName={item.path as string}
-                                        variant={item.variant}
-                                        title={t(`mainMenu.${item.label}`)}
-                                    >
-                                        {`${index + 1}`}.&nbsp;{t(`mainMenu.${item.label}`)}
-                                    </NavLink>
-                                ) : (
-                                    <NavLink
-                                        pathName={item.path as string}
-                                        variant={item.variant}
-                                        title={t(`mainMenu.${item.label}`)}
-                                        onClick={() => {
-                                            if (item.label !== 'Resume') {
-                                                setIsOpen(prev => ({ ...prev, menu: false }))
-                                            }
-                                        }}
-                                    >
-                                        {`${index + 1}`}.&nbsp;{t(`mainMenu.${item.label}`)}
-                                    </NavLink>
-                                )}
+                                <NavLink
+                                    pathName={item.path as string}
+                                    variant={item.variant}
+                                    title={t(`mainMenu.${item.label}`)}
+                                    onClick={() => {
+                                        if (item.label !== 'Resume') {
+                                            setIsOpen(prev => ({ ...prev, menu: false }));
+                                        } else {
+                                            setIsOpen(prev => ({ ...prev, cv: !prev.cv }));
+                                        }
+                                    }}
+                                >
+                                    {`${index + 1}`}.&nbsp;{t(`mainMenu.${item.label}`)}
+                                </NavLink>
+
                                 {item.label === 'Resume' && isOpen.cv && (
-                                    <CvSelectorWrapper onClose={() => setIsOpen((prev) => ({ ...prev, cv: false }))} />
+                                    <CvSelectorWrapper onClose={() => setIsOpen(prev => ({ ...prev, cv: false }))} />
                                 )}
                             </li>
                         ))}
                     </motion.ul>
                 )}
             </AnimatePresence>
-        </div >
-    )
+        </>
+    );
 }

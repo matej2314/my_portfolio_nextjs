@@ -6,9 +6,27 @@ import DisplayGoalDescription from "@/components/project-details-page/components
 import DisplayConclusion from "@/components/project-details-page/components/DisplayConclusion";
 import GallerySection from "@/components/project-details-page/components/GallerySection";
 import SiteHeader from "@/components/home-page-components/SiteHeader";
+import ContactModal from "@/components/ContactModal";
 
 import { type DetailsPageProps } from "@/types/detailsPageTypes";
-import ContactModal from "@/components/ContactModal";
+
+export async function generateMetadata({ params }: DetailsPageProps) {
+    const projectId = (await params).id;
+    const projectData = await getProject(projectId);
+
+    if ('error' in projectData) {
+        return { title: 'Project not found' }
+    }
+
+    const projectName = projectData.project.project_name;
+
+    return {
+        title: `${projectName} | msliwowski.net`,
+        description: `Project ${projectName} details page.`
+    };
+
+}
+
 
 export default async function ProjectDetailsPage({ params }: DetailsPageProps) {
 

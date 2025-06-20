@@ -1,10 +1,9 @@
-import { type Project } from "./actionsTypes/actionsTypes";
+import { type Project } from './actionsTypes/actionsTypes';
 
 export type DetailsPageProps = {
-    params: Promise<{ id: string }>
-}
+	params: { id: string };
+};
 
 export interface DetailsHeaderProps {
-    selectedProject: Project;
-
+	selectedProject: Project;
 }

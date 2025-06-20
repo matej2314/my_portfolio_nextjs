@@ -20,7 +20,7 @@ export default async function HomePage() {
 
     return (
         <div id="mainSection" className="w-full flex flex-col items-center px-4 sm:px-8 overflow-x-hidden z-0">
-            <div className="w-full max-w-6xl flex flex-col">
+            <div className="w-full h-fit max-w-6xl flex flex-col justify-start items-center">
                 <SiteHeader variant="home" />
                 <div className="w-full flex flex-col gap-16 sm:gap-20 mt-6 sm:mt-10">
                     <BaseSection />

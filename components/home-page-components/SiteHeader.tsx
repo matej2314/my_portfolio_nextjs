@@ -25,7 +25,7 @@ export default function SiteHeader({ variant, github, demo }: SiteHeaderProps) {
 
 
     return (
-        <header id="headerSection" className="w-full h-fit flex justify-end z-10">
+        <header id="headerSection" className="w-[100dvw] flex justify-center md:mr-[25dvw] z-10">
             {SelectedMenu}
         </header>
     );
