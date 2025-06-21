@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server"
 
 import { Button } from "../../ui/button"
-import NavLink from "@/components/NavLink"
+import NavLink from "@/components/links/NavLink"
 import HomeSubHeader from "./components/HomeSubHeader"
 import SloganWrapper from "./components/SloganWrapper"
 import IconButton from "@/components/ui/elements/IconButton"

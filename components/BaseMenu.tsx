@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useDeviceType } from "@/hooks/useDeviceType";
 
-import NavLink from "./NavLink"
+import NavLink from "./links/NavLink"
 import MobileMenu from "./mobile-menu/MobileMenu";
 
 import { type MenuItem } from "@/lib/menuArrays"

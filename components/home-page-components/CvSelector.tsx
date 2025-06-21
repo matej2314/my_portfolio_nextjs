@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useClickOutside } from '@/hooks/useClickOutside';
 
 import IconButton from '../ui/elements/IconButton';
+import ExternalLink from '../links/ExternalLink';
 
 export default function CvSelector({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
 
@@ -38,16 +39,24 @@ export default function CvSelector({ isOpen, onClose }: { isOpen: boolean, onClo
                     transition={{ duration: 0.7, ease: 'easeInOut', type: 'spring' }}
                     className="relative right-[2rem] top-1 w-[10rem] h-fit flex flex-col items-center gap-3"
                 >
-                    <a href="/cv/CV - Mateusz Śliwowski_en.pdf" download>
-                        <IconButton className="w-[5rem] bg-yellow-400 hover:bg-yellow-500 hover:text-slate-950 text-slate-600 font-semibold font-mono text-[0.9rem] flex justify-center items-center">
+                    <ExternalLink
+                        href="/cv/CV - Mateusz Śliwowski_en.pdf"
+                        download
+                    >
+                        <IconButton
+                            className="w-[5rem] bg-yellow-400 hover:bg-yellow-500 hover:text-slate-950 text-slate-600 font-semibold font-mono text-[0.9rem] flex justify-center items-center">
                             English
                         </IconButton>
-                    </a>
-                    <a href="/cv/CV - Mateusz Śliwowski.pdf" download>
-                        <IconButton className="w-[5rem] bg-yellow-400 hover:bg-yellow-500 hover:text-slate-950 text-slate-600 font-semibold font-mono text-[0.9rem] flex justify-center items-center">
+                    </ExternalLink>
+                    <ExternalLink
+                        href="/cv/CV - Mateusz Śliwowski.pdf"
+                        download
+                    >
+                        <IconButton
+                            className="w-[5rem] bg-yellow-400 hover:bg-yellow-500 hover:text-slate-950 text-slate-600 font-semibold font-mono text-[0.9rem] flex justify-center items-center">
                             Polish
                         </IconButton>
-                    </a>
+                    </ExternalLink>
                 </motion.div>
             )}
         </AnimatePresence>

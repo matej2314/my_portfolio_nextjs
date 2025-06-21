@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "../button";
 import { Icon } from '@iconify/react';
 
-import NavLink from "@/components/NavLink";
+import NavLink from "@/components/links/NavLink";
 
 import { type IconButtonType } from "@/types/iconButtonTypes";
 

@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from "../ui/button";
 import { useTranslations } from "next-intl";
 
-import NavLink from "../NavLink";
+import NavLink from "../links/NavLink";
 import LanguageSwitcher from "../LanguageSwitcher";
 import CvSelectorWrapper from "../CvSelectorWrapper";
 import MLetter from "../ui/elements/MLetterElement";

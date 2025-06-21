@@ -3,6 +3,8 @@
 import { Link as ScrollLink } from "react-scroll";
 import Link from "next/link";
 
+import ExternalLink from "./ExternalLink";
+
 import { type NavLinkProps } from "@/types/navLinkTypes";
 
 export default function NavLink({ children, pathName, linkClass, isActive, activeClass, variant, title, onClick }: NavLinkProps) {
@@ -38,14 +40,14 @@ export default function NavLink({ children, pathName, linkClass, isActive, activ
             </Link>
         case 'external':
             return (
-                <a
+                <ExternalLink
                     href={pathName}
                     className={finalClassName}
                     title={title}
-                    onClick={onClick}
+                    onClick={onClick as unknown as () => void}
                 >
                     {children}
-                </a>
+                </ExternalLink>
             )
     }
 }

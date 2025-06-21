@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { useDeviceType } from '@/hooks/useDeviceType';
 
-import NavLink from '../NavLink';
+import NavLink from '../links/NavLink';
 
 import { sections } from "@/lib/homePageSectionsArr";
 

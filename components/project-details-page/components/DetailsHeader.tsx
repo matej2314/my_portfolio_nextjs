@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 
 import BadgeList from "./BadgeList";
-import ExternalLink from "@/components/ExternalLink";
+import ExternalLink from "@/components/links/ExternalLink";
 import DisplayDifficulty from "./DisplayProjectDifficulty";
 
 import { type DetailsHeaderProps } from "@/types/detailsPageTypes";
