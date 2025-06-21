@@ -15,7 +15,7 @@ export default function SignInForm() {
     return (
         <form
             action={formAction}
-            className="w-1/3 h-fit flex flex-col items-center justify-center gap-3 px-5 pb-5 bg-slate-700 text-slate-200 rounded-md border-[1px] border-slate-200"
+            className="w-1/3 h-fit flex flex-col items-center justify-center gap-3 px-5 pb-5 bg-linear-green text-slate-200 rounded-md border-[1px] border-slate-200"
         >
             <h2 className="text-3xl">Log in</h2>
             <Label

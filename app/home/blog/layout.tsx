@@ -1,15 +1,18 @@
 import { type ReactNode } from "react";
-
 import SiteHeader from "@/components/home-page-components/SiteHeader";
 
 export default async function BlogLayout({ children }: { children: ReactNode }) {
-
     return (
-        <main className="w-screen h-full bg-[#0c0c0c] pt-2 flex justify-center items-center no-scrollbar relative">
-            <div id="mainSection" className="w-[90%] h-full flex flex-col justify-start gap-4 border-2 border-slate-200">
+        <main className="w-screen h-screen bg-[#000805] flex flex-col items-center justify-start overflow-hidden">
+            <div
+                id="mainSection"
+                className="w-[90dvw] h-full flex flex-col justify-start gap-[0.5rem] overflow-hidden pt-2"
+            >
                 <SiteHeader variant="blog" />
-                {children}
+                <div className="h-full overflow-hidden">
+                    {children}
+                </div>
             </div>
         </main>
-    )
+    );
 }

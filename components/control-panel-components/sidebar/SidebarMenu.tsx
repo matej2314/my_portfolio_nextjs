@@ -4,7 +4,7 @@ import SidebarMenuList from "./SidebarMenuList";
 
 export default function ControlSidebar() {
     return (
-        <section id="dashboardSidebar" className="overflow-hidden relative w-[20rem] h-full flex flex-col justify-start items-center text-slate-200 rounded-md board-sidebar-gradient border-2 border-blue-950">
+        <section id="dashboardSidebar" className="overflow-hidden relative w-[20rem] h-full flex flex-col justify-start items-end text-slate-200 rounded-md bg-control-menu border-2 border-green-900/25 ">
             <header id="sidebarHeader" className="w-full h-[3rem] flex justify-center items-center">
                 <p className="text-lg font-semibold text-green-500">Dashboard</p>
             </header>
