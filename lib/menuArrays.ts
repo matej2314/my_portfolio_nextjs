@@ -6,6 +6,13 @@ export type MenuItem = {
 	variant: Variant;
 };
 
+export type ControlMenuItem = {
+	key: string;
+	label: string;
+	icon: string;
+	actions: string[] | [];
+};
+
 export const homeMenuArray: MenuItem[] = [
 	{ path: '#aboutSection', label: 'About', variant: 'home' },
 	{ path: '#skillsSection', label: 'Skills', variant: 'home' },
@@ -29,4 +36,14 @@ export const getProjectMenuArray = (github: string, demo: string): MenuItem[] =>
 export const blogMenuArray: MenuItem[] = [
 	{ path: '/home', label: 'Home', variant: 'project' },
 	{ path: '/home/blog', label: 'Blog', variant: 'project' },
+];
+
+export const controlMenuArray: ControlMenuItem[] = [
+	{ key: 'about', label: 'About', icon: 'icon-park-outline:me', actions: ['add', 'edit', 'delete'] },
+	{ key: 'courses', label: 'Courses', icon: 'oui:training', actions: ['add', 'edit', 'delete'] },
+	{ key: 'projects', label: 'Projects', icon: 'grommet-icons:projects', actions: ['add', 'edit', 'delete'] },
+	{ key: 'skills', label: 'Skills', icon: 'game-icons:skills', actions: ['add', 'edit', 'delete'] },
+	{ key: 'blog', label: 'Blog', icon: 'icomoon-free:blog', actions: ['add', 'edit', 'delete'] },
+	{ key: 'resume', label: 'Resume', icon: 'mdi:resume', actions: ['add', 'delete'] },
+	{ key: 'stats', label: 'Stats', icon: 'tabler:home-stats', actions: [] },
 ];

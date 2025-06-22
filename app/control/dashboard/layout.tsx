@@ -20,8 +20,8 @@ export default async function DashboardLayout({ children }: { children: ReactNod
     };
 
     return (
-        <main className="w-screen max-h-screen h-screen flex justify-center items-center gap-3 overflow-hidden">
-            <div className="w-11/12 h-11/12 flex justify-center gap-7">
+        <main className="w-screen max-h-screen h-screen flex justify-center items-center gap-3">
+            <div className="relative w-11/12 h-11/12 flex justify-center gap-7">
                 <ControlSidebar />
                 <section className="w-full h-full flex  flex-col items-center justify-center rounded-md bg-control">
                     <ul className="w-full h-full border-2 border-green-900/25 flex justify-around pt-3">
