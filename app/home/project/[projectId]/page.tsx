@@ -1,5 +1,6 @@
 import { getProject } from "@/actions/projects";
 import { getUserLocale } from "@/lib/locale";
+import { generatePageMetadata } from "@/lib/generatePageMetadata";
 
 import DetailsHeader from "@/components/project-details-page/components/DetailsHeader";
 import DisplayGoalDescription from "@/components/project-details-page/components/DisplayGoalDescription";
@@ -8,32 +9,20 @@ import GallerySection from "@/components/project-details-page/components/Gallery
 import SiteHeader from "@/components/home-page-components/SiteHeader";
 import ContactModal from "@/components/ContactModal";
 
-import { type DetailsPageProps } from "@/types/detailsPageTypes";
+import { type DetailsProjectProps } from "@/types/detailsPageTypes";
 
-export async function generateMetadata({ params }: DetailsPageProps) {
-    const projectId = (await params).id;
-    const projectData = await getProject(projectId);
+export async function generateMetadata({ params }: DetailsProjectProps) {
+    const projectId = (await params).projectId;
 
-    if ('error' in projectData) {
-        return { title: 'Project not found' }
-    }
+    return generatePageMetadata('project', projectId);
+};
 
-    const projectName = projectData.project.project_name;
+export default async function ProjectDetailsPage({ params }: DetailsProjectProps) {
 
-    return {
-        title: `${projectName} | msliwowski.net`,
-        description: `Project ${projectName} details page.`
-    };
-
-}
-
-
-export default async function ProjectDetailsPage({ params }: DetailsPageProps) {
-
-    const { id } = await params;
+    const { projectId } = await params;
     const locale = await getUserLocale();
 
-    const selectedProject = await getProject(id);
+    const selectedProject = await getProject(projectId);
 
     if ('error' in selectedProject) {
         console.error(selectedProject.error);

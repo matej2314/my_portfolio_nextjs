@@ -1,8 +1,9 @@
 import Intro from "@/components/Intro"
+import { generatePageMetadata } from "@/lib/generatePageMetadata"
 
-export const metadata = {
-  title: 'msliwowski.net | WebDev, SEO, Security',
-  description: 'Webdev, SEO, Security'
+export async function generateMetadata() {
+
+  return generatePageMetadata('page');
 }
 
 export default function IntroPage() {

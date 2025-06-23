@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { setUserLocale } from '@/lib/locale';
 
 const LocaleSchema = z.object({
 	locale: z.enum(['en', 'pl']),
@@ -16,9 +15,18 @@ export async function POST(req: Request) {
 		}
 
 		const { locale } = parsedBody.data;
-		await setUserLocale(locale);
 
-		return NextResponse.json({ success: true });
+		const response = NextResponse.json({ success: true });
+
+		response.cookies.set('NEXT_LANG', locale, {
+			path: '/',
+			maxAge: 60 * 60 * 24 * 365,
+			httpOnly: true,
+			sameSite: 'lax',
+			secure: process.env.NODE_ENV === 'production',
+		});
+
+		return response;
 	} catch (error: unknown) {
 		if (error instanceof Error) {
 			return NextResponse.json({ success: false, error: error }, { status: 500 });

@@ -8,6 +8,13 @@ import SiteHeader from "@/components/home-page-components/SiteHeader";
 import ScrollToTop from "@/components/ui/elements/ScrollToTopBtn";
 
 import { getHomePageData } from "@/actions/homePage";
+import { generatePageMetadata } from "@/lib/generatePageMetadata";
+
+
+export async function generateMetadata() {
+
+    return generatePageMetadata('page', null);
+};
 
 export default async function HomePage() {
 

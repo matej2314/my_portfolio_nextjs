@@ -25,6 +25,8 @@ export default function ContactForm() {
             action={formAction}
             className="w-full h-fit flex flex-col sm:mx-[8rem]"
         >
+            {state.success && <p className="text-green-400 mb-2 text-lg">{state.success}</p>}
+            {state.error && <p className="text-green-400 mb-2 text-lg">{state.error}</p>}
             <LabelElement
                 htmlFor="client-name"
                 className="font-bold pb-1 ml-2 text-lg tracking-wide"
@@ -80,8 +82,6 @@ export default function ContactForm() {
                 className="w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md"
                 required
             />
-            {state.error && <p>{state.error}</p>}
-            {state.success && <p>{state.success}</p>}
             <SubmitBtn
                 pendingTxt={t("contactForm.submitBtn.pendingTxt")}
                 idleTxt={t("contactForm.submitBtn.idleTxt")}

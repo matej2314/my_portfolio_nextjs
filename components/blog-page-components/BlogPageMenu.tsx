@@ -1,4 +1,3 @@
-import LanguageSwitcher from "../LanguageSwitcher"
 import BaseMenu from "../BaseMenu"
 import { blogMenuArray } from "@/lib/menuArrays"
 

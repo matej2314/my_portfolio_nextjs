@@ -9,12 +9,12 @@ services:
         networks:
             - main_network
         ports:
-            - '5055:5055'
+            - '5050:5050'
         volumes:
             - /root/main/portfolio_nextjs/.env:/app/.env
         environment:
             - NODE_ENV=production
-            - PORT=5055
+            - PORT=5050
         restart: unless-stopped
 
 networks:

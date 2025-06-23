@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import NavLink from "../links/NavLink";
 import LanguageSwitcher from "../LanguageSwitcher";
 import CvSelectorWrapper from "../CvSelectorWrapper";
+import ContactItems from "../home-page-components/contact-section/components/ContactItems";
 import MLetter from "../ui/elements/MLetterElement";
 
 import { type MenuItem } from "@/lib/menuArrays";
@@ -21,7 +22,7 @@ export default function MobileMenu({ array }: { array: MenuItem[] }) {
     const t = useTranslations();
 
     return (
-        <>
+        <section id='mobile-menu'>
             <Button
                 variant="ghost"
                 onClick={() => setIsOpen(prev => ({ ...prev, menu: !prev.menu }))}
@@ -69,9 +70,13 @@ export default function MobileMenu({ array }: { array: MenuItem[] }) {
                                 )}
                             </li>
                         ))}
+                        <li className="text-slate-200 border-t-[1px] border-dotted border-green-300/25 pt-5 px-3">
+                            <ContactItems />
+                        </li>
                     </motion.ul>
                 )}
             </AnimatePresence>
-        </>
+
+        </section>
     );
 }

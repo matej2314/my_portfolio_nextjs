@@ -22,7 +22,7 @@ export const ListItem = ({ itemClass, linkClass, iconName, label, pathName }: Li
         >
             <a href={pathName} className={linkClass}>
                 {iconName && <Icon icon={iconName} width={30} />}
-                <span className='text-lg'>{label}</span>
+                <span className=' md:text-lg'>{label}</span>
             </a>
         </motion.li>
     )

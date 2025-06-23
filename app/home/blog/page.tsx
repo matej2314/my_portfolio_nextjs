@@ -1,15 +1,55 @@
-import BlogPost from "@/components/blog-page-components/BlogPost";
+import { getBlogPosts } from "@/actions/blogPosts";
+import { generatePageMetadata } from "@/lib/generatePageMetadata";
 
-export default function BlogPage() {
+import ShortBlogPost from "@/components/blog-page-components/ShortBlogPost";
+
+export async function generateMetadata() {
+    return generatePageMetadata('page', null, {
+        title: 'Blog | msliwowski.net',
+        description: 'Check interesting blog posts about Web development, IT Security and SEO!'
+    });
+};
+
+export default async function BlogPage() {
+
+    const posts = await getBlogPosts();
+
+    if ('error' in posts) {
+        return <p>No blog posts</p>
+    };
+
+    const postsToDisplay =
+        posts.posts.length === 0
+            ? [
+                {
+                    id: "demo-1",
+                    post_title: "Testowy wpis",
+                    post_lead:
+                        "To przykładowy lead do wpisu blogowego — jeśli go widzisz - skontaktuj się z właścicielem strony",
+                    post_content: "Markdown **content** z testowego wpisu.",
+                    post_date: new Date(),
+                    post_imageName: "default.jpg",
+                },
+            ]
+            : posts.posts;
+
     return (
-        <div className="w-full h-full flex flex-col">
-            <section id="main-blog-section" className="w-full h-full flex flex-col justify-start items-start border-2 border-slate-200 px-2 py-2 gap-6.5">
-                <section id="post-category-selector" className="w-full h-[2rem] flex justify-center items-center text-slate-200 pt-5 gap-3">
-                    <button className="w-[5rem] h-[3rem] border-2 border-slate-400 rounded-md">Cat 1</button>
-                    <button className="w-[5rem] h-[3rem] border-2 border-slate-400 rounded-md">Cat 2</button>
-                    <button className="w-[5rem] h-[3rem] border-2 border-slate-400 rounded-md">Cat 3</button>
-                </section>
-                <BlogPost />
+        <div className="w-full h-full flex flex-col bg-linear-green overflow-hidden">
+            <section id="main-blog-section" className="w-full h-full flex flex-col justify-start items-start px-4 py-5 gap-6.5">
+                {postsToDisplay.length === 0 ? (
+                    <p className="text-white">No posts yet — check back later!</p>
+                ) : (
+                    postsToDisplay.map(post => (
+                        <ShortBlogPost
+                            key={post.id}
+                            id={post.id}
+                            title={post.post_title}
+                            lead={post.post_lead ?? undefined}
+                            date={post.post_date}
+                            imageName={post.post_imageName ?? undefined}
+                        />
+                    ))
+                )}
             </section>
         </div>
     );
