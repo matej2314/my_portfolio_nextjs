@@ -16,7 +16,7 @@ FROM node:24.1.0 AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV PORT=5050
+ENV PORT=5055
 
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
@@ -25,4 +25,4 @@ COPY --from=builder /app/public ./public
 
 EXPOSE 5055
 
-CMD ["npx", "next", "start", "-p", "5050"]
+CMD ["npx", "next", "start", "-p", "5055"]
