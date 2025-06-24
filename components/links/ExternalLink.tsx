@@ -13,7 +13,7 @@ interface ExternalLinkType {
     targetColor?: string;
     download?: boolean;
     title?: string;
-    onClick?: (e: MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>) => void;
+    onClick?: () => void;
 }
 
 export default function ExternalLink({ href, className, initialColor, hoverColor, onClick, targetColor, title, download, children }: ExternalLinkType) {
@@ -29,6 +29,7 @@ export default function ExternalLink({ href, className, initialColor, hoverColor
             title={title}
             download={download}
             target='_blank'
+            onClick={onClick}
         >
             {children}
         </motion.a>
