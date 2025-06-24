@@ -6,7 +6,10 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: 'msliwowski.net | WebDev, SEO, Security',
-  description: 'Webdev, SEO, Security'
+  description: 'Webdev, SEO, Security',
+  icons: {
+    icon: '/favicon.svg'
+  }
 }
 
 export default async function RootLayout({
