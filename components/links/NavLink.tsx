@@ -14,22 +14,8 @@ export default function NavLink({ children, pathName, linkClass, isActive, activ
     const finalClassName = `${baseClass} ${isActive && activeClass ? activeClass : ''}`;
 
     switch (variant) {
-        case 'home':
-            return (
-                <ScrollLink
-                    to={pathName.replace('#', '')}
-                    smooth={true}
-                    offset={pathName === '#baseSection' ? -60 : 0}
-                    duration={80}
-                    className={finalClassName}
-                    title={title}
-                    spy={false}
-                    onClick={onClick as () => void}
-                >
-                    {children}
-                </ScrollLink>
-            )
         case 'project':
+        case 'home':
             return <Link
                 href={pathName ?? ''}
                 className={finalClassName}
