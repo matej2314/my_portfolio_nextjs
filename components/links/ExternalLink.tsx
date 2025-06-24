@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 
-import { MouseEventHandler, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 interface ExternalLinkType {
     href: string;
