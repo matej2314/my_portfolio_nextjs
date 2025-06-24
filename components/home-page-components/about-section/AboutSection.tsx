@@ -20,24 +20,20 @@ export default async function AboutSection({ aboutText }: { aboutText: GetAboutM
     const t = await getTranslations("homePage");
 
     return (
-        <div id="aboutSection" className="max-w-screen min-h-screen sm:w-full sm:h-fit flex flex-col justify-between items-start font-kanit">
+        <section id="aboutSection" className="w-full h-screen flex flex-col justify-between items-start font-kanit snap-center">
             <span className="text-4xl text-green-400 ml-2">About &#123;</span>
-            <section className="w-full min-h-screen sm:h-screen flex flex-col items-center">
-                <div className="w-full h-full sm:w-full flex flex-col sm:flex-row sm:justify-center items-center md:items-center gap-4 sm:gap-[5rem] mt-10">
-                    <MetricsSection metrics={metrics} />
-                    <section className="sm:w-1/2 h-full flex items-center">
-                        <div className="w-full h-fit flex flex-col items-center text-slate-200 ">
-                            <p
-                                className="text-md xl:text-xl text-justify leading-9 md:pr-[5rem]"
-                            >
-                                {aboutText ? t("aboutSection.description") : 'Failed to load text.'}
-                            </p>
-                        </div>
-                    </section>
+            <div className="w-full h-screen flex flex-col sm:flex-row sm:justify-center items-center gap-4 sm:gap-[5rem] mt-10">
+                <MetricsSection metrics={metrics} />
+                <div className="sm:w-1/2 h-full flex items-center">
+                    <div className="w-full flex flex-col items-center text-slate-200 ">
+                        <p className="text-md xl:text-xl text-justify leading-9 md:pr-[5rem]">
+                            {aboutText ? t("aboutSection.description") : 'Failed to load text.'}
+                        </p>
+                    </div>
                 </div>
-            </section>
+            </div>
             <span className="text-green-400 text-4xl ml-2 mt-5">&#125;</span>
-        </div>
+        </section>
 
     )
 }

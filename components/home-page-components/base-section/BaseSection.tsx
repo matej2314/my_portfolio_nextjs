@@ -12,20 +12,18 @@ export default async function BaseSection() {
     const t = await getTranslations("homePage");
 
     return (
-        <section id="baseSection" className="w-full min-h-screen flex flex-col md:flex-row justify-center px-5 lg:pt-[3rem] gap-4 font-kanit">
-            <div className=" w-full flex flex-col items-start mt-6 md:mt-10">
+        <section id="baseSection" className="w-full min-h-screen h-screen flex flex-col md:flex-row justify-center px-5 lg:pt-[3rem] gap-4 font-kanit snap-start">
+            <div className=" w-full flex flex-col items-start mt-6 md:mt-[5rem]">
                 <p className="text-4xl sm:text-5xl md:text-6xl text-yellow-300 text-glow">
                     Mateusz
                 </p>
-
-                <HomeSubHeader texts={contentArray} typingSpeed={55} deletingSpeed={30} />
-
+                <div className="w-fit">
+                    <HomeSubHeader texts={contentArray} typingSpeed={55} deletingSpeed={30} />
+                </div>
                 <p className=" text-sm sm:text-base md:text-xl text-white mb-5 tracking-wide text-justify leading-[2rem] mt-3">
                     {t("baseSection.baseDescription")}
                 </p>
-
-                <div className="w-full flex flex-col items-center justify-center sm:flex-row sm:items-center gap-4 sm:gap-5 mt-4">
-
+                <div className="w-full h-fit flex flex-col items-center justify-center sm:flex-row gap-4 sm:gap-5">
                     <NavLink
                         variant="home"
                         pathName="#contactSection"
@@ -37,7 +35,6 @@ export default async function BaseSection() {
                             {t("baseSection.contactTxt")}
                         </Button>
                     </NavLink>
-
                     <IconButton
                         iconCode="maki:arrow"
                         iconClass="mt-1 ml-1"

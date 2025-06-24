@@ -14,9 +14,9 @@ export default async function CertsCoursesSection({ courses }: { courses: GetCou
     }
 
     return (
-        <section id="certsSection" className="w-full min-h-screen h-fit flex flex-col justify-center gap-3 font-kanit">
+        <section id="certsSection" className="w-full min-h-screen h-fit flex flex-col justify-center gap-3 font-kanit snap-center">
             <span className="text-4xl text-green-400 ml-2">Certs & Courses &#123;</span>
-            <section className="w-full h-screen flex flex-col justify-center items-center gap-2 mb-5">
+            <section className="w-full h-screen flex flex-col justify-center items-center gap-2">
                 <p
                     className="w-full h-fit px-[1rem] text-justify sm:px-[8rem] flex justify-center items-center text-slate-200 text-lg sm:text-xl tracking-wide"
                 >
@@ -24,7 +24,7 @@ export default async function CertsCoursesSection({ courses }: { courses: GetCou
                 </p>
                 <CertsList courses={courses.courses} />
             </section>
-            <span className="text-green-400 text-4xl ml-2 mt-5">&#125;</span>
+            <span className="text-green-400 text-4xl ml-2">&#125;</span>
         </section>
     )
 }
