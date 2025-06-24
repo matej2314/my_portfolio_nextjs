@@ -24,7 +24,7 @@ export default function NavLink({ children, pathName, linkClass, isActive, activ
                     className={finalClassName}
                     title={title}
                     spy={false}
-                    onClick={onClick as unknown as () => void}
+                    onClick={onClick as () => void}
                 >
                     {children}
                 </ScrollLink>
@@ -44,7 +44,7 @@ export default function NavLink({ children, pathName, linkClass, isActive, activ
                     href={pathName}
                     className={finalClassName}
                     title={title}
-                    onClick={onClick as unknown as () => void}
+                    onClick={onClick as () => void}
                 >
                     {children}
                 </ExternalLink>

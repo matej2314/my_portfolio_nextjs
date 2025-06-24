@@ -24,7 +24,7 @@ export default function SkillsList({ skills }: { skills: Skill[] }) {
                 viewport={{ amount: 0.4, once: false }}
                 className='w-full grid grid-cols-3 mr-2 gap-x-[2rem] min-[400px]:ml-[2rem] min-[455px]:gap-x-[0.5rem] min-[455px]:ml-[3.5rem] min-[555px]:ml-[5rem] sm:ml-[3rem] sm:gap-y-2 xl:gap-x-[3rem] xl:gap-y-[2rem] xl:ml-3 gap-y-6 sm:mx-auto'
             >
-                <AnimatePresence mode='wait'>
+                <AnimatePresence>
                     {filteredSkills.map(skill => (
                         <motion.li
                             key={skill.skill_name}

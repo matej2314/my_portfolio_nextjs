@@ -7,6 +7,7 @@ import ContactSection from "@/components/home-page-components/contact-section/Co
 import SiteHeader from "@/components/home-page-components/SiteHeader";
 import ScrollToTop from "@/components/ui/elements/ScrollToTopBtn";
 
+
 import { getHomePageData } from "@/actions/homePage";
 import { generatePageMetadata } from "@/lib/generatePageMetadata";
 

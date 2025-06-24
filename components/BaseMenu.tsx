@@ -24,6 +24,11 @@ export default function BaseMenu({ array }: { array: MenuItem[] }) {
         setIsCvOpen(prevState => !prevState);
     }
 
+    const handleResumeClick = (e: MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
+        e.preventDefault();
+        toggleCvSelector();
+    }
+
     return (
         <ul className={`w-fit h-[2rem] text-zinc-100 text-sm xl:text-xl flex items-center gap-x-4 mr-3`}>
 
@@ -37,10 +42,7 @@ export default function BaseMenu({ array }: { array: MenuItem[] }) {
                             pathName={item.path as string}
                             variant={item.variant}
                             title={t(`mainMenu.${item.label}`)}
-                            onClick={(e: MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
-                                e.preventDefault();
-                                toggleCvSelector();
-                            }}
+                            onClick={handleResumeClick}
                         >
                             {`${index + 1}`}.&nbsp;{t(`mainMenu.${item.label}`)}
                         </NavLink>

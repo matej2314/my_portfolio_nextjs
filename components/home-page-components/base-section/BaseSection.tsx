@@ -12,7 +12,7 @@ export default async function BaseSection() {
     const t = await getTranslations("homePage");
 
     return (
-        <section id="baseSection" className="w-full min-h-screen flex flex-col md:flex-row justify-center px-5 gap-4 font-kanit">
+        <section id="baseSection" className="w-full min-h-screen flex flex-col md:flex-row justify-center px-5 lg:pt-[3rem] gap-4 font-kanit">
             <div className=" w-full flex flex-col items-start mt-6 md:mt-10">
                 <p className="text-4xl sm:text-5xl md:text-6xl text-yellow-300 text-glow">
                     Mateusz

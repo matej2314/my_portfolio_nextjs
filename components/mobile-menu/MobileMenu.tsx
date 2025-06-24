@@ -21,6 +21,14 @@ export default function MobileMenu({ array }: { array: MenuItem[] }) {
     });
     const t = useTranslations();
 
+    const handleNavClick = (itemLabel: string) => {
+        if (itemLabel !== 'Resume') {
+            setIsOpen(prev => ({ ...prev, menu: false }));
+        } else {
+            setIsOpen(prev => ({ ...prev, cv: !prev.cv }));
+        }
+    }
+
     return (
         <section id='mobile-menu'>
             <Button
@@ -54,13 +62,7 @@ export default function MobileMenu({ array }: { array: MenuItem[] }) {
                                     pathName={item.path as string}
                                     variant={item.variant}
                                     title={t(`mainMenu.${item.label}`)}
-                                    onClick={() => {
-                                        if (item.label !== 'Resume') {
-                                            setIsOpen(prev => ({ ...prev, menu: false }));
-                                        } else {
-                                            setIsOpen(prev => ({ ...prev, cv: !prev.cv }));
-                                        }
-                                    }}
+                                    onClick={() => handleNavClick(item.label)}
                                 >
                                     {`${index + 1}`}.&nbsp;{t(`mainMenu.${item.label}`)}
                                 </NavLink>
