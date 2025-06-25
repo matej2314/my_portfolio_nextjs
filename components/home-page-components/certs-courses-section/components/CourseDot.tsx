@@ -18,6 +18,8 @@ const CourseDot = forwardRef<HTMLDivElement, CourseDotProps>(
             className="flex justify-center z-10 w-5 h-5 bg-white border-2 border-yellow-300 rounded-full cursor-pointer hover:scale-110 transition"
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
+            onTapStart={onMouseEnter}
+            onTapCancel={onMouseLeave}
             title={`${course.course_name} - ${new Date(course.course_date).toLocaleDateString()}`}
         >
             <CourseHoverElement course={course} isVisible={isVisible} />

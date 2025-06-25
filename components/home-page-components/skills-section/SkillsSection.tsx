@@ -15,13 +15,13 @@ export default async function SkillsSection({ skills }: { skills: GetSkillsType 
     return (
         <section
             id="skillsSection"
-            className="w-full h-screen snap-center flex flex-col items-center font-kanit text-slate-200"
+            className="w-full min-h-screen snap-center flex flex-col justify-center items-center font-kanit text-slate-200"
         >
             <span className="text-4xl text-green-400 w-full ml-2">Skills &#123;</span>
 
-            <div className="w-full h-screen flex flex-col xl:flex-row items-center justify-center gap-8 xl:gap-12 mb-12">
-                <div className="w-full xl:w-1/2 text-justify flex justify-center">
-                    <p className="text-base md:text-lg leading-relaxed tracking-wide">
+            <div className="w-full h-full flex flex-col xl:flex-row items-center justify-center gap-8 xl:gap-12 mb-12">
+                <div className="w-full h-fit xl:w-1/2 text-justify flex justify-center">
+                    <p className="h-fit text-base md:text-lg leading-9 tracking-wide font-kanit">
                         {t("skillsSection.description")}
                     </p>
                 </div>
@@ -30,7 +30,6 @@ export default async function SkillsSection({ skills }: { skills: GetSkillsType 
                     <SkillsList skills={skills.skills} />
                 </div>
             </div>
-
             <span className="text-4xl text-green-400 w-full ml-2 mt-5">&#125;</span>
         </section>
     )

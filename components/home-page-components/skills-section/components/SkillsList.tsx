@@ -14,7 +14,7 @@ export default function SkillsList({ skills }: { skills: Skill[] }) {
         : skills;
 
     return (
-        <div className="relative max-w-screen sm:w-screen xl:w-full min-h-[15rem] h-[15rem] text-white flex flex-col items-center gap-5 mb-[6rem]">
+        <div className="relative max-w-screen w-full sm:w-screen xl:w-full min-h-[15rem] h-[15rem] text-white flex flex-col items-center gap-5 mb-[6rem]">
             <SkillSelector clickAction={setSelectedCategory} selectedCategory={selectedCategory} />
             <motion.ul
                 layout

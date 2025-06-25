@@ -20,7 +20,7 @@ export default async function AboutSection({ aboutText }: { aboutText: GetAboutM
     const t = await getTranslations("homePage");
 
     return (
-        <section id="aboutSection" className="w-full h-screen flex flex-col justify-between items-start font-kanit snap-center">
+        <section id="aboutSection" className="w-full min-h-screen flex flex-col justify-between items-start font-kanit snap-center">
             <span className="text-4xl text-green-400 ml-2">About &#123;</span>
             <div className="w-full h-screen flex flex-col sm:flex-row sm:justify-center items-center gap-4 sm:gap-[5rem] mt-10">
                 <MetricsSection metrics={metrics} />

@@ -46,7 +46,7 @@ export default function CertsList({ courses }: { courses: Course[] }) {
 
     return (
         <>
-            <div className="relative w-full flex items-center justify-center mt-10">
+            <div className="relative max-w-screen w-full flex items-center justify-center mt-10">
                 <YearLabelSpan year={2023} />
                 <div
                     ref={containerRef}

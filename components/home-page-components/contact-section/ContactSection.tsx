@@ -10,9 +10,9 @@ export default function ContactSection() {
     const t = useTranslations("homePage");
 
     return (
-        <section id="contactSection" className="w-full h-screen flex flex-col justify-start items-start pb-2 font-kanit snap-center">
+        <section id="contactSection" className="w-full min-h-screen flex flex-col justify-start items-start pb-2 font-kanit snap-center">
             <span className="text-4xl text-green-400 ml-2">Contact &#123;</span>
-            <section className="w-full h-screen flex flex-col md:flex-row md:items-center mt-5 md:mb-10 pt-[4rem]">
+            <section className="w-full h-screen flex flex-col md:flex-row md:items-center mt-5 md:mb-10">
                 <div className="w-full text-slate-200 flex flex-col items-center justify-start">
                     <h2
                         className="text-2xl sm:text-3xl font-kanit bg-gradient-to-r from-green-400 via-yellow-200 to-yellow-400 bg-clip-text text-transparent sm:ml-4 mb-3"
