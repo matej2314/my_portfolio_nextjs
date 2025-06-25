@@ -14,7 +14,10 @@ export async function contactMe(prevState: any, formData: FormData) {
 	const validatedContactObj = contactSchema.safeParse(contactObject);
 
 	if (!validatedContactObj.success) {
-		return { error: `Invalid input data. : ${JSON.stringify(validatedContactObj.error.flatten())}` };
+		const flatErrors = validatedContactObj.error.flatten().fieldErrors;
+		const messages = Object.values(flatErrors).flat().filter(Boolean);
+
+		return { error: messages };
 	}
 
 	try {
@@ -33,7 +36,7 @@ export async function contactMe(prevState: any, formData: FormData) {
 		return { success: 'Message sent' };
 	} catch (error: unknown) {
 		if (error instanceof Error) {
-			return { error: String(error) };
+			return { error: String(error.message) };
 		}
 		return { error: 'Unexpected error' };
 	}

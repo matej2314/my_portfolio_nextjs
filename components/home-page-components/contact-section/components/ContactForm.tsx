@@ -11,8 +11,11 @@ import InputElement from "@/components/ui/elements/InputElement";
 import TextAreaElement from "@/components/ui/elements/TextareaElement";
 import SubmitBtn from "@/components/ui/elements/SubmitButton";
 
+import { type ContactFormState } from "@/types/contactFormTypes";
+
+
 export default function ContactForm() {
-    const initialState: { success?: string, error?: string } = {};
+    const initialState: ContactFormState = { error: [] };
 
     const [state, formAction] = useActionState(contactMe, initialState);
     const t = useTranslations("homePage.contactSection");
@@ -26,7 +29,13 @@ export default function ContactForm() {
             className="w-full h-fit flex flex-col sm:mx-[8rem]"
         >
             {state.success && <p className="text-green-400 mb-2 text-lg">{state.success}</p>}
-            {state.error && <p className="text-green-400 mb-2 text-lg">{state.error}</p>}
+            {Array.isArray(state.error) ? (
+                state.error.map((msg, idx) => (
+                    <p key={idx} className="text-red-400 mb-2 text-lg">{msg}</p>
+                ))
+            ) : (
+                state.error && <p className="text-red-400 mb-2 text-lg">{state.error}</p>
+            )}
             <LabelElement
                 htmlFor="client-name"
                 className="font-bold pb-1 ml-2 text-lg tracking-wide"
@@ -39,7 +48,7 @@ export default function ContactForm() {
                 name="client-name"
                 id="client-name"
                 className="w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md"
-                required
+                required={false}
             />
             <LabelElement
                 htmlFor="client-mail"
@@ -53,7 +62,7 @@ export default function ContactForm() {
                 title='E-mail:'
                 id="client-mail"
                 className="w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md focus:border-green-400 active:border-green-400"
-                required
+                required={false}
             />
             <LabelElement
                 htmlFor="msg-subject"
@@ -67,7 +76,7 @@ export default function ContactForm() {
                 title={t("contactForm.subjectLabel")}
                 id="msg-subject"
                 className="w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md"
-                required
+                required={false}
             />
             <LabelElement
                 htmlFor="msg-content"
@@ -80,7 +89,7 @@ export default function ContactForm() {
                 name="msg-content"
                 title={t("contactForm.messageLabel")}
                 className="w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md"
-                required
+                required={false}
             />
             <SubmitBtn
                 pendingTxt={t("contactForm.submitBtn.pendingTxt")}
