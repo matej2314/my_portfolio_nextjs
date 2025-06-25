@@ -5,6 +5,10 @@ import { motion } from "framer-motion";
 
 import YearLabelSpan from "./YearLabelSpan";
 import CourseDot from "./CourseDot";
+import SwipeHand from "@/components/ui/elements/SwipeHand";
+import CourseHoverElement from "./CourseHoverElement";
+
+import { useDeviceType } from "@/hooks/useDeviceType";
 
 import { type Course } from "@/types/actionsTypes/actionsTypes";
 import { type HoverDataType } from "@/types/HoverElementTypes";
@@ -12,7 +16,7 @@ import { type HoverDataType } from "@/types/HoverElementTypes";
 
 export default function CertsList({ courses }: { courses: Course[] }) {
     const sortedCourses = courses.sort((a, b) => new Date(a.course_date).getTime() - new Date(b.course_date).getTime());
-
+    const device = useDeviceType();
     const containerRef = useRef<HTMLDivElement>(null);
     const dotRefs = useRef<(HTMLDivElement | null)[]>([]);
     const [hoverData, setHoverData] = useState<HoverDataType>({
@@ -44,6 +48,26 @@ export default function CertsList({ courses }: { courses: Course[] }) {
         })
     };
 
+    if (device === 'mobile') {
+        return (
+            <div className="w-full overflow-x-auto px-4 pt-6 scroll-smooth whitespace-nowrap snap-x snap-mandatory no-scrollbar">
+                <div className="inline-flex min-w-full">
+                    {sortedCourses.map((course) => (
+                        <div
+                            key={course.id}
+                            className="min-w-[85vw] sm:min-w-[22rem] snap-center flex flex-col items-center justify-start bg-linear-green rounded-lg p-4 border border-green-400 shadow-lg"
+                        >
+                            <CourseHoverElement course={course} isVisible={true} />
+                        </div>
+                    ))}
+                </div>
+                <div className="mt-4 flex justify-center">
+                    <SwipeHand />
+                </div>
+            </div>
+        );
+    }
+
     return (
         <>
             <div className="relative max-w-screen w-full flex items-center justify-center mt-10">
@@ -74,6 +98,7 @@ export default function CertsList({ courses }: { courses: Course[] }) {
                 </div>
                 <YearLabelSpan />
             </div>
+            <SwipeHand />
         </>
 
     );

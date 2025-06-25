@@ -37,13 +37,13 @@ export default function ProjectsGallery({ projects, images }: ProjectsGalleryPro
                                         <Image
                                             src={coverImage}
                                             alt={project.project_name}
-                                            className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                                            className="object-cover w-full h-full transition-transform duration-300 opacity-88 lg:opacity-75 lg:group-hover:scale-105 lg:group-hover:opacity-100"
                                             width={500}
                                             height={300}
                                         />
                                     </div>
-                                    <div className="mt-2 text-center">
-                                        <h3 className="text-lg font-kanit font-semibold text-slate-200 hover:scale-110">
+                                    <div className="mt-2 text-center transition-transform duration-300 lg:group-hover:scale-110">
+                                        <h3 className="text-lg font-kanit font-semibold text-slate-200">
                                             {project.project_name}
                                         </h3>
                                     </div>

@@ -9,9 +9,9 @@ export default function CourseHoverElement({ course, isVisible }: CourseHoverTyp
 
     return (
         <div
-            className="relative top-[3rem] w-fit h-[11rem] flex flex-col items-center justify-start text-slate-200 rounded-md gap-6">
+            className="relative xl:top-[3rem] max-w-screen xl:w-fit xl:h-[11rem] flex flex-col items-center justify-start text-slate-200 rounded-md gap-6">
             <h2
-                className="text-[0.8rem] xl:text-[0.9rem] w-[22rem] flex xl:flex-row justify-center xl:flex-nowrap font-semibold text-yellow-300"
+                className="text-[0.8rem] xl:text-[0.9rem] xl:w-[22rem] flex xl:flex-row justify-center xl:flex-nowrap font-semibold text-yellow-300"
             >
                 {course.course_name}
             </h2>

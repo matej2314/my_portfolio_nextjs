@@ -4,7 +4,6 @@ import CertsList from "./components/CertsLits";
 
 import { type GetCoursesType } from "@/types/actionsTypes/actionsTypes";
 
-
 export default async function CertsCoursesSection({ courses }: { courses: GetCoursesType | undefined }) {
 
     const t = await getTranslations("homePage");
