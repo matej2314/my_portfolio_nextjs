@@ -20,7 +20,7 @@ export default function BlogPostCard({ title, lead, date, isoDate, imageSrc, ima
             </CardHeader>
             <time
                 dateTime={isoDate}
-                className="w-full flex justify-end text-sm italic text-slate-200"
+                className="w-full flex justify-end text-sm italic text-slate-200 pr-2"
             >
                 {date}
             </time>

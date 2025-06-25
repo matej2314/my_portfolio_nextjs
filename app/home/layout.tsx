@@ -19,7 +19,7 @@ export default async function HomePageLayout({ children, params }: { children: R
     const messages = await getMessages({ locale });
 
     return (
-        <main className="min-h-screen w-full bg-[#000805] pt-4 flex justify-center items-start">
+        <main className="min-h-screen w-full bg-[#000805] flex justify-center items-start">
             <HomeContent>
                 <div className="fixed right-4 sm:right-10 top-1/3 transform -translate-y-1/2 z-50">
                     <DotNavigation />

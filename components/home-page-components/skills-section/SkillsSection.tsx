@@ -21,7 +21,7 @@ export default async function SkillsSection({ skills }: { skills: GetSkillsType 
 
             <div className="w-full h-screen flex flex-col xl:flex-row items-center justify-center gap-8 xl:gap-12 mb-12">
                 <div className="w-full xl:w-1/2 text-justify flex justify-center">
-                    <p className="text-base md:text-lg leading-relaxed">
+                    <p className="text-base md:text-lg leading-relaxed tracking-wide">
                         {t("skillsSection.description")}
                     </p>
                 </div>
