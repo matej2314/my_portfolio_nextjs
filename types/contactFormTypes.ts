@@ -1,1 +1,15 @@
-export type ContactFormState = { success: string; error?: undefined } | { error: string[]; success?: undefined } | { error: string; success?: undefined };
+export type ContactFormState = {
+	success?: string;
+	error?: {
+		client?: string[];
+		email?: string[];
+		subject?: string[];
+		content?: string[];
+	};
+	values: {
+		client: string;
+		email: string;
+		subject: string;
+		content: string;
+	};
+};

@@ -10,12 +10,12 @@ import LabelElement from "@/components/ui/elements/LabelElement";
 import InputElement from "@/components/ui/elements/InputElement";
 import TextAreaElement from "@/components/ui/elements/TextareaElement";
 import SubmitBtn from "@/components/ui/elements/SubmitButton";
+import DisplayFormMessage from "./DisplayFormMessage";
 
-import { type ContactFormState } from "@/types/contactFormTypes";
-
+import { initialState } from "./formInitState";
 
 export default function ContactForm() {
-    const initialState: ContactFormState = { error: [] };
+
 
     const [state, formAction] = useActionState(contactMe, initialState);
     const t = useTranslations("homePage.contactSection");
@@ -28,14 +28,7 @@ export default function ContactForm() {
             action={formAction}
             className="w-full h-fit flex flex-col sm:mx-[8rem]"
         >
-            {state.success && <p className="text-green-400 mb-2 text-lg">{state.success}</p>}
-            {Array.isArray(state.error) ? (
-                state.error.map((msg, idx) => (
-                    <p key={idx} className="text-red-400 mb-2 text-lg">{msg}</p>
-                ))
-            ) : (
-                state.error && <p className="text-red-400 mb-2 text-lg">{state.error}</p>
-            )}
+            <DisplayFormMessage type="success" messages={state.success} />
             <LabelElement
                 htmlFor="client-name"
                 className="font-bold pb-1 ml-2 text-lg tracking-wide"
@@ -48,8 +41,10 @@ export default function ContactForm() {
                 name="client-name"
                 id="client-name"
                 className="w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md"
+                defaultValue={state.values.client}
                 required={false}
             />
+            <DisplayFormMessage type="error" messages={state.error?.client} />
             <LabelElement
                 htmlFor="client-mail"
                 className="font-bold pb-1 ml-2 text-lg mt-2 tracking-wide"
@@ -61,9 +56,11 @@ export default function ContactForm() {
                 name="client-mail"
                 title='E-mail:'
                 id="client-mail"
+                defaultValue={state.values.email}
                 className="w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md focus:border-green-400 active:border-green-400"
                 required={false}
             />
+            <DisplayFormMessage type="error" messages={state.error?.email} />
             <LabelElement
                 htmlFor="msg-subject"
                 className="font-bold pb-1 ml-2 text-lg mt-2 tracking-wide"
@@ -75,9 +72,11 @@ export default function ContactForm() {
                 name="msg-subject"
                 title={t("contactForm.subjectLabel")}
                 id="msg-subject"
+                defaultValue={state.values.subject}
                 className="w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md"
                 required={false}
             />
+            <DisplayFormMessage type="error" messages={state.error?.subject} />
             <LabelElement
                 htmlFor="msg-content"
                 className="font-bold pb-1 ml-2 text-lg mt-2 tracking-wide"
@@ -88,9 +87,11 @@ export default function ContactForm() {
                 id="msg-content"
                 name="msg-content"
                 title={t("contactForm.messageLabel")}
+                defaultValue={state.values.content}
                 className="w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md"
                 required={false}
             />
+            <DisplayFormMessage type="error" messages={state.error?.content} />
             <SubmitBtn
                 pendingTxt={t("contactForm.submitBtn.pendingTxt")}
                 idleTxt={t("contactForm.submitBtn.idleTxt")}

@@ -1,6 +1,13 @@
-export default function AddCourse() {
+import SaveCourseForm from "@/components/control-panel-components/forms/SaveCourseForm"
+
+
+
+export default async function AddCourse() {
+
 
     return (
-        <p>Add course page</p>
+        <main className="w-full h-full flex justify-center items-center">
+            <SaveCourseForm />
+        </main>
     )
 }

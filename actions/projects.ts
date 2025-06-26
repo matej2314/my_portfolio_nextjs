@@ -9,9 +9,11 @@ import { cache } from 'react';
 import { type GetShotsResult, GetProjectType, GetProjectsType, ReturnedType } from '@/types/actionsTypes/actionsTypes';
 
 import { convertFormData } from '@/lib/formDataToObjectConvert';
+import { saveProjectImages } from '@/lib/saveProjectImages';
 
 import { baseProjectSchema, updateProjectSchema } from '@/lib/zod-schemas/projectSchema';
 import { idSchema } from '@/lib/zod-schemas/idSchema';
+import { mainFilesSchema, galleryFilesSchema } from '@/lib/zod-schemas/fileValidationSchema';
 
 export async function getProjects(): Promise<GetProjectsType> {
 	try {
@@ -72,7 +74,7 @@ export async function getProjectShots(id: string): Promise<GetShotsResult> {
 	return { success: true, files };
 }
 
-export async function saveProject(formData: FormData): Promise<ReturnedType> {
+export async function saveProject(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
 		const dataObject = convertFormData(formData);
 		const result = baseProjectSchema.safeParse(dataObject);
@@ -82,11 +84,30 @@ export async function saveProject(formData: FormData): Promise<ReturnedType> {
 			return { success: false, error: 'Invalid input data' };
 		}
 
+		const mainFiles = formData.getAll('project_main_screens') as File[];
+		const galleryFiles = formData.getAll('project_gallery_screens') as File[];
+
+		const mainFilesResult = mainFilesSchema.safeParse(mainFiles);
+
+		if (!mainFilesResult.success) {
+			return { success: false, error: 'Incorrect main files.' };
+		}
+
+		const galleryFilesResult = galleryFilesSchema.safeParse(galleryFiles);
+
+		if (!galleryFilesResult.success) {
+			return { success: false, error: 'Incorrect gallery files.' };
+		}
+
 		const id = uuidv4();
 		const validatedData = result.data;
 
+		const { mainFileName } = await saveProjectImages(id, mainFiles, galleryFiles);
+		const project_screenName = mainFileName as string;
+
 		const newProject = {
 			id,
+			project_screenName,
 			...validatedData,
 		};
 

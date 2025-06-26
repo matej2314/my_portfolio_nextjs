@@ -3,21 +3,24 @@
 import { sendMail } from '@/lib/nodemailer';
 import { contactSchema } from '@/lib/zod-schemas/contactSchema';
 
-export async function contactMe(prevState: any, formData: FormData) {
+import { type ContactFormState } from '@/types/contactFormTypes';
+
+export async function contactMe(prevState: ContactFormState, formData: FormData): Promise<ContactFormState> {
 	const contactObject = {
-		client: formData.get('client-name'),
-		email: formData.get('client-mail'),
-		subject: formData.get('msg-subject'),
-		content: formData.get('msg-content'),
+		client: String(formData.get('client-name') ?? ''),
+		email: String(formData.get('client-mail') ?? ''),
+		subject: String(formData.get('msg-subject') ?? ''),
+		content: String(formData.get('msg-content') ?? ''),
 	};
 
 	const validatedContactObj = contactSchema.safeParse(contactObject);
 
 	if (!validatedContactObj.success) {
-		const flatErrors = validatedContactObj.error.flatten().fieldErrors;
-		const messages = Object.values(flatErrors).flat().filter(Boolean);
-
-		return { error: messages };
+		const fieldErrors = validatedContactObj.error.flatten().fieldErrors;
+		return {
+			error: fieldErrors,
+			values: contactObject,
+		};
 	}
 
 	try {
@@ -33,11 +36,35 @@ export async function contactMe(prevState: any, formData: FormData) {
             `,
 		});
 
-		return { success: 'Message sent' };
+		return {
+			success: 'Message sent',
+			values: {
+				client: '',
+				email: '',
+				subject: '',
+				content: '',
+			},
+		};
 	} catch (error: unknown) {
 		if (error instanceof Error) {
-			return { error: String(error.message) };
+			return {
+				error: {
+					client: [],
+					email: [],
+					subject: [],
+					content: [String(error.message)],
+				},
+				values: contactObject,
+			};
 		}
-		return { error: 'Unexpected error' };
+		return {
+			error: {
+				client: [],
+				email: [],
+				subject: [],
+				content: ['Unexpected error'],
+			},
+			values: contactObject,
+		};
 	}
 }

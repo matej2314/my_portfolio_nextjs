@@ -1,5 +1,6 @@
 'use client';
 
+import { bold } from "@uiw/react-md-editor";
 import { Input } from "../input";
 import { cn } from "@/lib/utils";
 
@@ -11,9 +12,11 @@ type InputElementProps = {
     className: string;
     required: boolean;
     title?: string;
+    defaultValue?: string;
+    multiple?: boolean;
 }
 
-export default function InputElement({ type, placeholder, name, id, title, className, required }: InputElementProps) {
+export default function InputElement({ type, placeholder, name, id, title, defaultValue, multiple, className, required }: InputElementProps) {
 
 
     return (
@@ -22,12 +25,14 @@ export default function InputElement({ type, placeholder, name, id, title, class
             title={title}
             name={name}
             placeholder={placeholder}
+            defaultValue={defaultValue}
             id={id}
             className={cn(
                 "focus-visible:ring-0 ring-offset-0 focus:outline-none",
                 className
             )}
             required={required}
+            multiple={multiple}
         />
     )
 }

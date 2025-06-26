@@ -1,3 +1,5 @@
+import { saveAboutMe } from "@/actions/aboutMe"
+
 export default function AddAbout() {
 
     return (

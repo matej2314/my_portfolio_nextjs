@@ -20,7 +20,7 @@ export async function getCourses(): Promise<GetCoursesType> {
 	}
 }
 
-export async function saveCourse(formData: FormData): Promise<ReturnedType> {
+export async function saveCourse(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
 		const inputCourseData = convertFormData(formData);
 		const validCourse = baseCourseSchema.safeParse(inputCourseData);

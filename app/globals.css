@@ -180,3 +180,9 @@
 .bg-control {
 	background: radial-gradient(circle, rgba(0, 26, 14, 1) 0%, rgba(0, 0, 0, 1) 45%, rgba(0, 9, 5, 1) 100%);
 }
+
+input[type='date']::-webkit-calendar-picker-indicator {
+	opacity: 0;
+	pointer-events: none;
+	display: none;
+}

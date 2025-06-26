@@ -10,8 +10,8 @@ export default async function DashboardPage() {
     };
 
     return (
-        <section className="absolute w-full flex justify-center items-center text-slate-200">
-            <p>dashboard main page</p>
-        </section>
+        <main className="w-full h-full flex justify-center items-center">
+            <p className="text-slate-200">dashboard</p>
+        </main>
     )
 }

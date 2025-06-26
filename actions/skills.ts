@@ -19,7 +19,7 @@ export async function getSkills(): Promise<GetSkillsType> {
 	}
 }
 
-export async function saveSkill(formData: FormData): Promise<ReturnedType> {
+export async function saveSkill(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
 		const id = uuidv4();
 		const inputSkillObject = convertFormData(formData);
