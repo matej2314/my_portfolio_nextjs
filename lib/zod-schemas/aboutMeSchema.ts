@@ -11,6 +11,6 @@ export const aboutTxtSchema = validatedString(100, 500, {
 });
 
 export const aboutMeSchema = z.object({
-	id: aboutTxtSchema,
-	about_text: validatedString(1),
+	id: idSchema,
+	about_text: aboutTxtSchema,
 });

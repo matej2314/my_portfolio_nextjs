@@ -8,7 +8,7 @@ type DashboardBoxProps = {
 export default function DashboardDataBox({ header, data, dataColor = 'text-slate-200' }: DashboardBoxProps) {
 
     return (
-        <section className="dashboard-data-box">
+        <section className="dashboard-data-box select-none">
             <div className="w-full h-full flex flex-col justify-start items-center gap-[0.5rem]">
                 <h2
                     className="text-xl font-semibold flex gap-1"

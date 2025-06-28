@@ -1,6 +1,5 @@
 'use client';
 
-import { bold } from "@uiw/react-md-editor";
 import { Input } from "../input";
 import { cn } from "@/lib/utils";
 

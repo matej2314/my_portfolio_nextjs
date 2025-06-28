@@ -16,7 +16,6 @@ import {
     getPaginationRowModel,
     flexRender,
     VisibilityState,
-    RowData,
 } from "@tanstack/react-table"
 import { useState } from "react";
 
@@ -25,7 +24,7 @@ import { ColumnVisibilityDropdown } from "@/components/control-panel-components/
 
 type TableElementProps<TData extends object> = {
     data: TData[];
-    columns: ColumnDef<TData, any>[];
+    columns: ColumnDef<TData, unknown>[];
     enableColumnVisibility?: boolean;
     defaultColumnVisibility?: VisibilityState;
     onEdit?: (rowData: TData) => void;

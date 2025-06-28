@@ -19,7 +19,7 @@ export default function SaveSkillForm() {
         <>
             {state?.success && <p className="text-green-400">{state.message}</p>}
             {state?.success === false && <p className="text-red-400">{state.error}</p>}
-            <form action='' className="w-fit h-fit flex flex-col items-center justify-center gap-2 text-slate-200">
+            <form action={formAction} className="w-fit h-fit flex flex-col items-center justify-center gap-2 text-slate-200">
                 <LabelElement
                     htmlFor="skill_name"
                     className="font-bold pb-1 ml-2 text-lg tracking-wide"

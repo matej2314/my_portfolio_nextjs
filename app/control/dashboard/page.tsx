@@ -11,7 +11,7 @@ export default async function DashboardPage() {
 
     return (
         <main className="w-full h-full flex justify-center items-center">
-            <p className="text-slate-200">dashboard</p>
+            <p className="text-slate-200 select-none">dashboard</p>
         </main>
     )
 }
