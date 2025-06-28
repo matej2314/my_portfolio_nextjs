@@ -25,7 +25,6 @@ export default function NavLink({ children, pathName, linkClass, isActive, activ
         onClick?.(e)
     };
 
-
     switch (variant) {
         case 'home':
             return <Link

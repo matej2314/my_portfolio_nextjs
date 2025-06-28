@@ -6,9 +6,13 @@ import { createColumns } from "@/lib/createColumnsDef";
 import { type Course } from "@/types/actionsTypes/actionsTypes";
 import { type VisibilityState } from "@tanstack/react-table";
 
+type FormattedCourse = Omit<Course, 'course_date'> & {
+    course_date: string;
+}
+
 export default async function ManageCourses() {
 
-    const coursesColumns = createColumns<Course>([
+    const coursesColumns = createColumns<FormattedCourse>([
         { key: 'id', header: 'ID' },
         { key: 'course_name', header: 'Name' },
         { key: 'course_date', header: 'Date' },
@@ -27,7 +31,10 @@ export default async function ManageCourses() {
         return <p>Failed to fetch data.</p>
     }
 
-    const courses = coursesData.courses;
+    const courses = coursesData.courses.map(course => ({
+        ...course,
+        course_date: new Date(course.course_date).toLocaleDateString('pl-PL')
+    }))
 
 
     return (
