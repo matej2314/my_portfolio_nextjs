@@ -45,30 +45,32 @@ export default function SaveProjectForm() {
                     className="w-[15rem]"
                 />
                 <input type="hidden" id="project_category" name="project_category" value={selectedCategory} />
-                <LabelElement htmlFor="project_main_screens" className="font-bold pb-1 ml-2 text-lg tracking-wide">
-                    Main project files:
-                </LabelElement>
-                <InputElement
-                    type="file"
-                    title="project main screens"
-                    id="project_main_screens"
-                    name="project_main_screens"
-                    required={false}
-                    className="text-md pl-2 tracking-wide w-[16rem]"
-                    multiple={true}
-                />
-                <LabelElement htmlFor="project_gallery_screens" className="font-bold pb-1 ml-2 text-lg tracking-wide">
-                    Project screenshots:
-                </LabelElement>
-                <InputElement
-                    type="file"
-                    title="project gallery screens"
-                    id="project_gallery_screens"
-                    name="project_gallery_screens"
-                    required={false}
-                    className="text-md pl-2 tracking-wide w-[16rem]"
-                    multiple={true}
-                />
+                <div className="w-full h-fit flex justify-around">
+                    <LabelElement htmlFor="project_main_screens" className="font-bold pb-1 ml-2 text-lg tracking-wide">
+                        Main project files:
+                    </LabelElement>
+                    <InputElement
+                        type="file"
+                        title="project main screens"
+                        id="project_main_screens"
+                        name="project_main_screens"
+                        required={false}
+                        className="text-md pl-2 tracking-wide w-[16rem]"
+                        multiple={true}
+                    />
+                    <LabelElement htmlFor="project_gallery_screens" className="font-bold pb-1 ml-2 text-lg tracking-wide">
+                        Project screenshots:
+                    </LabelElement>
+                    <InputElement
+                        type="file"
+                        title="project gallery screens"
+                        id="project_gallery_screens"
+                        name="project_gallery_screens"
+                        required={false}
+                        className="text-md pl-2 tracking-wide w-[16rem]"
+                        multiple={true}
+                    />
+                </div>
                 <LabelElement htmlFor="project_URL" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                     Project url:
                 </LabelElement>

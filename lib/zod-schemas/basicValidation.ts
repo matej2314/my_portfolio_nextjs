@@ -28,3 +28,27 @@ export function validatedString(
 
 	return base;
 }
+
+export function validatedUrl(
+	min: number = 10,
+	max: number = 200,
+	messages?: {
+		requiredError?: string;
+		tooSmall?: string;
+		tooBig?: string;
+		invalidUrl?: string;
+		unsafeProtocol?: string;
+	}
+) {
+	return validatedString(min, max, messages)
+		.url({ message: messages?.invalidUrl ?? 'Invalid URL.' })
+		.refine(
+			url => {
+				const unsafe = ['javascript:', 'data:', 'vbscript:', 'mailto:', 'tel:'];
+				return !unsafe.some(proto => url.toLowerCase().startsWith(proto));
+			},
+			{
+				message: messages?.unsafeProtocol ?? 'Used unsafe protocol.',
+			}
+		);
+}

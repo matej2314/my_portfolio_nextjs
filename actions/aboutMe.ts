@@ -3,7 +3,7 @@
 import prisma from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
 
-import { aboutMeSchema } from '@/lib/zod-schemas/aboutMeSchema';
+import { aboutMeSchema, aboutTxtSchema } from '@/lib/zod-schemas/aboutMeSchema';
 import { type GetAboutMeType, ReturnedType } from '@/types/actionsTypes/actionsTypes';
 
 export async function getAboutMe(): Promise<GetAboutMeType> {
@@ -17,10 +17,14 @@ export async function getAboutMe(): Promise<GetAboutMeType> {
 	}
 }
 
-export async function saveAboutMe(formData: FormData): Promise<ReturnedType> {
+export async function saveAboutMe(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
 		const id = uuidv4();
 		const about_text = formData.get('about_text') as string;
+		const validAbout_text = aboutTxtSchema.safeParse(about_text);
+		if (!validAbout_text.success) {
+			return { success: false, error: 'Invalid input data.' };
+		}
 
 		const newAboutMe = { id, about_text };
 
@@ -33,6 +37,8 @@ export async function saveAboutMe(formData: FormData): Promise<ReturnedType> {
 
 		const aboutText = { ...validNewAboutMe.data };
 
+		await prisma.about_me.deleteMany({});
+
 		await prisma.about_me.create({
 			data: aboutText,
 		});
@@ -44,7 +50,7 @@ export async function saveAboutMe(formData: FormData): Promise<ReturnedType> {
 	}
 }
 
-export async function updateAboutMe(formData: FormData): Promise<ReturnedType> {
+export async function updateAboutMe(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
 		const updatedDescription = {
 			id: formData.get('id') as string,

@@ -1,8 +1,10 @@
-import { saveAboutMe } from "@/actions/aboutMe"
+import AddAboutForm from "@/components/control-panel-components/forms/AddAboutTxtForm"
 
 export default function AddAbout() {
 
     return (
-        <p>Add about txt</p>
+        <main className="w-full h-full flex justify-center items-center">
+            <AddAboutForm />
+        </main>
     )
 }

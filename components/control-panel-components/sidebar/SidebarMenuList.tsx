@@ -27,10 +27,10 @@ export default function SidebarMenuList() {
             {controlMenuArray.map(({ key, label, icon, actions }) => (
                 <li
                     key={key}
-                    className="relative w-[15rem] h-fit flex justify-center items-center rounded-md py-3 hover:bg-green-600/60">
+                    className="relative w-[15rem] h-fit flex justify-center items-center rounded-md py-3 hover:bg-green-600">
                     <IconButton
                         iconCode={icon}
-                        className="bg-transparent hover:bg-transparent flex flex-row-reverse text-lg"
+                        className="w-full h-full bg-transparent hover:bg-transparent flex flex-row-reverse text-lg"
                         iconClass="hover:bg-green-700"
                         onClick={() => handleMenuClick(key)}
                     >

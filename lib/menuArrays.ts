@@ -39,11 +39,11 @@ export const blogMenuArray: MenuItem[] = [
 ];
 
 export const controlMenuArray: ControlMenuItem[] = [
-	{ key: 'about', label: 'About', icon: 'icon-park-outline:me', actions: ['add', 'edit', 'delete'] },
-	{ key: 'courses', label: 'Courses', icon: 'oui:training', actions: ['add', 'edit', 'delete'] },
-	{ key: 'projects', label: 'Projects', icon: 'grommet-icons:projects', actions: ['add', 'edit', 'delete'] },
-	{ key: 'skills', label: 'Skills', icon: 'game-icons:skills', actions: ['add', 'edit', 'delete'] },
-	{ key: 'blog', label: 'Blog', icon: 'icomoon-free:blog', actions: ['add', 'edit', 'delete'] },
-	{ key: 'resume', label: 'Resume', icon: 'mdi:resume', actions: ['add', 'delete'] },
+	{ key: 'about', label: 'About', icon: 'icon-park-outline:me', actions: ['add', 'manage'] },
+	{ key: 'courses', label: 'Courses', icon: 'oui:training', actions: ['add', 'manage'] },
+	{ key: 'projects', label: 'Projects', icon: 'grommet-icons:projects', actions: ['add', 'manage'] },
+	{ key: 'skills', label: 'Skills', icon: 'game-icons:skills', actions: ['add', 'manage'] },
+	{ key: 'blog', label: 'Blog', icon: 'icomoon-free:blog', actions: ['add', 'manage'] },
+	{ key: 'resume', label: 'Resume', icon: 'mdi:resume', actions: ['add'] },
 	{ key: 'stats', label: 'Stats', icon: 'tabler:home-stats', actions: [] },
 ];

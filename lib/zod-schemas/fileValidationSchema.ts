@@ -31,3 +31,28 @@ export const galleryFilesSchema = z
 			}),
 		{ message: `Allowed extensions: ${allowedExtensions.join(',')}` }
 	);
+
+export const cvFileSchema = z
+	.instanceof(File)
+	.refine(file => file.size > 0, {
+		message: 'Cv file is required.',
+	})
+	.refine(
+		file => {
+			const ext = file.name.split('.').pop()?.toLowerCase();
+			return ext === 'pdf';
+		},
+		{
+			message: 'Only PDF file is allowed.',
+		}
+	)
+	.refine(
+		file => {
+			const fileName = file.name.toLowerCase();
+			const pattern = /^CV - [A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+(_en)?\.pdf$/;
+			return pattern.test(fileName);
+		},
+		{
+			message: 'Invalid file name.',
+		}
+	);
