@@ -20,6 +20,8 @@ import {
 } from "@tanstack/react-table"
 import { useState } from "react";
 
+import { ColumnVisibilityDropdown } from "@/components/control-panel-components/ColumnVisibilityDropdown";
+
 
 type TableElementProps<TData extends object> = {
     data: TData[];
@@ -56,58 +58,65 @@ export function TableElement<TData extends object>({
     })
 
     return (
-        <div className="w-full table-fixed z-0">
-            <Table className="z-0">
-                <TableHeader>
-                    {table.getHeaderGroups().map((headerGroup) => (
-                        <TableRow key={headerGroup.id} className="z-0">
-                            {headerGroup.headers.map((header) => (
-                                <TableHead key={header.id} className="text-slate-200 text-center">
-                                    {header.isPlaceholder
-                                        ? null
-                                        : flexRender(header.column.columnDef.header, header.getContext())}
-                                </TableHead>
-                            ))}
-                            <TableHead className="text-slate-200">Actions</TableHead>
-                        </TableRow>
-                    ))}
-                </TableHeader>
-                <TableBody>
-                    {table.getRowModel().rows.length ? (
-                        table.getRowModel().rows.map((row) => (
-                            <TableRow key={row.id} className="hover:bg-transparent">
-                                {row.getVisibleCells().map((cell) => (
-                                    <TableCell key={cell.id} className=" text-center break-words whitespace-pre-wrap">
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                    </TableCell>
+        <div>
+            {enableColumnVisibility && (
+                <div className="flex justify-end mb-2">
+                    <ColumnVisibilityDropdown table={table} />
+                </div>
+            )}
+            <div className="w-full table-fixed z-0 border-2 border-slate-200 rounded-md">
+                <Table className="z-0">
+                    <TableHeader>
+                        {table.getHeaderGroups().map((headerGroup) => (
+                            <TableRow key={headerGroup.id} className="z-0">
+                                {headerGroup.headers.map((header) => (
+                                    <TableHead key={header.id} className="text-slate-200 text-center">
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(header.column.columnDef.header, header.getContext())}
+                                    </TableHead>
                                 ))}
-                                <TableCell>
-                                    <div className="flex gap-2">
-                                        <button
-                                            onClick={() => onEdit?.(row.original)}
-                                            className="text-green-500 hover:underline"
-                                        >
-                                            Edit
-                                        </button>
-                                        <button
-                                            onClick={() => onDelete?.(row.original)}
-                                            className="text-green-500 hover:underline"
-                                        >
-                                            Delete
-                                        </button>
-                                    </div>
+                                <TableHead className="text-slate-200">Actions</TableHead>
+                            </TableRow>
+                        ))}
+                    </TableHeader>
+                    <TableBody>
+                        {table.getRowModel().rows.length ? (
+                            table.getRowModel().rows.map((row) => (
+                                <TableRow key={row.id} className="hover:bg-transparent">
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell key={cell.id} className=" text-center break-words whitespace-pre-wrap">
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </TableCell>
+                                    ))}
+                                    <TableCell>
+                                        <div className="flex gap-2">
+                                            <button
+                                                onClick={() => onEdit?.(row.original)}
+                                                className="text-green-500 hover:underline"
+                                            >
+                                                Edit
+                                            </button>
+                                            <button
+                                                onClick={() => onDelete?.(row.original)}
+                                                className="text-green-500 hover:underline"
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={columns.length + 1} className="text-center">
+                                    No data.
                                 </TableCell>
                             </TableRow>
-                        ))
-                    ) : (
-                        <TableRow>
-                            <TableCell colSpan={columns.length + 1} className="text-center">
-                                No data.
-                            </TableCell>
-                        </TableRow>
-                    )}
-                </TableBody>
-            </Table>
+                        )}
+                    </TableBody>
+                </Table>
+            </div>
         </div>
     )
 }

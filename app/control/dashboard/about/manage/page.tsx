@@ -4,7 +4,7 @@ import TableWrapper from "@/components/control-panel-components/TableElementWrap
 import { createColumns } from "@/lib/createColumnsDef";
 
 import { type AboutTextType } from "@/types/actionsTypes/actionsTypes";
-
+import { type VisibilityState } from "@tanstack/react-table";
 
 export default async function ManageAbout() {
 
@@ -12,6 +12,10 @@ export default async function ManageAbout() {
         { key: 'id', header: 'ID' },
         { key: 'about_text', header: 'Text' }
     ])
+
+    const defaultVisible: VisibilityState = {
+        id: false,
+    }
 
     const aboutMeData = await getAboutMe();
 
@@ -24,11 +28,12 @@ export default async function ManageAbout() {
 
     return (
         <main className="w-full h-full flex flex-col justify-start items-center text-slate-200 mt-4 px-6">
-            <section className="w-full h-fit border-[1px] flex justify-center inset-ring-3 inset-ring-slate-500 border-slate-300 rounded-md">
+            <section className="w-full h-fit flex justify-center  rounded-md">
                 <TableWrapper
                     data={aboutTxt}
                     columns={aboutMeColumns}
-                    enableColumnVisibility={false}
+                    enableColumnVisibility={true}
+                    defaultColumnVisibility={defaultVisible}
                 />
             </section>
         </main>

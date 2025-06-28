@@ -5,7 +5,7 @@ import NavLink from "@/components/links/NavLink";
 
 export default function ControlSidebar() {
     return (
-        <section id="dashboardSidebar" className=" relative w-[20rem] h-full flex flex-col justify-start items-end text-slate-200 rounded-md bg-control-menu border-2 border-green-900/25 ">
+        <section id="dashboardSidebar" className=" relative w-[20rem] h-full flex flex-col justify-start items-end text-slate-200 rounded-md bg-control-menu border-2 border-green-900/25 z-20">
             <header id="sidebarHeader" className="w-full h-[3rem] flex justify-center items-center">
                 <NavLink
                     variant="project"

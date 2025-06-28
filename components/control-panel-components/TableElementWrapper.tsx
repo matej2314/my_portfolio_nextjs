@@ -1,13 +1,14 @@
 'use client';
 
 import { TableElement } from "../ui/elements/TableElement";
-import { type ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef, VisibilityState } from "@tanstack/react-table";
 
 
 interface TableWrapperProps<TData extends object> {
     data: TData[];
     columns: ColumnDef<TData>[];
     enableColumnVisibility?: boolean;
+    defaultColumnVisibility?: VisibilityState
 }
 
 
@@ -15,6 +16,7 @@ export default function TableWrapper<TData extends object>({
     data,
     columns,
     enableColumnVisibility = true,
+    defaultColumnVisibility = {}
 
 }: TableWrapperProps<TData>) {
 
@@ -39,6 +41,7 @@ export default function TableWrapper<TData extends object>({
                 onEdit={editHandler}
                 onDelete={deleteHandler}
                 enableColumnVisibility={enableColumnVisibility}
+                defaultColumnVisibility={defaultColumnVisibility}
             />
         </div>
 

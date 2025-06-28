@@ -34,7 +34,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                             />
                         ))}
                     </ul>
-                    <section className="w-full h-full flex justify-start">
+                    <section className="w-full h-full flex justify-start overflow-y-auto no-scrollbar">
                         {children}
                     </section>
                 </section>
