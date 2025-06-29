@@ -20,6 +20,7 @@ import {
 import { useState } from "react";
 
 import { ColumnVisibilityDropdown } from "@/components/control-panel-components/ColumnVisibilityDropdown";
+import IconButton from "./IconButton";
 
 
 type TableElementProps<TData extends object> = {
@@ -90,18 +91,18 @@ export function TableElement<TData extends object>({
                                     ))}
                                     <TableCell>
                                         <div className="flex gap-2">
-                                            <button
+                                            <IconButton
                                                 onClick={() => onEdit?.(row.original)}
-                                                className="text-green-500 hover:underline"
-                                            >
-                                                Edit
-                                            </button>
-                                            <button
+                                                iconCode="fluent-color:edit-16"
+                                                title="Edit element button"
+                                                className="bg-transparent text-blue-500  w-[2rem] h-[2rem] hover:text-blue-600 hover:bg-transparent hover:underline"
+                                            />
+                                            <IconButton
                                                 onClick={() => onDelete?.(row.original)}
-                                                className="text-green-500 hover:underline"
-                                            >
-                                                Delete
-                                            </button>
+                                                iconCode="uiw:delete"
+                                                title="Delete element button"
+                                                className="bg-transparent text-red-500 hover:bg-transparent hover:underline"
+                                            />
                                         </div>
                                     </TableCell>
                                 </TableRow>

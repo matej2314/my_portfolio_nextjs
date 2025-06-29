@@ -21,7 +21,7 @@ export default async function ProjectsSection({ projects }: { projects: GetProje
             <section className="w-full h-[100dvh] flex justify-center items-center">
                 <ProjectsGallery projects={projects?.projects} images={images} />
             </section>
-            <span className="text-green-400 text-4xl ml-2 mt-5">&#125;</span>
+            <span className="text-green-400 text-4xl ml-2">&#125;</span>
         </section>
     )
 }

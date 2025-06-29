@@ -8,7 +8,7 @@ import NavLink from "@/components/links/NavLink";
 
 import { type IconButtonType } from "@/types/iconButtonTypes";
 
-export default function IconButton({ iconCode, children, redirectPath, iconClass, onClick, ...props }: IconButtonType) {
+export default function IconButton({ iconCode, children, redirectPath, iconClass, title, onClick, ...props }: IconButtonType) {
 
     const router = useRouter();
 
@@ -41,6 +41,7 @@ export default function IconButton({ iconCode, children, redirectPath, iconClass
         <Button
             type="button"
             onClick={handleClick}
+            title={title}
             {...props}
         >
             {children}

@@ -6,5 +6,7 @@ export type IconButtonType = {
 	redirectPath?: string;
 	children?: ReactNode;
 	iconClass?: string;
+	iconColor?: string;
+	title?: string;
 	onClick?: () => void;
 } & ComponentProps<typeof Button>;

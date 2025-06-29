@@ -6,10 +6,14 @@ import { createColumns } from "@/lib/createColumnsDef";
 import { type Project } from "@/types/actionsTypes/actionsTypes";
 import { type VisibilityState } from "@tanstack/react-table";
 
+type FormattedProject = Omit<Project, 'end_date'> & {
+    end_date: string
+}
+
 
 export default async function ManageProjects() {
 
-    const projectsColumns = createColumns<Project>([
+    const projectsColumns = createColumns<FormattedProject>([
         { key: 'id', header: 'ID' },
         { key: 'project_name', header: 'Name' },
         { key: 'project_category', header: 'Category' },
@@ -52,7 +56,10 @@ export default async function ManageProjects() {
         return <p>Failed to fetch data.</p>
     };
 
-    const projects = projectsData.projects;
+    const projects = projectsData.projects.map(project => ({
+        ...project,
+        end_date: new Date(project.end_date as Date).toLocaleDateString('pl-PL')
+    }))
 
     return (
         <main className="w-full h-full flex flex-col justify-start items-center text-slate-200 mt-4 px-6">

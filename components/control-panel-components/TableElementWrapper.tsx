@@ -34,7 +34,7 @@ export default function TableWrapper<TData extends object>({
 
 
     return (
-        <div className="w-full h-full flex z-0">
+        <div className="w-full h-full flex justify-center z-0 select-none">
             <TableElement
                 data={data}
                 columns={columns}

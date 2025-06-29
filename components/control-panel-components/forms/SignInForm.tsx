@@ -42,8 +42,8 @@ export default function SignInForm() {
             />
             {state?.error && <p className="text-red-700">{state.error}</p>}
             <SubmitBtn
-                backgroundColor="bg-slate-300"
-                hoverClass="hover:bg-slate-400"
+                backgroundColor="bg-yellow-200"
+                hoverClass="hover:bg-yellow-300"
                 pendingTxt="Logging in..."
                 idleTxt="Log in"
             />

@@ -10,8 +10,7 @@ export default function MetricsSection({ metrics }: { metrics: MetricItem[] }) {
 
     const device = useDeviceType();
 
-    const dotsCount = device === 'mobile' ? 20 : 25;
-
+    const dotsCount = 27;
     return (
         <motion.section
             initial={{ opacity: 0, scale: 0.8 }}
@@ -21,14 +20,22 @@ export default function MetricsSection({ metrics }: { metrics: MetricItem[] }) {
             id="metrics"
             className="w-full sm:w-1/2 h-full text-green-300 font-mono flex justify-center pl-8">
             <div className="w-full h-full flex flex-col">
-                <ul className="w-full h-full flex flex-col justify-center">
+                <ul className="w-full h-full flex flex-col gap-3 md:gap-2 justify-center">
                     {metrics.map((metric) => (
                         <li key={metric.label}
-                            className="text-md xl:text-lg"
+                            className="text-sm xl:text-lg"
                         >
-                            {metric.label}
-                            {' ' + '.'.repeat(dotsCount - metric.label.length)}
-                            {' ' + metric.value}
+                            {device === 'mobile' ? (
+                                <>
+                                    {metric.label} =&gt; {metric.value}
+                                </>
+                            ) : (
+                                <>
+                                    {metric.label}
+                                    {' ' + '.'.repeat(Math.max(1, dotsCount - metric.label.length))}
+                                    {' ' + metric.value}
+                                </>
+                            )}
                         </li>
                     ))}
                 </ul>
