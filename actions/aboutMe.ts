@@ -2,11 +2,13 @@
 
 import prisma from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
+import { unstable_cache, revalidateTag } from 'next/cache';
 
 import { aboutMeSchema, aboutTxtSchema } from '@/lib/zod-schemas/aboutMeSchema';
 import { type GetAboutMeType, ReturnedType } from '@/types/actionsTypes/actionsTypes';
+import { convertFormData } from '@/lib/formDataToObjectConvert';
 
-export async function getAboutMe(): Promise<GetAboutMeType> {
+export const getAboutMe = unstable_cache(async (): Promise<GetAboutMeType> => {
 	try {
 		const result = await prisma.about_me.findMany();
 
@@ -15,7 +17,7 @@ export async function getAboutMe(): Promise<GetAboutMeType> {
 		console.error(`getAboutMe error: ${String(error)}`);
 		return { error: 'Failed to fetch description' };
 	}
-}
+}, ['aboutMe']);
 
 export async function saveAboutMe(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
@@ -43,6 +45,7 @@ export async function saveAboutMe(prevState: ReturnedType, formData: FormData): 
 			data: aboutText,
 		});
 
+		revalidateTag('aboutMe');
 		return { success: true, message: 'Description added correctly' };
 	} catch (error) {
 		console.error('saveAboutMe error:', error);
@@ -52,10 +55,7 @@ export async function saveAboutMe(prevState: ReturnedType, formData: FormData): 
 
 export async function updateAboutMe(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
-		const updatedDescription = {
-			id: formData.get('id') as string,
-			about_text: formData.get('about_text') as string,
-		};
+		const updatedDescription = convertFormData(formData);
 
 		const validUpdatedDescription = aboutMeSchema.safeParse(updatedDescription);
 
@@ -64,12 +64,14 @@ export async function updateAboutMe(prevState: ReturnedType, formData: FormData)
 			return { success: false, error: 'Invalid input data.' };
 		}
 
-		const newDescription = { ...validUpdatedDescription.data };
+		const { id, ...descriptionData } = validUpdatedDescription.data;
 
 		await prisma.about_me.update({
-			where: { id: newDescription.id },
-			data: newDescription,
+			where: { id: id },
+			data: descriptionData,
 		});
+
+		revalidateTag('aboutMe');
 		return { success: true, message: 'About description updated correctly.' };
 	} catch (error) {
 		console.error('UpdateAboutMe error:', error);

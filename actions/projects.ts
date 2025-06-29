@@ -4,7 +4,7 @@ import prisma from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'node:fs';
 import path from 'path';
-import { cache } from 'react';
+import { unstable_cache, revalidateTag } from 'next/cache';
 
 import { type GetShotsResult, GetProjectType, GetProjectsType, ReturnedType } from '@/types/actionsTypes/actionsTypes';
 
@@ -15,22 +15,22 @@ import { baseProjectSchema, updateProjectSchema } from '@/lib/zod-schemas/projec
 import { idSchema } from '@/lib/zod-schemas/idSchema';
 import { mainFilesSchema, galleryFilesSchema } from '@/lib/zod-schemas/fileValidationSchema';
 
-export async function getProjects(): Promise<GetProjectsType> {
+export const getProjects = unstable_cache(async (): Promise<GetProjectsType> => {
 	try {
 		const projects = await prisma.projects.findMany();
 
 		if (!projects) {
-			return { error: 'Failed to fetch projects' };
+			return { error: 'Failed to fetch projects.' };
 		}
 
-		return { projects: projects };
+		return { projects };
 	} catch (error) {
 		console.error(`getProjects error: ${String(error)}`);
 		return { error: 'Failed to fetch projects' };
 	}
-}
+}, ['projects']);
 
-export const getProject = cache(async (id: string): Promise<GetProjectType> => {
+export const getProject = async (id: string): Promise<GetProjectType> => {
 	try {
 		const validID = idSchema.safeParse(id);
 
@@ -54,7 +54,7 @@ export const getProject = cache(async (id: string): Promise<GetProjectType> => {
 		console.error(`getProject error: ${String(error)}`);
 		return { error: 'Failed to fetch project' };
 	}
-});
+};
 
 export async function getProjectShots(id: string): Promise<GetShotsResult> {
 	const inputId = idSchema.safeParse(id);
@@ -112,6 +112,8 @@ export async function saveProject(prevState: ReturnedType, formData: FormData): 
 		};
 
 		await prisma.projects.create({ data: newProject });
+
+		revalidateTag('projects');
 		return { success: true, message: 'Project added correctly.' };
 	} catch (error) {
 		console.error('SaveProjectError:', error);
@@ -121,26 +123,23 @@ export async function saveProject(prevState: ReturnedType, formData: FormData): 
 
 export async function updateProject(formData: FormData): Promise<ReturnedType> {
 	try {
-		const id = formData.get('id') as string;
-		const isValidId = idSchema.safeParse(id);
-
 		const updatedProject = convertFormData(formData);
 
 		const isValidUpdatedProject = updateProjectSchema.safeParse(updatedProject);
 
-		if (!isValidId.success || !isValidUpdatedProject.success) {
-			console.error('Update project validation error: ', isValidId?.error?.flatten() || isValidUpdatedProject?.error?.flatten());
+		if (!isValidUpdatedProject.success) {
+			console.error(`UpdateProject validation error: ${isValidUpdatedProject.error.flatten()}`);
 			return { success: false, error: 'Invalid input data.' };
 		}
-		const validID = isValidId.data;
 
-		const newProject = { validID, ...isValidUpdatedProject.data };
+		const { id, ...projectData } = isValidUpdatedProject.data;
 
 		await prisma.projects.update({
-			where: { id: validID },
-			data: newProject,
+			where: { id: id },
+			data: projectData,
 		});
 
+		revalidateTag('projects');
 		return { success: true, message: 'Project updated correctly.' };
 	} catch (error) {
 		console.error('updateProject error:', error);
@@ -162,6 +161,7 @@ export async function deleteProject(formData: FormData): Promise<ReturnedType> {
 			where: { id: validId.data },
 		});
 
+		revalidateTag('projects');
 		return { success: true, message: 'Project deleted correctly.' };
 	} catch (error) {
 		console.error('deleteProjectError:', error);

@@ -2,13 +2,15 @@
 
 import prisma from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
+import { unstable_cache, revalidateTag } from 'next/cache';
+
 import { basePostSchema, updatePostSchema } from '@/lib/zod-schemas/postsSchema';
 import { idSchema } from '@/lib/zod-schemas/idSchema';
 
 import { type GetPostType, GetPostsType, ReturnedType } from '@/types/actionsTypes/actionsTypes';
 import { convertFormData } from '@/lib/formDataToObjectConvert';
 
-export async function getBlogPosts(): Promise<GetPostsType> {
+export const getBlogPosts = unstable_cache(async (): Promise<GetPostsType> => {
 	try {
 		const posts = await prisma.posts.findMany();
 
@@ -21,9 +23,9 @@ export async function getBlogPosts(): Promise<GetPostsType> {
 		console.error(`getPosts error:`, error);
 		return { error: 'Failed to fetch blog posts.' };
 	}
-}
+}, ['blogPosts']);
 
-export async function getBlogPost(id: string): Promise<GetPostType> {
+export const getBlogPost = async (id: string): Promise<GetPostType> => {
 	try {
 		const validId = idSchema.safeParse(id);
 
@@ -45,7 +47,7 @@ export async function getBlogPost(id: string): Promise<GetPostType> {
 		console.error('getBlogPost error:', error);
 		return { error: 'Failed to fetch blog post.' };
 	}
-}
+};
 
 export async function newBlogPost(formData: FormData): Promise<ReturnedType> {
 	try {
@@ -65,6 +67,7 @@ export async function newBlogPost(formData: FormData): Promise<ReturnedType> {
 			data: newPost,
 		});
 
+		revalidateTag('blogPosts');
 		return { success: true, message: 'Blog post added correctly.' };
 	} catch (error) {
 		console.error('newBlogPost error:', error);
@@ -82,13 +85,14 @@ export async function updateBlogPost(formdata: FormData): Promise<ReturnedType> 
 			return { success: false, error: 'Invalid input data.' };
 		}
 
-		const updatedPost = { ...validInputData.data };
+		const { id, ...postData } = validInputData.data;
 
 		await prisma.posts.update({
-			where: { id: validInputData.data.id },
-			data: updatedPost,
+			where: { id: id },
+			data: postData,
 		});
 
+		revalidateTag('blogPosts');
 		return { success: true, message: 'Blog post updated correctly.' };
 	} catch (error) {
 		console.error('UpdateBlogPost error:', error);
@@ -110,6 +114,7 @@ export async function deleteBlogPost(formData: FormData): Promise<ReturnedType> 
 			where: { id: validId.data },
 		});
 
+		revalidateTag('blogPosts');
 		return { success: true, message: 'Blog post deleted successfully.' };
 	} catch (error) {
 		console.error('deleteBlogPost error:', error);

@@ -1,6 +1,7 @@
 'use server';
 import prisma from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
+import { unstable_cache, revalidateTag } from 'next/cache';
 
 import { convertFormData } from '@/lib/formDataToObjectConvert';
 
@@ -9,7 +10,7 @@ import { idSchema } from '@/lib/zod-schemas/idSchema';
 
 import { type GetCoursesType, ReturnedType } from '@/types/actionsTypes/actionsTypes';
 
-export async function getCourses(): Promise<GetCoursesType> {
+export const getCourses = unstable_cache(async (): Promise<GetCoursesType> => {
 	try {
 		const result = await prisma.courses.findMany();
 
@@ -18,7 +19,7 @@ export async function getCourses(): Promise<GetCoursesType> {
 		console.error(`getCourses error: ${String(error)}`);
 		return { error: 'Failed to fetch courses' };
 	}
-}
+}, ['courses']);
 
 export async function saveCourse(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
@@ -38,6 +39,7 @@ export async function saveCourse(prevState: ReturnedType, formData: FormData): P
 			data: course,
 		});
 
+		revalidateTag('courses');
 		return { success: true, message: 'New course added correctly' };
 	} catch (error) {
 		console.error('saveCourse error:', error);
@@ -54,11 +56,15 @@ export async function updateCourse(formData: FormData): Promise<ReturnedType> {
 			console.error('updateCourse validation error:', validInputData.error.flatten());
 			return { success: false, error: 'Invalid input data.' };
 		}
+
+		const { id, ...dataWithoutId } = validInputData.data;
+
 		await prisma.courses.update({
-			where: { id: validInputData.data.id },
-			data: { ...validInputData.data },
+			where: { id: id },
+			data: { ...dataWithoutId },
 		});
 
+		revalidateTag('courses');
 		return { success: true, message: 'Course updated correctly.' };
 	} catch (error) {
 		console.error(`updateCourse error:`, error);
@@ -79,6 +85,7 @@ export async function deleteCourse(formData: FormData): Promise<ReturnedType> {
 			where: { id: validId.data },
 		});
 
+		revalidateTag('courses');
 		return { success: true, message: 'Course deleted correctly' };
 	} catch (error) {
 		console.error('deleteCourse error:', error);
