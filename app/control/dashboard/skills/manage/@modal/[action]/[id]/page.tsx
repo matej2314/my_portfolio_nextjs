@@ -1,6 +1,13 @@
 
 
-export default function ManageSkill({ params }: { params: { action: string, id: string } }) {
+export default async function ManageSkill({ params }: { params: Promise<{ action: string, id: string }> }) {
 
+    const { id, action } = await params;
 
+    return (
+        <>
+            <p>id: {id}</p>
+            <p>action: {action}</p>
+        </>
+    )
 }
