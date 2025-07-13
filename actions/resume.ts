@@ -6,7 +6,6 @@ import path from 'path';
 import { cvFileSchema } from '@/lib/zod-schemas/fileValidationSchema';
 
 import { type ReturnedType } from '@/types/actionsTypes/actionsTypes';
-import { buffer } from 'stream/consumers';
 
 export async function saveResume(_: any, formData: FormData): Promise<ReturnedType> {
 	const file = formData.get('cv_file') as File;

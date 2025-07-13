@@ -4,10 +4,11 @@ import prisma from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'node:fs';
 import path from 'path';
-import { unstable_cache, revalidateTag } from 'next/cache';
 
-import { type GetShotsResult, GetProjectType, GetProjectsType, ReturnedType } from '@/types/actionsTypes/actionsTypes';
+import { type GetShotsResult, GetProjectType, GetProjectsType, ReturnedType, Project } from '@/types/actionsTypes/actionsTypes';
 
+import { setCache, getCache, deleteCache, deleteMultipleCache } from '@/lib/redis/redis';
+import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 import { convertFormData } from '@/lib/formDataToObjectConvert';
 import { saveProjectImages } from '@/lib/saveProjectImages';
 
@@ -15,20 +16,28 @@ import { baseProjectSchema, updateProjectSchema } from '@/lib/zod-schemas/projec
 import { idSchema } from '@/lib/zod-schemas/idSchema';
 import { mainFilesSchema, galleryFilesSchema } from '@/lib/zod-schemas/fileValidationSchema';
 
-export const getProjects = unstable_cache(async (): Promise<GetProjectsType> => {
+export const getProjects = async (): Promise<GetProjectsType> => {
+	const cacheKey = REDIS_KEYS.PROJECTS_ALL;
+
 	try {
+		const cachedProjects = await getCache<Project[]>(cacheKey);
+
+		if (cachedProjects) return { projects: cachedProjects };
+
 		const projects = await prisma.projects.findMany();
 
 		if (!projects) {
 			return { error: 'Failed to fetch projects.' };
 		}
 
+		await setCache<Project[]>(cacheKey, projects, 3600);
+
 		return { projects };
 	} catch (error) {
 		console.error(`getProjects error: ${String(error)}`);
 		return { error: 'Failed to fetch projects' };
 	}
-}, ['projects']);
+};
 
 export const getProject = async (id: string): Promise<GetProjectType> => {
 	try {
@@ -39,6 +48,11 @@ export const getProject = async (id: string): Promise<GetProjectType> => {
 			return { error: 'Invalid input data' };
 		}
 
+		const projectKey = REDIS_KEYS.PROJECT(validID.data);
+		const cachedProject = await getCache<Project>(projectKey);
+
+		if (cachedProject) return { project: cachedProject };
+
 		const project = await prisma.projects.findFirst({
 			where: {
 				id: validID.data,
@@ -48,6 +62,8 @@ export const getProject = async (id: string): Promise<GetProjectType> => {
 		if (!project) {
 			return { error: 'Failed to fetch project' };
 		}
+
+		await setCache<Project>(projectKey, project, 3600);
 
 		return { project: project };
 	} catch (error) {
@@ -64,6 +80,10 @@ export async function getProjectShots(id: string): Promise<GetShotsResult> {
 		return { success: false, error: 'Invalid input data.' };
 	}
 
+	const shotsKey = REDIS_KEYS.PROJECT_SHOTS(inputId.data);
+	const cachedShots = await getCache<string[]>(shotsKey);
+	if (cachedShots) return { success: true, files: cachedShots };
+
 	const dirPath = path.join(process.cwd(), 'public', 'projects-photos', `${inputId.data}`, 'gallery');
 
 	if (!fs.existsSync(dirPath)) {
@@ -71,6 +91,7 @@ export async function getProjectShots(id: string): Promise<GetShotsResult> {
 	}
 
 	const files = fs.readdirSync(dirPath).map(file => `/projects-photos/${inputId.data}/gallery/${file}`);
+	await setCache<string[]>(shotsKey, files, 3600);
 	return { success: true, files };
 }
 
@@ -113,7 +134,7 @@ export async function saveProject(prevState: ReturnedType, formData: FormData): 
 
 		await prisma.projects.create({ data: newProject });
 
-		revalidateTag('projects');
+		deleteCache(REDIS_KEYS.PROJECTS_ALL);
 		return { success: true, message: 'Project added correctly.' };
 	} catch (error) {
 		console.error('SaveProjectError:', error);
@@ -139,7 +160,7 @@ export async function updateProject(formData: FormData): Promise<ReturnedType> {
 			data: projectData,
 		});
 
-		revalidateTag('projects');
+		await deleteMultipleCache(REDIS_KEYS.PROJECTS_ALL, REDIS_KEYS.PROJECT(id));
 		return { success: true, message: 'Project updated correctly.' };
 	} catch (error) {
 		console.error('updateProject error:', error);
@@ -161,7 +182,7 @@ export async function deleteProject(formData: FormData): Promise<ReturnedType> {
 			where: { id: validId.data },
 		});
 
-		revalidateTag('projects');
+		await deleteMultipleCache(REDIS_KEYS.PROJECTS_ALL, REDIS_KEYS.PROJECT(id), REDIS_KEYS.PROJECT_SHOTS(id));
 		return { success: true, message: 'Project deleted correctly.' };
 	} catch (error) {
 		console.error('deleteProjectError:', error);

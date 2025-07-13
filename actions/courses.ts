@@ -1,25 +1,30 @@
 'use server';
 import prisma from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
-import { unstable_cache, revalidateTag } from 'next/cache';
 
 import { convertFormData } from '@/lib/formDataToObjectConvert';
+import { setCache, getCache, deleteCache, deleteMultipleCache } from '@/lib/redis/redis';
+import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 
 import { baseCourseSchema, updateCourseSchema } from '@/lib/zod-schemas/courseSchema';
 import { idSchema } from '@/lib/zod-schemas/idSchema';
 
-import { type GetCoursesType, ReturnedType } from '@/types/actionsTypes/actionsTypes';
+import { type GetCoursesType, ReturnedType, Course } from '@/types/actionsTypes/actionsTypes';
 
-export const getCourses = unstable_cache(async (): Promise<GetCoursesType> => {
+export const getCourses = async (): Promise<GetCoursesType> => {
 	try {
+		const cachedCourses = await getCache<Course[]>(REDIS_KEYS.COURSES_ALL);
+		if (cachedCourses) return { courses: cachedCourses };
+
 		const result = await prisma.courses.findMany();
 
+		await setCache(REDIS_KEYS.COURSES_ALL, result, 3600);
 		return { courses: result };
 	} catch (error) {
 		console.error(`getCourses error: ${String(error)}`);
 		return { error: 'Failed to fetch courses' };
 	}
-}, ['courses']);
+};
 
 export async function saveCourse(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
@@ -39,7 +44,7 @@ export async function saveCourse(prevState: ReturnedType, formData: FormData): P
 			data: course,
 		});
 
-		revalidateTag('courses');
+		await deleteCache(REDIS_KEYS.COURSES_ALL);
 		return { success: true, message: 'New course added correctly' };
 	} catch (error) {
 		console.error('saveCourse error:', error);
@@ -64,7 +69,7 @@ export async function updateCourse(formData: FormData): Promise<ReturnedType> {
 			data: { ...dataWithoutId },
 		});
 
-		revalidateTag('courses');
+		deleteMultipleCache(REDIS_KEYS.COURSES_ALL, REDIS_KEYS.COURSE(id));
 		return { success: true, message: 'Course updated correctly.' };
 	} catch (error) {
 		console.error(`updateCourse error:`, error);
@@ -85,7 +90,7 @@ export async function deleteCourse(formData: FormData): Promise<ReturnedType> {
 			where: { id: validId.data },
 		});
 
-		revalidateTag('courses');
+		deleteMultipleCache(REDIS_KEYS.COURSES_ALL, REDIS_KEYS.COURSE(String(validId.data)));
 		return { success: true, message: 'Course deleted correctly' };
 	} catch (error) {
 		console.error('deleteCourse error:', error);

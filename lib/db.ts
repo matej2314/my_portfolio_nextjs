@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import './redis/redis';
 
 declare global {
 	// eslint-disable-next-line no-var

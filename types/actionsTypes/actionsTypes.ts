@@ -1,13 +1,13 @@
-import {  type about_me as PrismaAboutMeType } from "@prisma/client";
-import { type courses as PrismaCourseType } from "@prisma/client";
-import { type projects as PrismaProjectType } from "@prisma/client";
-import { type skills as PrismaSkillType } from "@prisma/client";
-import { type users as PrismaUserType } from "@prisma/client";
-import { type posts as PrismaPostType } from "@prisma/client";
+import { type about_me as PrismaAboutMeType } from '@prisma/client';
+import { type courses as PrismaCourseType } from '@prisma/client';
+import { type projects as PrismaProjectType } from '@prisma/client';
+import { type skills as PrismaSkillType } from '@prisma/client';
+import { type users as PrismaUserType } from '@prisma/client';
+import { type posts as PrismaPostType } from '@prisma/client';
 
-export type AboutTextType = PrismaAboutMeType;
+export type AboutTextType = PrismaAboutMeType | null;
 
-export type GetAboutMeType = { aboutMe: AboutTextType[] } | { error: string };
+export type GetAboutMeType = { aboutMe: AboutTextType } | { error: string };
 
 export type Course = PrismaCourseType;
 
@@ -31,6 +31,6 @@ export type GetPostType = { post: Post } | { error: string };
 
 export type User = PrismaUserType;
 
-export type GetShotsResult = { success: true, files: string[] } | { success: false, error: string };
+export type GetShotsResult = { success: true; files: string[] } | { success: false; error: string };
 
-export type ReturnedType = { success: true, message: string } | { success: false, error: string };
+export type ReturnedType = { success: true; message: string } | { success: false; error: string };

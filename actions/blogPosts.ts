@@ -2,28 +2,33 @@
 
 import prisma from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
-import { unstable_cache, revalidateTag } from 'next/cache';
 
 import { basePostSchema, updatePostSchema } from '@/lib/zod-schemas/postsSchema';
 import { idSchema } from '@/lib/zod-schemas/idSchema';
 
-import { type GetPostType, GetPostsType, ReturnedType } from '@/types/actionsTypes/actionsTypes';
+import { type GetPostType, GetPostsType, ReturnedType, Post } from '@/types/actionsTypes/actionsTypes';
 import { convertFormData } from '@/lib/formDataToObjectConvert';
+import { getCache, setCache, deleteCache, deleteMultipleCache } from '@/lib/redis/redis';
+import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 
-export const getBlogPosts = unstable_cache(async (): Promise<GetPostsType> => {
+export const getBlogPosts = async (): Promise<GetPostsType> => {
 	try {
+		const cachedBlogPosts = await getCache<Post[]>(REDIS_KEYS.BLOGPOSTS);
+		if (cachedBlogPosts) return { posts: cachedBlogPosts };
+
 		const posts = await prisma.posts.findMany();
 
 		if (!posts) {
 			return { error: 'Blog posts not found.' };
 		}
 
+		await setCache<Post[]>(REDIS_KEYS.BLOGPOSTS, posts, 3600);
 		return { posts: posts };
 	} catch (error) {
 		console.error(`getPosts error:`, error);
 		return { error: 'Failed to fetch blog posts.' };
 	}
-}, ['blogPosts']);
+};
 
 export const getBlogPost = async (id: string): Promise<GetPostType> => {
 	try {
@@ -34,6 +39,9 @@ export const getBlogPost = async (id: string): Promise<GetPostType> => {
 			return { error: 'Invalid input data' };
 		}
 
+		const cachedBlogPost = await getCache<Post>(REDIS_KEYS.BLOGPOST(validId.data));
+		if (cachedBlogPost) return { post: cachedBlogPost };
+
 		const post = await prisma.posts.findUnique({
 			where: { id: validId.data },
 		});
@@ -41,7 +49,7 @@ export const getBlogPost = async (id: string): Promise<GetPostType> => {
 		if (!post) {
 			return { error: 'Post not found' };
 		}
-
+		await setCache(REDIS_KEYS.BLOGPOST(id), post, 3600);
 		return { post: post };
 	} catch (error) {
 		console.error('getBlogPost error:', error);
@@ -67,7 +75,7 @@ export async function newBlogPost(formData: FormData): Promise<ReturnedType> {
 			data: newPost,
 		});
 
-		revalidateTag('blogPosts');
+		deleteCache(REDIS_KEYS.BLOGPOSTS);
 		return { success: true, message: 'Blog post added correctly.' };
 	} catch (error) {
 		console.error('newBlogPost error:', error);
@@ -92,7 +100,7 @@ export async function updateBlogPost(formdata: FormData): Promise<ReturnedType> 
 			data: postData,
 		});
 
-		revalidateTag('blogPosts');
+		await deleteMultipleCache(REDIS_KEYS.BLOGPOSTS, REDIS_KEYS.BLOGPOST(id));
 		return { success: true, message: 'Blog post updated correctly.' };
 	} catch (error) {
 		console.error('UpdateBlogPost error:', error);
@@ -110,11 +118,11 @@ export async function deleteBlogPost(formData: FormData): Promise<ReturnedType> 
 			return { success: false, error: 'Invalid input data.' };
 		}
 
-		await prisma.posts.delete({
+		const deletedPost = await prisma.posts.delete({
 			where: { id: validId.data },
 		});
 
-		revalidateTag('blogPosts');
+		deleteMultipleCache(REDIS_KEYS.BLOGPOSTS, REDIS_KEYS.BLOGPOST(deletedPost.id));
 		return { success: true, message: 'Blog post deleted successfully.' };
 	} catch (error) {
 		console.error('deleteBlogPost error:', error);

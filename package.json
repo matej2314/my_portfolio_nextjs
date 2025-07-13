@@ -31,6 +31,7 @@
 		"framer-motion": "^12.10.5",
 		"googleapis": "^148.0.0",
 		"i18next-http-backend": "^3.0.2",
+		"ioredis": "^5.6.1",
 		"jsonwebtoken": "^9.0.2",
 		"lucia": "^3.2.2",
 		"lucide-react": "^0.509.0",
