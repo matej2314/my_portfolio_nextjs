@@ -48,11 +48,6 @@ export const getProject = async (id: string): Promise<GetProjectType> => {
 			return { error: 'Invalid input data' };
 		}
 
-		const projectKey = REDIS_KEYS.PROJECT(validID.data);
-		const cachedProject = await getCache<Project>(projectKey);
-
-		if (cachedProject) return { project: cachedProject };
-
 		const project = await prisma.projects.findFirst({
 			where: {
 				id: validID.data,
@@ -62,8 +57,6 @@ export const getProject = async (id: string): Promise<GetProjectType> => {
 		if (!project) {
 			return { error: 'Failed to fetch project' };
 		}
-
-		await setCache<Project>(projectKey, project, 3600);
 
 		return { project: project };
 	} catch (error) {
@@ -160,7 +153,7 @@ export async function updateProject(formData: FormData): Promise<ReturnedType> {
 			data: projectData,
 		});
 
-		await deleteMultipleCache(REDIS_KEYS.PROJECTS_ALL, REDIS_KEYS.PROJECT(id));
+		await deleteCache(REDIS_KEYS.PROJECTS_ALL);
 		return { success: true, message: 'Project updated correctly.' };
 	} catch (error) {
 		console.error('updateProject error:', error);
@@ -182,7 +175,7 @@ export async function deleteProject(formData: FormData): Promise<ReturnedType> {
 			where: { id: validId.data },
 		});
 
-		await deleteMultipleCache(REDIS_KEYS.PROJECTS_ALL, REDIS_KEYS.PROJECT(id), REDIS_KEYS.PROJECT_SHOTS(id));
+		await deleteMultipleCache(REDIS_KEYS.PROJECTS_ALL, REDIS_KEYS.PROJECT_SHOTS(id));
 		return { success: true, message: 'Project deleted correctly.' };
 	} catch (error) {
 		console.error('deleteProjectError:', error);
