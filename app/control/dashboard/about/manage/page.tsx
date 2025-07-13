@@ -8,6 +8,7 @@ import { type VisibilityState } from "@tanstack/react-table";
 
 export default async function ManageAbout() {
 
+
     const aboutMeColumns = createColumns<AboutTextType>([
         { key: 'id', header: 'ID' },
         { key: 'about_text', header: 'Text' }
@@ -24,7 +25,7 @@ export default async function ManageAbout() {
         return <p>Failed to fetch data.</p>
     };
 
-    const aboutTxt = aboutMeData.aboutMe;
+    const aboutTxt = aboutMeData.aboutMe ? [aboutMeData.aboutMe] : [];
 
     return (
         <main className="w-full h-full flex flex-col justify-start items-center text-slate-200 mt-4 px-6">

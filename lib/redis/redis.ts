@@ -1,56 +1,64 @@
 import Redis from 'ioredis';
 
-export const redis = new Redis({
-	host: process.env.REDIS_HOST || 'localhost',
-	port: Number(process.env.REDIS_PORT) || 6379,
-	password: process.env.REDIS_PASSWORD,
-	maxRetriesPerRequest: 3,
-	enableReadyCheck: true,
-	connectTimeout: 5000,
-	keyPrefix: 'portfolio:',
-});
+const REDIS_ENABLED = process.env.REDIS_ENABLED === 'true';
 
-// Event listeners for monitoring
-redis.on('connect', () => {
-	console.log('✅ Redis connected successfully.');
-});
+let redis: Redis | null = null;
 
-redis.on('ready', () => {
-	console.log('✅ Redis is ready to accept commands.');
-});
+if (REDIS_ENABLED) {
+	redis = new Redis({
+		host: process.env.REDIS_HOST || 'localhost',
+		port: Number(process.env.REDIS_PORT) || 6379,
+		password: process.env.REDIS_PASSWORD,
+		maxRetriesPerRequest: 3,
+		enableReadyCheck: true,
+		connectTimeout: 5000,
+		keyPrefix: 'portfolio:',
+	});
 
-redis.on('error', error => {
-	console.error('❌ Redis connection error:', error);
-});
+	// Event listeners for monitoring
+	redis.on('connect', () => {
+		console.log('✅ Redis connected successfully.');
+	});
 
-redis.on('close', () => {
-	console.log('🔌 Redis connection closed.');
-});
+	redis.on('ready', () => {
+		console.log('✅ Redis is ready to accept commands.');
+	});
 
-redis.on('reconnecting', () => {
-	console.log('🔄 Redis reconnecting...');
-});
+	redis.on('error', error => {
+		console.error('❌ Redis connection error:', error);
+	});
 
-// Graceful shutdown
-process.on('SIGINT', async () => {
-	console.log('🛑 Received SIGINT, closing Redis connection...');
-	await redis.quit();
-	process.exit(0);
-});
+	redis.on('close', () => {
+		console.log('🔌 Redis connection closed.');
+	});
 
-process.on('SIGTERM', async () => {
-	console.log('🛑 Received SIGTERM, closing Redis connection...');
-	await redis.quit();
-	process.exit(0);
-});
+	redis.on('reconnecting', () => {
+		console.log('🔄 Redis reconnecting...');
+	});
+
+	// Graceful shutdown
+	process.on('SIGINT', async () => {
+		console.log('🛑 Received SIGINT, closing Redis connection...');
+		await redis?.quit();
+		process.exit(0);
+	});
+
+	process.on('SIGTERM', async () => {
+		console.log('🛑 Received SIGTERM, closing Redis connection...');
+		await redis?.quit();
+		process.exit(0);
+	});
+} else {
+	console.log('Redis is disabled.');
+}
 
 export const setCache = async <T>(key: string, value: T, expireSeconds?: number) => {
 	try {
 		const jsonValue = JSON.stringify(value);
 		if (expireSeconds) {
-			await redis.setex(key, expireSeconds, jsonValue);
+			await redis?.setex(key, expireSeconds, jsonValue);
 		} else {
-			await redis.set(key, jsonValue);
+			await redis?.set(key, jsonValue);
 		}
 		return true;
 	} catch (error) {
@@ -61,7 +69,7 @@ export const setCache = async <T>(key: string, value: T, expireSeconds?: number)
 
 export const getCache = async <T>(key: string): Promise<T | null> => {
 	try {
-		const value = await redis.get(key);
+		const value = await redis?.get(key);
 		if (!value) return null;
 		return JSON.parse(value) as T;
 	} catch (error) {
@@ -72,7 +80,7 @@ export const getCache = async <T>(key: string): Promise<T | null> => {
 
 export const deleteCache = async (key: string) => {
 	try {
-		await redis.del(key);
+		await redis?.del(key);
 		return true;
 	} catch (error) {
 		console.error(`Redis delete error for key ${key}:`, error);
@@ -82,7 +90,7 @@ export const deleteCache = async (key: string) => {
 
 export const deleteMultipleCache = async (...keys: string[]) => {
 	try {
-		await redis.del(...keys);
+		await redis?.del(...keys);
 		return true;
 	} catch (error) {
 		console.error(`Redis deletemultipleCache error:`, error);

@@ -1,11 +1,7 @@
 
+export default async function ManageAbout({ params }: { params: Promise<{ action: string, id: string }> }) {
 
-
-
-
-export default async function ManageAbout({ params }: { params: { action: string, id: string } }) {
-
-    const { id, action } = params;
+    const { id, action } = await params;
 
     return (
         <>

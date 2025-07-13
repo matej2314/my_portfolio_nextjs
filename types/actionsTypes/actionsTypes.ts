@@ -5,9 +5,9 @@ import { type skills as PrismaSkillType } from '@prisma/client';
 import { type users as PrismaUserType } from '@prisma/client';
 import { type posts as PrismaPostType } from '@prisma/client';
 
-export type AboutTextType = PrismaAboutMeType | null;
+export type AboutTextType = PrismaAboutMeType;
 
-export type GetAboutMeType = { aboutMe: AboutTextType } | { error: string };
+export type GetAboutMeType = { aboutMe: AboutTextType | null } | { error: string };
 
 export type Course = PrismaCourseType;
 
