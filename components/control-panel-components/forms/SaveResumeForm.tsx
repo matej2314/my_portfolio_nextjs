@@ -5,7 +5,6 @@ import { useActionState } from "react";
 import { saveResume } from "@/actions/resume";
 
 import LabelElement from "@/components/ui/elements/LabelElement";
-import InputElement from "@/components/ui/elements/InputElement";
 import InputFileElement from "@/components/ui/elements/InputFileElement";
 import SubmitBtn from "@/components/ui/elements/SubmitButton";
 
