@@ -6,12 +6,13 @@ type TextAreaElementProps = {
     id: string;
     className: string;
     required: boolean;
+    placeholder?: string;
     title?: string;
     name: string;
     defaultValue?: string;
 }
 
-export default function TextAreaElement({ id, className, title, name, defaultValue, required }: TextAreaElementProps) {
+export default function TextAreaElement({ id, className, title, name, defaultValue, placeholder, required }: TextAreaElementProps) {
 
 
     return (
@@ -21,6 +22,7 @@ export default function TextAreaElement({ id, className, title, name, defaultVal
             name={name}
             required={required}
             defaultValue={defaultValue}
+            placeholder={placeholder}
             title={title}
         />
     )

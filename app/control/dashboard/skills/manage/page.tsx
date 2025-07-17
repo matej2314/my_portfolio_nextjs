@@ -38,6 +38,7 @@ export default async function ManageSkills() {
                         columns={skillsColumns}
                         enableColumnVisibility={true}
                         defaultColumnVisibility={defaultVisibleColumns}
+                        basePath={'/control/dashboard/skills/manage'}
                     />
                 </div>
             </section>

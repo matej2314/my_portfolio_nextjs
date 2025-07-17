@@ -57,7 +57,7 @@ export const getBlogPost = async (id: string): Promise<GetPostType> => {
 	}
 };
 
-export async function newBlogPost(formData: FormData): Promise<ReturnedType> {
+export async function newBlogPost(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
 		const postObj = convertFormData(formData);
 		const validPostObject = basePostSchema.safeParse(postObj);
@@ -83,7 +83,7 @@ export async function newBlogPost(formData: FormData): Promise<ReturnedType> {
 	}
 }
 
-export async function updateBlogPost(formdata: FormData): Promise<ReturnedType> {
+export async function updateBlogPost(prevState: ReturnedType, formdata: FormData): Promise<ReturnedType> {
 	try {
 		const inputData = convertFormData(formdata);
 		const validInputData = updatePostSchema.safeParse(inputData);
@@ -108,7 +108,7 @@ export async function updateBlogPost(formdata: FormData): Promise<ReturnedType> 
 	}
 }
 
-export async function deleteBlogPost(formData: FormData): Promise<ReturnedType> {
+export async function deleteBlogPost(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
 		const inputId = formData.get('id') as string;
 		const validId = idSchema.safeParse(inputId);

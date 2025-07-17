@@ -11,15 +11,20 @@ interface MarkdownEditorProps {
     height?: number;
 }
 
-export default function MarkdownEditor({ value, onChange, wrapperClassName, height }: MarkdownEditorProps) {
+export default function MarkdownEditor({
+    value,
+    onChange,
+    wrapperClassName,
+    height
+}: MarkdownEditorProps) {
 
     return (
-        <div>
+        <div className={wrapperClassName}>
             <MDEditor
                 value={value}
                 onChange={(val = '') => onChange(val)}
                 height={height}
-                className={wrapperClassName}
+                className="markdown-editor-custom"
             />
         </div>
     )

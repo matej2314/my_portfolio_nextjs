@@ -7,7 +7,7 @@ import { convertFormData } from '@/lib/formDataToObjectConvert';
 import { setCache, getCache, deleteCache } from '@/lib/redis/redis';
 import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 
-import { type ReturnedType, GetSkillsType, Skill } from '@/types/actionsTypes/actionsTypes';
+import { type ReturnedType, GetSkillsType, GetSkillType, Skill } from '@/types/actionsTypes/actionsTypes';
 import { baseSkillSchema, updateSkillSchema } from '@/lib/zod-schemas/skillSchema';
 import { idSchema } from '@/lib/zod-schemas/idSchema';
 
@@ -27,6 +27,23 @@ export const getSkills = async (): Promise<GetSkillsType> => {
 		return { error: 'Failed to fetch skills' };
 	}
 };
+
+export async function getSkill(id: string): Promise<GetSkillType> {
+	try {
+		const skillKey = REDIS_KEYS.SKILL(id);
+		const cachedSkill = await getCache<Skill>(skillKey);
+
+		if (cachedSkill) return { skill: cachedSkill };
+
+		const result = await prisma.skills.findUnique({ where: { id } });
+
+		await setCache<Skill>(skillKey, result as Skill, 3600);
+		return { skill: result as Skill };
+	} catch (error) {
+		console.error(`getSkill error: ${String(error)}`);
+		return { error: 'Failed to fetch skill' };
+	}
+}
 
 export async function saveSkill(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
@@ -51,7 +68,7 @@ export async function saveSkill(prevState: ReturnedType, formData: FormData): Pr
 	}
 }
 
-export async function updateSkill(formData: FormData): Promise<ReturnedType> {
+export async function updateSkill(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
 		const newSkillObject = convertFormData(formData);
 		const validNewSkillObj = updateSkillSchema.safeParse(newSkillObject);
@@ -76,7 +93,7 @@ export async function updateSkill(formData: FormData): Promise<ReturnedType> {
 	}
 }
 
-export async function deleteSkill(formData: FormData): Promise<ReturnedType> {
+export async function deleteSkill(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
 		const id = formData.get('id') as string;
 		const validId = idSchema.safeParse(id);

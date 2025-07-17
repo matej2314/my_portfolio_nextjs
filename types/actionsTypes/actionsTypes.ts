@@ -11,6 +11,8 @@ export type GetAboutMeType = { aboutMe: AboutTextType | null } | { error: string
 
 export type Course = PrismaCourseType;
 
+export type GetCourseType = { course: Course } | { error: string };
+
 export type GetCoursesType = { courses: Course[] } | { error: string };
 
 export type Project = PrismaProjectType;
@@ -20,6 +22,8 @@ export type GetProjectsType = { projects: Project[] } | { error: string };
 export type GetProjectType = { project: Project } | { error: string };
 
 export type Skill = PrismaSkillType;
+
+export type GetSkillType = { skill: Skill } | { error: string };
 
 export type GetSkillsType = { skills: Skill[] } | { error: string };
 

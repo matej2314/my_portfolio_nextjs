@@ -69,6 +69,7 @@ export default async function ManageProjects() {
                     columns={projectsColumns}
                     enableColumnVisibility={true}
                     defaultColumnVisibility={defaultVisibleColumns}
+                    basePath={`/control/dashboard/projects/manage/`}
                 />
             </section>
         </main>

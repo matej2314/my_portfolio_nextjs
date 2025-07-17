@@ -6,6 +6,7 @@ import { saveResume } from "@/actions/resume";
 
 import LabelElement from "@/components/ui/elements/LabelElement";
 import InputElement from "@/components/ui/elements/InputElement";
+import InputFileElement from "@/components/ui/elements/InputFileElement";
 import SubmitBtn from "@/components/ui/elements/SubmitButton";
 
 export default function SaveResumeForm() {
@@ -23,12 +24,11 @@ export default function SaveResumeForm() {
                 >
                     Select CV file:
                 </LabelElement>
-                <InputElement
-                    type="file"
-                    id="cv_file"
+                <InputFileElement
                     name="cv_file"
-                    required={false}
-                    className="text-md pl-2 tracking-wide w-[16rem]"
+                    id="cv_file"
+                    placeholder="Choose a file"
+                    className="text-md tracking-wide w-[25rem]"
                 />
                 <SubmitBtn
                     pendingTxt='Saving...'

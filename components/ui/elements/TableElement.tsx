@@ -30,6 +30,7 @@ type TableElementProps<TData extends object> = {
     defaultColumnVisibility?: VisibilityState;
     onEdit?: (rowData: TData) => void;
     onDelete?: (rowData: TData) => void;
+    isDeleteEnable?: boolean;
 };
 
 
@@ -40,6 +41,7 @@ export function TableElement<TData extends object>({
     defaultColumnVisibility = {},
     onEdit,
     onDelete,
+    isDeleteEnable = true,
 }: TableElementProps<TData>) {
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
         enableColumnVisibility ? defaultColumnVisibility : {}
@@ -97,12 +99,12 @@ export function TableElement<TData extends object>({
                                                 title="Edit element button"
                                                 className="bg-transparent text-blue-500  w-[2rem] h-[2rem] hover:text-blue-600 hover:bg-transparent hover:underline"
                                             />
-                                            <IconButton
+                                            {isDeleteEnable && <IconButton
                                                 onClick={() => onDelete?.(row.original)}
                                                 iconCode="uiw:delete"
                                                 title="Delete element button"
                                                 className="bg-transparent text-red-500 hover:bg-transparent hover:underline"
-                                            />
+                                            />}
                                         </div>
                                     </TableCell>
                                 </TableRow>

@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react"
 import { useActionState } from "react"
-import { saveSkill } from "@/actions/skills"
+import { saveSkill, updateSkill } from "@/actions/skills"
 
 import { skillsCatArray } from "@/lib/dataCatArrays"
 
@@ -10,10 +10,28 @@ import InputElement from "@/components/ui/elements/InputElement"
 import SelectElement from "@/components/ui/elements/SelectElement"
 import SubmitBtn from "@/components/ui/elements/SubmitButton"
 
+import { type Skill } from "@/types/actionsTypes/actionsTypes"
 
-export default function SaveSkillForm() {
-    const [selectedCategory, setSelectedCategory] = useState<string>('');
-    const [state, formAction] = useActionState(saveSkill, { success: false, error: '' })
+interface SkillFormProps {
+    skillData?: Skill;
+    mode?: 'edit' | 'create';
+}
+
+export default function SkillForm({ skillData, mode = 'create' }: SkillFormProps) {
+    const [selectedCategory, setSelectedCategory] = useState<string>(skillData?.skill_cat || '');
+
+    const submitFunction = (() => {
+        switch (mode) {
+            case 'edit':
+                return updateSkill;
+            case 'create':
+                return saveSkill;
+            default:
+                throw new Error(`Unknown mode: ${mode}`);
+        }
+    })();
+
+    const [state, formAction] = useActionState(submitFunction, { success: false, error: '' })
 
     return (
         <>
@@ -33,6 +51,7 @@ export default function SaveSkillForm() {
                     id="skill_name"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
+                    defaultValue={skillData?.skill_name}
                 />
                 <LabelElement htmlFor="skill_cat" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                     Select skill category:
@@ -58,6 +77,7 @@ export default function SaveSkillForm() {
                     id="icon_name"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
+                    defaultValue={skillData?.icon_name as string}
                 />
                 <LabelElement
                     htmlFor="icon_color"
@@ -72,6 +92,7 @@ export default function SaveSkillForm() {
                     id="icon_color"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
+                    defaultValue={skillData?.icon_color as string}
                 />
                 <SubmitBtn
                     pendingTxt='Saving...'

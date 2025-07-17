@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react"
 import { useActionState } from "react"
-import { saveCourse } from "@/actions/courses"
+import { saveCourse, updateCourse } from "@/actions/courses"
 
 import LabelElement from "@/components/ui/elements/LabelElement"
 import InputElement from "@/components/ui/elements/InputElement"
@@ -11,9 +11,29 @@ import CalendarInputIcon from "@/components/ui/elements/CalendarInputIcon"
 
 import { courseCatArray } from "@/lib/dataCatArrays"
 
-export default function SaveCourseForm() {
-    const [selectedCategory, setSelectedCategory] = useState<string>('');
-    const [state, formAction] = useActionState(saveCourse, { success: false, error: '' })
+import { type Course } from "@/types/actionsTypes/actionsTypes"
+
+interface CourseFormProps {
+    courseData?: Course;
+    mode?: 'edit' | 'create';
+}
+
+export default function CourseForm({ courseData, mode = 'create' }: CourseFormProps) {
+    const [selectedCategory, setSelectedCategory] = useState<string>(courseData?.course_category || '');
+
+    const submitFunction = (() => {
+
+        switch (mode) {
+            case 'edit':
+                return updateCourse;
+            case 'create':
+                return saveCourse;
+            default:
+                throw new Error(`Unknown mode: ${mode}`);
+        }
+    })();
+
+    const [state, formAction] = useActionState(submitFunction, { success: false, error: '' })
 
     return (
         <>
@@ -30,6 +50,7 @@ export default function SaveCourseForm() {
                     id="course_name"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
+                    defaultValue={courseData?.course_name}
                 />
                 <LabelElement htmlFor="course_date" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                     Course date:
@@ -41,6 +62,7 @@ export default function SaveCourseForm() {
                         id="course_date"
                         className="w-[16rem] appearance-none cursor-pointer"
                         required={false}
+                        defaultValue={courseData?.course_date ? new Date(courseData.course_date).toISOString().split('T')[0] : ''}
                     />
                     <CalendarInputIcon />
                 </div>
@@ -54,6 +76,7 @@ export default function SaveCourseForm() {
                     id="course_organizer"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
+                    defaultValue={courseData?.course_organizer}
                 />
                 <LabelElement htmlFor="course_category" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                     Select course category:

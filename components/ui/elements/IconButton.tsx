@@ -31,7 +31,7 @@ export default function IconButton({ iconCode, children, redirectPath, iconClass
                 <Button
                     type="button" {...props}>
                     {children}
-                    <Icon className={iconClass} icon={iconCode as string} />
+                    {iconCode && <Icon className={iconClass} icon={iconCode as string} />}
                 </Button>
             </NavLink>
         )
@@ -45,7 +45,7 @@ export default function IconButton({ iconCode, children, redirectPath, iconClass
             {...props}
         >
             {children}
-            <Icon className={iconClass} icon={iconCode as string} />
+            {iconCode && <Icon className={iconClass} icon={iconCode as string} />}
         </Button>
     )
 }

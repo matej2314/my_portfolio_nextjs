@@ -135,7 +135,7 @@ export async function saveProject(prevState: ReturnedType, formData: FormData): 
 	}
 }
 
-export async function updateProject(formData: FormData): Promise<ReturnedType> {
+export async function updateProject(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
 		const updatedProject = convertFormData(formData);
 
@@ -161,7 +161,7 @@ export async function updateProject(formData: FormData): Promise<ReturnedType> {
 	}
 }
 
-export async function deleteProject(formData: FormData): Promise<ReturnedType> {
+export async function deleteProject(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
 		const id = formData.get('id') as string;
 		const validId = idSchema.safeParse(id);

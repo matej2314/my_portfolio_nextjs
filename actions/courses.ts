@@ -9,7 +9,7 @@ import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 import { baseCourseSchema, updateCourseSchema } from '@/lib/zod-schemas/courseSchema';
 import { idSchema } from '@/lib/zod-schemas/idSchema';
 
-import { type GetCoursesType, ReturnedType, Course } from '@/types/actionsTypes/actionsTypes';
+import { type GetCoursesType, GetCourseType, ReturnedType, Course } from '@/types/actionsTypes/actionsTypes';
 
 export const getCourses = async (): Promise<GetCoursesType> => {
 	try {
@@ -23,6 +23,31 @@ export const getCourses = async (): Promise<GetCoursesType> => {
 	} catch (error) {
 		console.error(`getCourses error: ${String(error)}`);
 		return { error: 'Failed to fetch courses' };
+	}
+};
+
+export const getCourse = async (id: string): Promise<GetCourseType> => {
+	try {
+		const validId = idSchema.safeParse(id);
+
+		if (!validId.success) {
+			console.error(`getCourse error: ${String(validId.error.flatten())}`);
+			return { error: 'Invalid id' };
+		}
+
+		const cachedCourse = await getCache<Course>(REDIS_KEYS.COURSE(validId.data));
+		if (cachedCourse) return { course: cachedCourse };
+
+		const result = await prisma.courses.findUnique({
+			where: { id: validId.data },
+		});
+
+		await setCache(REDIS_KEYS.COURSE(id), result, 3600);
+
+		return { course: result as Course };
+	} catch (error) {
+		console.error(`getCourse error: ${String(error)}`);
+		return { error: 'Failed to fetch course' };
 	}
 };
 
@@ -52,7 +77,7 @@ export async function saveCourse(prevState: ReturnedType, formData: FormData): P
 	}
 }
 
-export async function updateCourse(formData: FormData): Promise<ReturnedType> {
+export async function updateCourse(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
 		const inputData = convertFormData(formData);
 		const validInputData = updateCourseSchema.safeParse(inputData);
@@ -77,13 +102,14 @@ export async function updateCourse(formData: FormData): Promise<ReturnedType> {
 	}
 }
 
-export async function deleteCourse(formData: FormData): Promise<ReturnedType> {
+export async function deleteCourse(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
 		const id = formData.get('id');
 		const validId = idSchema.safeParse(id);
 
 		if (!validId.success) {
 			console.error('deleteCourse error:', validId.error.flatten());
+			return { success: false, error: 'Invalid input data.' };
 		}
 
 		await prisma.courses.delete({

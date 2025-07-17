@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import { useActionState } from "react";
-import { saveProject } from "@/actions/projects";
+import { saveProject, updateProject } from "@/actions/projects";
 
 import LabelElement from "@/components/ui/elements/LabelElement"
 import InputElement from "@/components/ui/elements/InputElement"
+import InputFileElement from "@/components/ui/elements/InputFileElement"
 import SelectElement from "@/components/ui/elements/SelectElement"
 import TextAreaElement from "@/components/ui/elements/TextareaElement";
 import SubmitBtn from "@/components/ui/elements/SubmitButton"
@@ -13,10 +14,30 @@ import CalendarInputIcon from "@/components/ui/elements/CalendarInputIcon"
 
 import { projectCatArray, difficultyArray } from "@/lib/dataCatArrays";
 
-export default function SaveProjectForm() {
-    const [selectedCategory, setSelectedCategory] = useState<string>('');
-    const [selectedDifficulty, setSelectedDifficulty] = useState<string>('');
-    const [state, formAction] = useActionState(saveProject, { success: false, error: '' })
+import { type Project } from "@/types/actionsTypes/actionsTypes"
+
+interface ProjectFormProps {
+    projectData?: Project;
+    mode?: 'edit' | 'create';
+}
+
+export default function ProjectForm({ projectData, mode = 'create' }: ProjectFormProps) {
+    const [selectedCategory, setSelectedCategory] = useState<string>(projectData?.project_category || '');
+    const [selectedDifficulty, setSelectedDifficulty] = useState<string>(projectData?.difficulty as string || '');
+
+    const submitFunction = (() => {
+
+        switch (mode) {
+            case 'edit':
+                return updateProject;
+            case 'create':
+                return saveProject;
+            default:
+                throw new Error(`Unknown mode: ${mode}`);
+        }
+    })();
+
+    const [state, formAction] = useActionState(submitFunction, { success: false, error: '' })
 
     return (
         <>
@@ -33,6 +54,7 @@ export default function SaveProjectForm() {
                     name="project_name"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
+                    defaultValue={projectData?.project_name}
                 />
                 <LabelElement htmlFor="project_category" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                     Select project category:
@@ -45,13 +67,11 @@ export default function SaveProjectForm() {
                     className="w-[15rem]"
                 />
                 <input type="hidden" id="project_category" name="project_category" value={selectedCategory} />
-                <div className="w-full h-fit flex justify-around">
+                <div className="w-full h-fit flex flex-col justify-center items-center gap-3">
                     <LabelElement htmlFor="project_main_screens" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                         Main project files:
                     </LabelElement>
-                    <InputElement
-                        type="file"
-                        title="project main screens"
+                    <InputFileElement
                         id="project_main_screens"
                         name="project_main_screens"
                         required={false}
@@ -61,9 +81,7 @@ export default function SaveProjectForm() {
                     <LabelElement htmlFor="project_gallery_screens" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                         Project screenshots:
                     </LabelElement>
-                    <InputElement
-                        type="file"
-                        title="project gallery screens"
+                    <InputFileElement
                         id="project_gallery_screens"
                         name="project_gallery_screens"
                         required={false}
@@ -81,6 +99,7 @@ export default function SaveProjectForm() {
                     id="project_URL"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
+                    defaultValue={projectData?.project_URL}
                 />
                 <LabelElement htmlFor="goal" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                     Project goal:
@@ -90,6 +109,7 @@ export default function SaveProjectForm() {
                     name="goal"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
+                    defaultValue={projectData?.goal as string}
                 />
                 <LabelElement htmlFor="project_description" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                     Project description:
@@ -99,6 +119,7 @@ export default function SaveProjectForm() {
                     name="project_description"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
+                    defaultValue={projectData?.project_description as string}
                 />
                 <LabelElement htmlFor="repo" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                     Project repository:
@@ -110,6 +131,7 @@ export default function SaveProjectForm() {
                     id="repo"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
+                    defaultValue={projectData?.repo as string}
                 />
                 <LabelElement htmlFor="technologies" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                     Technologies
@@ -121,6 +143,7 @@ export default function SaveProjectForm() {
                     id="technologies"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
+                    defaultValue={projectData?.technologies as string}
                 />
                 <LabelElement htmlFor="difficulty" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                     Project difficulty:
@@ -143,6 +166,7 @@ export default function SaveProjectForm() {
                         id="end_date"
                         className="w-full pr-10"
                         required={false}
+                        defaultValue={projectData?.end_date ? new Date(projectData.end_date).toISOString().split('T')[0] : ''}
                     />
                     <CalendarInputIcon />
                 </div>
@@ -154,6 +178,7 @@ export default function SaveProjectForm() {
                     name="long_text"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
+                    defaultValue={projectData?.long_text as string}
                 />
                 <SubmitBtn
                     pendingTxt='Saving...'

@@ -3,6 +3,7 @@ export const REDIS_KEYS = {
 	PROJECT: (id: string) => `project:${id}`,
 	PROJECT_SHOTS: (id: string) => `projectShots:${id}`,
 	SKILLS_ALL: 'skills:all',
+	SKILL: (id: string) => `skill:${id}`,
 	COURSES_ALL: 'courses:all',
 	COURSE: (id: string) => `course:${id}`,
 	BLOGPOSTS: 'blogPosts:all',

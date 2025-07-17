@@ -1,5 +1,9 @@
-// import { newBlogPost } from "@/actions/blogPosts"
+import BlogPostForm from "@/components/control-panel-components/forms/BlogPostForm"
 
 export default function AddBlogPost() {
-    return <p>add blog post page</p>
+    return (
+        <main className="w-full h-full flex justify-center items-start overflow-y-auto no-scrollbar">
+            <BlogPostForm mode="create" />
+        </main>
+    )
 }
