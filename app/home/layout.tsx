@@ -12,9 +12,9 @@ export const metadata: Metadata = {
     description: 'Webdev, SEO, Security'
 }
 
-export default async function HomePageLayout({ children, params }: { children: ReactNode, params: { locale: string } }) {
+export default async function HomePageLayout({ children, params }: { children: ReactNode, params: Promise<{ locale: string }> }) {
 
-    const { locale } = params;
+    const { locale } = await params;
 
     const messages = await getMessages({ locale });
 

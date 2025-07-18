@@ -6,7 +6,7 @@ import { Button } from "../button";
 
 import { type SubmitBtnProps } from "@/types/SubmitButtonTypes";
 
-export default function SubmitBtn({ pendingTxt, idleTxt, backgroundColor, hoverClass }: SubmitBtnProps) {
+export default function SubmitBtn({ pendingTxt, idleTxt, backgroundColor, hoverClass, disabled, submitted }: SubmitBtnProps) {
     const { pending } = useFormStatus();
 
 
@@ -16,8 +16,9 @@ export default function SubmitBtn({ pendingTxt, idleTxt, backgroundColor, hoverC
     return (
         <Button
             className={`w-1/2 h-fit flex items-center tracking-wide justify-center rounded-md mt-6 text-slate-950 text-md md:text-3xl hover-shadow ${extraClass}`}
+            disabled={submitted}
         >
-            {pending ? pendingTxt : idleTxt}
+            {submitted ? 'Submitted' : (pending ? pendingTxt : idleTxt)}
         </Button>
     )
 }

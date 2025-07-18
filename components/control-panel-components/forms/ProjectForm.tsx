@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from "react";
-import { useActionState } from "react";
+import { useState, useActionState } from "react";
+
 import { saveProject, updateProject } from "@/actions/projects";
 
 import LabelElement from "@/components/ui/elements/LabelElement"
@@ -11,6 +11,9 @@ import SelectElement from "@/components/ui/elements/SelectElement"
 import TextAreaElement from "@/components/ui/elements/TextareaElement";
 import SubmitBtn from "@/components/ui/elements/SubmitButton"
 import CalendarInputIcon from "@/components/ui/elements/CalendarInputIcon"
+import DisplayFormMessage from "@/components/home-page-components/contact-section/components/DisplayFormMessage"
+
+import { useDatePicker } from "@/hooks/useDatePicker"
 
 import { projectCatArray, difficultyArray } from "@/lib/dataCatArrays";
 
@@ -24,6 +27,8 @@ interface ProjectFormProps {
 export default function ProjectForm({ projectData, mode = 'create' }: ProjectFormProps) {
     const [selectedCategory, setSelectedCategory] = useState<string>(projectData?.project_category || '');
     const [selectedDifficulty, setSelectedDifficulty] = useState<string>(projectData?.difficulty as string || '');
+
+    const { dateInputRef, handleDateInputClick } = useDatePicker();
 
     const submitFunction = (() => {
 
@@ -40,9 +45,9 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
     const [state, formAction] = useActionState(submitFunction, { success: false, error: '' })
 
     return (
-        <>
-            {state?.success && <p className="text-green-400">{state.message}</p>}
-            {state?.success === false && <p className="text-red-400">{state.error}</p>}
+        <main className="w-full h-full flex flex-col items-center gap-5 mt-4">
+            {!state?.success && <DisplayFormMessage messages={state?.error} type="error" />}
+            {state?.success && <DisplayFormMessage messages={state?.message} type="success" />}
             <form action={formAction} className="w-fit h-fit flex flex-col items-center justify-center gap-2 text-slate-200">
                 <LabelElement htmlFor="project_name" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                     Project name:
@@ -54,6 +59,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                     name="project_name"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
+                    placeholder="min 10 characters, max 300 characters"
                     defaultValue={projectData?.project_name}
                 />
                 <LabelElement htmlFor="project_category" className="font-bold pb-1 ml-2 text-lg tracking-wide">
@@ -99,6 +105,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                     id="project_URL"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
+                    placeholder="min 5 characters, max 100 characters"
                     defaultValue={projectData?.project_URL}
                 />
                 <LabelElement htmlFor="goal" className="font-bold pb-1 ml-2 text-lg tracking-wide">
@@ -109,6 +116,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                     name="goal"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
+                    placeholder="min 5 characters, max 200 characters"
                     defaultValue={projectData?.goal as string}
                 />
                 <LabelElement htmlFor="project_description" className="font-bold pb-1 ml-2 text-lg tracking-wide">
@@ -119,6 +127,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                     name="project_description"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
+                    placeholder="min 20 characters, max 300 characters"
                     defaultValue={projectData?.project_description as string}
                 />
                 <LabelElement htmlFor="repo" className="font-bold pb-1 ml-2 text-lg tracking-wide">
@@ -131,6 +140,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                     id="repo"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
+                    placeholder="min 5 characters, max 100 characters"
                     defaultValue={projectData?.repo as string}
                 />
                 <LabelElement htmlFor="technologies" className="font-bold pb-1 ml-2 text-lg tracking-wide">
@@ -143,6 +153,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                     id="technologies"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
+                    placeholder="min 10 characters, max 250 characters"
                     defaultValue={projectData?.technologies as string}
                 />
                 <LabelElement htmlFor="difficulty" className="font-bold pb-1 ml-2 text-lg tracking-wide">
@@ -159,8 +170,12 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                 <LabelElement htmlFor="end_date" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                     End date:
                 </LabelElement>
-                <div className="relative w-[16rem] flex flex-col items-center">
+                <div
+                    className="relative w-[16rem] flex flex-col items-center cursor-pointer"
+                    onClick={handleDateInputClick}
+                >
                     <InputElement
+                        ref={dateInputRef}
                         type="date"
                         name="end_date"
                         id="end_date"
@@ -178,6 +193,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                     name="long_text"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
+                    placeholder="min 20 characters, max 500 characters"
                     defaultValue={projectData?.long_text as string}
                 />
                 <SubmitBtn
@@ -187,8 +203,6 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                     hoverClass="hover:bg-yellow-300"
                 />
             </form>
-
-        </>
-
+        </main>
     )
 }

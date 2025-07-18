@@ -1,6 +1,6 @@
 'use client'
-import { useState } from "react"
-import { useActionState } from "react"
+import { useState, useActionState } from "react"
+
 import { saveSkill, updateSkill } from "@/actions/skills"
 
 import { skillsCatArray } from "@/lib/dataCatArrays"
@@ -51,6 +51,7 @@ export default function SkillForm({ skillData, mode = 'create' }: SkillFormProps
                     id="skill_name"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
+                    placeholder="min 5 characters, max 20 characters"
                     defaultValue={skillData?.skill_name}
                 />
                 <LabelElement htmlFor="skill_cat" className="font-bold pb-1 ml-2 text-lg tracking-wide">
@@ -75,6 +76,7 @@ export default function SkillForm({ skillData, mode = 'create' }: SkillFormProps
                     title="skill icon name"
                     name="icon_name"
                     id="icon_name"
+                    placeholder="min 5 characters, max 10 characters"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
                     defaultValue={skillData?.icon_name as string}
@@ -90,6 +92,7 @@ export default function SkillForm({ skillData, mode = 'create' }: SkillFormProps
                     title="skill icon color"
                     name="icon_color"
                     id="icon_color"
+                    placeholder="min 5 characters, max 10 characters"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
                     defaultValue={skillData?.icon_color as string}

@@ -17,7 +17,11 @@ export const baseProjectSchema = z.object({
 	}).refine(value => !containsXSS(value), {
 		message: 'Project category contains dangerous characters.',
 	}),
-	project_URL: validatedUrl(),
+	project_URL: validatedUrl(5, 100, {
+		requiredError: 'Project URL is required.',
+		tooSmall: 'Project URL must contains minimum 5 characters.',
+		tooBig: 'Project URL must contains maximum 100 characters.',
+	}),
 	goal: validatedString(5, 200, {
 		requiredError: 'Project goal description is required.',
 		tooBig: 'Project goal must contains maximum 200 characters.',

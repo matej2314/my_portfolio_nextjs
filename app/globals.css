@@ -185,7 +185,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
 	position: absolute;
 	right: 1rem;
 	opacity: 0;
-	display: none;
+	display: block;
 }
 
 /* MarkdownEditor styling */

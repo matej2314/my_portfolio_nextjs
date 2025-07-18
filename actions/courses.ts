@@ -61,9 +61,12 @@ export async function saveCourse(prevState: ReturnedType, formData: FormData): P
 			return { success: false, error: 'Invalid input data' };
 		}
 
-		const id = uuidv4();
+		const { course_date, ...dataWithoutDate } = validCourse.data;
 
-		const course = { id, ...validCourse.data };
+		const id = uuidv4();
+		const formattedDate = new Date(course_date).toISOString();
+
+		const course = { id, ...dataWithoutDate, course_date: formattedDate };
 
 		await prisma.courses.create({
 			data: course,

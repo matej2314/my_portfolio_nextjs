@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from "react";
-import { useActionState } from "react";
+import { useState, useActionState } from "react";
+
 import { newBlogPost, updateBlogPost } from "@/actions/blogPosts";
 
 import { type Post } from "@/types/actionsTypes/actionsTypes";

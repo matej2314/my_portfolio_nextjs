@@ -1,5 +1,5 @@
 'use client'
-
+import { useEffect, useState } from "react";
 import { useActionState } from "react"
 import { useTranslations } from "next-intl";
 import { motion } from 'framer-motion';
@@ -15,10 +15,24 @@ import DisplayFormMessage from "./DisplayFormMessage";
 import { initialState } from "./formInitState";
 
 export default function ContactForm() {
-
-
     const [state, formAction] = useActionState(contactMe, initialState);
+    const [shouldDisable, setShouldDisable] = useState(false);
     const t = useTranslations("homePage.contactSection");
+
+    const hasErrors = state?.error && Object.values(state.error).some(error => error.length > 0);
+    const isSuccess = state?.success !== undefined;
+
+    useEffect(() => {
+        if (isSuccess || hasErrors) {
+            setShouldDisable(true);
+
+            const timer = setTimeout(() => {
+                setShouldDisable(false);
+            }, 2000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [isSuccess, hasErrors]);
 
     return (
         <motion.form
@@ -97,6 +111,8 @@ export default function ContactForm() {
                 idleTxt={t("contactForm.submitBtn.idleTxt")}
                 backgroundColor="bg-yellow-200"
                 hoverClass="hover:bg-yellow-300"
+                disabled={shouldDisable}
+                submitted={shouldDisable}
             />
         </motion.form>
     )

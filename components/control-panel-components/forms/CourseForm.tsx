@@ -1,6 +1,6 @@
 'use client'
-import { useState } from "react"
-import { useActionState } from "react"
+import { useState, useActionState } from "react"
+
 import { saveCourse, updateCourse } from "@/actions/courses"
 
 import LabelElement from "@/components/ui/elements/LabelElement"
@@ -8,18 +8,17 @@ import InputElement from "@/components/ui/elements/InputElement"
 import SelectElement from "@/components/ui/elements/SelectElement"
 import SubmitBtn from "@/components/ui/elements/SubmitButton"
 import CalendarInputIcon from "@/components/ui/elements/CalendarInputIcon"
+import DisplayFormMessage from "@/components/home-page-components/contact-section/components/DisplayFormMessage"
+
+import { useDatePicker } from "@/hooks/useDatePicker"
 
 import { courseCatArray } from "@/lib/dataCatArrays"
 
-import { type Course } from "@/types/actionsTypes/actionsTypes"
-
-interface CourseFormProps {
-    courseData?: Course;
-    mode?: 'edit' | 'create';
-}
+import { type CourseFormProps } from "@/types/courseForm"
 
 export default function CourseForm({ courseData, mode = 'create' }: CourseFormProps) {
     const [selectedCategory, setSelectedCategory] = useState<string>(courseData?.course_category || '');
+    const { dateInputRef, handleDateInputClick } = useDatePicker();
 
     const submitFunction = (() => {
 
@@ -35,11 +34,13 @@ export default function CourseForm({ courseData, mode = 'create' }: CourseFormPr
 
     const [state, formAction] = useActionState(submitFunction, { success: false, error: '' })
 
+
+
     return (
         <>
             <form action={formAction} className="w-fit h-fit flex flex-col items-center justify-center gap-2 text-slate-200">
-                {state?.success && <p className="text-green-400">{state.message}</p>}
-                {state?.success === false && <p className="text-red-400">{state.error}</p>}
+                {!state?.success && <DisplayFormMessage messages={state?.error} type="error" />}
+                {state?.success && <DisplayFormMessage messages={state?.message} type="success" />}
                 <LabelElement htmlFor="course_name" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                     Course name:
                 </LabelElement>
@@ -50,17 +51,22 @@ export default function CourseForm({ courseData, mode = 'create' }: CourseFormPr
                     id="course_name"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
+                    placeholder="min 10 characters"
                     defaultValue={courseData?.course_name}
                 />
                 <LabelElement htmlFor="course_date" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                     Course date:
                 </LabelElement>
-                <div className="relative w-[16rem] flex flex-col items-center">
+                <div
+                    className="relative w-[16rem] flex flex-col items-center cursor-pointer"
+                    onClick={handleDateInputClick}
+                >
                     <InputElement
+                        ref={dateInputRef}
                         type="date"
                         name="course_date"
                         id="course_date"
-                        className="w-[16rem] appearance-none cursor-pointer"
+                        className="w-[16rem] cursor-pointer"
                         required={false}
                         defaultValue={courseData?.course_date ? new Date(courseData.course_date).toISOString().split('T')[0] : ''}
                     />
@@ -74,6 +80,7 @@ export default function CourseForm({ courseData, mode = 'create' }: CourseFormPr
                     title="Input course organizer"
                     name="course_organizer"
                     id="course_organizer"
+                    placeholder="min 10 characters"
                     required={false}
                     className="text-md pl-2 tracking-wide w-[16rem]"
                     defaultValue={courseData?.course_organizer}
@@ -94,6 +101,7 @@ export default function CourseForm({ courseData, mode = 'create' }: CourseFormPr
                     idleTxt='Save'
                     backgroundColor="bg-yellow-200"
                     hoverClass="hover:bg-yellow-300"
+
                 />
             </form>
 
