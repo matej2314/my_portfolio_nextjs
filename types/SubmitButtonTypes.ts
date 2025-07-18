@@ -4,5 +4,5 @@ export type SubmitBtnProps = {
 	backgroundColor: string;
 	hoverClass: string;
 	disabled?: boolean;
-	submitted?: boolean; // Nowy prop do śledzenia czy formularz został wysłany
+	submitted?: boolean;
 };

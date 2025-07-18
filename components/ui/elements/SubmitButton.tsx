@@ -6,7 +6,7 @@ import { Button } from "../button";
 
 import { type SubmitBtnProps } from "@/types/SubmitButtonTypes";
 
-export default function SubmitBtn({ pendingTxt, idleTxt, backgroundColor, hoverClass, disabled, submitted }: SubmitBtnProps) {
+export default function SubmitBtn({ pendingTxt, idleTxt, backgroundColor, hoverClass, submitted }: SubmitBtnProps) {
     const { pending } = useFormStatus();
 
 

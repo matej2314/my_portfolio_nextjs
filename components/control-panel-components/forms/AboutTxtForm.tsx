@@ -22,7 +22,7 @@ export default function AboutTxtForm({ aboutMeData, mode = 'create' }: AboutTxtF
 
     return (
         <main className="w-full h-full flex flex-col items-center gap-5 mt-4">
-            <h2 className="text-2xl font-bold flex justify-center text-yellow-400">Edit 'about me' description:</h2>
+            <h2 className="text-2xl font-bold flex justify-center text-yellow-400">Edit `about me` description:</h2>
             {state?.success && <p className="text-green-400">{state.message}</p>}
             {state?.success === false && <p className="text-red-500">{state.error}</p>}
             <form action={formAction} className="w-fit h-fit flex flex-col items-center justify-center gap-2 text-slate-200">
