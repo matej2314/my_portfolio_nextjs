@@ -35,7 +35,6 @@
 		"jsonwebtoken": "^9.0.2",
 		"lucia": "^3.2.2",
 		"lucide-react": "^0.509.0",
-		"motion": "^12.23.6",
 		"mysql2": "^3.14.1",
 		"next": "15.3.2",
 		"next-i18next": "^15.4.2",
