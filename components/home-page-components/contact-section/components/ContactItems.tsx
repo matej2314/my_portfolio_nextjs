@@ -1,11 +1,11 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 
 import { contactItems } from "@/lib/contactItems";
 import { ListItem } from '@/components/ListItem';
 
-const contactItemsVariants = {
+const contactItemsVariants: Variants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: {
         opacity: 1,

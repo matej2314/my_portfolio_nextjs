@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, easeInOut, spring } from 'framer-motion';
 
 import { useClickOutside } from '@/hooks/useClickOutside';
 
@@ -20,8 +20,8 @@ export default function CvSelector({ isOpen, onClose }: { isOpen: boolean, onClo
         exit: {
             opacity: 0, y: -10, transition: {
                 duration: 1,
-                ease: 'easeInOut',
-                type: 'spring'
+                ease: easeInOut,
+                type: spring
             },
         },
     };
@@ -36,7 +36,7 @@ export default function CvSelector({ isOpen, onClose }: { isOpen: boolean, onClo
                     initial="initial"
                     animate="animate"
                     exit="exit"
-                    transition={{ duration: 0.7, ease: 'easeInOut', type: 'spring' }}
+                    transition={{ duration: 0.7, ease: easeInOut, type: spring }}
                     className="relative right-[2rem] top-1 w-[10rem] h-fit flex flex-col items-center gap-3"
                 >
                     <ExternalLink

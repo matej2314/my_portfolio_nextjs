@@ -3,7 +3,7 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, easeOut } from "framer-motion";
 
 import { type ProjectsGalleryProps } from "@/types/ProjectsGalleryTypes";
 
@@ -13,7 +13,7 @@ export default function ProjectsGallery({ projects, images }: ProjectsGalleryPro
         <motion.section
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+            transition={{ duration: 0.5, ease: easeOut }}
             viewport={{ amount: 0.4, once: false }}
             className="w-[90dvw] h-full flex justify-center items-center px-4"
         >

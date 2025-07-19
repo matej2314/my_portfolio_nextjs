@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, easeOut } from 'framer-motion';
 
 import { useDeviceType } from '@/hooks/useDeviceType';
 
@@ -15,7 +15,7 @@ export default function MetricsSection({ metrics }: { metrics: MetricItem[] }) {
         <motion.section
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+            transition={{ duration: 0.5, ease: easeOut }}
             viewport={{ amount: 0.4, once: false }}
             id="metrics"
             className="w-full sm:w-1/2 h-full text-green-300 font-mono flex justify-center pl-8">

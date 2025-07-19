@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, easeInOut } from 'framer-motion';
 
 import { type AnimatedMProps } from '@/types/AnimatedMTypes';
 
@@ -40,7 +40,7 @@ export default function MLetter({
             transition={{
                 duration: duration,
                 repeat: Infinity,
-                ease: 'easeInOut',
+                ease: easeInOut,
             }}
         >
             <rect x="0" y="0" width="10" height="65" />

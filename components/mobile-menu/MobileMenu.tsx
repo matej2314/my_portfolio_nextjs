@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from "react";
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, easeInOut } from 'framer-motion';
 import { Button } from "../ui/button";
 import { useTranslations } from "next-intl";
 
@@ -46,7 +46,7 @@ export default function MobileMenu({ array }: { array: MenuItem[] }) {
                         initial={{ clipPath: 'inset(0% 0% 100% 0%)', opacity: 1 }}
                         animate={{ clipPath: 'inset(0% 0% 0% 0%)', opacity: 1 }}
                         exit={{ clipPath: 'inset(0% 0% 100% 0%)', opacity: 0 }}
-                        transition={{ duration: 0.5, ease: 'easeInOut', type: 'tween' }}
+                        transition={{ duration: 0.5, ease: easeInOut, type: 'tween' }}
                         className="fixed inset-0 z-40 bg-[#000905] pt-24 px-4 text-green-400 flex flex-col gap-4 overflow-y-auto"
                     >
                         <li className="w-full flex justify-end">

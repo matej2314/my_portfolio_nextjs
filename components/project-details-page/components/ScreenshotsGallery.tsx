@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import Autoplay from 'embla-carousel-autoplay';
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, easeOut } from "framer-motion";
 
 export default function ScreenshotsGallery({ paths }: { paths: string[] }) {
 
@@ -27,7 +27,7 @@ export default function ScreenshotsGallery({ paths }: { paths: string[] }) {
         <motion.section
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+            transition={{ duration: 0.5, ease: easeOut }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             viewport={{ amount: 0.4, once: false }}

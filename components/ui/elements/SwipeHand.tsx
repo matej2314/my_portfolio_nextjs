@@ -1,7 +1,7 @@
 'use client';
 
 import { Icon } from '@iconify/react';
-import { motion } from 'framer-motion';
+import { motion, easeInOut } from 'framer-motion';
 
 interface SwipeHandProps {
     width?: number;
@@ -19,7 +19,7 @@ export default function SwipeHand({ width = 50, height = 50 }: SwipeHandProps) {
                 transition={{
                     duration: 1.2,
                     repeat: 2,
-                    ease: 'easeInOut'
+                    ease: easeInOut
                 }}
             >
                 <Icon icon='la:hand-pointer' fill='white' width={width} height={height} color='white' />

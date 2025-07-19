@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, easeOut } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 
 import { categories } from '@/lib/skillsCategoryArray';
@@ -13,7 +13,7 @@ export default function SkillSelector({ clickAction, selectedCategory }: SkillSe
         <motion.ul
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+            transition={{ duration: 0.5, ease: easeOut }}
             viewport={{ amount: 0.4, once: false }}
             className='w-full h-fit flex justify-center gap-2 min-[450px]:gap-3 min-[515px]:gap-6 min-[580px]:gap-7'
         >

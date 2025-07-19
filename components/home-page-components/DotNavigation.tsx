@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, easeOut, easeIn } from 'framer-motion';
 
 
 import { useActiveSection } from "@/hooks/useActiveSection";
@@ -23,8 +23,8 @@ const DotNavigation = () => {
             {device !== 'mobile' && <motion.ul
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 50, transition: { duration: 0.4, ease: 'easeOut' } }}
-                transition={{ duration: 0.4, ease: 'easeIn' }}
+                exit={{ opacity: 0, x: 50, transition: { duration: 0.4, ease: easeOut } }}
+                transition={{ duration: 0.4, ease: easeIn }}
                 className={`w-fit h-full flex pt-[9rem] flex-col gap-3
                  ${pathName?.startsWith('/home/project') || pathName?.startsWith('/home/blog') ? 'hidden' : 'block'}`}
             >

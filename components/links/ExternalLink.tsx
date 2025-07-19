@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, easeIn } from 'framer-motion';
 
 import { ReactNode } from 'react';
 
@@ -23,7 +23,7 @@ export default function ExternalLink({ href, className, initialColor, hoverColor
             initial={{ color: initialColor }}
             whileHover={{ color: hoverColor }}
             exit={{ color: targetColor }}
-            transition={{ duration: 0.4, ease: 'easeIn' }}
+            transition={{ duration: 0.4, ease: easeIn }}
             href={href}
             className={className}
             title={title}

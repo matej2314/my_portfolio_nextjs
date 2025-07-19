@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from "framer-motion";
+import { motion, easeInOut } from "framer-motion";
 import { forwardRef } from "react";
 
 import CourseHoverElement from "./CourseHoverElement";
@@ -14,7 +14,7 @@ const CourseDot = forwardRef<HTMLDivElement, CourseDotProps>(
             whileHover={{
                 backgroundColor: '#fde68a'
             }}
-            transition={{ duration: 0.2, ease: 'easeInOut' }}
+            transition={{ duration: 0.2, ease: easeInOut }}
             className="flex justify-center z-10 w-5 h-5 bg-white border-2 border-yellow-300 rounded-full cursor-pointer hover:scale-110 transition"
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
