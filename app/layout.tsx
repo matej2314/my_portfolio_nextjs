@@ -1,3 +1,4 @@
+
 import { type Metadata } from "next";
 import { type ReactNode } from "react";
 import { NextIntlClientProvider } from "next-intl";
@@ -21,15 +22,14 @@ export default async function RootLayout({
 
   const nonce = (await headers()).get('x-csp-nonce') || ''
   const locale = await getLocale();
+  const htmlLang = locale || 'en';
 
   return (
-    <html lang={locale} className="max-w-screen min-h-screen no-scrollbar bg-[#0c0c0c] scroll-smooth overflow-x-hidden">
+    <html suppressHydrationWarning={true} lang={htmlLang} className="max-w-screen min-h-screen no-scrollbar bg-[#0c0c0c] scroll-smooth overflow-x-hidden">
       <head>
         <script nonce={nonce} />
       </head>
-      <body
-        id="#__next"
-      >
+      <body suppressHydrationWarning={true}>
         <NextIntlClientProvider locale={locale}>
           {children}
         </NextIntlClientProvider>

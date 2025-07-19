@@ -20,7 +20,7 @@ const CourseDot = forwardRef<HTMLDivElement, CourseDotProps>(
             onMouseLeave={onMouseLeave}
             onTapStart={onMouseEnter}
             onTapCancel={onMouseLeave}
-            title={`${course.course_name} - ${new Date(course.course_date).toLocaleDateString()}`}
+            title={`${course.course_name} - ${new Date(course.course_date).toLocaleDateString("pl-PL")}`}
         >
             <CourseHoverElement course={course} isVisible={isVisible} />
         </motion.div>

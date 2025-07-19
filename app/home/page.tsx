@@ -7,6 +7,8 @@ import ContactSection from "@/components/home-page-components/contact-section/Co
 import SiteHeader from "@/components/home-page-components/SiteHeader";
 import ScrollToTop from "@/components/ui/elements/ScrollToTopBtn";
 
+import KeyboardNavigation from "@/components/KeyboardNavigation";
+
 
 import { getHomePageData } from "@/actions/homePage";
 import { generatePageMetadata } from "@/lib/generatePageMetadata";
@@ -42,6 +44,7 @@ export default async function HomePage() {
             <div className="fixed bottom-2 right-[2rem]">
                 <ScrollToTop />
             </div>
+            <KeyboardNavigation />
         </div>
     )
 }

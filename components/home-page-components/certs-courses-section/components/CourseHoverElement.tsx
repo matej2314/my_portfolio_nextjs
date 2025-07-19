@@ -32,7 +32,7 @@ export default function CourseHoverElement({ course, isVisible }: CourseHoverTyp
                         Date:
                     </span>
                     <span>
-                        {new Date(course.course_date).toLocaleDateString()}
+                        {new Date(course.course_date).toLocaleDateString("pl-PL")}
                     </span>
                 </p>
                 <p
