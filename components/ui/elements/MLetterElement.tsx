@@ -42,6 +42,8 @@ export default function MLetter({
                 repeat: Infinity,
                 ease: easeInOut,
             }}
+            aria-label="M letter"
+            role="img"
         >
             <rect x="0" y="0" width="10" height="65" />
             <rect

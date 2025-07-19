@@ -10,7 +10,7 @@ import { type GetShotsResult, GetProjectType, GetProjectsType, ReturnedType, Pro
 import { setCache, getCache, deleteCache, deleteMultipleCache } from '@/lib/redis/redis';
 import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 import { convertFormData } from '@/lib/formDataToObjectConvert';
-import { saveProjectImages } from '@/lib/saveProjectImages';
+import { manageProjectImages } from '@/lib/manageProjectImages';
 
 import { baseProjectSchema, updateProjectSchema } from '@/lib/zod-schemas/projectSchema';
 import { idSchema } from '@/lib/zod-schemas/idSchema';
@@ -27,7 +27,7 @@ export const getProjects = async (): Promise<GetProjectsType> => {
 		const projects = await prisma.projects.findMany();
 
 		if (!projects) {
-			return { error: 'Failed to fetch projects.' };
+			return { error: 'Projects not found.' };
 		}
 
 		await setCache<Project[]>(cacheKey, projects, 3600);
@@ -116,7 +116,7 @@ export async function saveProject(prevState: ReturnedType, formData: FormData): 
 		const id = uuidv4();
 		const validatedData = result.data;
 
-		const { mainFileName } = await saveProjectImages(id, mainFiles, galleryFiles);
+		const { mainFileName } = await manageProjectImages(id, mainFiles, galleryFiles, { mode: 'save', clearExisting: false });
 		const project_screenName = mainFileName as string;
 
 		const newProject = {
@@ -135,7 +135,7 @@ export async function saveProject(prevState: ReturnedType, formData: FormData): 
 	}
 }
 
-export async function updateProject(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
+export async function updateProject(prevState: ReturnedType, formData: FormData, clearExisting: boolean = false): Promise<ReturnedType> {
 	try {
 		const updatedProject = convertFormData(formData);
 
@@ -148,12 +148,22 @@ export async function updateProject(prevState: ReturnedType, formData: FormData)
 
 		const { id, ...projectData } = isValidUpdatedProject.data;
 
+		const mainFiles = formData.getAll('project_main_screens') as File[];
+		const galleryFiles = formData.getAll('project_gallery_screens') as File[];
+
+		const { mainFileName } = await manageProjectImages(id, mainFiles, galleryFiles, { mode: 'update', clearExisting });
+
 		await prisma.projects.update({
 			where: { id: id },
-			data: projectData,
+			data: {
+				...projectData,
+				project_screenName: mainFileName,
+			},
 		});
 
 		await deleteCache(REDIS_KEYS.PROJECTS_ALL);
+		await deleteMultipleCache(REDIS_KEYS.PROJECT_SHOTS(id));
+
 		return { success: true, message: 'Project updated correctly.' };
 	} catch (error) {
 		console.error('updateProject error:', error);
@@ -174,6 +184,8 @@ export async function deleteProject(prevState: ReturnedType, formData: FormData)
 		await prisma.projects.delete({
 			where: { id: validId.data },
 		});
+
+		await manageProjectImages(validId.data, [], [], { mode: 'delete', clearExisting: false });
 
 		await deleteMultipleCache(REDIS_KEYS.PROJECTS_ALL, REDIS_KEYS.PROJECT_SHOTS(id));
 		return { success: true, message: 'Project deleted correctly.' };

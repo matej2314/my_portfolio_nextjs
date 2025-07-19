@@ -30,9 +30,12 @@ export default function MobileMenu({ array }: { array: MenuItem[] }) {
     }
 
     return (
-        <section id='mobile-menu'>
+        <section aria-label="Mobile menu" role="navigation" id='mobile-menu'>
             <Button
                 variant="ghost"
+                aria-expanded={isOpen.menu}
+                aria-controls="mobile-menu"
+                aria-label="Toggle mobile menu"
                 onClick={() => setIsOpen(prev => ({ ...prev, menu: !prev.menu }))}
                 className={`fixed top-4 right-0.5 z-50 w-fit h-fit flex flex-col transition-transform ${isOpen.menu ? 'scale-115' : 'scale-150'} hover:bg-transparent`}
             >
@@ -43,6 +46,9 @@ export default function MobileMenu({ array }: { array: MenuItem[] }) {
                 {isOpen.menu && (
                     <motion.ul
                         key="mobile-menu"
+                        id="mobile-menu"
+                        role="menu"
+                        aria-label="Mobile navigation menu"
                         initial={{ clipPath: 'inset(0% 0% 100% 0%)', opacity: 1 }}
                         animate={{ clipPath: 'inset(0% 0% 0% 0%)', opacity: 1 }}
                         exit={{ clipPath: 'inset(0% 0% 100% 0%)', opacity: 0 }}

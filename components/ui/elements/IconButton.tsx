@@ -29,7 +29,10 @@ export default function IconButton({ iconCode, children, redirectPath, iconClass
                 linkClass="w-fit h-fit flex justify-center items-center"
             >
                 <Button
-                    type="button" {...props}>
+                    type="button"
+                    {...props}
+                    aria-label={title}
+                >
                     {children}
                     {iconCode && <Icon className={iconClass} icon={iconCode as string} />}
                 </Button>
@@ -43,6 +46,7 @@ export default function IconButton({ iconCode, children, redirectPath, iconClass
             onClick={handleClick}
             title={title}
             {...props}
+            aria-label={title}
         >
             {children}
             {iconCode && <Icon className={iconClass} icon={iconCode as string} />}

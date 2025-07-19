@@ -13,10 +13,11 @@ interface ExternalLinkType {
     targetColor?: string;
     download?: boolean;
     title?: string;
+    'aria-label'?: string;
     onClick?: () => void;
 }
 
-export default function ExternalLink({ href, className, initialColor, hoverColor, onClick, targetColor, title, download, children }: ExternalLinkType) {
+export default function ExternalLink({ href, className, initialColor, hoverColor, onClick, targetColor, title, download, children, 'aria-label': ariaLabel }: ExternalLinkType) {
 
     return (
         <motion.a
@@ -27,6 +28,7 @@ export default function ExternalLink({ href, className, initialColor, hoverColor
             href={href}
             className={className}
             title={title}
+            aria-label={ariaLabel}
             download={download}
             target='_blank'
             onClick={onClick}

@@ -18,7 +18,13 @@ export default function ContactModal() {
     return (
         showModal && <div className="absolute w-fit h-fit justify-self-center inset-0 bg-radial-green rounded-md border-2 border-green-200 z-10">
             <div className="text-slate-200 flex flex-col pb-3">
-                <button className="w-full flex justify-end relative right-2 hover:text-green-300" onClick={router.back}>Zamknij</button>
+                <button 
+                    className="w-full flex justify-end relative right-2 hover:text-green-300" 
+                    onClick={router.back}
+                    aria-label="Close contact modal"
+                >
+                    Zamknij
+                </button>
                 <div className="mb-3 flex justify-center">
                     <ContactItems />
                 </div>

@@ -2,8 +2,11 @@
 
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+
 import { sections } from '@/lib/homePageSectionsArr';
 import { useActiveSection } from './useActiveSection';
+import { scrollToSection } from '@/lib/keyboard-navigation-utils';
+
 
 export function useKeyboardNavigation() {
     const pathname = usePathname();
@@ -18,13 +21,6 @@ export function useKeyboardNavigation() {
             if (isInput) return;
 
             const currentIndex = activeSection ? sections.indexOf(activeSection) : 0;
-
-            const scrollToSection = (sectionId: string) => {
-                const el = document.getElementById(sectionId);
-                if (el) {
-                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            };
 
             const key = event.key;
 
@@ -56,6 +52,8 @@ export function useKeyboardNavigation() {
                     }
                     break;
                 case 'Escape':
+                case ' ':
+                    event.preventDefault();
                     scrollToSection(sections[0]);
                     break;
             }

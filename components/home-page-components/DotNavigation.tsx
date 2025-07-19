@@ -40,6 +40,7 @@ const DotNavigation = () => {
                             activeClass="bg-yellow-200"
                             variant='home'
                             title={section}
+                            aria-label={`Navigate to ${section} section`}
                         />
                     </li>
                 ))}

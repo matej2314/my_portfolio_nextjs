@@ -7,7 +7,7 @@ import ExternalLink from "./ExternalLink";
 import { type NavLinkProps } from "@/types/navLinkTypes";
 import { type MouseEvent } from "react";
 
-export default function NavLink({ children, pathName, linkClass, isActive, activeClass, variant, title, onClick }: NavLinkProps) {
+export default function NavLink({ children, pathName, linkClass, isActive, activeClass, variant, title, onClick, 'aria-label': ariaLabel }: NavLinkProps & { 'aria-label'?: string }) {
 
     const baseClass = linkClass ?? "w-full h-full flex justify-center items-center hover:text-green-500/80 active:text-green-500/80 cursor-pointer";
 
@@ -31,6 +31,7 @@ export default function NavLink({ children, pathName, linkClass, isActive, activ
                 href={pathName ?? ''}
                 className={finalClassName}
                 title={title}
+                aria-label={ariaLabel}
                 onClick={handleHomeClick}
             >
                 {children}
@@ -40,6 +41,7 @@ export default function NavLink({ children, pathName, linkClass, isActive, activ
                 href={pathName ?? ''}
                 className={finalClassName}
                 title={title}
+                aria-label={ariaLabel}
                 onClick={onClick}
             >
                 {children}
@@ -50,6 +52,7 @@ export default function NavLink({ children, pathName, linkClass, isActive, activ
                     href={pathName}
                     className={finalClassName}
                     title={title}
+                    aria-label={ariaLabel}
                     onClick={onClick as () => void}
                 >
                     {children}

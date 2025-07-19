@@ -16,6 +16,8 @@ export default function ScrollToTop() {
         <IconButton
             iconCode="bx:arrow-to-top"
             redirectPath="#baseSection"
+            title="Scroll to top"
+            aria-label="Scroll to top of page"
             className={`fixed bottom-6 right-6 transition-opacity duration-300 ${scroll ? 'opacity-100' : 'opacity-0 pointer-events-none'
                 } bg-yellow-300 text-slate-900 hover:bg-yellow-400`}
         />

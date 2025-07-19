@@ -28,6 +28,7 @@ export default function LanguageSwitcher() {
             value={currentLocale}
             onChange={handleChange}
             options={langOptions}
+            aria-label="Select language"
             className="md:min-w-[6rem] items-center xl:flex md:h-[2rem] bg-black  border-green-300 border-[1px] text-slate-300 rounded-full px-3 py-1 text-sm font-semibold justify-center appearance-none focus:border-[1px] focus:border-green-300"
 
         />

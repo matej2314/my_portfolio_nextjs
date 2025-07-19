@@ -25,11 +25,11 @@ export default async function RootLayout({
   const htmlLang = locale || 'en';
 
   return (
-    <html suppressHydrationWarning={true} lang={htmlLang} className="max-w-screen min-h-screen no-scrollbar bg-[#0c0c0c] scroll-smooth overflow-x-hidden">
+    <html lang={htmlLang} className="max-w-screen min-h-screen no-scrollbar bg-[#0c0c0c] scroll-smooth overflow-x-hidden">
       <head>
         <script nonce={nonce} />
       </head>
-      <body suppressHydrationWarning={true}>
+      <body>
         <NextIntlClientProvider locale={locale}>
           {children}
         </NextIntlClientProvider>

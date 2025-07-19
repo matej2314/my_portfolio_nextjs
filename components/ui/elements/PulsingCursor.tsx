@@ -8,6 +8,8 @@ export default function PulsingCursor() {
         <motion.span
             animate={{ opacity: [0, 1, 0] }}
             transition={{ repeat: Infinity, duration: 1 }}
+            aria-label="Pulsing cursor"
+            role="img"
         >
             |
         </motion.span>

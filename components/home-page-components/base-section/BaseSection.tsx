@@ -28,6 +28,7 @@ export default async function BaseSection() {
                         variant="home"
                         pathName="#contactSection"
                         title='Contact me'
+                        aria-label="Navigate to contact section"
                     >
                         <Button
                             className="w-1/2 md:w-fit h-fit xl:mt-0 text-md flex hover:bg-yellow-300 hover:text-slate-600 justify-center items-center bg-yellow-200 text-slate-900 font-bold tracking-wide xl:text-3xl"
@@ -40,6 +41,7 @@ export default async function BaseSection() {
                         iconClass="mt-1 ml-1"
                         className="w-fit md:w-fit h-fit flex px-4 sm:px-0 justify-center items-center font-bold tracking-wide xl:text-2xl pt-2 pb-3 bg-transparent border-2 border-yellow-300 text-yellow-300 hover:bg-transparent hover-shadow"
                         redirectPath="#aboutSection"
+                        aria-label="Navigate to about section"
                     >
                         {t("baseSection.learnMoreTxt")}
                     </IconButton>

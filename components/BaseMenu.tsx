@@ -30,7 +30,7 @@ export default function BaseMenu({ array }: { array: MenuItem[] }) {
     }
 
     return (
-        <ul className={`w-fit h-[2rem] text-zinc-100 text-sm xl:text-xl flex items-center gap-x-4 mr-3`}>
+        <ul aria-label="Main menu" role="navigation" className={`w-fit h-[2rem] text-zinc-100 text-sm xl:text-xl flex items-center gap-x-4 mr-3`}>
 
             {array.map((item, index) => (
                 <li
