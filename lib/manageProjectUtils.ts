@@ -107,7 +107,7 @@ export function validateProjectFiles(mainFiles: File[], galleryFiles: File[], mo
 	} else if (mode === 'update') {
 		let validMainFiles: File[] = [];
 		let validatedGalleryFiles: File[] = [];
-		let errors: string[] = [];
+		const errors: string[] = [];
 
 		if (mainFiles.length > 0) {
 			const isValidMainFiles = mainFilesSchema.safeParse(mainFiles);
