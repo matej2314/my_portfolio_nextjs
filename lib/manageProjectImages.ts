@@ -10,21 +10,32 @@ type SaveImagesResult = {
 	galleryFilesDeleted?: number;
 };
 
+// export function createResultObject(projectId: string, mainFileName?: string, mainFilesSaved?: number, galleryFilesSaved?: number, mainFilesDeleted: number = 0, galleryFilesDeleted: number = 0): SaveImagesResult {
+// 	return {
+// 		projectId,
+// 		mainFileName,
+// 		mainFilesSaved,
+// 		galleryFilesSaved,
+// 		mainFilesDeleted,
+// 		galleryFilesDeleted,
+// 	};
+// }
+
 export async function manageProjectImages(
 	projectId: string,
-	mainFiles: File[],
-	galleryFiles: File[],
-	options: {
+	mainFiles?: File[],
+	galleryFiles?: File[],
+	options?: {
 		mode: 'save' | 'update' | 'delete';
 		clearExisting: boolean;
 	}
 ): Promise<SaveImagesResult> {
-	const { mode, clearExisting = false } = options;
+	const { mode, clearExisting = false } = options || { mode: 'save', clearExisting: false };
 
 	const { baseDir, mainDir, galleryDir } = await createProjectPaths(projectId);
 
-	const mainFilesLimited = mainFiles.slice(0, 3);
-	const galleryFilesLimited = galleryFiles.slice(0, 7);
+	const mainFilesLimited = mainFiles?.slice(0, 3);
+	const galleryFilesLimited = galleryFiles?.slice(0, 7);
 
 	let mainFileName: string | undefined = undefined;
 
@@ -32,7 +43,7 @@ export async function manageProjectImages(
 		case 'save':
 			await createProjectFolders(baseDir, mainDir, galleryDir);
 
-			for (const [i, file] of mainFilesLimited.entries()) {
+			for (const [i, file] of mainFilesLimited?.entries() || []) {
 				await saveFile(file, mainDir);
 
 				if (i === 0) {
@@ -40,7 +51,7 @@ export async function manageProjectImages(
 				}
 			}
 
-			for (const file of galleryFilesLimited) {
+			for (const file of galleryFilesLimited || []) {
 				await saveFile(file, galleryDir);
 			}
 
@@ -49,8 +60,8 @@ export async function manageProjectImages(
 				mainFileName,
 				mainFilesDeleted: 0,
 				galleryFilesDeleted: 0,
-				mainFilesSaved: mainFilesLimited.length,
-				galleryFilesSaved: galleryFilesLimited.length,
+				mainFilesSaved: mainFilesLimited?.length || 0,
+				galleryFilesSaved: galleryFilesLimited?.length || 0,
 			};
 		case 'update':
 			if (clearExisting) {
@@ -58,14 +69,14 @@ export async function manageProjectImages(
 				await createProjectFolders(baseDir, mainDir, galleryDir);
 			}
 
-			for (const [i, file] of mainFilesLimited.entries()) {
+			for (const [i, file] of mainFilesLimited?.entries() || []) {
 				await saveFile(file, mainDir);
 				if (i === 0) {
 					mainFileName = extractBaseName(file.name);
 				}
 			}
 
-			for (const file of galleryFilesLimited) {
+			for (const file of galleryFilesLimited || []) {
 				await saveFile(file, galleryDir);
 			}
 
@@ -74,8 +85,8 @@ export async function manageProjectImages(
 				mainFilesDeleted: 0,
 				galleryFilesDeleted: 0,
 				mainFileName,
-				mainFilesSaved: mainFilesLimited.length,
-				galleryFilesSaved: galleryFilesLimited.length,
+				mainFilesSaved: mainFilesLimited?.length || 0,
+				galleryFilesSaved: galleryFilesLimited?.length || 0,
 			};
 		case 'delete':
 			let mainFilesDeleted = 0;
@@ -96,6 +107,8 @@ export async function manageProjectImages(
 
 					galleryFilesDeleted = deletedFiles;
 				}
+
+				await fs.rm(baseDir, { recursive: true });
 
 				return {
 					projectId,

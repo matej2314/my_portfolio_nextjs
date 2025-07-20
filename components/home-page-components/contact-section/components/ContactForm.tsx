@@ -40,7 +40,7 @@ export default function ContactForm() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3, ease: easeInOut, delay: 0.5 }}
             action={formAction}
-            className="w-full h-fit flex flex-col sm:mx-[8rem]"
+            className="w-full h-fit flex flex-col items-center sm:mx-[8rem]"
         >
             <DisplayFormMessage type="success" messages={state.success} />
             <LabelElement

@@ -1,6 +1,9 @@
 import path from 'path';
 import { promises as fs } from 'fs';
 
+import { convertFormData } from './formDataToObjectConvert';
+import { mainFilesSchema, galleryFilesSchema } from './zod-schemas/fileValidationSchema';
+
 export const extractBaseName = (fileName: string): string => {
 	const name = path.parse(fileName).name;
 	return name.split('-')[0];
@@ -54,3 +57,88 @@ export const defaultResultObject = {
 	mainFilesDeleted: 0,
 	galleryFilesDeleted: 0,
 };
+
+export const projectObjectForValidation = (projectData: FormData) => {
+	const projectDataForValidation = new FormData();
+
+	for (const [key, value] of projectData.entries()) {
+		if (key !== 'project_main_screens' && key !== 'project_gallery_screens') {
+			projectDataForValidation.append(key, value);
+		}
+	}
+
+	return convertFormData(projectDataForValidation);
+};
+
+type ValidationResult =
+	| {
+			success: true;
+			mainFiles?: File[];
+			galleryFiles?: File[];
+	  }
+	| {
+			success: false;
+			error: string;
+	  };
+
+export function validateProjectFiles(mainFiles: File[], galleryFiles: File[], mode: 'save' | 'update'): ValidationResult {
+	if (mode === 'save') {
+		const mainValidation = mainFilesSchema.safeParse(mainFiles);
+		const galleryValidation = galleryFilesSchema.safeParse(galleryFiles);
+
+		if (!mainValidation.success || !galleryValidation.success) {
+			const errors: string[] = [];
+
+			if (!mainValidation.success) errors.push(mainValidation.error.message);
+
+			if (!galleryValidation.success) errors.push(galleryValidation.error.message);
+
+			return {
+				success: false,
+				error: errors.join(';'),
+			};
+		}
+
+		return {
+			success: true,
+			mainFiles: mainValidation.data,
+			galleryFiles: galleryValidation.data,
+		};
+	} else if (mode === 'update') {
+		let validMainFiles: File[] = [];
+		let validatedGalleryFiles: File[] = [];
+		let errors: string[] = [];
+
+		if (mainFiles.length > 0) {
+			const isValidMainFiles = mainFilesSchema.safeParse(mainFiles);
+			if (!isValidMainFiles.success) {
+				errors.push(isValidMainFiles.error.message);
+			} else {
+				validMainFiles = isValidMainFiles.data;
+			}
+		}
+		if (galleryFiles.length > 0) {
+			const isValidGalleryFiles = galleryFilesSchema.safeParse(galleryFiles);
+			if (!isValidGalleryFiles.success) {
+				errors.push(isValidGalleryFiles.error.message);
+			} else {
+				validatedGalleryFiles = isValidGalleryFiles.data;
+			}
+		}
+		return errors.length === 0
+			? {
+					success: true,
+					mainFiles: validMainFiles,
+					galleryFiles: validatedGalleryFiles,
+			  }
+			: {
+					success: false,
+					error: errors.join('; '),
+			  };
+	}
+
+	return {
+		success: false,
+		error: 'Invalid validation mode',
+	};
+}

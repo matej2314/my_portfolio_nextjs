@@ -9,12 +9,11 @@ import { type GetShotsResult, GetProjectType, GetProjectsType, ReturnedType, Pro
 
 import { setCache, getCache, deleteCache, deleteMultipleCache } from '@/lib/redis/redis';
 import { REDIS_KEYS } from '@/lib/redis/redisKeys';
-import { convertFormData } from '@/lib/formDataToObjectConvert';
 import { manageProjectImages } from '@/lib/manageProjectImages';
+import { projectObjectForValidation, validateProjectFiles } from '@/lib/manageProjectUtils';
 
 import { baseProjectSchema, updateProjectSchema } from '@/lib/zod-schemas/projectSchema';
 import { idSchema } from '@/lib/zod-schemas/idSchema';
-import { mainFilesSchema, galleryFilesSchema } from '@/lib/zod-schemas/fileValidationSchema';
 
 export const getProjects = async (): Promise<GetProjectsType> => {
 	const cacheKey = REDIS_KEYS.PROJECTS_ALL;
@@ -90,44 +89,40 @@ export async function getProjectShots(id: string): Promise<GetShotsResult> {
 
 export async function saveProject(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
-		const dataObject = convertFormData(formData);
-		const result = baseProjectSchema.safeParse(dataObject);
-
-		if (!result.success) {
-			console.error('SaveProject validation error:', result.error.flatten());
-			return { success: false, error: 'Invalid input data' };
-		}
-
 		const mainFiles = formData.getAll('project_main_screens') as File[];
 		const galleryFiles = formData.getAll('project_gallery_screens') as File[];
+		const fileValidationResult = validateProjectFiles(mainFiles, galleryFiles, 'save');
 
-		const mainFilesResult = mainFilesSchema.safeParse(mainFiles);
-
-		if (!mainFilesResult.success) {
-			return { success: false, error: 'Incorrect main files.' };
+		if (!fileValidationResult.success) {
+			console.error('Image files validation error:', fileValidationResult.error);
+			return { success: false, error: 'Invalid images data' };
 		}
 
-		const galleryFilesResult = galleryFilesSchema.safeParse(galleryFiles);
+		const validMainFiles = fileValidationResult.mainFiles || [];
+		const validGalleryFiles = fileValidationResult.galleryFiles || [];
 
-		if (!galleryFilesResult.success) {
-			return { success: false, error: 'Incorrect gallery files.' };
+		const projectTxtData = projectObjectForValidation(formData);
+		const validProjectTxtData = baseProjectSchema.safeParse(projectTxtData);
+
+		if (!validProjectTxtData.success) {
+			console.error('Project data validation error:', validProjectTxtData.error.flatten());
+			return { success: false, error: 'Invalid project data' };
 		}
 
 		const id = uuidv4();
-		const validatedData = result.data;
+		const validatedProjectData = validProjectTxtData.data;
 
-		const { mainFileName } = await manageProjectImages(id, mainFiles, galleryFiles, { mode: 'save', clearExisting: false });
+		const { mainFileName } = await manageProjectImages(id, validMainFiles, validGalleryFiles, { mode: 'save', clearExisting: false });
 		const project_screenName = mainFileName as string;
 
 		const newProject = {
 			id,
 			project_screenName,
-			...validatedData,
+			...validatedProjectData,
 		};
-
 		await prisma.projects.create({ data: newProject });
 
-		deleteCache(REDIS_KEYS.PROJECTS_ALL);
+		await deleteCache(REDIS_KEYS.PROJECTS_ALL);
 		return { success: true, message: 'Project added correctly.' };
 	} catch (error) {
 		console.error('SaveProjectError:', error);
@@ -137,32 +132,40 @@ export async function saveProject(prevState: ReturnedType, formData: FormData): 
 
 export async function updateProject(prevState: ReturnedType, formData: FormData, clearExisting: boolean = false): Promise<ReturnedType> {
 	try {
-		const updatedProject = convertFormData(formData);
+		const mainFiles = (formData.getAll('project_main_screens') as File[]) || [];
+		const galleryFiles = (formData.getAll('project_gallery_screens') as File[]) || [];
+		const projectTxtData = projectObjectForValidation(formData);
+		const validatedProjectData = updateProjectSchema.safeParse(projectTxtData);
 
-		const isValidUpdatedProject = updateProjectSchema.safeParse(updatedProject);
-
-		if (!isValidUpdatedProject.success) {
-			console.error(`UpdateProject validation error: ${isValidUpdatedProject.error.flatten()}`);
-			return { success: false, error: 'Invalid input data.' };
+		if (!validatedProjectData.success) {
+			console.error('Project data validation error:', validatedProjectData.error.flatten());
+			return { success: false, error: 'Invalid project data' };
 		}
 
-		const { id, ...projectData } = isValidUpdatedProject.data;
+		const fileValidationResult = validateProjectFiles(mainFiles, galleryFiles, 'update');
 
-		const mainFiles = formData.getAll('project_main_screens') as File[];
-		const galleryFiles = formData.getAll('project_gallery_screens') as File[];
+		if (!fileValidationResult.success) {
+			console.error('Image files validation error:', fileValidationResult.error);
+			return { success: false, error: 'Invalid images data' };
+		}
 
-		const { mainFileName } = await manageProjectImages(id, mainFiles, galleryFiles, { mode: 'update', clearExisting });
+		const validMainFiles = fileValidationResult.mainFiles || [];
+		const validGalleryFiles = fileValidationResult.galleryFiles || [];
+
+		const projectId = validatedProjectData.data.id as string;
+
+		const { mainFileName } = await manageProjectImages(projectId, validMainFiles, validGalleryFiles, { mode: 'update', clearExisting });
 
 		await prisma.projects.update({
-			where: { id: id },
+			where: { id: projectId },
 			data: {
-				...projectData,
-				project_screenName: mainFileName,
+				...validatedProjectData.data,
+				...(mainFileName && { project_screenName: mainFileName }),
 			},
 		});
 
 		await deleteCache(REDIS_KEYS.PROJECTS_ALL);
-		await deleteMultipleCache(REDIS_KEYS.PROJECT_SHOTS(id));
+		await deleteMultipleCache(REDIS_KEYS.PROJECT_SHOTS(projectId));
 
 		return { success: true, message: 'Project updated correctly.' };
 	} catch (error) {
@@ -181,11 +184,13 @@ export async function deleteProject(prevState: ReturnedType, formData: FormData)
 			return { success: false, error: 'Invalid input data.' };
 		}
 
+		const projectId = validId.data;
+
 		await prisma.projects.delete({
-			where: { id: validId.data },
+			where: { id: projectId },
 		});
 
-		await manageProjectImages(validId.data, [], [], { mode: 'delete', clearExisting: false });
+		await manageProjectImages(projectId, [], [], { mode: 'delete', clearExisting: false });
 
 		await deleteMultipleCache(REDIS_KEYS.PROJECTS_ALL, REDIS_KEYS.PROJECT_SHOTS(id));
 		return { success: true, message: 'Project deleted correctly.' };

@@ -49,6 +49,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
             {!state?.success && <DisplayFormMessage messages={state?.error} type="error" />}
             {state?.success && <DisplayFormMessage messages={state?.message} type="success" />}
             <form action={formAction} className="w-fit h-fit flex flex-col items-center justify-center gap-2 text-slate-200">
+                {projectData && <input type="hidden" name="id" id="id" value={projectData?.id} />}
                 <LabelElement htmlFor="project_name" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                     Project name:
                 </LabelElement>
@@ -74,14 +75,14 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                 />
                 <input type="hidden" id="project_category" name="project_category" value={selectedCategory} />
                 <div className="w-full h-fit flex flex-col justify-center items-center gap-3">
-                    <LabelElement htmlFor="project_main_screens" className="font-bold pb-1 ml-2 text-lg tracking-wide">
+                    <LabelElement htmlFor="project_main_screens" className="w-fit font-bold pb-1 ml-2 text-lg tracking-wide">
                         Main project files:
                     </LabelElement>
                     <InputFileElement
                         id="project_main_screens"
                         name="project_main_screens"
                         required={false}
-                        className="text-md pl-2 tracking-wide w-[16rem]"
+                        className="text-md pl-2 tracking-wide w-fit"
                         multiple={true}
                     />
                     <LabelElement htmlFor="project_gallery_screens" className="font-bold pb-1 ml-2 text-lg tracking-wide">
@@ -91,7 +92,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                         id="project_gallery_screens"
                         name="project_gallery_screens"
                         required={false}
-                        className="text-md pl-2 tracking-wide w-[16rem]"
+                        className="w-fit text-md pl-2 tracking-wide"
                         multiple={true}
                     />
                 </div>

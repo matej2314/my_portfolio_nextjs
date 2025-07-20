@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+const maxFileSize = 5 * 1024 * 1024; // 5MB
 
 export const mainFilesSchema = z
 	.array(z.instanceof(File))
@@ -15,7 +16,8 @@ export const mainFilesSchema = z
 				return allowedExtensions.includes(ext || '');
 			}),
 		{ message: `Allowed extensions: ${allowedExtensions.join(',')}` }
-	);
+	)
+	.refine(files => files.every(file => file.size <= maxFileSize), { message: `Each file must be smaller than 5MB.` });
 
 export const galleryFilesSchema = z
 	.array(z.instanceof(File))
@@ -30,7 +32,8 @@ export const galleryFilesSchema = z
 				return allowedExtensions.includes(ext || '');
 			}),
 		{ message: `Allowed extensions: ${allowedExtensions.join(',')}` }
-	);
+	)
+	.refine(files => files.every(file => file.size <= maxFileSize), { message: `Each file must be smaller than 5MB.` });
 
 export const cvFileSchema = z
 	.instanceof(File)
