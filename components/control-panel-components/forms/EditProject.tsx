@@ -6,7 +6,7 @@ import ProjectForm from "./ProjectForm";
 
 export default function EditProject({ projectData }: { projectData: Project }) {
     return (
-        <main className="w-full flex justify-center text-slate-200 pt-[1.5rem]">
+        <main className="w-full h-full text-slate-200">
             <ProjectForm projectData={projectData} mode="edit" />
         </main>
     )

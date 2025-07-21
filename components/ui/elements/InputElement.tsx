@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef } from "react";
+import { forwardRef, type ChangeEvent } from "react";
 import { Input } from "../input";
 import { cn } from "@/lib/utils";
 
@@ -13,11 +13,13 @@ type InputElementProps = {
     required: boolean;
     title?: string;
     defaultValue?: string;
+    onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
     multiple?: boolean;
+    checked?: boolean;
 }
 
 const InputElement = forwardRef<HTMLInputElement, InputElementProps>(
-    ({ type, placeholder, name, id, title, defaultValue, multiple, className, required }, ref) => {
+    ({ type, placeholder, name, id, title, defaultValue, multiple, className, required, onChange, checked }, ref) => {
         return (
             <Input
                 ref={ref}
@@ -33,6 +35,8 @@ const InputElement = forwardRef<HTMLInputElement, InputElementProps>(
                 )}
                 required={required}
                 multiple={multiple}
+                onChange={onChange}
+                checked={checked}
             />
         )
     }

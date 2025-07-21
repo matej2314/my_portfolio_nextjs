@@ -7,6 +7,7 @@ import { saveProject, updateProject } from "@/actions/projects";
 import LabelElement from "@/components/ui/elements/LabelElement"
 import InputElement from "@/components/ui/elements/InputElement"
 import InputFileElement from "@/components/ui/elements/InputFileElement"
+import SwitchElement from "@/components/ui/elements/SwitchElement"
 import SelectElement from "@/components/ui/elements/SelectElement"
 import TextAreaElement from "@/components/ui/elements/TextareaElement";
 import SubmitBtn from "@/components/ui/elements/SubmitButton"
@@ -17,7 +18,7 @@ import { useDatePicker } from "@/hooks/useDatePicker"
 
 import { projectCatArray, difficultyArray } from "@/lib/dataCatArrays";
 
-import { type Project } from "@/types/actionsTypes/actionsTypes"
+import { ReturnedType, type Project } from "@/types/actionsTypes/actionsTypes"
 
 interface ProjectFormProps {
     projectData?: Project;
@@ -27,27 +28,31 @@ interface ProjectFormProps {
 export default function ProjectForm({ projectData, mode = 'create' }: ProjectFormProps) {
     const [selectedCategory, setSelectedCategory] = useState<string>(projectData?.project_category || '');
     const [selectedDifficulty, setSelectedDifficulty] = useState<string>(projectData?.difficulty as string || '');
-
     const { dateInputRef, handleDateInputClick } = useDatePicker();
+
+    const [clearExisting, setClearExisting] = useState<boolean>(false);
+
+    const defaultState = { success: false, error: '' } as ReturnedType;
 
     const submitFunction = (() => {
 
         switch (mode) {
             case 'edit':
-                return updateProject;
+                return (prevState: ReturnedType, formData: FormData) => updateProject(prevState, formData, clearExisting);
             case 'create':
-                return saveProject;
+                return (prevState: ReturnedType, formData: FormData) => saveProject(prevState, formData);
             default:
                 throw new Error(`Unknown mode: ${mode}`);
         }
     })();
 
-    const [state, formAction] = useActionState(submitFunction, { success: false, error: '' })
+    const [state, formAction] = useActionState(submitFunction, defaultState)
 
     return (
-        <main className="w-full h-full flex flex-col items-center gap-5 mt-4">
+        <main className="w-full h-full flex flex-col items-center gap-5">
             {!state?.success && <DisplayFormMessage messages={state?.error} type="error" />}
             {state?.success && <DisplayFormMessage messages={state?.message} type="success" />}
+            <h2 className={`text-2xl font-bold text-center ${mode === 'edit' ? 'text-yellow-400' : 'text-green-400'}`}>{mode === 'edit' ? 'Edit project' : 'Create new project'}</h2>
             <form action={formAction} className="w-fit h-fit flex flex-col items-center justify-center gap-2 text-slate-200">
                 {projectData && <input type="hidden" name="id" id="id" value={projectData?.id} />}
                 <LabelElement htmlFor="project_name" className="font-bold pb-1 ml-2 text-lg tracking-wide">
@@ -59,7 +64,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                     id="project_name"
                     name="project_name"
                     required={false}
-                    className="text-md pl-2 tracking-wide w-[16rem]"
+                    className="text-md pl-2 tracking-wide w-[20rem]"
                     placeholder="min 10 characters, max 300 characters"
                     defaultValue={projectData?.project_name}
                 />
@@ -71,10 +76,21 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                     onChange={(val) => setSelectedCategory(val)}
                     options={projectCatArray}
                     placeholder="project category"
-                    className="w-[15rem]"
+                    className="w-[20rem]"
                 />
                 <input type="hidden" id="project_category" name="project_category" value={selectedCategory} />
                 <div className="w-full h-fit flex flex-col justify-center items-center gap-3">
+                    <div className="w-full h-fit flex flex-col justify-center items-center gap-3">
+                        {mode === 'edit' && <SwitchElement
+                            id="clear_existing"
+                            name="clear_existing"
+                            checked={clearExisting}
+                            onChange={() => setClearExisting(!clearExisting)}
+                            label="Clear existing project files"
+                            labelPosition="right"
+                            size="md"
+                        />}
+                    </div>
                     <LabelElement htmlFor="project_main_screens" className="w-fit font-bold pb-1 ml-2 text-lg tracking-wide">
                         Main project files:
                     </LabelElement>
@@ -82,7 +98,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                         id="project_main_screens"
                         name="project_main_screens"
                         required={false}
-                        className="text-md pl-2 tracking-wide w-fit"
+                        className="text-md px-2 tracking-wide w-fit"
                         multiple={true}
                     />
                     <LabelElement htmlFor="project_gallery_screens" className="font-bold pb-1 ml-2 text-lg tracking-wide">
@@ -92,7 +108,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                         id="project_gallery_screens"
                         name="project_gallery_screens"
                         required={false}
-                        className="w-fit text-md pl-2 tracking-wide"
+                        className="w-fit text-md px-2 tracking-wide"
                         multiple={true}
                     />
                 </div>
@@ -105,7 +121,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                     name="project_URL"
                     id="project_URL"
                     required={false}
-                    className="text-md pl-2 tracking-wide w-[16rem]"
+                    className="text-md px-2 tracking-wide w-[20rem]"
                     placeholder="min 5 characters, max 100 characters"
                     defaultValue={projectData?.project_URL}
                 />
@@ -116,7 +132,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                     id="goal"
                     name="goal"
                     required={false}
-                    className="text-md pl-2 tracking-wide w-[16rem]"
+                    className="text-md px-2 tracking-wide w-[20rem]"
                     placeholder="min 5 characters, max 200 characters"
                     defaultValue={projectData?.goal as string}
                 />
@@ -127,7 +143,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                     id="project_description"
                     name="project_description"
                     required={false}
-                    className="text-md pl-2 tracking-wide w-[16rem]"
+                    className="text-md px-2 tracking-wide w-[20rem]"
                     placeholder="min 20 characters, max 300 characters"
                     defaultValue={projectData?.project_description as string}
                 />
@@ -140,7 +156,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                     name="repo"
                     id="repo"
                     required={false}
-                    className="text-md pl-2 tracking-wide w-[16rem]"
+                    className="text-md px-2 tracking-wide w-[20rem]"
                     placeholder="min 5 characters, max 100 characters"
                     defaultValue={projectData?.repo as string}
                 />
@@ -153,7 +169,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                     name="technologies"
                     id="technologies"
                     required={false}
-                    className="text-md pl-2 tracking-wide w-[16rem]"
+                    className="text-md px-2 tracking-wide w-[20rem]"
                     placeholder="min 10 characters, max 250 characters"
                     defaultValue={projectData?.technologies as string}
                 />
@@ -165,14 +181,14 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                     onChange={(val) => setSelectedDifficulty(val)}
                     options={difficultyArray}
                     placeholder="project category"
-                    className="w-[15rem]"
+                    className="w-[20rem]"
                 />
                 <input type="hidden" name="difficulty" id="difficulty" value={selectedDifficulty} />
                 <LabelElement htmlFor="end_date" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                     End date:
                 </LabelElement>
                 <div
-                    className="relative w-[16rem] flex flex-col items-center cursor-pointer"
+                    className="relative w-[20rem] flex flex-col items-center cursor-pointer"
                     onClick={handleDateInputClick}
                 >
                     <InputElement
@@ -193,7 +209,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                     id="long_text"
                     name="long_text"
                     required={false}
-                    className="text-md pl-2 tracking-wide w-[16rem]"
+                    className="text-md pl-2 tracking-wide w-[20rem]"
                     placeholder="min 20 characters, max 500 characters"
                     defaultValue={projectData?.long_text as string}
                 />

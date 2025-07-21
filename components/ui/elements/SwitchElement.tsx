@@ -1,214 +1,102 @@
-// import React from "react";
-// import { Switch } from "@/components/ui/switch";
-// import { Label } from "@/components/ui/label";
-// import { cn } from "@/lib/utils";
+'use client';
 
-// interface SwitchElementProps {
-//     // Basic props
-//     id?: string;
-//     name?: string;
-//     checked?: boolean;
-//     defaultChecked?: boolean;
-//     onCheckedChange?: (checked: boolean) => void;
+import { useState, forwardRef } from "react";
+import InputElement from "./InputElement";
+import { cn } from "@/lib/utils";
 
-//     // Label and description
-//     label?: string;
-//     description?: string;
+import { type SwitchElementProps } from "@/types/SwitchElementTypes";
 
-//     // States
-//     disabled?: boolean;
-//     loading?: boolean;
+const sizes = {
+    sm: {
+        width: 'w-8',
+        height: 'h-4',
+        thumb: 'w-3 h-3',
+    },
+    md: {
+        width: 'w-12',
+        height: 'h-6',
+        thumb: 'w-5 h-5',
+    },
+    lg: {
+        width: 'w-16',
+        height: 'h-8',
+        thumb: 'w-7 h-7',
+    },
+};
 
-//     // Validation
-//     error?: string;
+const SwitchElement = forwardRef<HTMLInputElement, SwitchElementProps>(({
+    id,
+    name,
+    checked = false,
+    label,
+    labelPosition = 'right',
+    size = 'md',
+    onChange,
+    containerClassName = '',
+}, ref) => {
+    const [isChecked, setIsChecked] = useState(checked);
 
-//     // Styling
-//     className?: string;
-//     labelClassName?: string;
-//     descriptionClassName?: string;
-//     errorClassName?: string;
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setIsChecked(e.target.checked);
+        if (onChange) onChange(e.target.checked);
+    };
 
-//     // Layout
-//     labelPosition?: 'left' | 'right' | 'top' | 'bottom';
-//     size?: 'sm' | 'md' | 'lg';
+    const sizeClasses = sizes[size];
 
-//     // Other props
-//     required?: boolean;
-//     'aria-label'?: string;
-//     'aria-describedby'?: string;
-// }
+    return (
+        <div className={`flex items-center gap-2 ${containerClassName}`}>
+            {label && labelPosition === 'left' && (
+                <label htmlFor={id} className="select-none cursor-pointer">
+                    {label}
+                </label>
+            )}
+            <div className={`relative ${sizeClasses.width} ${sizeClasses.height}`}>
+                <InputElement
+                    ref={ref}
+                    type="checkbox"
+                    id={id}
+                    name={name}
+                    className={cn(
+                        "peer absolute left-0 top-0 w-full h-full opacity-0 z-10 cursor-pointer"
+                    )}
+                    required={false}
+                    defaultValue=""
+                    onChange={handleChange}
+                    checked={isChecked}
+                />
 
-// const sizeClasses = {
-//     sm: 'h-3 w-6',
-//     md: 'h-[1.15rem] w-8',
-//     lg: 'h-5 w-10'
-// };
+                {/* Track */}
+                <div
+                    className={cn(
+                        "absolute top-0 left-0 rounded-full bg-green-600 peer-checked:bg-green-900 transition-colors duration-300",
+                        sizeClasses.width,
+                        sizeClasses.height,
+                        "z-0"
+                    )}
+                />
 
-// const thumbSizeClasses = {
-//     sm: 'size-3',
-//     md: 'size-4',
-//     lg: 'size-5'
-// };
+                {/* Thumb */}
+                <div
+                    className={cn(
+                        "absolute top-0.5 left-0.5 bg-white rounded-full shadow-md transition-transform duration-300",
+                        sizeClasses.thumb,
+                        "pointer-events-none"
+                    )}
+                    style={{
+                        transform: isChecked ? `translateX(1.5rem)` : 'translateX(0)',
+                    }}
+                    aria-hidden="true"
+                />
+            </div>
+            {label && labelPosition === 'right' && (
+                <label htmlFor={id} className="select-none cursor-pointer">
+                    {label}
+                </label>
+            )}
+        </div>
+    );
+});
 
-// export const SwitchElement = React.forwardRef<HTMLButtonElement, SwitchElementProps>(
-//     (
-//         {
-//             id,
-//             name,
-//             checked,
-//             defaultChecked,
-//             onCheckedChange,
-//             label,
-//             description,
-//             disabled = false,
-//             loading = false,
-//             error,
-//             className,
-//             labelClassName,
-//             descriptionClassName,
-//             errorClassName,
-//             labelPosition = 'left',
-//             size = 'md',
-//             required = false,
-//             'aria-label': ariaLabel,
-//             'aria-describedby': ariaDescribedby,
-//             ...props
-//         },
-//         ref
-//     ) => {
-//         const switchId = id || `switch-${Math.random().toString(36).substr(2, 9)}`;
-//         const descriptionId = description ? `${switchId}-description` : undefined;
-//         const errorId = error ? `${switchId}-error` : undefined;
+SwitchElement.displayName = 'SwitchElement';
 
-//         const isDisabled = disabled || loading;
-
-//         const renderLabel = () => {
-//             if (!label) return null;
-
-//             return (
-//                 <Label
-//                     htmlFor={switchId}
-//                     className={cn(
-//                         "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-//                         labelClassName
-//                     )}
-//                 >
-//                     {label}
-//                     {required && <span className="text-destructive ml-1">*</span>}
-//                 </Label>
-//             );
-//         };
-
-//         const renderDescription = () => {
-//             if (!description) return null;
-
-//             return (
-//                 <p
-//                     id={descriptionId}
-//                     className={cn(
-//                         "text-sm text-muted-foreground",
-//                         descriptionClassName
-//                     )}
-//                 >
-//                     {description}
-//                 </p>
-//             );
-//         };
-
-//         const renderError = () => {
-//             if (!error) return null;
-
-//             return (
-//                 <p
-//                     id={errorId}
-//                     className={cn(
-//                         "text-sm text-destructive",
-//                         errorClassName
-//                     )}
-//                 >
-//                     {error}
-//                 </p>
-//             );
-//         };
-
-//         const renderSwitch = () => (
-//             <Switch
-//                 ref={ref}
-//                 id={switchId}
-//                 name={name}
-//                 checked={checked}
-//                 defaultChecked={defaultChecked}
-//                 onCheckedChange={onCheckedChange}
-//                 disabled={isDisabled}
-//                 className={cn(
-//                     sizeClasses[size],
-//                     className
-//                 )}
-//                 aria-label={ariaLabel || label}
-//                 aria-describedby={cn(descriptionId, errorId)}
-//                 {...props}
-//             >
-//                 <div
-//                     className={cn(
-//                         "bg-background dark:data-[state=unchecked]:bg-foreground dark:data-[state=checked]:bg-primary-foreground pointer-events-none block rounded-full ring-0 transition-transform data-[state=checked]:translate-x-[calc(100%-2px)] data-[state=unchecked]:translate-x-0",
-//                         thumbSizeClasses[size]
-//                     )}
-//                 />
-//             </Switch>
-//         );
-
-//         const renderContent = () => {
-//             switch (labelPosition) {
-//                 case 'right':
-//                     return (
-//                         <>
-//                             {renderSwitch()}
-//                             <div className="flex flex-col gap-1">
-//                                 {renderLabel()}
-//                                 {renderDescription()}
-//                             </div>
-//                         </>
-//                     );
-//                 case 'top':
-//                     return (
-//                         <div className="flex flex-col gap-2">
-//                             <div className="flex flex-col gap-1">
-//                                 {renderLabel()}
-//                                 {renderDescription()}
-//                             </div>
-//                             {renderSwitch()}
-//                         </div>
-//                     );
-//                 case 'bottom':
-//                     return (
-//                         <div className="flex flex-col gap-2">
-//                             {renderSwitch()}
-//                             <div className="flex flex-col gap-1">
-//                                 {renderLabel()}
-//                                 {renderDescription()}
-//                             </div>
-//                         </div>
-//                     );
-//                 default: // left
-//                     return (
-//                         <>
-//                             <div className="flex flex-col gap-1">
-//                                 {renderLabel()}
-//                                 {renderDescription()}
-//                             </div>
-//                             {renderSwitch()}
-//                         </>
-//                     );
-//             }
-//         };
-
-//         return (
-//             <div className="flex items-center gap-3">
-//                 {renderContent()}
-//                 {renderError()}
-//             </div>
-//         );
-//     }
-// );
-
-// SwitchElement.displayName = "SwitchElement";
+export default SwitchElement;
