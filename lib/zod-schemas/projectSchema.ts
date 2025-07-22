@@ -65,4 +65,11 @@ export const baseProjectSchema = z.object({
 
 export const updateProjectSchema = baseProjectSchema.extend({
 	id: idSchema,
+	project_screenName: validatedString(10, 20, {
+		requiredError: 'Project screen name is required.',
+		tooBig: 'Project screen name must contains maximum 20 characters.',
+		tooSmall: 'Project screen name must contains minimum 10 characters.',
+	}).refine(value => !containsXSS(value), {
+		message: 'Project screen name contains dangerous characters.',
+	}),
 });

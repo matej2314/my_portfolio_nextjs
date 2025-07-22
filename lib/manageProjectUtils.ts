@@ -90,7 +90,6 @@ export function validateProjectFiles(mainFiles: File[], galleryFiles: File[], mo
 			const errors: string[] = [];
 
 			if (!mainValidation.success) errors.push(mainValidation.error.message);
-
 			if (!galleryValidation.success) errors.push(galleryValidation.error.message);
 
 			return {
@@ -117,6 +116,7 @@ export function validateProjectFiles(mainFiles: File[], galleryFiles: File[], mo
 				validMainFiles = isValidMainFiles.data;
 			}
 		}
+
 		if (galleryFiles.length > 0) {
 			const isValidGalleryFiles = galleryFilesSchema.safeParse(galleryFiles);
 			if (!isValidGalleryFiles.success) {
@@ -125,6 +125,7 @@ export function validateProjectFiles(mainFiles: File[], galleryFiles: File[], mo
 				validatedGalleryFiles = isValidGalleryFiles.data;
 			}
 		}
+
 		return errors.length === 0
 			? {
 					success: true,

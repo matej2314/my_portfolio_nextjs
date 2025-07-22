@@ -47,7 +47,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
     })();
 
     const [state, formAction] = useActionState(submitFunction, defaultState)
-
+    console.log(`clearExisting ${clearExisting}`)
     return (
         <main className="w-full h-full flex flex-col items-center gap-5">
             {!state?.success && <DisplayFormMessage messages={state?.error} type="error" />}
@@ -55,6 +55,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
             <h2 className={`text-2xl font-bold text-center ${mode === 'edit' ? 'text-yellow-400' : 'text-green-400'}`}>{mode === 'edit' ? 'Edit project' : 'Create new project'}</h2>
             <form action={formAction} className="w-fit h-fit flex flex-col items-center justify-center gap-2 text-slate-200">
                 {projectData && <input type="hidden" name="id" id="id" value={projectData?.id} />}
+                {projectData && <input type="hidden" name="project_screenName" id="project_screenName" value={projectData?.project_screenName} />}
                 <LabelElement htmlFor="project_name" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                     Project name:
                 </LabelElement>

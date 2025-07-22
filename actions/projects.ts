@@ -136,31 +136,36 @@ export async function updateProject(prevState: ReturnedType, formData: FormData,
 		const galleryFiles = (formData.getAll('project_gallery_screens') as File[]) || [];
 		const projectTxtData = projectObjectForValidation(formData);
 		const validatedProjectData = updateProjectSchema.safeParse(projectTxtData);
+		const filesSended = mainFiles.some(file => file.size > 0) || galleryFiles.some(file => file.size > 0);
+		let screenName: string = '';
 
 		if (!validatedProjectData.success) {
 			console.error('Project data validation error:', validatedProjectData.error.flatten());
 			return { success: false, error: 'Invalid project data' };
 		}
 
-		const fileValidationResult = validateProjectFiles(mainFiles, galleryFiles, 'update');
+		const projectId = validatedProjectData.data?.id as string;
 
-		if (!fileValidationResult.success) {
-			console.error('Image files validation error:', fileValidationResult.error);
-			return { success: false, error: 'Invalid images data' };
+		if (filesSended) {
+			const fileValidationResult = validateProjectFiles(mainFiles, galleryFiles, 'update');
+
+			if (!fileValidationResult.success) {
+				console.error('Image files validation error:', fileValidationResult.error);
+				return { success: false, error: 'Invalid images data' };
+			}
+			const validMainFiles = fileValidationResult.mainFiles as File[];
+			const validGalleryFiles = fileValidationResult.galleryFiles as File[];
+			const { mainFileName } = await manageProjectImages(projectId, validMainFiles, validGalleryFiles, { mode: 'update', clearExisting });
+			screenName = mainFileName as string;
 		}
 
-		const validMainFiles = fileValidationResult.mainFiles || [];
-		const validGalleryFiles = fileValidationResult.galleryFiles || [];
-
-		const projectId = validatedProjectData.data.id as string;
-
-		const { mainFileName } = await manageProjectImages(projectId, validMainFiles, validGalleryFiles, { mode: 'update', clearExisting });
+		screenName = validatedProjectData.data.project_screenName as string;
 
 		await prisma.projects.update({
 			where: { id: projectId },
 			data: {
 				...validatedProjectData.data,
-				...(mainFileName && { project_screenName: mainFileName }),
+				project_screenName: screenName,
 			},
 		});
 

@@ -66,7 +66,6 @@ export async function manageProjectImages(
 		case 'update':
 			if (clearExisting) {
 				await deleteFilesInDir(baseDir, true);
-				await createProjectFolders(baseDir, mainDir, galleryDir);
 			}
 
 			for (const [i, file] of mainFilesLimited?.entries() || []) {

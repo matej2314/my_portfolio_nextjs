@@ -68,7 +68,7 @@ const SwitchElement = forwardRef<HTMLInputElement, SwitchElementProps>(({
                 {/* Track */}
                 <div
                     className={cn(
-                        "absolute top-0 left-0 rounded-full bg-green-600 peer-checked:bg-green-900 transition-colors duration-300",
+                        "absolute top-0 left-0 rounded-full bg-green-900 peer-checked:bg-green-600 transition-colors duration-300",
                         sizeClasses.width,
                         sizeClasses.height,
                         "z-0"
