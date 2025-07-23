@@ -137,7 +137,6 @@ export async function updateProject(prevState: ReturnedType, formData: FormData,
 		const projectTxtData = projectObjectForValidation(formData);
 		const validatedProjectData = updateProjectSchema.safeParse(projectTxtData);
 		const filesSended = mainFiles.some(file => file.size > 0) || galleryFiles.some(file => file.size > 0);
-		let screenName: string = '';
 
 		if (!validatedProjectData.success) {
 			console.error('Project data validation error:', validatedProjectData.error.flatten());
@@ -145,6 +144,7 @@ export async function updateProject(prevState: ReturnedType, formData: FormData,
 		}
 
 		const projectId = validatedProjectData.data?.id as string;
+		let screenName: string = validatedProjectData.data?.project_screenName || '';
 
 		if (filesSended) {
 			const fileValidationResult = validateProjectFiles(mainFiles, galleryFiles, 'update');
@@ -153,13 +153,12 @@ export async function updateProject(prevState: ReturnedType, formData: FormData,
 				console.error('Image files validation error:', fileValidationResult.error);
 				return { success: false, error: 'Invalid images data' };
 			}
+
 			const validMainFiles = fileValidationResult.mainFiles as File[];
 			const validGalleryFiles = fileValidationResult.galleryFiles as File[];
 			const { mainFileName } = await manageProjectImages(projectId, validMainFiles, validGalleryFiles, { mode: 'update', clearExisting });
 			screenName = mainFileName as string;
 		}
-
-		screenName = validatedProjectData.data.project_screenName as string;
 
 		await prisma.projects.update({
 			where: { id: projectId },

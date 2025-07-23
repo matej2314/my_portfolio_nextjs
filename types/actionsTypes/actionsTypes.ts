@@ -38,3 +38,14 @@ export type User = PrismaUserType;
 export type GetShotsResult = { success: true; files: string[] } | { success: false; error: string };
 
 export type ReturnedType = { success: true; message: string } | { success: false; error: string };
+
+export type ValidationResult =
+	| {
+			success: true;
+			mainFiles?: File[] | [];
+			galleryFiles?: File[] | [];
+	  }
+	| {
+			success: false;
+			error: string;
+	  };

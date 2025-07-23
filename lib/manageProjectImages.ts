@@ -1,35 +1,9 @@
 import { promises as fs } from 'fs';
-import { extractBaseName, saveFile, createProjectPaths, createProjectFolders, deleteFilesInDir, defaultResultObject } from './manageProjectUtils';
+import { extractBaseName, saveFile, createProjectPaths, createProjectFolders, deleteFilesInDir, defaultResultObject, isDirectoryExists, createResultObject } from './manageProjectUtils';
 
-type SaveImagesResult = {
-	projectId?: string;
-	mainFileName?: string;
-	mainFilesSaved?: number;
-	galleryFilesSaved?: number;
-	mainFilesDeleted: number;
-	galleryFilesDeleted?: number;
-};
+import { type SaveImagesResult, type OptionsObject } from '@/types/manageImages';
 
-// export function createResultObject(projectId: string, mainFileName?: string, mainFilesSaved?: number, galleryFilesSaved?: number, mainFilesDeleted: number = 0, galleryFilesDeleted: number = 0): SaveImagesResult {
-// 	return {
-// 		projectId,
-// 		mainFileName,
-// 		mainFilesSaved,
-// 		galleryFilesSaved,
-// 		mainFilesDeleted,
-// 		galleryFilesDeleted,
-// 	};
-// }
-
-export async function manageProjectImages(
-	projectId: string,
-	mainFiles?: File[],
-	galleryFiles?: File[],
-	options?: {
-		mode: 'save' | 'update' | 'delete';
-		clearExisting: boolean;
-	}
-): Promise<SaveImagesResult> {
+export async function manageProjectImages(projectId: string, mainFiles?: File[] | [], galleryFiles?: File[] | [], options?: OptionsObject): Promise<SaveImagesResult> {
 	const { mode, clearExisting = false } = options || { mode: 'save', clearExisting: false };
 
 	const { baseDir, mainDir, galleryDir } = await createProjectPaths(projectId);
@@ -55,17 +29,16 @@ export async function manageProjectImages(
 				await saveFile(file, galleryDir);
 			}
 
-			return {
-				projectId,
-				mainFileName,
-				mainFilesDeleted: 0,
-				galleryFilesDeleted: 0,
-				mainFilesSaved: mainFilesLimited?.length || 0,
-				galleryFilesSaved: galleryFilesLimited?.length || 0,
-			};
+			return createResultObject(projectId, mainFileName, mainFilesLimited?.length || 0, galleryFilesLimited?.length || 0);
 		case 'update':
 			if (clearExisting) {
-				await deleteFilesInDir(baseDir, true);
+				if (mainFilesLimited && mainFilesLimited.some(file => file.size > 0)) {
+					await deleteFilesInDir(mainDir);
+				}
+
+				if (galleryFilesLimited && galleryFilesLimited.some(file => file.size > 0)) {
+					await deleteFilesInDir(galleryDir);
+				}
 			}
 
 			for (const [i, file] of mainFilesLimited?.entries() || []) {
@@ -79,44 +52,45 @@ export async function manageProjectImages(
 				await saveFile(file, galleryDir);
 			}
 
-			return {
-				projectId,
-				mainFilesDeleted: 0,
-				galleryFilesDeleted: 0,
-				mainFileName,
-				mainFilesSaved: mainFilesLimited?.length || 0,
-				galleryFilesSaved: galleryFilesLimited?.length || 0,
-			};
+			return createResultObject(projectId, mainFileName, mainFilesLimited?.length || 0, galleryFilesLimited?.length || 0);
 		case 'delete':
-			let mainFilesDeleted = 0;
-			let galleryFilesDeleted = 0;
+			let mainFilesDeleted: number | undefined = undefined;
+			let galleryFilesDeleted: number | undefined = undefined;
 
 			try {
-				const mainDirExists = await fs.access(mainDir).then(() => true);
-				const galleryDirExists = await fs.access(galleryDir).then(() => true);
+				const mainDirExists = await isDirectoryExists(mainDir);
+
+				const galleryDirExists = await isDirectoryExists(galleryDir);
 
 				if (mainDirExists) {
-					const { deletedFiles } = await deleteFilesInDir(mainDir, false);
-
+					const { deletedFiles } = await deleteFilesInDir(mainDir);
 					mainFilesDeleted = deletedFiles;
 				}
 
 				if (galleryDirExists) {
-					const { deletedFiles } = await deleteFilesInDir(galleryDir, false);
-
+					const { deletedFiles } = await deleteFilesInDir(galleryDir);
 					galleryFilesDeleted = deletedFiles;
 				}
 
-				await fs.rm(baseDir, { recursive: true });
+				const baseDirExists = await isDirectoryExists(baseDir);
 
-				return {
-					projectId,
-					mainFileName: undefined,
-					mainFilesDeleted,
-					galleryFilesDeleted,
-				};
+				if (baseDirExists) {
+					await fs.rm(baseDir, { recursive: true, force: true });
+				}
+
+				return createResultObject(projectId, undefined, 0, 0, mainFilesDeleted || 0, galleryFilesDeleted || 0);
 			} catch (error) {
 				console.error('Error deleting project images', error);
+
+				try {
+					const baseDirExists = await isDirectoryExists(baseDir);
+
+					if (baseDirExists) {
+						await fs.rm(baseDir, { recursive: true, force: true });
+					}
+				} catch (rmError) {
+					console.error('Error removing base directory', rmError);
+				}
 				return defaultResultObject;
 			}
 		default:

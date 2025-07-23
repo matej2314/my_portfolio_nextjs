@@ -3,6 +3,8 @@ import { promises as fs } from 'fs';
 
 import { convertFormData } from './formDataToObjectConvert';
 import { mainFilesSchema, galleryFilesSchema } from './zod-schemas/fileValidationSchema';
+import { type ValidationResult } from '@/types/actionsTypes/actionsTypes';
+import { type SaveImagesResult } from '@/types/manageImages';
 
 export const extractBaseName = (fileName: string): string => {
 	const name = path.parse(fileName).name;
@@ -35,21 +37,26 @@ export const createProjectFolders = async (baseDir: string, mainDir: string, gal
 	await fs.mkdir(galleryDir, { recursive: true });
 };
 
-export const deleteFilesInDir = async (dir: string, force: boolean = false): Promise<{ deletedFiles: number }> => {
-	if (force) {
-		await fs.rm(dir, { recursive: true, force: true });
-	}
-
+export const deleteFilesInDir = async (dir: string): Promise<{ deletedFiles: number }> => {
 	const files = await fs.readdir(dir);
+	let deletedFiles = 0;
 
 	for (const file of files) {
-		await fs.unlink(path.join(dir, file));
+		const filePath = path.join(dir, file);
+		const stats = await fs.stat(filePath);
+
+		if (stats.isDirectory()) {
+			await fs.rm(filePath, { recursive: true, force: true });
+		} else {
+			await fs.unlink(filePath);
+		}
+		deletedFiles++;
 	}
 
-	return { deletedFiles: files.length };
+	return { deletedFiles };
 };
 
-export const defaultResultObject = {
+export const defaultResultObject: SaveImagesResult = {
 	projectId: undefined,
 	mainFileName: undefined,
 	mainFilesSaved: 0,
@@ -70,18 +77,7 @@ export const projectObjectForValidation = (projectData: FormData) => {
 	return convertFormData(projectDataForValidation);
 };
 
-type ValidationResult =
-	| {
-			success: true;
-			mainFiles?: File[];
-			galleryFiles?: File[];
-	  }
-	| {
-			success: false;
-			error: string;
-	  };
-
-export function validateProjectFiles(mainFiles: File[], galleryFiles: File[], mode: 'save' | 'update'): ValidationResult {
+export function validateProjectFiles(mainFiles: File[] | [], galleryFiles: File[] | [], mode: 'save' | 'update'): ValidationResult {
 	if (mode === 'save') {
 		const mainValidation = mainFilesSchema.safeParse(mainFiles);
 		const galleryValidation = galleryFilesSchema.safeParse(galleryFiles);
@@ -104,11 +100,11 @@ export function validateProjectFiles(mainFiles: File[], galleryFiles: File[], mo
 			galleryFiles: galleryValidation.data,
 		};
 	} else if (mode === 'update') {
-		let validMainFiles: File[] = [];
-		let validatedGalleryFiles: File[] = [];
+		let validMainFiles: File[] | [] = [];
+		let validatedGalleryFiles: File[] | [] = [];
 		const errors: string[] = [];
 
-		if (mainFiles.length > 0) {
+		if (mainFiles.some(file => file.size > 0)) {
 			const isValidMainFiles = mainFilesSchema.safeParse(mainFiles);
 			if (!isValidMainFiles.success) {
 				errors.push(isValidMainFiles.error.message);
@@ -117,7 +113,7 @@ export function validateProjectFiles(mainFiles: File[], galleryFiles: File[], mo
 			}
 		}
 
-		if (galleryFiles.length > 0) {
+		if (galleryFiles.some(file => file.size > 0)) {
 			const isValidGalleryFiles = galleryFilesSchema.safeParse(galleryFiles);
 			if (!isValidGalleryFiles.success) {
 				errors.push(isValidGalleryFiles.error.message);
@@ -141,5 +137,23 @@ export function validateProjectFiles(mainFiles: File[], galleryFiles: File[], mo
 	return {
 		success: false,
 		error: 'Invalid validation mode',
+	};
+}
+
+export const isDirectoryExists = async (dir: string) => {
+	return await fs
+		.access(dir)
+		.then(() => true)
+		.catch(() => false);
+};
+
+export function createResultObject(projectId?: string, mainFileName?: string, mainFilesSaved?: number, galleryFilesSaved?: number, mainFilesDeleted?: number, galleryFilesDeleted?: number): SaveImagesResult {
+	return {
+		projectId,
+		mainFileName,
+		mainFilesSaved,
+		galleryFilesSaved,
+		mainFilesDeleted,
+		galleryFilesDeleted,
 	};
 }
