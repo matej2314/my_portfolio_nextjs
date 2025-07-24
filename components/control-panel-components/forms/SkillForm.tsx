@@ -11,6 +11,7 @@ import SelectElement from "@/components/ui/elements/SelectElement"
 import SubmitBtn from "@/components/ui/elements/SubmitButton"
 
 import { type Skill } from "@/types/actionsTypes/actionsTypes"
+import FormTitle from "./components/FormTitle"
 
 interface SkillFormProps {
     skillData?: Skill;
@@ -37,6 +38,7 @@ export default function SkillForm({ skillData, mode = 'create' }: SkillFormProps
         <>
             {state?.success && <p className="text-green-400">{state.message}</p>}
             {state?.success === false && <p className="text-red-400">{state.error}</p>}
+            <FormTitle editTitle="Edit skill" createTitle="Create new skill" mode={mode} />
             <form action={formAction} className="w-fit h-fit flex flex-col items-center justify-center gap-2 text-slate-200">
                 <LabelElement
                     htmlFor="skill_name"

@@ -115,10 +115,10 @@ const InputFileElement = forwardRef<HTMLInputElement, InputFileElementProps>(
                 {/* Visible element */}
                 <div
                     className={cn(
-                        "w-full h-10 border border-green-900 bg-green-950 rounded-md flex items-center justify-center text-sm transition-colors",
+                        "w-full h-10 border border-green-900 bg-radial-green rounded-md flex items-center justify-center text-sm transition-colors",
                         "hover:bg-green-900 hover:text-white",
                         "focus-within:ring-2 focus-within:ring-green-600 focus-within:ring-offset-2",
-                        isDragOver && "border-green-600 bg-green-900",
+                        isDragOver && "border-green-600 bg-radial-green",
                         disabled && "opacity-50 cursor-not-allowed",
                         selectedFileName ? "text-white" : "text-green-200",
                         className

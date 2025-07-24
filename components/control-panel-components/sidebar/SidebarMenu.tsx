@@ -10,7 +10,7 @@ export default function ControlSidebar() {
                 <NavLink
                     variant="project"
                     pathName="/control/dashboard"
-                    linkClass="text-lg font-semibold text-green-500"
+                    linkClass="w-full flex justify-center translate-x-2 text-lg font-semibold text-green-500"
                     title="dashboard"
                 >
                     Dashboard

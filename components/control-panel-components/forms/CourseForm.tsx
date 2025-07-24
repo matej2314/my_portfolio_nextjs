@@ -15,6 +15,7 @@ import { useDatePicker } from "@/hooks/useDatePicker"
 import { courseCatArray } from "@/lib/dataCatArrays"
 
 import { type CourseFormProps } from "@/types/courseForm"
+import FormTitle from "./components/FormTitle"
 
 export default function CourseForm({ courseData, mode = 'create' }: CourseFormProps) {
     const [selectedCategory, setSelectedCategory] = useState<string>(courseData?.course_category || '');
@@ -38,9 +39,10 @@ export default function CourseForm({ courseData, mode = 'create' }: CourseFormPr
 
     return (
         <>
+            {state?.success && <DisplayFormMessage messages={state?.message} type="success" />}
+            {state?.success === false && <DisplayFormMessage messages={state?.error} type="error" />}
+            <FormTitle editTitle="Edit course" createTitle="Create new course" mode={mode} />
             <form action={formAction} className="w-fit h-fit flex flex-col items-center justify-center gap-2 text-slate-200">
-                {!state?.success && <DisplayFormMessage messages={state?.error} type="error" />}
-                {state?.success && <DisplayFormMessage messages={state?.message} type="success" />}
                 <LabelElement htmlFor="course_name" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                     Course name:
                 </LabelElement>

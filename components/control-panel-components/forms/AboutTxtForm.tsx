@@ -9,6 +9,8 @@ import TextAreaElement from "@/components/ui/elements/TextareaElement";
 import SubmitBtn from "@/components/ui/elements/SubmitButton";
 
 import { type AboutTextType } from "@/types/actionsTypes/actionsTypes";
+import FormTitle from "./components/FormTitle";
+import DisplayFormMessage from "@/components/home-page-components/contact-section/components/DisplayFormMessage";
 
 interface AboutTxtFormProps {
     aboutMeData?: AboutTextType;
@@ -22,9 +24,9 @@ export default function AboutTxtForm({ aboutMeData, mode = 'create' }: AboutTxtF
 
     return (
         <main className="w-full h-full flex flex-col items-center gap-5 mt-4">
-            <h2 className="text-2xl font-bold flex justify-center text-yellow-400">Edit `about me` description:</h2>
-            {state?.success && <p className="text-green-400">{state.message}</p>}
-            {state?.success === false && <p className="text-red-500">{state.error}</p>}
+            {state?.success && <DisplayFormMessage messages={state?.message} type="success" />}
+            {state?.success === false && <DisplayFormMessage messages={state?.error} type="error" />}
+            <FormTitle editTitle="Edit `about me` description" createTitle="Create new `about me` description" mode={mode} />
             <form action={formAction} className="w-fit h-fit flex flex-col items-center justify-center gap-2 text-slate-200">
                 <input type="hidden" name="id" value={mode} />
                 <LabelElement

@@ -6,7 +6,7 @@ export default async function AddCourse() {
 
 
     return (
-        <main className="w-full h-full flex justify-center items-center">
+        <main className="w-full h-full flex flex-col gap-4 justify-start items-center">
             <CourseForm mode="create" />
         </main>
     )

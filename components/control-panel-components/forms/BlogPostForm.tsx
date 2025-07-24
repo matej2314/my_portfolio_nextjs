@@ -13,6 +13,8 @@ import SubmitBtn from "@/components/ui/elements/SubmitButton"
 import TextAreaElement from "@/components/ui/elements/TextareaElement";
 
 import MarkdownEditor from "@/components/control-panel-components/MarkdownEditor";
+import DisplayFormMessage from "@/components/home-page-components/contact-section/components/DisplayFormMessage";
+import FormTitle from "./components/FormTitle";
 
 interface BlogPostFormProps {
     blogPostData?: Post;
@@ -37,9 +39,9 @@ export default function BlogPostForm({ blogPostData, mode = 'create' }: BlogPost
 
     return (
         <main className="w-full flex flex-col gap-4 items-center text-slate-200 overflow-y-auto no-scrollbar ">
-            {state?.success && <p className="text-green-400">{state.message}</p>}
-            {state?.success === false && <p className="text-red-400">{state.error}</p>}
-            <h2 className="w-full text-3xl font-bold flex justify-center text-yellow-400 mb-5">{mode === 'edit' ? 'Edit' : 'Add'} blog post</h2>
+            {state?.success && <DisplayFormMessage messages={state?.message} type="success" />}
+            {state?.success === false && <DisplayFormMessage messages={state?.error} type="error" />}
+            <FormTitle editTitle="Edit blog post" createTitle="Create new blog post" mode={mode} />
             <form action={formAction} className="w-full max-w-[40rem] flex flex-col items-center gap-4">
                 {mode === 'edit' && <input type="hidden" name="id" value={blogPostData?.id} />}
                 <LabelElement
