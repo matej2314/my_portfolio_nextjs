@@ -8,7 +8,7 @@ export function middleware(request: NextRequest) {
     style-src 'self' 'unsafe-inline';
     font-src 'self';
     img-src 'self' data:;
-    connect-src 'self' https://api.iconify.design https://www.googletagmanager.com;
+    connect-src 'self' https://api.iconify.design https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com https://*.googletagmanager.com;
     frame-src 'none';
   `
 		.replace(/\s{2,}/g, ' ')
