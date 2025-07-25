@@ -49,7 +49,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
     })();
 
     const [state, formAction] = useActionState(submitFunction, defaultState)
-    console.log(`clearExisting ${clearExisting}`)
+
     return (
         <main className="w-full h-full flex flex-col items-center gap-5">
             {!state?.success && <DisplayFormMessage messages={state?.error} type="error" />}

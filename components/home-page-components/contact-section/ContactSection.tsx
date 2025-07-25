@@ -12,7 +12,7 @@ export default function ContactSection() {
     return (
         <section id="contactSection" className="w-full min-h-screen flex flex-col justify-start items-start pb-2 font-kanit snap-center">
             <span className="text-4xl text-green-400 ml-2">Contact &#123;</span>
-            <section className="w-full h-screen flex flex-col md:flex-row md:items-center mt-5 md:mb-10">
+            <section className="w-full h-screen flex flex-col md:flex-row md:items-center my-5 md:mb-10">
                 <div className="w-full text-slate-200 flex flex-col items-center justify-start">
                     <h2
                         className="text-2xl sm:text-3xl font-kanit bg-gradient-to-r from-green-400 via-yellow-200 to-yellow-400 bg-clip-text text-transparent sm:ml-4 mb-3"
@@ -22,11 +22,11 @@ export default function ContactSection() {
                     <h3 className=" text-[0.8rem] sm:text-base sm:ml-4 mb-10">{t("contactSection.subTitle")}</h3>
                     <ContactItems />
                 </div>
-                <div className="w-full h-full translate-x-1/4 sm:translate-x-1/3 md:translate-x-1/6 text-slate-200 flex flex-col items-center justify-center mt-[2rem] sm:mt-0">
+                <div className="w-full h-full md:mt-[5.5rem] xl:mt-0 text-slate-200 flex flex-col items-center justify-center mt-[2rem] sm:mt-0">
                     <ContactForm />
                 </div>
             </section>
-            <span className="text-green-400 text-4xl ml-2">&#125;</span>
+            <span className="text-green-400 text-4xl ml-2 mt-10 xl:mt-0">&#125;</span>
         </section>
     )
 }
