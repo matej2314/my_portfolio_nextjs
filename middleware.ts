@@ -4,11 +4,11 @@ import { type NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
 	const csp = `
     default-src 'self';
-    script-src 'self' https://apis.google.com https://api.iconify.design 'unsafe-eval' 'unsafe-inline';
+    script-src 'self' https://apis.google.com https://api.iconify.design https://www.googletagmanager.com 'unsafe-eval' 'unsafe-inline';
     style-src 'self' 'unsafe-inline';
     font-src 'self';
     img-src 'self' data:;
-    connect-src 'self' https://api.iconify.design;
+    connect-src 'self' https://api.iconify.design https://www.googletagmanager.com;
     frame-src 'none';
   `
 		.replace(/\s{2,}/g, ' ')
