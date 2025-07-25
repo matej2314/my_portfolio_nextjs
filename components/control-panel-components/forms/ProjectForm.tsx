@@ -10,10 +10,11 @@ import InputFileElement from "@/components/ui/elements/InputFileElement"
 import SwitchElement from "@/components/ui/elements/SwitchElement"
 import SelectElement from "@/components/ui/elements/SelectElement"
 import TextAreaElement from "@/components/ui/elements/TextareaElement";
+import TabsListElement from "@/components/ui/elements/TabsListElement";
 import SubmitBtn from "@/components/ui/elements/SubmitButton"
 import CalendarInputIcon from "@/components/ui/elements/CalendarInputIcon"
 import DisplayFormMessage from "@/components/home-page-components/contact-section/components/DisplayFormMessage"
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 
 import { useDatePicker } from "@/hooks/useDatePicker"
 
@@ -21,6 +22,7 @@ import { projectCatArray, difficultyArray } from "@/lib/dataCatArrays";
 
 import { ReturnedType, type Project } from "@/types/actionsTypes/actionsTypes"
 import FormTitle from "./components/FormTitle";
+import { projectFormTriggers } from "@/lib/control-panel/ProjectFormTriggers";
 
 interface ProjectFormProps {
     projectData?: Project;
@@ -59,14 +61,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                 {projectData && <input type="hidden" name="id" id="id" value={projectData?.id} />}
                 {projectData && <input type="hidden" name="project_screenName" id="project_screenName" value={projectData?.project_screenName} />}
                 <Tabs defaultValue="basic" className="w-full max-w-xl">
-                    <TabsList className="grid w-full grid-cols-4 gap-2 bg-transparent">
-                        <TabsTrigger value="basic" className="w-full px-5 bg-[#001a0e] text-slate-300 data-[state=active]:bg-[#1d3228] data-[state=active]:text-slate-200">Basic info</TabsTrigger>
-                        <TabsTrigger value="files" className="w-full px-5 bg-[#001a0e] text-slate-300 data-[state=active]:bg-[#1d3228] data-[state=active]:text-slate-200">Files</TabsTrigger>
-                        <TabsTrigger value="translations" className="w-full px-5 bg-[#001a0e] text-slate-300 data-[state=active]:bg-[#1d3228] data-[state=active]:text-slate-200">Translations</TabsTrigger>
-                        <TabsTrigger value="metadata" className="w-full px-5 bg-[#001a0e] text-slate-300 data-[state=active]:bg-[#1d3228] data-[state=active]:text-slate-200">Metadata</TabsTrigger>
-                    </TabsList>
-
-                    {/* === Basic Info === */}
+                    <TabsListElement triggers={projectFormTriggers} />
                     <TabsContent value="basic" className="flex flex-col gap-4">
                         <div>
                             <LabelElement htmlFor="project_name" className="font-bold pb-1 ml-2 text-lg tracking-wide">
@@ -132,8 +127,6 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                             />
                         </div>
                     </TabsContent>
-
-                    {/* === Files === */}
                     <TabsContent value="files" className="flex flex-col gap-4">
                         {mode === 'edit' && (
                             <SwitchElement
@@ -167,8 +160,6 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                             />
                         </div>
                     </TabsContent>
-
-                    {/* === Translations === */}
                     <TabsContent value="translations" className="flex flex-col gap-4">
                         <div>
                             <LabelElement htmlFor="goal_pl" className="font-bold pb-1 ml-2 text-lg tracking-wide">Goal (PL):</LabelElement>
@@ -215,8 +206,6 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                             />
                         </div>
                     </TabsContent>
-
-                    {/* === Metadata === */}
                     <TabsContent value="metadata" className="flex flex-col gap-4">
                         <div>
                             <LabelElement htmlFor="project_URL" className="font-bold pb-1 ml-2 text-lg tracking-wide">Project URL:</LabelElement>
@@ -291,7 +280,6 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                                 <CalendarInputIcon />
                             </div>
                         </div>
-
                         <div>
                             <LabelElement htmlFor="long_text" className="font-bold pb-1 ml-2 text-lg tracking-wide">Long description:</LabelElement>
                             <TextAreaElement
