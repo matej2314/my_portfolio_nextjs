@@ -6,14 +6,19 @@ import { Icon } from '@iconify/react';
 
 import NavLink from "@/components/links/NavLink";
 
+import { event } from "@/lib/google-analytics/gtag";
+
 import { type IconButtonType } from "@/types/iconButtonTypes";
 
-export default function IconButton({ iconCode, children, redirectPath, iconClass, title, onClick, ...props }: IconButtonType) {
+export default function IconButton({ iconCode, children, redirectPath, iconClass, title, onClick, gaEvent, ...props }: IconButtonType) {
 
     const router = useRouter();
 
     const handleClick = () => {
         if (onClick) {
+            if (gaEvent) {
+                event(gaEvent);
+            }
             onClick();
         } else if (redirectPath) {
             router.push(redirectPath);

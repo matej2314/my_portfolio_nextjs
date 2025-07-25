@@ -76,6 +76,7 @@ export async function newBlogPost(prevState: ReturnedType, formData: FormData): 
 		});
 
 		deleteCache(REDIS_KEYS.BLOGPOSTS);
+		deleteCache(REDIS_KEYS.SITEMAP);
 		return { success: true, message: 'Blog post added correctly.' };
 	} catch (error) {
 		console.error('newBlogPost error:', error);
@@ -101,6 +102,7 @@ export async function updateBlogPost(prevState: ReturnedType, formdata: FormData
 		});
 
 		await deleteMultipleCache(REDIS_KEYS.BLOGPOSTS, REDIS_KEYS.BLOGPOST(id));
+		await deleteCache(REDIS_KEYS.SITEMAP);
 		return { success: true, message: 'Blog post updated correctly.' };
 	} catch (error) {
 		console.error('UpdateBlogPost error:', error);
@@ -123,6 +125,7 @@ export async function deleteBlogPost(prevState: ReturnedType, formData: FormData
 		});
 
 		deleteMultipleCache(REDIS_KEYS.BLOGPOSTS, REDIS_KEYS.BLOGPOST(deletedPost.id));
+		deleteCache(REDIS_KEYS.SITEMAP);
 		return { success: true, message: 'Blog post deleted successfully.' };
 	} catch (error) {
 		console.error('deleteBlogPost error:', error);

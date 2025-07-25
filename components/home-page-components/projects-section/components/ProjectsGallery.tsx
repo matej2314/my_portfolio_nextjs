@@ -5,6 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, easeOut } from "framer-motion";
 
+import { event } from "@/lib/google-analytics/gtag";
+
 import { type ProjectsGalleryProps } from "@/types/ProjectsGalleryTypes";
 
 export default function ProjectsGallery({ projects, images }: ProjectsGalleryProps) {
@@ -32,6 +34,7 @@ export default function ProjectsGallery({ projects, images }: ProjectsGalleryPro
                                 <Link
                                     href={`/home/project/${project.id}`}
                                     className="block group"
+                                    onClick={() => event({ action: 'view_project', params: { category: 'project', label: project.project_name } })}
                                 >
                                     <div className="relative w-full h-64 overflow-hidden rounded-xl shadow-md">
                                         <Image

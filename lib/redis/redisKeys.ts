@@ -9,4 +9,5 @@ export const REDIS_KEYS = {
 	BLOGPOSTS: 'blogPosts:all',
 	BLOGPOST: (id: string) => `blogPost:${id}`,
 	ABOUTME: 'aboutMe',
+	SITEMAP: 'sitemap:xml',
 };

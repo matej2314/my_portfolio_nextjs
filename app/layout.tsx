@@ -1,19 +1,12 @@
-
-import { type Metadata } from "next";
 import { type ReactNode } from "react";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
 import Script from "next/script";
 import "./globals.css";
 import ClientAnalytics from "@/components/ClientAnalytics";
+import { generatePageMetadata } from "@/lib/generatePageMetadata";
 
-export const metadata: Metadata = {
-  title: 'msliwowski.net | WebDev, SEO, Security',
-  description: 'Webdev, SEO, Security',
-  icons: {
-    icon: '/favicon.svg'
-  }
-}
+export const generateMetadata = () => generatePageMetadata('page', null);
 
 export default async function RootLayout({
   children,

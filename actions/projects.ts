@@ -123,6 +123,7 @@ export async function saveProject(prevState: ReturnedType, formData: FormData): 
 		await prisma.projects.create({ data: newProject });
 
 		await deleteCache(REDIS_KEYS.PROJECTS_ALL);
+		await deleteCache(REDIS_KEYS.SITEMAP);
 		return { success: true, message: 'Project added correctly.' };
 	} catch (error) {
 		console.error('SaveProjectError:', error);
@@ -170,6 +171,7 @@ export async function updateProject(prevState: ReturnedType, formData: FormData,
 
 		await deleteCache(REDIS_KEYS.PROJECTS_ALL);
 		await deleteMultipleCache(REDIS_KEYS.PROJECT_SHOTS(projectId));
+		await deleteCache(REDIS_KEYS.SITEMAP);
 
 		return { success: true, message: 'Project updated correctly.' };
 	} catch (error) {
@@ -197,6 +199,7 @@ export async function deleteProject(prevState: ReturnedType, formData: FormData)
 		await manageProjectImages(projectId, [], [], { mode: 'delete', clearExisting: false });
 
 		await deleteMultipleCache(REDIS_KEYS.PROJECTS_ALL, REDIS_KEYS.PROJECT_SHOTS(id));
+		await deleteCache(REDIS_KEYS.SITEMAP);
 		return { success: true, message: 'Project deleted correctly.' };
 	} catch (error) {
 		console.error('deleteProjectError:', error);

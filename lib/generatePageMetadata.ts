@@ -9,15 +9,25 @@ interface PageMetadata {
 }
 
 export const basicMetadata = {
-	applicationName: 'msliwowski.net',
-	keywords: ['webdev', 'web developer', 'webdevelopment', 'it security', 'websecurity', 'seo', 'search engine optimization'],
-	authors: [{ name: 'Mateusz mateo2314 Sliwowski' }],
-	creator: 'Mateusz mateo2314 Sliwowski',
-	publisher: 'Mateusz Sliwowski',
-	formatDetection: {
-		email: false,
-		address: false,
-		telephone: false,
+	icons: {
+		icon: '/favicon.svg',
+		shortcut: '/favicon.svg',
+	},
+	metadataBase: new URL('https://msliwowski.net'),
+	openGraph: {
+		url: 'https://msliwowski.net',
+		siteName: 'msliwowski.net',
+	},
+	authors: [{ name: 'Mateusz Śliwowski', url: 'https://msliwowski.net' }],
+	creator: 'Mateusz Śliwowski',
+	publisher: 'Mateusz Śliwowski',
+	robots: {
+		index: true,
+		follow: true,
+		googleBot: {
+			index: true,
+			follow: true,
+		},
 	},
 };
 
@@ -43,11 +53,11 @@ export async function generatePageMetadata(type: TypeProps, id?: string | null, 
 			const postData = await getBlogPost(id as string);
 
 			if ('error' in postData) {
-				return { title: 'Project not found', ...basicMetadata };
+				return { title: 'Blog post not found', ...basicMetadata };
 			}
 			return {
 				title: `${postData.post.post_title} | msliwowski.net`,
-				description: `Project ${postData.post.post_title} details page.`,
+				description: `Blog post ${postData.post.post_title} details page.`,
 				...basicMetadata,
 			};
 		case 'page':

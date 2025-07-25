@@ -12,6 +12,8 @@ import TextAreaElement from "@/components/ui/elements/TextareaElement";
 import SubmitBtn from "@/components/ui/elements/SubmitButton";
 import DisplayFormMessage from "./DisplayFormMessage";
 
+import { event } from "@/lib/google-analytics/gtag";
+
 import { initialState } from "./formInitState";
 
 export default function ContactForm() {
@@ -23,6 +25,7 @@ export default function ContactForm() {
     const isSuccess = state?.success !== undefined;
 
     useEffect(() => {
+
         if (isSuccess || hasErrors) {
             setShouldDisable(true);
 
@@ -33,6 +36,12 @@ export default function ContactForm() {
             return () => clearTimeout(timer);
         }
     }, [isSuccess, hasErrors]);
+
+    useEffect(() => {
+        if (isSuccess) {
+            event({ action: 'contact', params: { category: 'contact', label: 'success' } });
+        }
+    }, [isSuccess]);
 
     return (
         <motion.form
