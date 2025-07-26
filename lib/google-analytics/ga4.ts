@@ -6,7 +6,10 @@ const SCOPES = ['https://www.googleapis.com/auth/analytics.readonly'];
 const credentialsPath = path.join(process.cwd(), '/credentials/myPortfolio-f6f80beac2cd.json');
 const credentials = JSON.parse(readFileSync(credentialsPath, 'utf8'));
 
-const jwtClient = new google.auth.JWT(credentials.client_email, undefined, credentials.private_key, SCOPES);
+const email = credentials.client_email || process.env.GOOGLE_CLIENT_MAIL;
+const key = credentials.private_key || process.env.GOOGLE_PRIVATE_KEY;
+
+const jwtClient = new google.auth.JWT(email, undefined, key, SCOPES);
 
 const analytics = google.analyticsdata('v1beta');
 
