@@ -1,10 +1,18 @@
-import { NextResponse } from 'next/server';
 import { getProjects } from '@/actions/projects';
 import { getBlogPosts } from '@/actions/blogPosts';
 // import { getCache, setCache } from '@/lib/redis/redis';
 // import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 
-export async function GET() {
+import { type MetadataRoute } from 'next';
+
+type SitemapPage = {
+	url: string;
+	lastModified: string;
+	changeFrequency: 'weekly' | 'daily' | 'monthly' | 'always' | 'hourly' | 'yearly' | 'never';
+	priority: number;
+};
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const baseUrl = process.env.BASE_URL || 'https://msliwowski.net';
 
 	// const cachedSitemap = await getCache<string>(REDIS_KEYS.SITEMAP);
@@ -17,7 +25,7 @@ export async function GET() {
 	// 	});
 	// }
 
-	const staticPages = [
+	const staticPages: SitemapPage[] = [
 		{
 			url: baseUrl,
 			lastModified: new Date().toISOString(),
@@ -39,7 +47,7 @@ export async function GET() {
 	];
 
 	const projectsData = await getProjects();
-	const projectPages = [];
+	const projectPages: SitemapPage[] = [];
 
 	if (!('error' in projectsData)) {
 		for (const project of projectsData.projects) {
@@ -53,7 +61,7 @@ export async function GET() {
 	}
 
 	const blogPostsData = await getBlogPosts();
-	const blogPages = [];
+	const blogPages: SitemapPage[] = [];
 
 	if (!('error' in blogPostsData)) {
 		for (const post of blogPostsData.posts) {
@@ -68,27 +76,5 @@ export async function GET() {
 
 	const allPages = [...staticPages, ...projectPages, ...blogPages];
 
-	const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${allPages
-	.map(
-		page => `
-  <url>
-    <loc>${page.url}</loc>
-    <lastmod>${page.lastModified}</lastmod>
-    <changefreq>${page.changeFrequency}</changefreq>
-    <priority>${page.priority}</priority>
-  </url>`
-	)
-	.join('')}
-</urlset>`;
-
-	// await setCache(REDIS_KEYS.SITEMAP, xml, 3600);
-	console.log(`:white_check_mark: Sitemap generated successfully`);
-	return new NextResponse(xml, {
-		headers: {
-			'Content-Type': 'application/xml',
-			'Cache-Control': 'public, max-age=3600, s-maxage=3600',
-		},
-	});
+	return allPages as MetadataRoute.Sitemap;
 }
