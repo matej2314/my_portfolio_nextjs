@@ -45,5 +45,5 @@ export const controlMenuArray: ControlMenuItem[] = [
 	{ key: 'skills', label: 'Skills', icon: 'game-icons:skills', actions: ['add', 'manage'] },
 	{ key: 'blog', label: 'Blog', icon: 'icomoon-free:blog', actions: ['add', 'manage'] },
 	{ key: 'resume', label: 'Resume', icon: 'mdi:resume', actions: ['add'] },
-	{ key: 'stats', label: 'Stats', icon: 'tabler:home-stats', actions: [] },
+	{ key: 'stats', label: 'Analytics', icon: 'tabler:home-stats', actions: [] },
 ];

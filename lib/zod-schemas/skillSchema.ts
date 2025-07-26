@@ -17,16 +17,18 @@ export const baseSkillSchema = z.object({
 	}).refine(value => !containsXSS(value), {
 		message: 'Skill category contains dangerous characters.',
 	}),
-	icon_name: validatedString(5, 10, {
+	icon_name: validatedString(5, 30, {
 		tooSmall: 'Icon name must contains minimum 5 characters.',
-		tooBig: 'Icon name must contains maximum 10 characters.',
+		tooBig: 'Icon name must contains maximum 30 characters.',
 	}).refine(value => !containsXSS(value), {
 		message: 'Icon name contains dangerous characters.',
 	}),
 	icon_color: validatedString(5, 10, {
 		tooBig: 'Icon color must contain maximum 10 characters.',
 		tooSmall: 'Icon color must contains minimum 5 characters.',
-	}),
+	})
+		.nullable()
+		.optional(),
 });
 
 export const updateSkillSchema = baseSkillSchema.extend({
