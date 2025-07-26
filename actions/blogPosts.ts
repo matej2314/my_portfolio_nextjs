@@ -8,7 +8,7 @@ import { idSchema } from '@/lib/zod-schemas/idSchema';
 
 import { type GetPostType, GetPostsType, ReturnedType, Post } from '@/types/actionsTypes/actionsTypes';
 import { convertFormData } from '@/lib/formDataToObjectConvert';
-import { getCache, setCache, deleteCache, deleteMultipleCache } from '@/lib/redis/redis';
+import { getCache, setCache, deleteMultipleCache } from '@/lib/redis/redis';
 import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 
 export const getBlogPosts = async (): Promise<GetPostsType> => {
@@ -75,8 +75,7 @@ export async function newBlogPost(prevState: ReturnedType, formData: FormData): 
 			data: newPost,
 		});
 
-		deleteCache(REDIS_KEYS.BLOGPOSTS);
-		deleteCache(REDIS_KEYS.SITEMAP);
+		deleteMultipleCache(REDIS_KEYS.BLOGPOSTS, REDIS_KEYS.SITEMAP);
 		return { success: true, message: 'Blog post added correctly.' };
 	} catch (error) {
 		console.error('newBlogPost error:', error);
@@ -102,7 +101,6 @@ export async function updateBlogPost(prevState: ReturnedType, formdata: FormData
 		});
 
 		await deleteMultipleCache(REDIS_KEYS.BLOGPOSTS, REDIS_KEYS.BLOGPOST(id));
-		await deleteCache(REDIS_KEYS.SITEMAP);
 		return { success: true, message: 'Blog post updated correctly.' };
 	} catch (error) {
 		console.error('UpdateBlogPost error:', error);
@@ -124,8 +122,7 @@ export async function deleteBlogPost(prevState: ReturnedType, formData: FormData
 			where: { id: validId.data },
 		});
 
-		deleteMultipleCache(REDIS_KEYS.BLOGPOSTS, REDIS_KEYS.BLOGPOST(deletedPost.id));
-		deleteCache(REDIS_KEYS.SITEMAP);
+		deleteMultipleCache(REDIS_KEYS.BLOGPOSTS, REDIS_KEYS.BLOGPOST(deletedPost.id), REDIS_KEYS.SITEMAP);
 		return { success: true, message: 'Blog post deleted successfully.' };
 	} catch (error) {
 		console.error('deleteBlogPost error:', error);

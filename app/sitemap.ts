@@ -1,7 +1,7 @@
 import { getProjects } from '@/actions/projects';
 import { getBlogPosts } from '@/actions/blogPosts';
-// import { getCache, setCache } from '@/lib/redis/redis';
-// import { REDIS_KEYS } from '@/lib/redis/redisKeys';
+import { getCache, setCache } from '@/lib/redis/redis';
+import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 
 import { type MetadataRoute } from 'next';
 
@@ -17,15 +17,10 @@ type SitemapPage = {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const baseUrl = process.env.BASE_URL || 'https://msliwowski.net';
 
-	// const cachedSitemap = await getCache<string>(REDIS_KEYS.SITEMAP);
-	// if (cachedSitemap) {
-	// 	return new NextResponse(cachedSitemap, {
-	// 		headers: {
-	// 			'Content-Type': 'application/xml',
-	// 			'Cache-Control': 'public, max-age=3600, s-maxage=3600',
-	// 		},
-	// 	});
-	// }
+	const cachedSitemap = await getCache<SitemapPage[]>(REDIS_KEYS.SITEMAP);
+	if (cachedSitemap) {
+		return cachedSitemap as MetadataRoute.Sitemap;
+	}
 
 	const staticPages: SitemapPage[] = [
 		{
@@ -79,6 +74,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	}
 
 	const allPages = [...staticPages, ...projectPages, ...blogPages];
+
+	await setCache(REDIS_KEYS.SITEMAP, allPages, 3600);
 
 	return allPages as MetadataRoute.Sitemap;
 }

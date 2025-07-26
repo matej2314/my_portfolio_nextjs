@@ -7,7 +7,7 @@ import path from 'path';
 
 import { type GetShotsResult, GetProjectType, GetProjectsType, ReturnedType, Project } from '@/types/actionsTypes/actionsTypes';
 
-import { setCache, getCache, deleteCache, deleteMultipleCache } from '@/lib/redis/redis';
+import { setCache, getCache, deleteMultipleCache } from '@/lib/redis/redis';
 import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 import { manageProjectImages } from '@/lib/manageProjectImages';
 import { projectObjectForValidation, validateProjectFiles } from '@/lib/manageProjectUtils';
@@ -122,8 +122,7 @@ export async function saveProject(prevState: ReturnedType, formData: FormData): 
 		};
 		await prisma.projects.create({ data: newProject });
 
-		await deleteCache(REDIS_KEYS.PROJECTS_ALL);
-		await deleteCache(REDIS_KEYS.SITEMAP);
+		await deleteMultipleCache(REDIS_KEYS.PROJECTS_ALL, REDIS_KEYS.SITEMAP);
 		return { success: true, message: 'Project added correctly.' };
 	} catch (error) {
 		console.error('SaveProjectError:', error);
@@ -169,9 +168,7 @@ export async function updateProject(prevState: ReturnedType, formData: FormData,
 			},
 		});
 
-		await deleteCache(REDIS_KEYS.PROJECTS_ALL);
-		await deleteMultipleCache(REDIS_KEYS.PROJECT_SHOTS(projectId));
-		await deleteCache(REDIS_KEYS.SITEMAP);
+		await deleteMultipleCache(REDIS_KEYS.PROJECTS_ALL, REDIS_KEYS.PROJECT_SHOTS(projectId));
 
 		return { success: true, message: 'Project updated correctly.' };
 	} catch (error) {
@@ -198,8 +195,7 @@ export async function deleteProject(prevState: ReturnedType, formData: FormData)
 
 		await manageProjectImages(projectId, [], [], { mode: 'delete', clearExisting: false });
 
-		await deleteMultipleCache(REDIS_KEYS.PROJECTS_ALL, REDIS_KEYS.PROJECT_SHOTS(id));
-		await deleteCache(REDIS_KEYS.SITEMAP);
+		await deleteMultipleCache(REDIS_KEYS.PROJECTS_ALL, REDIS_KEYS.PROJECT_SHOTS(id), REDIS_KEYS.SITEMAP);
 		return { success: true, message: 'Project deleted correctly.' };
 	} catch (error) {
 		console.error('deleteProjectError:', error);
