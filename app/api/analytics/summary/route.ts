@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getGA4REport } from '@/lib/google-analytics/ga4';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
 	try {
 		const data = await getGA4REport({
 			startDate: '7daysAgo',
