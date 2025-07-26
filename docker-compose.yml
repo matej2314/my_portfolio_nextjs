@@ -12,6 +12,7 @@ services:
             - '5050:5050'
         volumes:
             - /root/main/portfolio_nextjs/.env:/app/.env
+            - /root/main/portfolio_nextjs/credentials:/app/credentials
         environment:
             - NODE_ENV=production
             - PORT=5055
