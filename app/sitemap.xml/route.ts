@@ -1,21 +1,21 @@
 import { NextResponse } from 'next/server';
 import { getProjects } from '@/actions/projects';
 import { getBlogPosts } from '@/actions/blogPosts';
-import { getCache, setCache } from '@/lib/redis/redis';
-import { REDIS_KEYS } from '@/lib/redis/redisKeys';
+// import { getCache, setCache } from '@/lib/redis/redis';
+// import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 
 export async function GET() {
 	const baseUrl = process.env.BASE_URL || 'https://msliwowski.net';
 
-	const cachedSitemap = await getCache<string>(REDIS_KEYS.SITEMAP);
-	if (cachedSitemap) {
-		return new NextResponse(cachedSitemap, {
-			headers: {
-				'Content-Type': 'application/xml',
-				'Cache-Control': 'public, max-age=3600, s-maxage=3600',
-			},
-		});
-	}
+	// const cachedSitemap = await getCache<string>(REDIS_KEYS.SITEMAP);
+	// if (cachedSitemap) {
+	// 	return new NextResponse(cachedSitemap, {
+	// 		headers: {
+	// 			'Content-Type': 'application/xml',
+	// 			'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+	// 		},
+	// 	});
+	// }
 
 	const staticPages = [
 		{
@@ -83,8 +83,8 @@ ${allPages
 	.join('')}
 </urlset>`;
 
-	await setCache(REDIS_KEYS.SITEMAP, xml, 3600);
-
+	// await setCache(REDIS_KEYS.SITEMAP, xml, 3600);
+	console.log(`:white_check_mark: Sitemap generated successfully`);
 	return new NextResponse(xml, {
 		headers: {
 			'Content-Type': 'application/xml',
