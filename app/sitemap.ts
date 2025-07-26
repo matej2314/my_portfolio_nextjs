@@ -46,10 +46,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		},
 	];
 
+	console.log('🔍 Sitemap: Pobieranie projektów...');
 	const projectsData = await getProjects();
+	console.log('📊 Sitemap: Projekty data:', projectsData);
+
 	const projectPages: SitemapPage[] = [];
 
 	if (!('error' in projectsData)) {
+		console.log(`✅ Sitemap: Dodawanie ${projectsData.projects.length} projektów`);
 		for (const project of projectsData.projects) {
 			projectPages.push({
 				url: `${baseUrl}/home/project/${project.id}`,
@@ -58,12 +62,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 				priority: 0.7,
 			});
 		}
+	} else {
+		console.error('❌ Sitemap: Błąd pobierania projektów:', projectsData.error);
 	}
 
+	console.log('🔍 Sitemap: Pobieranie postów blogowych...');
 	const blogPostsData = await getBlogPosts();
+	console.log('📊 Sitemap: Blog posts data:', blogPostsData);
+
 	const blogPages: SitemapPage[] = [];
 
 	if (!('error' in blogPostsData)) {
+		console.log(`✅ Sitemap: Dodawanie ${blogPostsData.posts.length} postów blogowych`);
 		for (const post of blogPostsData.posts) {
 			blogPages.push({
 				url: `${baseUrl}/home/blog/${post.id}`,
@@ -72,9 +82,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 				priority: 0.6,
 			});
 		}
+	} else {
+		console.error('❌ Sitemap: Błąd pobierania postów blogowych:', blogPostsData.error);
 	}
 
 	const allPages = [...staticPages, ...projectPages, ...blogPages];
+	console.log(`🎯 Sitemap: Łącznie ${allPages.length} stron (${staticPages.length} statyczne, ${projectPages.length} projekty, ${blogPages.length} blog)`);
 
 	return allPages as MetadataRoute.Sitemap;
 }
