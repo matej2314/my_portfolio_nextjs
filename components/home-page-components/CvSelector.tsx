@@ -41,6 +41,7 @@ export default function CvSelector({ isOpen, onClose }: { isOpen: boolean, onClo
                 >
                     <ExternalLink
                         href="/cv/CV - Mateusz Śliwowski_en.pdf"
+                        aria-label="Download English CV"
                         download
                     >
                         <IconButton
@@ -52,6 +53,7 @@ export default function CvSelector({ isOpen, onClose }: { isOpen: boolean, onClo
                     </ExternalLink>
                     <ExternalLink
                         href="/cv/CV - Mateusz Śliwowski.pdf"
+                        aria-label="Download Polish CV"
                         download
                     >
                         <IconButton
