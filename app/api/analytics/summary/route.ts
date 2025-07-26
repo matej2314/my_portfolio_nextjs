@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getGA4REport } from '@/lib/google-analytics/ga4';
 
 export async function GET() {
