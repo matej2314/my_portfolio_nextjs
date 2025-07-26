@@ -3,7 +3,7 @@ import { google } from 'googleapis';
 const SCOPES = ['https://www.googleapis.com/auth/analytics.readonly'];
 
 const email = process.env.GOOGLE_CLIENT_MAIL;
-const key = process.env.GOOGLE_PRIVATE_KEY;
+const key = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n');
 
 const jwtClient = new google.auth.JWT(email, undefined, key, SCOPES);
 
