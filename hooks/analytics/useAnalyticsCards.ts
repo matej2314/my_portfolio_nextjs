@@ -1,29 +1,75 @@
 import { useMemo } from 'react';
-import { AnalyticsSummary } from '@/types/ga4-types';
+import { ProcessedAnalyticsData } from '@/types/ga4-types';
 
 interface AnalyticsCardData {
 	title: string;
-	key: keyof AnalyticsSummary;
+	key: keyof ProcessedAnalyticsData;
 	value: string;
+	formatter?: (value: number) => string;
 }
 
-export function useAnalyticsCards(analyticsData: AnalyticsSummary | null): AnalyticsCardData[] {
+export function useAnalyticsCards(analyticsData: ProcessedAnalyticsData | null): AnalyticsCardData[] {
 	return useMemo(() => {
 		if (!analyticsData) return [];
 
-		const analyticsCardsConfig = [
-			{ title: "Total Users:", key: "totalUsers" as keyof AnalyticsSummary },
-			{ title: "Total Page Views:", key: "totalPageViews" as keyof AnalyticsSummary },
-			{ title: "Total CV Downloads:", key: "totalDownloads" as keyof AnalyticsSummary },
-			{ title: "Total Contacts:", key: "totalContacts" as keyof AnalyticsSummary },
-			{ title: "Total Projects Views:", key: "totalProjectViews" as keyof AnalyticsSummary },
-			{ title: "Engagement Rate:", key: "engagementRate" as keyof AnalyticsSummary },
+		const formatDuration = (seconds: number): string => {
+			const minutes = Math.floor(seconds / 60);
+			const remainingSeconds = Math.floor(seconds % 60);
+			return `${minutes}m ${remainingSeconds}s`;
+		};
+
+		const formatPercentage = (value: number): string => {
+			return `${(value * 100).toFixed(1)}%`;
+		};
+
+		const analyticsCardsConfig: AnalyticsCardData[] = [
+			{
+				title: 'Total Users',
+				key: 'totalUsers' as keyof ProcessedAnalyticsData,
+				value: analyticsData.totalUsers.toString(),
+			},
+			{
+				title: 'Total Page Views',
+				key: 'totalPageViews' as keyof ProcessedAnalyticsData,
+				value: analyticsData.totalPageViews.toString(),
+			},
+			{
+				title: 'Project Views',
+				key: 'totalProjectViews' as keyof ProcessedAnalyticsData,
+				value: analyticsData.totalProjectViews.toString(),
+			},
+			{
+				title: 'Contact Events',
+				key: 'totalContacts' as keyof ProcessedAnalyticsData,
+				value: analyticsData.totalContacts.toString(),
+			},
+			{
+				title: 'CV Downloads',
+				key: 'totalCvDownloads' as keyof ProcessedAnalyticsData,
+				value: analyticsData.totalCvDownloads.toString(),
+			},
+			{
+				title: 'Total Scrolls',
+				key: 'totalScrolls' as keyof ProcessedAnalyticsData,
+				value: analyticsData.totalScrolls.toString(),
+			},
+			{
+				title: 'User Engagement Events',
+				key: 'totalUserEngagement' as keyof ProcessedAnalyticsData,
+				value: analyticsData.totalUserEngagement.toString(),
+			},
+			{
+				title: 'Avg Session Duration',
+				key: 'averageSessionDuration' as keyof ProcessedAnalyticsData,
+				value: formatDuration(analyticsData.averageSessionDuration),
+			},
+			{
+				title: 'Engagement Rate',
+				key: 'engagementRate' as keyof ProcessedAnalyticsData,
+				value: formatPercentage(analyticsData.engagementRate),
+			},
 		];
 
-		return analyticsCardsConfig.map(({ title, key }) => ({
-			title,
-			key,
-			value: analyticsData[key]?.toString() || '0',
-		}));
+		return analyticsCardsConfig;
 	}, [analyticsData]);
-} 
+}

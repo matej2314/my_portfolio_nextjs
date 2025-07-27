@@ -34,7 +34,7 @@ export default function ProjectsGallery({ projects, images }: ProjectsGalleryPro
                                 <Link
                                     href={`/home/project/${project.id}`}
                                     className="block group"
-                                    onClick={() => event({ action: 'view_project', params: { category: 'project', label: project.project_name } })}
+                                    onClick={() => event({ action: 'view_project', params: { eventName: 'view_project', eventCount: 1, eventValue: 1 } })}
                                 >
                                     <div className="relative w-full h-64 overflow-hidden rounded-xl shadow-md">
                                         <Image

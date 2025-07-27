@@ -39,7 +39,7 @@ export default function ContactForm() {
 
     useEffect(() => {
         if (isSuccess) {
-            event({ action: 'contact', params: { category: 'contact', label: 'success' } });
+            event({ action: 'contact', params: { eventName: 'contact', eventCount: 1, eventValue: 1 } });
         }
     }, [isSuccess]);
 
@@ -63,7 +63,8 @@ export default function ContactForm() {
                 title={t("contactForm.nameLabel")}
                 name="client-name"
                 id="client-name"
-                className="w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md"
+                placeholder='name'
+                className="w-10/12 sm:w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md"
                 defaultValue={state.values.client}
                 required={false}
             />
@@ -79,8 +80,9 @@ export default function ContactForm() {
                 name="client-mail"
                 title='E-mail:'
                 id="client-mail"
+                placeholder='e-mail'
                 defaultValue={state.values.email}
-                className="w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md focus:border-green-400 active:border-green-400"
+                className="w-10/12 sm:w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md focus:border-green-400 active:border-green-400"
                 required={false}
             />
             <DisplayFormMessage type="error" messages={state.error?.email} />
@@ -95,8 +97,9 @@ export default function ContactForm() {
                 name="msg-subject"
                 title={t("contactForm.subjectLabel")}
                 id="msg-subject"
+                placeholder='subject'
                 defaultValue={state.values.subject}
-                className="w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md"
+                className="w-10/12 sm:w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md"
                 required={false}
             />
             <DisplayFormMessage type="error" messages={state.error?.subject} />
@@ -110,8 +113,9 @@ export default function ContactForm() {
                 id="msg-content"
                 name="msg-content"
                 title={t("contactForm.messageLabel")}
+                placeholder='message'
                 defaultValue={state.values.content}
-                className="w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md"
+                className="w-10/12 sm:w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md"
                 required={false}
             />
             <DisplayFormMessage type="error" messages={state.error?.content} />

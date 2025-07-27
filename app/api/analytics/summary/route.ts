@@ -1,17 +1,22 @@
 import { NextResponse } from 'next/server';
-import { getGA4REport } from '@/lib/google-analytics/ga4';
+import { getGA4Report } from '@/lib/google-analytics/ga4';
+import { GA4ReportResponse } from '@/types/ga4-types';
+
+import { processGA4Data } from '@/lib/google-analytics/processGA4Data';
 
 export async function GET() {
 	try {
-		const data = await getGA4REport({
-			startDate: '7daysAgo',
+		const rawData = (await getGA4Report({
+			startDate: '30daysAgo',
 			endDate: 'today',
-			limit: 20,
-		});
+			limit: '50',
+		})) as GA4ReportResponse;
 
-		return NextResponse.json(data);
+		const processedData = processGA4Data(rawData);
+
+		return NextResponse.json(processedData);
 	} catch (error) {
-		console.error(`GA4 summary API error: ${error}`);
+		console.error('GA4 Summary API error:', error);
 		return NextResponse.json({ error: 'Failed to fetch summary analytics data' }, { status: 500 });
 	}
 }

@@ -46,7 +46,6 @@ export default function CvSelector({ isOpen, onClose }: { isOpen: boolean, onClo
                     >
                         <IconButton
                             className="w-[5rem] bg-yellow-400 hover:bg-yellow-500 hover:text-slate-950 text-slate-600 font-semibold font-mono text-[0.9rem] flex justify-center items-center"
-                            gaEvent={{ action: 'download_cv', params: { category: 'cv', label: 'english' } }}
                         >
                             English
                         </IconButton>
@@ -58,7 +57,6 @@ export default function CvSelector({ isOpen, onClose }: { isOpen: boolean, onClo
                     >
                         <IconButton
                             className="w-[5rem] bg-yellow-400 hover:bg-yellow-500 hover:text-slate-950 text-slate-600 font-semibold font-mono text-[0.9rem] flex justify-center items-center"
-                            gaEvent={{ action: 'download_cv', params: { category: 'cv', label: 'polish' } }}
                         >
                             Polish
                         </IconButton>

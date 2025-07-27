@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getGA4REport } from '@/lib/google-analytics/ga4';
+import { getGA4Report } from '@/lib/google-analytics/ga4';
 
 export async function POST(request: NextRequest) {
 	try {
@@ -7,14 +7,20 @@ export async function POST(request: NextRequest) {
 		const { startDate, endDate, metrics, dimensions, limit } = body;
 
 		if (!startDate || !endDate) {
-			return NextResponse.json({ error: 'Start date and end date are required' }, { status: 400 });
+			return NextResponse.json({ error: 'startDate and endDate are required' }, { status: 400 });
 		}
 
-		const data = await getGA4REport({ startDate, endDate, metrics, dimensions, limit });
+		const data = await getGA4Report({
+			startDate,
+			endDate,
+			metrics,
+			dimensions,
+			limit,
+		});
 
 		return NextResponse.json(data);
 	} catch (error) {
 		console.error('GA4 Dynamic API error:', error);
-		return NextResponse.json({ error: 'Failed to fetch dynamic analytics data' }, { status: 500 });
+		return NextResponse.json({ error: 'Failed to fetch analytics data' }, { status: 500 });
 	}
 }

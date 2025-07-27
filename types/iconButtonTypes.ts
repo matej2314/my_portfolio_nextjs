@@ -1,7 +1,7 @@
 import { type ReactNode, ComponentProps } from 'react';
 import { Button } from '@/components/ui/button';
 
-import { type GAEvent } from '@/lib/google-analytics/gtag';
+import { type GA4Event } from '@/types/ga4-types';
 
 export type IconButtonType = {
 	iconCode?: string;
@@ -9,7 +9,7 @@ export type IconButtonType = {
 	children?: ReactNode;
 	iconClass?: string;
 	iconColor?: string;
-	gaEvent?: GAEvent;
+	gaEvent?: GA4Event;
 	title?: string;
 	onClick?: () => void;
 } & ComponentProps<typeof Button>;

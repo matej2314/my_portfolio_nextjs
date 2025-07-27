@@ -7,11 +7,11 @@ import DataBoxCardElement from "@/components/ui/elements/DataBoxCardElement";
 import LoadingComponent from "@/components/LoadingComponent";
 import { useAnalyticsCards } from "@/hooks/analytics/useAnalyticsCards";
 
-import { type AnalyticsSummary } from "@/types/ga4-types";
+import { type ProcessedAnalyticsData } from "@/types/ga4-types";
 
 export default function AnalyticsBox() {
 
-    const [analyticsData, setAnalyticsData] = useState<AnalyticsSummary | null>(null);
+    const [analyticsData, setAnalyticsData] = useState<ProcessedAnalyticsData | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -26,9 +26,12 @@ export default function AnalyticsBox() {
                     throw new Error(errorData);
                 }
 
-                const data: AnalyticsSummary = await response.json();
+                const data: ProcessedAnalyticsData = await response.json();
+
+
                 setAnalyticsData(data);
             } catch (error: unknown) {
+                console.error('Error in fetchAnalyticsReport:', error);
                 if (error instanceof Error) {
                     setError(error.message);
                 } else {
@@ -60,11 +63,11 @@ export default function AnalyticsBox() {
             <h2 className="text-2xl font-bold mb-4 text-slate-400 text-center">Analytics</h2>
             {analyticsData && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ">
-                    {analyticsCardsData.map(({ title, key }) => (
+                    {analyticsCardsData.map(({ title, value }) => (
                         <DataBoxCardElement
-                            key={key}
+                            key={title}
                             header={title}
-                            value={analyticsData[key]?.toString() || '0'}
+                            value={value}
                             suffix={''}
                         />
                     ))}
