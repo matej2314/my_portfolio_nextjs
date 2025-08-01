@@ -1,4 +1,4 @@
-import { type ContactFormState } from '@/types/contactFormTypes';
+import { type ContactFormState } from '@/types/forms/contactFormTypes';
 
 export const initialState: ContactFormState = {
 	success: undefined,

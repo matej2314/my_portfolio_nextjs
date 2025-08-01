@@ -1,21 +1,15 @@
 'use client';
 
 import { useActionState } from "react";
-
 import { saveAboutMe } from "@/actions/aboutMe";
 
 import LabelElement from "@/components/ui/elements/LabelElement";
 import TextAreaElement from "@/components/ui/elements/TextareaElement";
 import SubmitBtn from "@/components/ui/elements/SubmitButton";
-
-import { type AboutTextType } from "@/types/actionsTypes/actionsTypes";
 import FormTitle from "./components/FormTitle";
 import DisplayFormMessage from "@/components/home-page-components/contact-section/components/DisplayFormMessage";
 
-interface AboutTxtFormProps {
-    aboutMeData?: AboutTextType;
-    mode?: 'edit' | 'create';
-}
+import { type AboutTxtFormProps } from '@/types/forms/about-txt-form';
 
 export default function AboutTxtForm({ aboutMeData, mode = 'create' }: AboutTxtFormProps) {
     const [state, formAction, isPending] = useActionState(saveAboutMe, { success: false, error: '' })

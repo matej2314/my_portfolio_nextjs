@@ -1,7 +1,7 @@
 import { getProjects } from "@/actions/projects";
 
 import TableWrapper from "@/components/control-panel-components/TableElementWrapper";
-import { createColumns } from "@/lib/createColumnsDef";
+import { createColumns } from "@/lib/utils/createColumnsDef";
 
 import { type Project } from "@/types/actionsTypes/actionsTypes";
 import { type VisibilityState } from "@tanstack/react-table";

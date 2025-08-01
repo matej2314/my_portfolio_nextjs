@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import TypingLine from "./TypingLine";
 
 import { linesDynamic, linesStatic } from "@/lib/introLinesArrays";
-import { getBrowserStorage, setBrowserStorage } from "@/lib/browserStorage";
+import { getBrowserStorage, setBrowserStorage } from "@/lib/utils/browserStorage";
 
 type IntroState = {
     introChecked: boolean;

@@ -3,7 +3,7 @@
 import { sendMail } from '@/lib/nodemailer';
 import { contactSchema } from '@/lib/zod-schemas/contactSchema';
 
-import { type ContactFormState } from '@/types/contactFormTypes';
+import { type ContactFormState } from '@/types/forms/contactFormTypes';
 
 export async function contactMe(prevState: ContactFormState, formData: FormData): Promise<ContactFormState> {
 	const contactObject = {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from "react";
+import { useState, useRef, type RefObject } from "react";
 import { motion } from "framer-motion";
 
 import YearLabelSpan from "./YearLabelSpan";
@@ -10,12 +10,14 @@ import CourseHoverElement from "./CourseHoverElement";
 
 import { useDeviceType } from "@/hooks/useDeviceType";
 
+import { getSortedCourses } from "@/lib/utils/utils";
+import { calculateElementPosition, validateRefs } from "@/lib/utils/certs-list";
+
 import { type Course } from "@/types/actionsTypes/actionsTypes";
 import { type HoverDataType } from "@/types/HoverElementTypes";
 
-
 export default function CertsList({ courses }: { courses: Course[] }) {
-    const sortedCourses = courses.sort((a, b) => new Date(a.course_date).getTime() - new Date(b.course_date).getTime());
+    const sortedCourses = getSortedCourses(courses);
     const device = useDeviceType();
     const containerRef = useRef<HTMLDivElement>(null);
     const dotRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -26,15 +28,12 @@ export default function CertsList({ courses }: { courses: Course[] }) {
     });
 
     const handleMouseEnter = (index: number, course: Course) => {
-        if (!containerRef.current || !dotRefs.current[index]) return;
+        if (!validateRefs(containerRef as RefObject<HTMLDivElement>, dotRefs, index)) return;
 
-        const containerLeft = containerRef.current.getBoundingClientRect().left;
-        const dotLeft = dotRefs.current[index]!.getBoundingClientRect().left;
-
-        const width = dotLeft - containerLeft + dotRefs.current[index]!.offsetWidth / 2;
+        const elementPosition = calculateElementPosition(containerRef as RefObject<HTMLDivElement>, dotRefs, index);
 
         setHoverData({
-            highLightWidth: width,
+            highLightWidth: elementPosition,
             selectedCourse: course,
             hoverIndex: index
         })

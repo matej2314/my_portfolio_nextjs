@@ -15,19 +15,15 @@ import SubmitBtn from "@/components/ui/elements/SubmitButton"
 import CalendarInputIcon from "@/components/ui/elements/CalendarInputIcon"
 import DisplayFormMessage from "@/components/home-page-components/contact-section/components/DisplayFormMessage"
 import { Tabs, TabsContent } from "@/components/ui/tabs";
+import FormTitle from "./components/FormTitle";
 
 import { useDatePicker } from "@/hooks/useDatePicker"
 
 import { projectCatArray, difficultyArray } from "@/lib/dataCatArrays";
-
-import { ReturnedType, type Project } from "@/types/actionsTypes/actionsTypes"
-import FormTitle from "./components/FormTitle";
 import { projectFormTriggers } from "@/lib/control-panel/ProjectFormTriggers";
 
-interface ProjectFormProps {
-    projectData?: Project;
-    mode?: 'edit' | 'create';
-}
+import { type ProjectFormProps } from '@/types/forms/project-form';
+import { type ReturnedType } from "@/types/actionsTypes/actionsTypes"
 
 export default function ProjectForm({ projectData, mode = 'create' }: ProjectFormProps) {
     const [selectedCategory, setSelectedCategory] = useState<string>(projectData?.project_category || '');

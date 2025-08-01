@@ -2,7 +2,7 @@
 
 import { forwardRef, type ChangeEvent } from "react";
 import { Input } from "../input";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/utils";
 
 type InputElementProps = {
     type: string;

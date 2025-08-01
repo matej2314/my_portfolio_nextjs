@@ -7,4 +7,5 @@ export type Category = {
 export type SkillSelectorProps = {
     clickAction: (category: string | null) => void;
     selectedCategory: string | null;
+    categories: Category[];
 }

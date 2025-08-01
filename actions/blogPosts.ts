@@ -7,7 +7,7 @@ import { basePostSchema, updatePostSchema } from '@/lib/zod-schemas/postsSchema'
 import { idSchema } from '@/lib/zod-schemas/idSchema';
 
 import { type GetPostType, GetPostsType, ReturnedType, Post } from '@/types/actionsTypes/actionsTypes';
-import { convertFormData } from '@/lib/formDataToObjectConvert';
+import { convertFormData } from '@/lib/utils/formDataToObjectConvert';
 import { getCache, setCache, deleteMultipleCache } from '@/lib/redis/redis';
 import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 

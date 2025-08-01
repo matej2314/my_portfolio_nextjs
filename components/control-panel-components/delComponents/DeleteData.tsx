@@ -1,34 +1,17 @@
 'use client'
-
 import Link from "next/link";
 import { useActionState } from "react";
 
 import DisplayFormMessage from "@/components/home-page-components/contact-section/components/DisplayFormMessage";
-import { deleteCourse } from "@/actions/courses";
-import { deleteProject } from "@/actions/projects";
-import { deleteSkill } from "@/actions/skills";
-import { deleteBlogPost } from "@/actions/blogPosts";
-
 import SubmitBtn from "@/components/ui/elements/SubmitButton";
 
+import { getDeleteFunction } from "@/lib/utils/getDeleteFunction";
 
+import { type DataType } from "@/types/utils/get-delete-function";
 
-export default function DeleteData({ id, name, dataType }: { id: string, name: string, dataType: string }) {
+export default function DeleteData({ id, name, dataType }: { id: string, name: string, dataType: DataType }) {
 
-    const deleteFunction = (() => {
-        switch (dataType) {
-            case 'course':
-                return deleteCourse;
-            case 'project':
-                return deleteProject;
-            case 'skill':
-                return deleteSkill;
-            case 'blogPost':
-                return deleteBlogPost
-            default:
-                throw new Error(`Unknown data type: ${dataType}`);
-        }
-    })();
+    const deleteFunction = getDeleteFunction(dataType);
 
     const [state, formAction] = useActionState(deleteFunction, { success: false, error: '' });
 

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Icon } from '@iconify/react';
 import { motion, easeInOut } from 'framer-motion';
-import { setBrowserStorage, getBrowserStorage } from '@/lib/browserStorage';
+import { setBrowserStorage, getBrowserStorage } from '@/lib/utils/browserStorage';
 
 interface SwipeHandProps {
     width?: number;

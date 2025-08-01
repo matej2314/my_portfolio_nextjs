@@ -9,13 +9,14 @@ import SelectElement from "@/components/ui/elements/SelectElement"
 import SubmitBtn from "@/components/ui/elements/SubmitButton"
 import CalendarInputIcon from "@/components/ui/elements/CalendarInputIcon"
 import DisplayFormMessage from "@/components/home-page-components/contact-section/components/DisplayFormMessage"
+import FormTitle from "./components/FormTitle"
 
 import { useDatePicker } from "@/hooks/useDatePicker"
 
 import { courseCatArray } from "@/lib/dataCatArrays"
 
-import { type CourseFormProps } from "@/types/courseForm"
-import FormTitle from "./components/FormTitle"
+import { type CourseFormProps } from '@/types/forms/course-form';
+
 
 export default function CourseForm({ courseData, mode = 'create' }: CourseFormProps) {
     const [selectedCategory, setSelectedCategory] = useState<string>(courseData?.course_category || '');

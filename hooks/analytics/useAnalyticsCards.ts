@@ -4,7 +4,7 @@ import { ProcessedAnalyticsData } from '@/types/ga4-types';
 interface AnalyticsCardData {
 	title: string;
 	key: keyof ProcessedAnalyticsData;
-	value: string;
+	value: string | number;
 	formatter?: (value: number) => string;
 }
 

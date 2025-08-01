@@ -8,7 +8,7 @@ import prisma from '@/lib/db';
 import { sign } from 'jsonwebtoken';
 import { lucia } from '@/lib/auth';
 import { loginSchema } from '@/lib/zod-schemas/authSchemas';
-import { convertFormData } from '@/lib/formDataToObjectConvert';
+import { convertFormData } from '@/lib/utils/formDataToObjectConvert';
 
 export async function login(prevState: any, formData: FormData) {
 	const inputUserData = convertFormData(formData);

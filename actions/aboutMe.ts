@@ -3,12 +3,12 @@
 import prisma from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
 
-import { getCache, setCache, deleteCache } from '@/lib/redis/redis';
+import { getCache, setCache } from '@/lib/redis/redis';
 import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 
 import { aboutMeSchema, aboutTxtSchema } from '@/lib/zod-schemas/aboutMeSchema';
 import { type GetAboutMeType, ReturnedType, AboutTextType } from '@/types/actionsTypes/actionsTypes';
-import { convertFormData } from '@/lib/formDataToObjectConvert';
+import { convertFormData } from '@/lib/utils/formDataToObjectConvert';
 
 export const getAboutMe = async (): Promise<GetAboutMeType> => {
 	try {

@@ -9,8 +9,10 @@ import { type GetShotsResult, GetProjectType, GetProjectsType, ReturnedType, Pro
 
 import { setCache, getCache, deleteMultipleCache } from '@/lib/redis/redis';
 import { REDIS_KEYS } from '@/lib/redis/redisKeys';
-import { manageProjectImages } from '@/lib/manageProjectImages';
-import { projectObjectForValidation, validateProjectFiles } from '@/lib/manageProjectUtils';
+import { manageProjectImages } from '@/lib/utils/manageProjectImages';
+import { projectObjectForValidation, validateProjectFiles } from '@/lib/utils/manageProject';
+import { getFilesList } from '@/lib/utils/getFilesList';
+import { type ImageData } from '@/types/ProjectsGalleryTypes';
 
 import { baseProjectSchema, updateProjectSchema } from '@/lib/zod-schemas/projectSchema';
 import { idSchema } from '@/lib/zod-schemas/idSchema';
@@ -201,4 +203,13 @@ export async function deleteProject(prevState: ReturnedType, formData: FormData)
 		console.error('deleteProjectError:', error);
 		return { success: false, error: 'Failed to delete project.' };
 	}
+}
+
+export async function getProjectImages(projects: any[]): Promise<ImageData[]> {
+	return await Promise.all(
+		projects.map(async project => ({
+			id: project.id,
+			images: await getFilesList(project.id, 'main'),
+		}))
+	);
 }

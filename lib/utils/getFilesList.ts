@@ -1,7 +1,7 @@
-import fs from 'fs/promises';
+import { promises as fs } from 'node:fs';
 import path from 'path';
 
-import { isDirectoryExists } from './manageProjectUtils';
+import { isDirectoryExists } from './manageProject';
 
 export async function getFilesList(projectId: string, photosPath: string): Promise<string[]> {
 	if (!projectId || !photosPath) {

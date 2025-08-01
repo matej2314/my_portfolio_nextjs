@@ -1,6 +1,6 @@
 import ProjectsGallery from "./components/ProjectsGallery";
-import { getFilesList } from "@/lib/getFilesList";
 import { GetProjectsType } from "@/types/actionsTypes/actionsTypes";
+import { getProjectImages } from "@/actions/projects";
 
 export default async function ProjectsSection({ projects }: { projects: GetProjectsType | undefined }) {
 
@@ -8,12 +8,7 @@ export default async function ProjectsSection({ projects }: { projects: GetProje
         return <p>Failed to fetch projects</p>
     }
 
-    const images = await Promise.all(
-        projects.projects.map(async (project) => ({
-            id: project.id,
-            images: await getFilesList(project.id, 'main'),
-        }))
-    )
+    const images = await getProjectImages(projects.projects);
 
     return (
         <section id="projectsSection" className="w-full h-fit flex flex-col text-slate-200 snap-center">

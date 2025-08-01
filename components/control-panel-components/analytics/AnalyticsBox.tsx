@@ -7,6 +7,8 @@ import DataBoxCardElement from "@/components/ui/elements/DataBoxCardElement";
 import LoadingComponent from "@/components/LoadingComponent";
 import { useAnalyticsCards } from "@/hooks/analytics/useAnalyticsCards";
 
+import { fetchAnalyticsReport } from "@/lib/utils/fetchAnalyticsReport";
+
 import { type ProcessedAnalyticsData } from "@/types/ga4-types";
 
 export default function AnalyticsBox() {
@@ -16,34 +18,12 @@ export default function AnalyticsBox() {
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        const fetchAnalyticsReport = async () => {
-            try {
-                const response = await fetch('/api/analytics/summary');
-
-                if (!response.ok) {
-                    const errorData = await response.text();
-                    setError(errorData);
-                    throw new Error(errorData);
-                }
-
-                const data: ProcessedAnalyticsData = await response.json();
-
-
-                setAnalyticsData(data);
-            } catch (error: unknown) {
-                console.error('Error in fetchAnalyticsReport:', error);
-                if (error instanceof Error) {
-                    setError(error.message);
-                } else {
-                    setError('An unknown error occurred');
-                }
-            } finally {
-                setLoading(false);
-            }
-
-        };
-
-        fetchAnalyticsReport();
+        const fetchData = () => fetchAnalyticsReport(
+            (errorData) => setError(errorData),
+            (data) => setAnalyticsData(data),
+            (loading) => setLoading(loading)
+        );
+        fetchData();
     }, []);
 
     const analyticsCardsData = useAnalyticsCards(analyticsData);
@@ -71,6 +51,11 @@ export default function AnalyticsBox() {
                             suffix={''}
                         />
                     ))}
+                </div>
+            )}
+            {!analyticsData && (
+                <div className="flex justify-center items-center h-full">
+                    <p className="text-slate-400">No data</p>
                 </div>
             )}
         </div>

@@ -9,8 +9,9 @@ import { type MetricItem } from "@/types/metricTypes"
 export default function MetricsSection({ metrics }: { metrics: MetricItem[] }) {
 
     const device = useDeviceType();
-
     const dotsCount = 27;
+
+
     return (
         <motion.section
             initial={{ opacity: 0, scale: 0.8 }}
@@ -20,8 +21,13 @@ export default function MetricsSection({ metrics }: { metrics: MetricItem[] }) {
             id="metrics"
             className="w-full sm:w-1/2 h-full text-green-300 font-mono flex justify-center pl-8">
             <div className="w-full h-full flex flex-col">
+                {!metrics && (
+                    <div className="w-full h-full flex justify-center items-center">
+                        <p className="text-slate-400">No data</p>
+                    </div>
+                )}
                 <ul className="w-full h-full flex flex-col gap-3 md:gap-2 justify-center">
-                    {metrics.map((metric) => (
+                    {metrics && metrics.map((metric) => (
                         <li key={metric.label}
                             className="text-sm xl:text-lg"
                         >

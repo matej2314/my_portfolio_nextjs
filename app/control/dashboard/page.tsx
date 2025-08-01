@@ -2,7 +2,7 @@ import { verifyCookie } from "@/lib/auth"
 import { redirect } from "next/navigation";
 
 import { dataCounter } from "@/actions/dataCounter";
-import { formatHeader } from "@/lib/utils";
+import { formatHeader } from "@/lib/utils/utils";
 
 import DataBoxCardElement from "@/components/ui/elements/DataBoxCardElement";
 import AnalyticsBox from "@/components/control-panel-components/analytics/AnalyticsBox";

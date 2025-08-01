@@ -4,22 +4,16 @@ import { useState, useActionState } from "react";
 
 import { newBlogPost, updateBlogPost } from "@/actions/blogPosts";
 
-import { type Post } from "@/types/actionsTypes/actionsTypes";
-
 import LabelElement from "@/components/ui/elements/LabelElement"
 import InputElement from "@/components/ui/elements/InputElement"
 import InputFileElement from "@/components/ui/elements/InputFileElement"
 import SubmitBtn from "@/components/ui/elements/SubmitButton"
 import TextAreaElement from "@/components/ui/elements/TextareaElement";
-
 import MarkdownEditor from "@/components/control-panel-components/MarkdownEditor";
 import DisplayFormMessage from "@/components/home-page-components/contact-section/components/DisplayFormMessage";
 import FormTitle from "./components/FormTitle";
 
-interface BlogPostFormProps {
-    blogPostData?: Post;
-    mode?: 'edit' | 'create';
-}
+import { type BlogPostFormProps } from '@/types/forms/blog-post-form';
 
 export default function BlogPostForm({ blogPostData, mode = 'create' }: BlogPostFormProps) {
     const [postContent, setPostContent] = useState<string>(blogPostData?.post_content || '');

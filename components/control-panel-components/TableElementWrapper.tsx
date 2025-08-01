@@ -2,16 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { TableElement } from "../ui/elements/TableElement";
-import { type ColumnDef, VisibilityState } from "@tanstack/react-table";
 
-interface TableWrapperProps<TData extends { id: string }> {
-    data: TData[];
-    columns: ColumnDef<TData>[];
-    enableColumnVisibility?: boolean;
-    defaultColumnVisibility?: VisibilityState;
-    onDelete?: boolean;
-    basePath?: string;
-}
+import { type TableWrapperProps } from '@/types/table-element-wrapper';
 
 export default function TableWrapper<TData extends { id: string }>({
     data,

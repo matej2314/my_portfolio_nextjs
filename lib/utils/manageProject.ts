@@ -2,7 +2,7 @@ import path from 'path';
 import { promises as fs } from 'fs';
 
 import { convertFormData } from './formDataToObjectConvert';
-import { mainFilesSchema, galleryFilesSchema } from './zod-schemas/fileValidationSchema';
+import { mainFilesSchema, galleryFilesSchema } from '../zod-schemas/fileValidationSchema';
 import { type ValidationResult } from '@/types/actionsTypes/actionsTypes';
 import { type SaveImagesResult } from '@/types/manageImages';
 

@@ -2,7 +2,7 @@
 
 import { useState, forwardRef } from "react";
 import InputElement from "./InputElement";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/utils";
 
 import { type SwitchElementProps } from "@/types/SwitchElementTypes";
 

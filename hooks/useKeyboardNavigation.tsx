@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 
 import { sections } from '@/lib/homePageSectionsArr';
 import { useActiveSection } from './useActiveSection';
-import { scrollToSection } from '@/lib/keyboard-navigation-utils';
+import { scrollToSection } from '@/lib/utils/keyboard-navigation';
 
 
 export function useKeyboardNavigation() {

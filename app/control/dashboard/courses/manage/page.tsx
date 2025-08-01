@@ -2,7 +2,7 @@ import { getCourses } from "@/actions/courses";
 
 import TableWrapper from "@/components/control-panel-components/TableElementWrapper";
 import IconButton from "@/components/ui/elements/IconButton";
-import { createColumns } from "@/lib/createColumnsDef";
+import { createColumns } from "@/lib/utils/createColumnsDef";
 
 import { type Course } from "@/types/actionsTypes/actionsTypes";
 import { type VisibilityState } from "@tanstack/react-table";

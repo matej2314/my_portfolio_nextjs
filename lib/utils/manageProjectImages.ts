@@ -1,5 +1,5 @@
 import { promises as fs } from 'fs';
-import { extractBaseName, saveFile, createProjectPaths, createProjectFolders, deleteFilesInDir, defaultResultObject, isDirectoryExists, createResultObject } from './manageProjectUtils';
+import { extractBaseName, saveFile, createProjectPaths, createProjectFolders, deleteFilesInDir, defaultResultObject, isDirectoryExists, createResultObject } from './manageProject';
 
 import { type SaveImagesResult, type OptionsObject } from '@/types/manageImages';
 

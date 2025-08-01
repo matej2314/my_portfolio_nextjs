@@ -4,18 +4,23 @@ import { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { motion, AnimatePresence, easeOut } from 'framer-motion'
 
-import { type Skill } from '@/types/actionsTypes/actionsTypes';
 import SkillSelector from './SkillSelector';
+
+import { type Skill } from '@/types/actionsTypes/actionsTypes';
+import { type Category } from '@/types/skillSelectorTypes';
+
+import { getSkillsCategories, getFilteredSkills } from '@/lib/utils/utils';
 
 export default function SkillsList({ skills }: { skills: Skill[] }) {
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-    const filteredSkills = selectedCategory ? skills.filter(skill => skill.skill_cat === selectedCategory)
-        : skills;
+    const filteredSkills = getFilteredSkills(skills, selectedCategory);
+
+    const categories: Category[] = getSkillsCategories(skills);
 
     return (
         <div className="relative max-w-screen w-full sm:w-screen xl:w-full min-h-[15rem] h-[15rem] text-white flex flex-col items-center gap-5 mb-[6rem]">
-            <SkillSelector clickAction={setSelectedCategory} selectedCategory={selectedCategory} />
+            <SkillSelector clickAction={setSelectedCategory} selectedCategory={selectedCategory} categories={categories} />
             <motion.ul
                 layout
                 initial={{ opacity: 0, scale: 0.8 }}

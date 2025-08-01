@@ -3,23 +3,22 @@ import { useState, useActionState } from "react"
 
 import { saveSkill, updateSkill } from "@/actions/skills"
 
-import { skillsCatArray } from "@/lib/dataCatArrays"
-
 import LabelElement from "@/components/ui/elements/LabelElement"
 import InputElement from "@/components/ui/elements/InputElement"
 import SelectElement from "@/components/ui/elements/SelectElement"
 import SubmitBtn from "@/components/ui/elements/SubmitButton"
-
-import { type Skill } from "@/types/actionsTypes/actionsTypes"
 import FormTitle from "./components/FormTitle"
 
-interface SkillFormProps {
-    skillData?: Skill;
-    mode?: 'edit' | 'create';
-}
+import { getSkillsCategories } from "@/lib/utils/utils"
+
+import { type Category } from "@/types/skillSelectorTypes"
+import { type SkillFormProps } from '@/types/forms/skill-form';
+
 
 export default function SkillForm({ skillData, mode = 'create' }: SkillFormProps) {
     const [selectedCategory, setSelectedCategory] = useState<string>(skillData?.skill_cat || '');
+
+    const categories: Category[] = getSkillsCategories(skillData ? [skillData] : []);
 
     const submitFunction = (() => {
         switch (mode) {
@@ -62,7 +61,12 @@ export default function SkillForm({ skillData, mode = 'create' }: SkillFormProps
                 <SelectElement
                     value={selectedCategory}
                     onChange={(val) => setSelectedCategory(val)}
-                    options={skillsCatArray}
+                    options={categories.map(category =>
+                    ({
+                        value: category.name as string,
+                        label: category.label,
+                        ariaLabel: category.label
+                    }))}
                     placeholder="skill category"
                     className="w-[15rem]"
                 />

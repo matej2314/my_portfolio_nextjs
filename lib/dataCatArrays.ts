@@ -6,13 +6,6 @@ export const courseCatArray: Option[] = [
 	{ value: 'WebDev', label: 'WebDev', ariaLabel: 'WebDev' },
 ];
 
-export const skillsCatArray: Option[] = [
-	{ value: 'WebDev', label: 'WebDev', ariaLabel: 'WebDev' },
-	{ value: 'DevOps', label: 'DevOps', ariaLabel: 'DevOps' },
-	{ value: 'SEO', label: 'SEO', ariaLabel: 'SEO' },
-	{ value: 'Security', label: 'Security', ariaLabel: 'Security' },
-];
-
 export const projectCatArray: Option[] = [
 	{ value: 'FullStack', label: 'FullStack', ariaLabel: 'FullStack' },
 	{ value: 'Frontend', label: 'Frontend', ariaLabel: 'Frontend' },

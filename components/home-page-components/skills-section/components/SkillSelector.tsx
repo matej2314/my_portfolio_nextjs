@@ -3,11 +3,9 @@
 import { motion, easeOut } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 
-import { categories } from '@/lib/skillsCategoryArray';
-
 import { type SkillSelectorProps } from '@/types/skillSelectorTypes';
 
-export default function SkillSelector({ clickAction, selectedCategory }: SkillSelectorProps) {
+export default function SkillSelector({ clickAction, selectedCategory, categories }: SkillSelectorProps) {
 
     return (
         <motion.ul
@@ -17,9 +15,9 @@ export default function SkillSelector({ clickAction, selectedCategory }: SkillSe
             viewport={{ amount: 0.4, once: false }}
             className='w-full h-fit flex justify-center gap-2 min-[450px]:gap-3 min-[515px]:gap-6 min-[580px]:gap-7'
         >
-            {categories.map(category => (
+            {categories.map((category, index) => (
                 <li
-                    key={category.name}
+                    key={`${category.name}-${index}`}
                 >
                     <Button
                         onClick={() => clickAction(category.name as string)}

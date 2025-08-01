@@ -1,12 +1,9 @@
 'use client';
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { Table } from "@tanstack/react-table";
 import { Button } from "../ui/button";
 
-type ColumnVisibilityDropdownProps<TData> = {
-    table: Table<TData>
-}
+import { type ColumnVisibilityDropdownProps } from '@/types/column-visibility-dropdown';
 
 export function ColumnVisibilityDropdown<TData>({ table }: ColumnVisibilityDropdownProps<TData>) {
 
