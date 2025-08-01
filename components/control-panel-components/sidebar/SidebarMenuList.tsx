@@ -7,7 +7,7 @@ import SidebarSubMenu from "./SidebarSubMenu";
 
 import { useClickOutside } from "@/hooks/useClickOutside";
 
-import { controlMenuArray } from "@/lib/menuArrays";
+import { controlMenuArray } from "@/lib/arrays/menuArrays";
 
 export default function SidebarMenuList() {
     const [expandedMenu, setExpandedMenu] = useState<string | null>(null);

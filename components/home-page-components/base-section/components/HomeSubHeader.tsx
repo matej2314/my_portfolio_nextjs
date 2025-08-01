@@ -3,9 +3,16 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
+import { defaultData } from '@/lib/defaultData';
+
 import { type HomesubHeaderType } from '@/types/homeSubHeaderTypes';
 
-export default function HomeSubHeader({ texts, typingSpeed = 100, deletingSpeed = 60, pauseTime = 1000 }: HomesubHeaderType) {
+export default function HomeSubHeader({
+    texts,
+    typingSpeed = defaultData.homeSubHeaderValues.typingSpeed,
+    deletingSpeed = defaultData.homeSubHeaderValues.deletingSpeed,
+    pauseTime = defaultData.homeSubHeaderValues.pauseTime
+}: HomesubHeaderType) {
 
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [currentText, setCurrentText] = useState<string | null>('');

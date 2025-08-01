@@ -1,6 +1,6 @@
 import { google } from 'googleapis';
 
-import { defaultMetrics, defaultDimensions } from './default';
+import { defaultData } from '@/lib/defaultData';
 
 import { type GA4Params, type RequestBody } from '@/types/ga4-types';
 
@@ -8,6 +8,8 @@ const SCOPES = ['https://www.googleapis.com/auth/analytics.readonly'];
 
 const email = process.env.GOOGLE_CLIENT_MAIL;
 const key = process.env.GOOGLE_PRIVATE_KEY;
+const defaultMetrics = defaultData.defaultGA4Metrics;
+const defaultDimensions = defaultData.defaultGA4Dimensions;
 
 const jwtClient = new google.auth.JWT(email, undefined, key, SCOPES);
 

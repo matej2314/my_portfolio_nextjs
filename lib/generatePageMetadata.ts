@@ -8,6 +8,8 @@ interface PageMetadata {
 	description: string;
 }
 
+type TypeProps = 'page' | 'project' | 'blog';
+
 export const basicMetadata = {
 	icons: {
 		icon: '/favicon.svg',
@@ -30,8 +32,6 @@ export const basicMetadata = {
 		},
 	},
 };
-
-type TypeProps = 'page' | 'project' | 'blog';
 
 export async function generatePageMetadata(type: TypeProps, id?: string | null, pageData?: PageMetadata | undefined): Promise<Metadata> {
 	switch (type) {

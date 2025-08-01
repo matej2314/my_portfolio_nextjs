@@ -4,13 +4,17 @@ import { useState, useEffect } from 'react';
 import { Icon } from '@iconify/react';
 import { motion, easeInOut } from 'framer-motion';
 import { setBrowserStorage, getBrowserStorage } from '@/lib/utils/browserStorage';
+import { defaultData } from '@/lib/defaultData';
 
 interface SwipeHandProps {
     width?: number;
     height?: number;
 }
 
-export default function SwipeHand({ width = 50, height = 50 }: SwipeHandProps) {
+export default function SwipeHand(
+    { width = defaultData.defaultSwipeHand.width,
+        height = defaultData.defaultSwipeHand.height
+    }: SwipeHandProps) {
     const [showAnimation, setShowAnimation] = useState(true);
 
     useEffect(() => {

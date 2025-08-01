@@ -3,13 +3,14 @@
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 
-import { langOptions } from "@/lib/langArray";
+import { defaultData } from "@/lib/defaultData";
 
 import SelectElement from "./ui/elements/SelectElement";
 
 export default function LanguageSwitcher() {
     const currentLocale = useLocale();
     const router = useRouter();
+    const langOptions = defaultData.langOptions;
 
     async function handleChange(locale: string) {
         const res = await fetch('/api/locale', {

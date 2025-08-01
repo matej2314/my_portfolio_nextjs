@@ -14,10 +14,10 @@ import DisplayFormMessage from "./DisplayFormMessage";
 
 import { event } from "@/lib/google-analytics/gtag";
 
-import { initialState } from "./formInitState";
+import { defaultData } from "@/lib/defaultData";
 
 export default function ContactForm() {
-    const [state, formAction] = useActionState(contactMe, initialState);
+    const [state, formAction] = useActionState(contactMe, defaultData.contactInitState);
     const [shouldDisable, setShouldDisable] = useState(false);
     const t = useTranslations("homePage.contactSection");
 

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 import TypingLine from "./TypingLine";
 
-import { linesDynamic, linesStatic } from "@/lib/introLinesArrays";
+import { linesDynamic, linesStatic } from "@/lib/arrays/introLinesArrays";
 import { getBrowserStorage, setBrowserStorage } from "@/lib/utils/browserStorage";
 
 type IntroState = {

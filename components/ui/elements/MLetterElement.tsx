@@ -1,12 +1,13 @@
 import { motion, easeInOut } from 'framer-motion';
+import { defaultData } from '@/lib/defaultData';
 
 import { type AnimatedMProps } from '@/types/AnimatedMTypes';
 
 export default function MLetter({
-    size = 110,
-    duration = 1.5,
-    colors = ['#38a169', '#facc15', '#38a169'],
-    mode = 'animated'
+    size = defaultData.defaultMLetter.size,
+    duration = defaultData.defaultMLetter.duration,
+    colors = defaultData.defaultMLetter.colors,
+    mode = defaultData.defaultMLetter.mode as 'animated' | 'button'
 }: AnimatedMProps) {
     const height = (size * 130) / 110;
 

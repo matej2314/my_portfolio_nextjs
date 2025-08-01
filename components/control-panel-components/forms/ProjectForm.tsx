@@ -18,6 +18,7 @@ import { Tabs, TabsContent } from "@/components/ui/tabs";
 import FormTitle from "./components/FormTitle";
 
 import { useDatePicker } from "@/hooks/useDatePicker"
+import { defaultData } from "@/lib/defaultData";
 
 import { projectCatArray, difficultyArray } from "@/lib/dataCatArrays";
 import { projectFormTriggers } from "@/lib/control-panel/ProjectFormTriggers";
@@ -32,7 +33,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
 
     const [clearExisting, setClearExisting] = useState<boolean>(false);
 
-    const defaultState = { success: false, error: '' } as ReturnedType;
+    const defaultState = defaultData.returnedTypeDefault as ReturnedType;
 
     const submitFunction = (() => {
 

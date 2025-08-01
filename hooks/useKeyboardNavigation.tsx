@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
-import { sections } from '@/lib/homePageSectionsArr';
+import { sections } from '@/lib/arrays/homePageSectionsArr';
 import { useActiveSection } from './useActiveSection';
 import { scrollToSection } from '@/lib/utils/keyboard-navigation';
 

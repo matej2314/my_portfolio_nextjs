@@ -1,26 +1,12 @@
 import { useMemo } from 'react';
-import { ProcessedAnalyticsData } from '@/types/ga4-types';
 
-interface AnalyticsCardData {
-	title: string;
-	key: keyof ProcessedAnalyticsData;
-	value: string | number;
-	formatter?: (value: number) => string;
-}
+import { formatDuration, formatPercentage } from '@/lib/utils/utils';
+
+import { type AnalyticsCardData, type ProcessedAnalyticsData } from '@/types/ga4-types';
 
 export function useAnalyticsCards(analyticsData: ProcessedAnalyticsData | null): AnalyticsCardData[] {
 	return useMemo(() => {
 		if (!analyticsData) return [];
-
-		const formatDuration = (seconds: number): string => {
-			const minutes = Math.floor(seconds / 60);
-			const remainingSeconds = Math.floor(seconds % 60);
-			return `${minutes}m ${remainingSeconds}s`;
-		};
-
-		const formatPercentage = (value: number): string => {
-			return `${(value * 100).toFixed(1)}%`;
-		};
 
 		const analyticsCardsConfig: AnalyticsCardData[] = [
 			{

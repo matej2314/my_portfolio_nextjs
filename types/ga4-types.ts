@@ -98,6 +98,13 @@ export interface ProcessedAnalyticsData {
 	deviceBreakdown: Array<{ device: string; users: number }>;
 }
 
+export interface AnalyticsCardData {
+	title: string;
+	key: keyof ProcessedAnalyticsData;
+	value: string | number;
+	formatter?: (value: number) => string;
+}
+
 type Limit = string | null | undefined;
 
 export type GA4Params = {

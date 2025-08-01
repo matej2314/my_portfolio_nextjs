@@ -2,7 +2,7 @@
 
 import { motion, type Variants } from 'framer-motion';
 
-import { contactItems } from "@/lib/contactItems";
+import { defaultData } from "@/lib/defaultData";
 import { ListItem } from '@/components/ListItem';
 
 const contactItemsVariants: Variants = {
@@ -19,6 +19,7 @@ const contactItemsVariants: Variants = {
 };
 
 export default function ContactItems() {
+    const contactItems = defaultData.contactItems;
 
     return (
         <>

@@ -1,4 +1,8 @@
-import { type Option } from './langArray';
+interface Option {
+	value: string;
+	label: string;
+	ariaLabel: string;
+}
 
 export const courseCatArray: Option[] = [
 	{ value: 'Security', label: 'Security', ariaLabel: 'Security' },

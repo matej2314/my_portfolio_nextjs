@@ -3,26 +3,9 @@
 import { useState, forwardRef } from "react";
 import InputElement from "./InputElement";
 import { cn } from "@/lib/utils/utils";
+import { defaultData } from "@/lib/defaultData";
 
 import { type SwitchElementProps } from "@/types/SwitchElementTypes";
-
-const sizes = {
-    sm: {
-        width: 'w-8',
-        height: 'h-4',
-        thumb: 'w-3 h-3',
-    },
-    md: {
-        width: 'w-12',
-        height: 'h-6',
-        thumb: 'w-5 h-5',
-    },
-    lg: {
-        width: 'w-16',
-        height: 'h-8',
-        thumb: 'w-7 h-7',
-    },
-};
 
 const SwitchElement = forwardRef<HTMLInputElement, SwitchElementProps>(({
     id,
@@ -35,6 +18,8 @@ const SwitchElement = forwardRef<HTMLInputElement, SwitchElementProps>(({
     containerClassName = '',
 }, ref) => {
     const [isChecked, setIsChecked] = useState(checked);
+
+    const sizes = defaultData.switchElement.sizes;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setIsChecked(e.target.checked);

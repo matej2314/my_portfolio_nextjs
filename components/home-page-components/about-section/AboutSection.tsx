@@ -1,19 +1,10 @@
 import { getTranslations } from "next-intl/server";
 
-import { type GetAboutMeType } from "@/types/actionsTypes/actionsTypes";
-import { type MetricItem } from "@/types/metricTypes";
 import MetricsSection from "./components/MetricsSection";
+import { metricsArray } from "@/lib/arrays/metricsArray";
 
-export const metrics: MetricItem[] = [
-    { label: 'Learning focus', value: 'Web Dev / Web security' },
-    { label: 'Currently learning', value: 'Next.js, Python' },
-    { label: 'Used OS', value: 'Windows / Linux' },
-    { label: 'Work style', value: 'Self-organized' },
-    { label: 'Code editor', value: 'VS Code' },
-    { label: 'Languages', value: 'English, Russian' },
-    { label: 'Hobbies', value: 'new technologies, TV series' }
+import { type GetAboutMeType } from "@/types/actionsTypes/actionsTypes";
 
-];
 
 export default async function AboutSection({ aboutText }: { aboutText: GetAboutMeType | undefined }) {
 
@@ -23,7 +14,7 @@ export default async function AboutSection({ aboutText }: { aboutText: GetAboutM
         <section id="aboutSection" className="w-full min-h-screen h-fit flex flex-col justify-center gap-3 items-start font-kanit snap-center">
             <span className="text-4xl text-green-400 ml-2">About &#123;</span>
             <div className="w-full h-screen flex flex-col sm:flex-row justify-center sm:justify-center items-center gap-4 sm:gap-[5rem] pt-7 sm:pt-0">
-                <MetricsSection metrics={metrics} />
+                <MetricsSection metrics={metricsArray} />
                 <div className="sm:w-1/2 h-full flex items-center">
                     <div className="w-full flex flex-col items-center text-slate-200 ">
                         <p className="text-md xl:text-xl text-justify leading-9 md:pr-[5rem]">

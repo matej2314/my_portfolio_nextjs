@@ -39,3 +39,13 @@ export function parseEndDate(raw: FormDataEntryValue | null): Date | null {
 	const date = new Date(raw);
 	return isNaN(date.getTime()) ? null : date;
 }
+
+export const formatDuration = (seconds: number): string => {
+	const minutes = Math.floor(seconds / 60);
+	const remainingSeconds = Math.floor(seconds % 60);
+	return `${minutes}m ${remainingSeconds}s`;
+};
+
+export const formatPercentage = (value: number): string => {
+	return `${(value * 100).toFixed(1)}%`;
+};

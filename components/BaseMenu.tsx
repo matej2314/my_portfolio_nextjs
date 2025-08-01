@@ -3,7 +3,7 @@
 import { useState, type MouseEvent } from "react";
 import { useTranslations } from "next-intl";
 import { useDeviceType } from "@/hooks/useDeviceType";
-import { type MenuItem } from "@/lib/menuArrays";
+import { type MenuItem } from "@/lib/arrays/menuArrays";
 
 import NavLink from "./links/NavLink";
 import MobileMenu from "./mobile-menu/MobileMenu";

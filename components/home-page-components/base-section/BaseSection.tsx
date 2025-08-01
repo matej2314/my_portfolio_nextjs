@@ -5,11 +5,14 @@ import NavLink from "@/components/links/NavLink"
 import HomeSubHeader from "./components/HomeSubHeader"
 import SloganWrapper from "./components/SloganWrapper"
 import IconButton from "@/components/ui/elements/IconButton"
-import { contentArray } from "@/lib/subHeaderContentArray"
+import { defaultData } from "@/lib/defaultData"
 
 export default async function BaseSection() {
 
     const t = await getTranslations("homePage");
+    const contentArray = defaultData.baseSectionSubHeader.content;
+    const typingSpeed = defaultData.baseSectionSubHeader.typingSpeed;
+    const deletingSpeed = defaultData.baseSectionSubHeader.deletingSpeed;
 
     return (
         <section id="baseSection" className="w-full min-h-screen h-screen flex flex-col md:flex-row justify-center px-5 lg:pt-[3rem] gap-4 font-kanit snap-start">
@@ -18,7 +21,7 @@ export default async function BaseSection() {
                     Mateusz
                 </p>
                 <div className="w-fit">
-                    <HomeSubHeader texts={contentArray} typingSpeed={55} deletingSpeed={30} />
+                    <HomeSubHeader texts={contentArray} typingSpeed={typingSpeed} deletingSpeed={deletingSpeed} />
                 </div>
                 <p className=" text-sm sm:text-base md:text-xl text-white mb-5 tracking-wide text-justify leading-[2rem] mt-3">
                     {t("baseSection.baseDescription")}

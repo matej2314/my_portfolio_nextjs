@@ -1,4 +1,8 @@
-import { type Option } from '@/lib/langArray';
+export interface Option {
+	value: string;
+	label: string;
+	ariaLabel: string;
+}
 
 export type SelectElementProps = {
 	value: string;

@@ -1,4 +1,4 @@
-import { homeMenuArray } from "@/lib/menuArrays";
+import { homeMenuArray } from "@/lib/arrays/menuArrays";
 import BaseMenu from "../BaseMenu";
 
 export default function HomePageMenu() {

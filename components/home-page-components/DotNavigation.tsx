@@ -9,7 +9,7 @@ import { useDeviceType } from '@/hooks/useDeviceType';
 
 import NavLink from '../links/NavLink';
 
-import { sections } from "@/lib/homePageSectionsArr";
+import { sections } from "@/lib/arrays/homePageSectionsArr";
 
 const DotNavigation = () => {
 

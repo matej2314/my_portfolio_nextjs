@@ -56,15 +56,6 @@ export const deleteFilesInDir = async (dir: string): Promise<{ deletedFiles: num
 	return { deletedFiles };
 };
 
-export const defaultResultObject: SaveImagesResult = {
-	projectId: undefined,
-	mainFileName: undefined,
-	mainFilesSaved: 0,
-	galleryFilesSaved: 0,
-	mainFilesDeleted: 0,
-	galleryFilesDeleted: 0,
-};
-
 export const projectObjectForValidation = (projectData: FormData) => {
 	const projectDataForValidation = new FormData();
 

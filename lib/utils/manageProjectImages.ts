@@ -1,5 +1,6 @@
 import { promises as fs } from 'fs';
-import { extractBaseName, saveFile, createProjectPaths, createProjectFolders, deleteFilesInDir, defaultResultObject, isDirectoryExists, createResultObject } from './manageProject';
+import { extractBaseName, saveFile, createProjectPaths, createProjectFolders, deleteFilesInDir, isDirectoryExists, createResultObject } from './manageProject';
+import { defaultData } from '@/lib/defaultData';
 
 import { type SaveImagesResult, type OptionsObject } from '@/types/manageImages';
 
@@ -91,9 +92,9 @@ export async function manageProjectImages(projectId: string, mainFiles?: File[] 
 				} catch (rmError) {
 					console.error('Error removing base directory', rmError);
 				}
-				return defaultResultObject;
+				return defaultData.manageImagesDefaultResult;
 			}
 		default:
-			return defaultResultObject;
+			return defaultData.manageImagesDefaultResult;
 	}
 }

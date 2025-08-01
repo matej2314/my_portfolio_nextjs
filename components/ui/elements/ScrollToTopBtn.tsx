@@ -4,7 +4,7 @@ import IconButton from "./IconButton";
 
 import { useActiveSection } from "@/hooks/useActiveSection";
 
-import { sections } from "@/lib/homePageSectionsArr";
+import { sections } from "@/lib/arrays/homePageSectionsArr";
 
 
 export default function ScrollToTop() {

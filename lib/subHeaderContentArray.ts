@@ -1,1 +1,0 @@
-export const contentArray: string[] = ['FullStack Web Developer', 'Security enthusiast', 'Ready to work!'];

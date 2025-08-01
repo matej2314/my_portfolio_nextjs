@@ -1,5 +1,5 @@
 import BaseMenu from "../BaseMenu"
-import { blogMenuArray } from "@/lib/menuArrays"
+import { blogMenuArray } from "@/lib/arrays/menuArrays"
 
 export default function BlogPageMenu() {
 

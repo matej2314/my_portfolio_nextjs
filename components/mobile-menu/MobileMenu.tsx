@@ -11,7 +11,7 @@ import CvSelectorWrapper from "../CvSelectorWrapper";
 import ContactItems from "../home-page-components/contact-section/components/ContactItems";
 import MLetter from "../ui/elements/MLetterElement";
 
-import { type MenuItem } from "@/lib/menuArrays";
+import { type MenuItem } from "@/lib/arrays/menuArrays";
 import { type OpenState } from "@/types/mobileMenuTypes";
 
 export default function MobileMenu({ array }: { array: MenuItem[] }) {
