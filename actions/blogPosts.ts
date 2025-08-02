@@ -36,17 +36,17 @@ export const getBlogPosts = async (): Promise<GetPostsType> => {
 
 export const getBlogPost = async (id: string): Promise<GetPostType> => {
 	try {
-		const validId = idSchema.safeParse(id);
+		const validId = validateData(id, idSchema);
 
 		if (!validId.success) {
 			return logErrAndReturn('getBlogPost', validId.error.flatten(), { error: 'Invalid input data' });
 		}
 
-		const cachedBlogPost = await getCache<Post>(REDIS_KEYS.BLOGPOST(validId.data));
+		const cachedBlogPost = await getCache<Post>(REDIS_KEYS.BLOGPOST(validId.data as string));
 		if (cachedBlogPost) return { post: cachedBlogPost };
 
 		const post = await prisma.posts.findUnique({
-			where: { id: validId.data },
+			where: { id: validId.data as string },
 		});
 
 		if (!post) {
