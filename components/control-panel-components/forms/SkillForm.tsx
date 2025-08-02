@@ -8,7 +8,8 @@ import { useSkillsCategories } from "@/hooks/useSkillsCategories"
 
 import LabelElement from "@/components/ui/elements/LabelElement"
 import InputElement from "@/components/ui/elements/InputElement"
-import SelectElement from "@/components/ui/elements/SelectElement"
+import SwitchElement from "@/components/ui/elements/SwitchElement"
+import SkillCatInput from "./components/SkillCatInput"
 import SubmitBtn from "@/components/ui/elements/SubmitButton"
 import FormTitle from "./components/FormTitle"
 
@@ -16,6 +17,7 @@ import { type SkillFormProps } from '@/types/forms/skill-form';
 
 export default function SkillForm({ skillData, mode = 'create' }: SkillFormProps) {
     const [selectedCategory, setSelectedCategory] = useState<string>(skillData?.skill_cat || '');
+    const [customCategory, setCustomCategory] = useState<{ active: boolean, name: string }>({ active: false, name: '' });
 
     const { categories } = useSkillsCategories();
 
@@ -51,19 +53,21 @@ export default function SkillForm({ skillData, mode = 'create' }: SkillFormProps
                 <LabelElement htmlFor="skill_cat" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                     Select skill category:
                 </LabelElement>
-                <SelectElement
-                    value={selectedCategory}
-                    onChange={(val) => setSelectedCategory(val)}
-                    options={categories.map(category =>
-                    ({
-                        value: category.value as string,
-                        label: category.label,
-                        ariaLabel: category.label
-                    }))}
-                    placeholder="skill category"
-                    className="w-[15rem]"
+                <SwitchElement
+                    id="is_custom_category"
+                    name="custom category"
+                    checked={customCategory.active}
+                    onChange={() => setCustomCategory({ active: !customCategory.active, name: customCategory.name })}
+                    label="Custom category"
+                    labelPosition="right"
+                    size="sm"
                 />
-                <input type="hidden" id="skill_cat" name="skill_cat" value={selectedCategory} />
+                <SkillCatInput
+                    isCustomCategory={customCategory.active}
+                    selectedCategory={selectedCategory}
+                    onSelectedCategory={setSelectedCategory}
+                    categories={categories}
+                />
                 <LabelElement
                     htmlFor="icon_name"
                     className="font-bold pb-1 ml-2 text-lg tracking-wide"
