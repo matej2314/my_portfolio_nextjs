@@ -14,7 +14,7 @@ import { getSkillsCategories, getFilteredSkills } from '@/lib/utils/utils';
 export default function SkillsList({ skills }: { skills: Skill[] }) {
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-    const filteredSkills = getFilteredSkills(skills, selectedCategory);
+    const filteredSkills: Skill[] = getFilteredSkills(skills, selectedCategory) as Skill[];
 
     const categories: Category[] = getSkillsCategories(skills);
 

@@ -2,11 +2,13 @@
 import prisma from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
 
-import { convertFormData } from '@/lib/utils/formDataToObjectConvert';
-import { setCache, getCache, deleteCache, deleteMultipleCache } from '@/lib/redis/redis';
-import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 import { APP_CONFIG } from '@/config/app.config';
+import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 
+import { convertFormData } from '@/lib/utils/formDataToObjectConvert';
+import { validateData } from '@/lib/utils/utils';
+import { logErrAndReturn } from '@/lib/utils/logErrAndReturn';
+import { setCache, getCache, deleteCache, deleteMultipleCache } from '@/lib/redis/redis';
 import { baseCourseSchema, updateCourseSchema } from '@/lib/zod-schemas/courseSchema';
 import { idSchema } from '@/lib/zod-schemas/idSchema';
 
@@ -22,52 +24,51 @@ export const getCourses = async (): Promise<GetCoursesType> => {
 		await setCache(REDIS_KEYS.COURSES_ALL, result, APP_CONFIG.redis.defaultExpiration);
 		return { courses: result };
 	} catch (error) {
-		console.error(`getCourses error: ${String(error)}`);
-		return { error: 'Failed to fetch courses' };
+		return logErrAndReturn('getCourses', error, { error: 'Failed to fetch courses' });
 	}
 };
 
 export const getCourse = async (id: string): Promise<GetCourseType> => {
 	try {
-		const validId = idSchema.safeParse(id);
+		const validId = validateData(id, idSchema);
 
 		if (!validId.success) {
-			console.error(`getCourse error: ${String(validId.error.flatten())}`);
-			return { error: 'Invalid id' };
+			return logErrAndReturn('getCourse', validId.error.flatten(), { error: 'Invalid id' });
 		}
 
-		const cachedCourse = await getCache<Course>(REDIS_KEYS.COURSE(validId.data));
+		const cachedCourse = await getCache<Course>(REDIS_KEYS.COURSE(validId.data as string));
 		if (cachedCourse) return { course: cachedCourse };
 
 		const result = await prisma.courses.findUnique({
-			where: { id: validId.data },
+			where: { id: validId.data as string },
 		});
 
 		await setCache(REDIS_KEYS.COURSE(id), result, APP_CONFIG.redis.defaultExpiration);
 
 		return { course: result as Course };
 	} catch (error) {
-		console.error(`getCourse error: ${String(error)}`);
-		return { error: 'Failed to fetch course' };
+		return logErrAndReturn('getCourse', error, { error: 'Failed to fetch course' });
 	}
 };
 
 export async function saveCourse(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
 		const inputCourseData = convertFormData(formData);
-		const validCourse = baseCourseSchema.safeParse(inputCourseData);
+		const validCourse = validateData(inputCourseData, baseCourseSchema);
 
 		if (!validCourse.success) {
-			console.error('saveCourse validation error:', validCourse.error.flatten());
-			return { success: false, error: 'Invalid input data' };
+			return logErrAndReturn('saveCourse', validCourse.error.flatten(), {
+				success: false,
+				error: 'Invalid input data',
+			});
 		}
 
-		const { course_date, ...dataWithoutDate } = validCourse.data;
+		const { course_date, ...dataWithoutDate } = validCourse.data as Omit<Course, 'id'>;
 
 		const id = uuidv4();
-		const formattedDate = new Date(course_date).toISOString();
+		const formattedDate = new Date(course_date);
 
-		const course = { id, ...dataWithoutDate, course_date: formattedDate };
+		const course: Course = { id, ...dataWithoutDate, course_date: formattedDate };
 
 		await prisma.courses.create({
 			data: course,
@@ -76,54 +77,55 @@ export async function saveCourse(prevState: ReturnedType, formData: FormData): P
 		await deleteCache(REDIS_KEYS.COURSES_ALL);
 		return { success: true, message: 'New course added correctly' };
 	} catch (error) {
-		console.error('saveCourse error:', error);
-		return { success: false, error: 'Failed to add new course.' };
+		return logErrAndReturn('saveCourse', error, { success: false, error: 'Failed to add new course.' });
 	}
 }
 
 export async function updateCourse(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
 		const inputData = convertFormData(formData);
-		const validInputData = updateCourseSchema.safeParse(inputData);
+		const validInputData = validateData(inputData, updateCourseSchema);
 
 		if (!validInputData.success) {
-			console.error('updateCourse validation error:', validInputData.error.flatten());
-			return { success: false, error: 'Invalid input data.' };
+			return logErrAndReturn('updateCourse', validInputData.error.flatten(), {
+				success: false,
+				error: 'Invalid input data.',
+			});
 		}
 
-		const { id, ...dataWithoutId } = validInputData.data;
+		const { id, ...dataWithoutId } = validInputData.data as Course;
 
 		await prisma.courses.update({
 			where: { id: id },
 			data: { ...dataWithoutId },
 		});
 
-		deleteMultipleCache(REDIS_KEYS.COURSES_ALL, REDIS_KEYS.COURSE(id));
+		await deleteMultipleCache(REDIS_KEYS.COURSES_ALL, REDIS_KEYS.COURSE(id));
 		return { success: true, message: 'Course updated correctly.' };
 	} catch (error) {
-		console.error(`updateCourse error:`, error);
-		return { success: false, error: 'Failed to update course.' };
+		return logErrAndReturn('updateCourse', error, { success: false, error: 'Failed to update course.' });
 	}
 }
 
 export async function deleteCourse(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
 		const id = formData.get('id');
-		const validId = idSchema.safeParse(id);
+		const validId = validateData(id, idSchema);
 
 		if (!validId.success) {
-			console.error('deleteCourse error:', validId.error.flatten());
-			return { success: false, error: 'Invalid input data.' };
+			return logErrAndReturn('deleteCourse', validId.error.flatten(), {
+				success: false,
+				error: 'Invalid input data.',
+			});
 		}
 
 		await prisma.courses.delete({
-			where: { id: validId.data },
+			where: { id: validId.data as string },
 		});
 
-		deleteMultipleCache(REDIS_KEYS.COURSES_ALL, REDIS_KEYS.COURSE(String(validId.data)));
+		await deleteMultipleCache(REDIS_KEYS.COURSES_ALL, REDIS_KEYS.COURSE(String(validId.data)));
 		return { success: true, message: 'Course deleted correctly' };
 	} catch (error) {
-		console.error('deleteCourse error:', error);
-		return { success: false, error: 'Failed to delete course.' };
+		return logErrAndReturn('deleteCourse', error, { success: false, error: 'Failed to delete course.' });
 	}
 }

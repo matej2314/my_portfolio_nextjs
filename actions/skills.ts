@@ -3,10 +3,14 @@
 import prisma from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
 
-import { convertFormData } from '@/lib/utils/formDataToObjectConvert';
-import { setCache, getCache, deleteCache } from '@/lib/redis/redis';
-import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 import { APP_CONFIG } from '@/config/app.config';
+import { REDIS_KEYS } from '@/lib/redis/redisKeys';
+
+import { setCache, getCache, deleteCache } from '@/lib/redis/redis';
+import { convertFormData } from '@/lib/utils/formDataToObjectConvert';
+import { validateData } from '@/lib/utils/utils';
+import { logErrAndReturn } from '@/lib/utils/logErrAndReturn';
+
 import { baseSkillSchema, updateSkillSchema } from '@/lib/zod-schemas/skillSchema';
 import { idSchema } from '@/lib/zod-schemas/idSchema';
 
@@ -24,8 +28,7 @@ export const getSkills = async (): Promise<GetSkillsType> => {
 		await setCache<Skill[]>(skillsKey, result, APP_CONFIG.redis.defaultExpiration);
 		return { skills: result };
 	} catch (error) {
-		console.error(`getSkills error: ${String(error)}`);
-		return { error: 'Failed to fetch skills' };
+		return logErrAndReturn('getSkills', error, { error: 'Failed to fetch skills' });
 	}
 };
 
@@ -41,8 +44,7 @@ export async function getSkill(id: string): Promise<GetSkillType> {
 		await setCache<Skill>(skillKey, result as Skill, APP_CONFIG.redis.defaultExpiration);
 		return { skill: result as Skill };
 	} catch (error) {
-		console.error(`getSkill error: ${String(error)}`);
-		return { error: 'Failed to fetch skill' };
+		return logErrAndReturn('getSkill', error, { error: 'Failed to fetch skill' });
 	}
 }
 
@@ -50,36 +52,33 @@ export async function saveSkill(prevState: ReturnedType, formData: FormData): Pr
 	try {
 		const id = uuidv4();
 		const inputSkillObject = convertFormData(formData);
-		const validSkillObject = baseSkillSchema.safeParse(inputSkillObject);
+		const validSkillObject = validateData<typeof inputSkillObject>(inputSkillObject, baseSkillSchema);
 
 		if (!validSkillObject.success) {
-			console.error('SaveSkill. Invalid input data error:', validSkillObject.error.flatten());
-			return { success: false, error: 'Invalid input data.' };
+			return logErrAndReturn('saveSkill', validSkillObject.error.flatten(), { success: false, error: 'Invalid input data.' });
 		}
 
-		const skill = { id, ...validSkillObject.data };
+		const skill = { id, ...(validSkillObject.data as Omit<Skill, 'id'>) };
 
 		await prisma.skills.create({ data: skill });
 
 		deleteCache(REDIS_KEYS.SKILLS_ALL);
 		return { success: true, message: 'Skill added correctly.' };
 	} catch (error) {
-		console.error('saveSkill error:', error);
-		return { success: false, error: 'Failed to add new skill' };
+		return logErrAndReturn('saveSkill', error, { success: false, error: 'Failed to add new skill' });
 	}
 }
 
 export async function updateSkill(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
 		const newSkillObject = convertFormData(formData);
-		const validNewSkillObj = updateSkillSchema.safeParse(newSkillObject);
+		const validNewSkillObj = validateData(newSkillObject, updateSkillSchema);
 
 		if (!validNewSkillObj.success) {
-			console.error('updateSkill validation error:', validNewSkillObj.error?.flatten());
-			return { success: false, error: 'Invalid input data.' };
+			return logErrAndReturn('updateSkill', validNewSkillObj.error.flatten(), { success: false, error: 'Invalid input data.' });
 		}
 
-		const { id, ...skillData } = validNewSkillObj.data;
+		const { id, ...skillData } = validNewSkillObj.data as Skill;
 
 		await prisma.skills.update({
 			where: { id: id },
@@ -89,8 +88,7 @@ export async function updateSkill(prevState: ReturnedType, formData: FormData): 
 		deleteCache(REDIS_KEYS.SKILLS_ALL);
 		return { success: true, message: 'Skill updated correctly.' };
 	} catch (error) {
-		console.error('updateSkill error:', error);
-		return { success: false, error: 'Failed to update skill.' };
+		return logErrAndReturn('updateSkill', error, { success: false, error: 'Failed to update skill.' });
 	}
 }
 
@@ -112,29 +110,26 @@ export async function getSkillsCategories(): Promise<{ categories: string[] } | 
 
 		return { categories };
 	} catch (error) {
-		console.error('getSkillsCategories error:', error);
-		return { error: 'Failed to fetch skills categories.' };
+		return logErrAndReturn('getSkillsCategories', error, { error: 'Failed to fetch skills categories.' });
 	}
 }
 
 export async function deleteSkill(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
 		const id = formData.get('id') as string;
-		const validId = idSchema.safeParse(id);
+		const validId = validateData(id, idSchema);
 
 		if (!validId.success) {
-			console.error('deleteSkill validation error:', validId.error.flatten());
-			return { success: false, error: 'Invalid input data.' };
+			return logErrAndReturn('deleteSkill', validId.error.flatten(), { success: false, error: 'Invalid input data.' });
 		}
 
 		await prisma.skills.delete({
-			where: { id: validId.data },
+			where: { id: validId.data as string },
 		});
 
 		deleteCache(REDIS_KEYS.SKILLS_ALL);
 		return { success: true, message: 'Skill deleted correctly.' };
 	} catch (error) {
-		console.error('deleteSkill error:', error);
-		return { success: false, error: 'Failed to delete skill.' };
+		return logErrAndReturn('deleteSkill', error, { success: false, error: 'Failed to delete skill.' });
 	}
 }

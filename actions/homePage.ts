@@ -5,6 +5,7 @@ import { getBlogPosts } from './blogPosts';
 import { getCourses } from './courses';
 import { getProjects } from './projects';
 import { getSkills } from './skills';
+import { logErrAndReturn } from '@/lib/utils/logErrAndReturn';
 
 export async function getHomePageData() {
 	try {
@@ -21,9 +22,6 @@ export async function getHomePageData() {
 			error: null,
 		};
 	} catch (e) {
-		return {
-			data: null,
-			error: e instanceof Error ? e.message : 'Failed to fetch data',
-		};
+		return logErrAndReturn('getHomePageData', e, { data: null, error: 'Failed to fetch data' });
 	}
 }

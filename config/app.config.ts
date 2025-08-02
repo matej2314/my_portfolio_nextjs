@@ -48,4 +48,11 @@ export const APP_CONFIG = {
 		PRIVATE_KEY: process.env.GOOGLE_PRIVATE_KEY,
 		PROPERTY_ID: process.env.GA4_PROPERTY_ID,
 	},
+	winston: {
+		errorLevel: 'error',
+		infoLevel: 'info',
+		datePattern: 'YYYY-MM-DD',
+		maxFiles: '3d',
+		zippedArchive: false,
+	},
 } as const;

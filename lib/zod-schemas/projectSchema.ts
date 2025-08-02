@@ -76,7 +76,6 @@ export const baseProjectSchema = z.object({
 	end_date: z
 		.string()
 		.trim()
-		.optional()
 		.transform(val => (val ? new Date(val) : null)),
 	long_text: validatedString(20, 65535, {
 		requiredError: 'Long description text is required.',

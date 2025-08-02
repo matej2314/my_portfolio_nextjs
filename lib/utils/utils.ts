@@ -3,10 +3,15 @@ import { twMerge } from 'tailwind-merge';
 
 import { type Course, type Skill } from '@/types/actionsTypes/actionsTypes';
 import { type Category } from '@/types/skillSelectorTypes';
+import { SafeParseReturnType, ZodSchema } from 'zod';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
+
+export const validateData = <T>(data: unknown, schema: ZodSchema): SafeParseReturnType<T, T> => {
+	return schema.safeParse(data);
+};
 
 export const formatHeader = (key: string) => {
 	return key
@@ -49,11 +54,3 @@ export const formatDuration = (seconds: number): string => {
 export const formatPercentage = (value: number): string => {
 	return `${(value * 100).toFixed(1)}%`;
 };
-
-export function getCurrentDateString(): string {
-	const now = new Date();
-	const year = now.getFullYear();
-	const month = String(now.getMonth() + 1).padStart(2, '0');
-	const day = String(now.getDate()).padStart(2, '0');
-	return `${year}-${month}-${day}`;
-}

@@ -1,21 +1,10 @@
-import fs from 'fs';
 import path from 'path';
 import winston from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
-import { getCurrentDateString } from './utils/utils';
 
-// function getCurrentDateString(): string {
-// 	const now = new Date();
-// 	const year = now.getFullYear();
-// 	const month = String(now.getMonth() + 1).padStart(2, '0');
-// 	const day = String(now.getDate()).padStart(2, '0');
-// 	return `${year}-${month}-${day}`;
-// }
+import { APP_CONFIG } from '@/config/app.config';
 
 const logDir = path.join(process.cwd(), 'logs');
-if (!fs.existsSync(logDir)) fs.mkdirSync(logDir);
-
-const datePrefix = getCurrentDateString();
 
 const jsonFormat = winston.format.combine(
 	winston.format.timestamp(),
@@ -23,5 +12,27 @@ const jsonFormat = winston.format.combine(
 );
 
 const infoTransport: DailyRotateFile = new DailyRotateFile({
-	filename: path.join(logDir, `${datePrefix}-info.log`),
+	filename: path.join(logDir, `%DATE%-info.log`),
+	level: APP_CONFIG.winston.infoLevel,
+	datePattern: APP_CONFIG.winston.datePattern,
+	zippedArchive: APP_CONFIG.winston.zippedArchive,
+	maxFiles: APP_CONFIG.winston.maxFiles,
+	format: jsonFormat,
+	auditFile: path.join(logDir, '.audit-info.json'),
 });
+
+const errorTransport: DailyRotateFile = new DailyRotateFile({
+	filename: path.join(logDir, `%DATE%-error.log`),
+	level: APP_CONFIG.winston.errorLevel,
+	datePattern: APP_CONFIG.winston.datePattern,
+	zippedArchive: APP_CONFIG.winston.zippedArchive,
+	maxFiles: APP_CONFIG.winston.maxFiles,
+	format: jsonFormat,
+	auditFile: path.join(logDir, '.audit-error.json'),
+});
+
+const logger = winston.createLogger({
+	transports: [infoTransport, errorTransport],
+});
+
+export default logger;

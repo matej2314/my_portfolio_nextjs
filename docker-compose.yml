@@ -3,8 +3,6 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-        # env_file:
-        #     - .env
         container_name: portfolioNext
         networks:
             - main_network
@@ -13,6 +11,7 @@ services:
         volumes:
             - /root/main/portfolio_nextjs/.env:/app/.env
             - /root/main/portfolio_nextjs/credentials:/app/credentials
+            - /root/main/portfolio_nextjs/logs:/app/logs
         environment:
             - NODE_ENV=production
             - PORT=5055

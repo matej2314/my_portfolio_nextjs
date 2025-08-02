@@ -1,6 +1,7 @@
 'use server';
 
 import { sendMail } from '@/lib/nodemailer.config';
+import { validateData } from '@/lib/utils/utils';
 import { contactSchema } from '@/lib/zod-schemas/contactSchema';
 import { APP_CONFIG } from '@/config/app.config';
 
@@ -14,7 +15,7 @@ export async function contactMe(prevState: ContactFormState, formData: FormData)
 		content: String(formData.get('msg-content') ?? ''),
 	};
 
-	const validatedContactObj = contactSchema.safeParse(contactObject);
+	const validatedContactObj = validateData<typeof contactObject>(contactObject, contactSchema);
 
 	if (!validatedContactObj.success) {
 		const fieldErrors = validatedContactObj.error.flatten().fieldErrors;

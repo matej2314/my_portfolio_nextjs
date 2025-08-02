@@ -2,6 +2,7 @@ import path from 'path';
 import { promises as fs } from 'fs';
 
 import { convertFormData } from './formDataToObjectConvert';
+import { validateData } from './utils';
 import { mainFilesSchema, galleryFilesSchema } from '../zod-schemas/fileValidationSchema';
 import { type ValidationResult } from '@/types/actionsTypes/actionsTypes';
 import { type SaveImagesResult } from '@/types/manageImages';
@@ -70,8 +71,8 @@ export const projectObjectForValidation = (projectData: FormData) => {
 
 export function validateProjectFiles(mainFiles: File[] | [], galleryFiles: File[] | [], mode: 'save' | 'update'): ValidationResult {
 	if (mode === 'save') {
-		const mainValidation = mainFilesSchema.safeParse(mainFiles);
-		const galleryValidation = galleryFilesSchema.safeParse(galleryFiles);
+		const mainValidation = validateData(mainFiles, mainFilesSchema);
+		const galleryValidation = validateData(galleryFiles, galleryFilesSchema);
 
 		if (!mainValidation.success || !galleryValidation.success) {
 			const errors: string[] = [];
@@ -87,8 +88,8 @@ export function validateProjectFiles(mainFiles: File[] | [], galleryFiles: File[
 
 		return {
 			success: true,
-			mainFiles: mainValidation.data,
-			galleryFiles: galleryValidation.data,
+			mainFiles: mainValidation.data as File[],
+			galleryFiles: galleryValidation.data as File[],
 		};
 	} else if (mode === 'update') {
 		let validMainFiles: File[] | [] = [];
@@ -96,20 +97,20 @@ export function validateProjectFiles(mainFiles: File[] | [], galleryFiles: File[
 		const errors: string[] = [];
 
 		if (mainFiles.some(file => file.size > 0)) {
-			const isValidMainFiles = mainFilesSchema.safeParse(mainFiles);
+			const isValidMainFiles = validateData(mainFiles, mainFilesSchema);
 			if (!isValidMainFiles.success) {
 				errors.push(isValidMainFiles.error.message);
 			} else {
-				validMainFiles = isValidMainFiles.data;
+				validMainFiles = isValidMainFiles.data as File[];
 			}
 		}
 
 		if (galleryFiles.some(file => file.size > 0)) {
-			const isValidGalleryFiles = galleryFilesSchema.safeParse(galleryFiles);
+			const isValidGalleryFiles = validateData(galleryFiles, galleryFilesSchema);
 			if (!isValidGalleryFiles.success) {
 				errors.push(isValidGalleryFiles.error.message);
 			} else {
-				validatedGalleryFiles = isValidGalleryFiles.data;
+				validatedGalleryFiles = isValidGalleryFiles.data as File[];
 			}
 		}
 

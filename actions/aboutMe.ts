@@ -3,11 +3,14 @@
 import prisma from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
 
-import { getCache, setCache } from '@/lib/redis/redis';
-import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 import { APP_CONFIG } from '@/config/app.config';
+import { REDIS_KEYS } from '@/lib/redis/redisKeys';
+
+import { getCache, setCache } from '@/lib/redis/redis';
 import { aboutMeSchema, aboutTxtSchema } from '@/lib/zod-schemas/aboutMeSchema';
 import { convertFormData } from '@/lib/utils/formDataToObjectConvert';
+import { validateData } from '@/lib/utils/utils';
+import { logErrAndReturn } from '@/lib/utils/logErrAndReturn';
 
 import { type GetAboutMeType, type ReturnedType, type AboutTextType } from '@/types/actionsTypes/actionsTypes';
 
@@ -22,8 +25,7 @@ export const getAboutMe = async (): Promise<GetAboutMeType> => {
 		await setCache(REDIS_KEYS.ABOUTME, aboutMe, APP_CONFIG.redis.defaultExpiration);
 		return { aboutMe };
 	} catch (error) {
-		console.error(`getAboutMe error: ${String(error)}`);
-		return { error: 'Failed to fetch description' };
+		return logErrAndReturn('getAboutMe', error, { error: 'Failed to fetch description' });
 	}
 };
 
@@ -31,21 +33,26 @@ export async function saveAboutMe(prevState: ReturnedType, formData: FormData): 
 	try {
 		const id = uuidv4();
 		const about_text = formData.get('about_text') as string;
-		const validAbout_text = aboutTxtSchema.safeParse(about_text);
+		const validAbout_text = validateData(about_text, aboutTxtSchema);
 		if (!validAbout_text.success) {
-			return { success: false, error: 'Invalid input data.' };
+			return logErrAndReturn('saveAboutMe', validAbout_text.error.flatten(), {
+				success: false,
+				error: 'Invalid input data.',
+			});
 		}
 
 		const newAboutMe = { id, about_text };
 
-		const validNewAboutMe = aboutMeSchema.safeParse(newAboutMe);
+		const validNewAboutMe = validateData(newAboutMe, aboutMeSchema);
 
 		if (!validNewAboutMe.success) {
-			console.error('saveAvoutMe validation error:', validNewAboutMe.error.flatten());
-			return { success: false, error: 'Invalid input data.' };
+			return logErrAndReturn('saveAboutMe', validNewAboutMe.error.flatten(), {
+				success: false,
+				error: 'Invalid input data.',
+			});
 		}
 
-		const aboutText = { ...validNewAboutMe.data };
+		const aboutText = { ...(validNewAboutMe.data as AboutTextType) };
 
 		await prisma.about_me.deleteMany({});
 
@@ -53,11 +60,10 @@ export async function saveAboutMe(prevState: ReturnedType, formData: FormData): 
 			data: aboutText,
 		});
 
-		setCache<AboutTextType>(REDIS_KEYS.ABOUTME, aboutMe, APP_CONFIG.redis.defaultExpiration);
+		await setCache<AboutTextType>(REDIS_KEYS.ABOUTME, aboutMe, APP_CONFIG.redis.defaultExpiration);
 		return { success: true, message: 'Description added correctly' };
 	} catch (error) {
-		console.error('saveAboutMe error:', error);
-		return { success: false, error: 'Failed to add new description' };
+		return logErrAndReturn('saveAboutMe', error, { success: false, error: 'Failed to add new description' });
 	}
 }
 
@@ -65,14 +71,16 @@ export async function updateAboutMe(prevState: ReturnedType, formData: FormData)
 	try {
 		const updatedDescription = convertFormData(formData);
 
-		const validUpdatedDescription = aboutMeSchema.safeParse(updatedDescription);
+		const validUpdatedDescription = validateData(updatedDescription, aboutMeSchema);
 
 		if (!validUpdatedDescription.success) {
-			console.error('updateAboutMe validation error:', validUpdatedDescription.error.flatten());
-			return { success: false, error: 'Invalid input data.' };
+			return logErrAndReturn('updateAboutMe', validUpdatedDescription.error.flatten(), {
+				success: false,
+				error: 'Invalid input data.',
+			});
 		}
 
-		const { id, ...descriptionData } = validUpdatedDescription.data;
+		const { id, ...descriptionData } = validUpdatedDescription.data as AboutTextType;
 
 		const updatedAboutMe = await prisma.about_me.update({
 			where: { id: id },
@@ -82,7 +90,6 @@ export async function updateAboutMe(prevState: ReturnedType, formData: FormData)
 		await setCache<AboutTextType>(REDIS_KEYS.ABOUTME, updatedAboutMe, APP_CONFIG.redis.defaultExpiration);
 		return { success: true, message: 'About description updated correctly.' };
 	} catch (error) {
-		console.error('UpdateAboutMe error:', error);
-		return { success: false, error: 'Failed to update about description.' };
+		return logErrAndReturn('updateAboutMe', error, { success: false, error: 'Failed to update about description.' });
 	}
 }
