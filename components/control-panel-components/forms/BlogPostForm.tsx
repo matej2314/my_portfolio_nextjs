@@ -3,6 +3,7 @@
 import { useState, useActionState } from "react";
 
 import { newBlogPost, updateBlogPost } from "@/actions/blogPosts";
+import { getSubmitFunction } from "@/lib/utils/getSubmitFunction"
 
 import LabelElement from "@/components/ui/elements/LabelElement"
 import InputElement from "@/components/ui/elements/InputElement"
@@ -18,16 +19,10 @@ import { type BlogPostFormProps } from '@/types/forms/blog-post-form';
 export default function BlogPostForm({ blogPostData, mode = 'create' }: BlogPostFormProps) {
     const [postContent, setPostContent] = useState<string>(blogPostData?.post_content || '');
 
-    const submitFunction = (() => {
-        switch (mode) {
-            case 'edit':
-                return updateBlogPost;
-            case 'create':
-                return newBlogPost;
-            default:
-                throw new Error(`Unknown mode: ${mode}`);
-        }
-    })();
+    const submitFunction = getSubmitFunction({
+        create: newBlogPost,
+        edit: updateBlogPost
+    }, mode);
 
     const [state, formAction] = useActionState(submitFunction, { success: false, error: '' })
 

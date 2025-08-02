@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { APP_CONFIG } from '@/config/app.config';
 
 export default function robots(): MetadataRoute.Robots {
 	return {
@@ -7,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
 			allow: '/',
 			disallow: ['/control/', '/api/', '/_next/', '/admin/'],
 		},
-		sitemap: `${process.env.BASE_URL || 'https://msliwowski.net'}/sitemap.xml`,
+		sitemap: `${APP_CONFIG.analytics.BASE_URL || 'https://msliwowski.net'}/sitemap.xml`,
 	};
 }

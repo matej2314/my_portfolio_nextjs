@@ -10,7 +10,7 @@ export const baseSkillSchema = z.object({
 	}).refine(value => !containsXSS(value), {
 		message: 'Skill name contains dangerous characters.',
 	}),
-	skill_cat: validatedString(5, 10, {
+	skill_cat: validatedString(3, 10, {
 		requiredError: 'Skill category is required.',
 		tooBig: 'Skill category must contains maximum 10 characters.',
 		tooSmall: 'Skill category must contains minimum 5 characters.',

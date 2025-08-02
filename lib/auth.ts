@@ -2,6 +2,7 @@ import { Lucia } from 'lucia';
 import { cookies } from 'next/headers';
 import { PrismaAdapter } from '@lucia-auth/adapter-prisma';
 import prisma from './db';
+import { APP_CONFIG } from '@/config/app.config';
 
 const client = prisma;
 const adapter = new PrismaAdapter(client.sessions, client.users);
@@ -11,9 +12,9 @@ export const lucia = new Lucia(adapter, {
 		name: 'SESSID',
 		expires: false,
 		attributes: {
-			secure: process.env.NODE_ENV === 'production',
-			sameSite: 'strict',
-			path: '/control',
+			secure: APP_CONFIG.auth.cookie.secure,
+			sameSite: APP_CONFIG.auth.cookie.sameSite as 'lax' | 'strict' | 'none',
+			path: APP_CONFIG.auth.cookie.path,
 		},
 	},
 	getUserAttributes: data => ({

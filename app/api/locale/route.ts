@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
+import { APP_CONFIG } from '@/config/app.config';
 
 const LocaleSchema = z.object({
 	locale: z.enum(['en', 'pl']),
@@ -18,12 +19,12 @@ export async function POST(req: Request) {
 
 		const response = NextResponse.json({ success: true });
 
-		response.cookies.set('NEXT_LANG', locale, {
-			path: '/',
-			maxAge: 60 * 60 * 24 * 365,
-			httpOnly: true,
-			sameSite: 'lax',
-			secure: process.env.NODE_ENV === 'production',
+		response.cookies.set(APP_CONFIG.auth.localeCookie.name, locale, {
+			path: APP_CONFIG.auth.localeCookie.path,
+			maxAge: APP_CONFIG.auth.localeCookie.maxAge,
+			httpOnly: APP_CONFIG.auth.localeCookie.httpOnly,
+			sameSite: APP_CONFIG.auth.localeCookie.sameSite as 'lax' | 'strict' | 'none',
+			secure: APP_CONFIG.auth.localeCookie.secure,
 		});
 
 		return response;

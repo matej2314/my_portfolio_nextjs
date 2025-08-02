@@ -1,6 +1,8 @@
 import { getProjects } from "@/actions/projects";
 
 import TableWrapper from "@/components/control-panel-components/TableElementWrapper";
+import AddItemBtn from "@/components/control-panel-components/AddItemBtn";
+
 import { createColumns } from "@/lib/utils/createColumnsDef";
 
 import { type Project } from "@/types/actionsTypes/actionsTypes";
@@ -63,6 +65,7 @@ export default async function ManageProjects() {
 
     return (
         <main className="w-full h-full flex flex-col justify-start items-center text-slate-200 mt-4 px-6">
+            <AddItemBtn redirectPath="/control/dashboard/projects/add" title="add project button" label="Add Project" />
             <section className="w-full h-fit flex justify-center rounded-md">
                 <TableWrapper
                     data={projects}

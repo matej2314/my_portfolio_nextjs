@@ -2,6 +2,7 @@ import { getBlogPosts } from "@/actions/blogPosts"
 
 import TableWrapper from "@/components/control-panel-components/TableElementWrapper"
 import { createColumns } from "@/lib/utils/createColumnsDef"
+import AddItemBtn from "@/components/control-panel-components/AddItemBtn"
 
 import { type Post } from "@/types/actionsTypes/actionsTypes"
 import { type VisibilityState } from "@tanstack/react-table"
@@ -34,6 +35,7 @@ export default async function ManageBlogPosts() {
 
     return (
         <main className="w-full h-full flex flex-col justify-start items-center text-slate-200 mt-4">
+            <AddItemBtn redirectPath="/control/dashboard/blog/add" title="add blog post" label="Add Blog Post" />
             <section className="w-full h-fit flex justify-center rounded-md">
                 <TableWrapper
                     data={posts}

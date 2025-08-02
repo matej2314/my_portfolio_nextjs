@@ -1,6 +1,8 @@
 import { getSkills } from "@/actions/skills";
 
 import TableWrapper from "@/components/control-panel-components/TableElementWrapper";
+import AddItemBtn from "@/components/control-panel-components/AddItemBtn";
+
 import { createColumns } from "@/lib/utils/createColumnsDef";
 
 import { type Skill } from "@/types/actionsTypes/actionsTypes";
@@ -31,6 +33,7 @@ export default async function ManageSkills() {
 
     return (
         <main className="w-full h-full flex flex-col justify-start items-center text-slate-200 mt-4">
+            <AddItemBtn redirectPath="/control/dashboard/skills/add" title="add skill button" label="Add Skill" />
             <section className="w-full h-fit flex justify-center rounded-md">
                 <div>
                     <TableWrapper

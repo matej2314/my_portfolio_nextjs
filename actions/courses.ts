@@ -5,11 +5,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { convertFormData } from '@/lib/utils/formDataToObjectConvert';
 import { setCache, getCache, deleteCache, deleteMultipleCache } from '@/lib/redis/redis';
 import { REDIS_KEYS } from '@/lib/redis/redisKeys';
+import { APP_CONFIG } from '@/config/app.config';
 
 import { baseCourseSchema, updateCourseSchema } from '@/lib/zod-schemas/courseSchema';
 import { idSchema } from '@/lib/zod-schemas/idSchema';
 
-import { type GetCoursesType, GetCourseType, ReturnedType, Course } from '@/types/actionsTypes/actionsTypes';
+import { type GetCoursesType, type GetCourseType, type ReturnedType, type Course } from '@/types/actionsTypes/actionsTypes';
 
 export const getCourses = async (): Promise<GetCoursesType> => {
 	try {
@@ -18,7 +19,7 @@ export const getCourses = async (): Promise<GetCoursesType> => {
 
 		const result = await prisma.courses.findMany();
 
-		await setCache(REDIS_KEYS.COURSES_ALL, result, 3600);
+		await setCache(REDIS_KEYS.COURSES_ALL, result, APP_CONFIG.redis.defaultExpiration);
 		return { courses: result };
 	} catch (error) {
 		console.error(`getCourses error: ${String(error)}`);
@@ -42,7 +43,7 @@ export const getCourse = async (id: string): Promise<GetCourseType> => {
 			where: { id: validId.data },
 		});
 
-		await setCache(REDIS_KEYS.COURSE(id), result, 3600);
+		await setCache(REDIS_KEYS.COURSE(id), result, APP_CONFIG.redis.defaultExpiration);
 
 		return { course: result as Course };
 	} catch (error) {

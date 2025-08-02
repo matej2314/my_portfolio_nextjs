@@ -1,13 +1,14 @@
 import { google } from 'googleapis';
 
 import { defaultData } from '@/lib/defaultData';
+import { APP_CONFIG } from '@/config/app.config';
 
 import { type GA4Params, type RequestBody } from '@/types/ga4-types';
 
 const SCOPES = ['https://www.googleapis.com/auth/analytics.readonly'];
 
-const email = process.env.GOOGLE_CLIENT_MAIL;
-const key = process.env.GOOGLE_PRIVATE_KEY;
+const email = APP_CONFIG.analytics.CLIENT_MAIL;
+const key = APP_CONFIG.analytics.PRIVATE_KEY;
 const defaultMetrics = defaultData.defaultGA4Metrics;
 const defaultDimensions = defaultData.defaultGA4Dimensions;
 
@@ -29,7 +30,7 @@ export async function getGA4Report({ startDate, endDate, metrics = defaultMetric
 	}
 
 	const response = await analytics.properties.runReport({
-		property: `properties/${process.env.GA4_PROPERTY_ID}`,
+		property: `properties/${APP_CONFIG.analytics.PROPERTY_ID}`,
 		auth: jwtClient,
 		requestBody,
 	});

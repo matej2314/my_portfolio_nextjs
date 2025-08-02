@@ -1,7 +1,8 @@
 'use server';
 
-import { sendMail } from '@/lib/nodemailer';
+import { sendMail } from '@/lib/nodemailer.config';
 import { contactSchema } from '@/lib/zod-schemas/contactSchema';
+import { APP_CONFIG } from '@/config/app.config';
 
 import { type ContactFormState } from '@/types/forms/contactFormTypes';
 
@@ -25,7 +26,7 @@ export async function contactMe(prevState: ContactFormState, formData: FormData)
 
 	try {
 		await sendMail({
-			to: process.env.DEL_MAIL as string,
+			to: APP_CONFIG.nodemailer.to as string,
 			subject: `Nowa wiadomość od użytkownika ${validatedContactObj.data.client}`,
 			html: `
             Wiadomość od użytkownika: ${validatedContactObj.data.client}

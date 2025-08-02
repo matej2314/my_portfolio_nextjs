@@ -1,13 +1,14 @@
 import nodemailer, { type Transporter } from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
+import { APP_CONFIG } from '@/config/app.config';
 
 export const transporter: Transporter<SMTPTransport.SentMessageInfo> = nodemailer.createTransport({
-	host: process.env.MAIL_HOST,
-	port: 465,
+	host: APP_CONFIG.nodemailer.host,
+	port: APP_CONFIG.nodemailer.port,
 	secure: true,
 	auth: {
-		user: process.env.MAIL_USER,
-		pass: process.env.MAIL_PASS,
+		user: APP_CONFIG.nodemailer.auth.user,
+		pass: APP_CONFIG.nodemailer.auth.pass,
 	},
 } as SMTPTransport.Options);
 

@@ -5,17 +5,16 @@ import { v4 as uuidv4 } from 'uuid';
 import fs from 'node:fs';
 import path from 'path';
 
-import { type GetShotsResult, GetProjectType, GetProjectsType, ReturnedType, Project } from '@/types/actionsTypes/actionsTypes';
-
 import { setCache, getCache, deleteMultipleCache } from '@/lib/redis/redis';
 import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 import { manageProjectImages } from '@/lib/utils/manageProjectImages';
 import { projectObjectForValidation, validateProjectFiles } from '@/lib/utils/manageProject';
 import { getFilesList } from '@/lib/utils/getFilesList';
-import { type ImageData } from '@/types/ProjectsGalleryTypes';
-
 import { baseProjectSchema, updateProjectSchema } from '@/lib/zod-schemas/projectSchema';
 import { idSchema } from '@/lib/zod-schemas/idSchema';
+
+import { type ImageData } from '@/types/ProjectsGalleryTypes';
+import { type GetShotsResult, type GetProjectType, type GetProjectsType, type ReturnedType, type Project } from '@/types/actionsTypes/actionsTypes';
 
 export const getProjects = async (): Promise<GetProjectsType> => {
 	const cacheKey = REDIS_KEYS.PROJECTS_ALL;

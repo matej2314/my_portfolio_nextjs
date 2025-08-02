@@ -2,15 +2,16 @@
 
 import { cookies } from 'next/headers';
 import { Locale } from '@/i18n/config';
-
-const COOKIE_NAME = 'NEXT_LANG';
+import { APP_CONFIG } from '@/config/app.config';
 
 export async function setLocale(locale: Locale) {
 	(await cookies()).set({
-		name: COOKIE_NAME,
+		name: APP_CONFIG.auth.localeCookie.name,
 		value: locale,
-		path: '/',
-		maxAge: 60 * 60 * 24 * 365,
-		httpOnly: false,
+		path: APP_CONFIG.auth.localeCookie.path,
+		maxAge: APP_CONFIG.auth.localeCookie.maxAge,
+		httpOnly: APP_CONFIG.auth.localeCookie.httpOnly,
+		sameSite: APP_CONFIG.auth.localeCookie.sameSite as 'lax' | 'strict' | 'none',
+		secure: APP_CONFIG.auth.localeCookie.secure,
 	});
 }

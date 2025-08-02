@@ -3,6 +3,11 @@ import { useState, useActionState } from "react"
 
 import { saveCourse, updateCourse } from "@/actions/courses"
 
+import { useDatePicker } from "@/hooks/useDatePicker"
+
+import { courseCatArray } from "@/lib/dataCatArrays"
+import { getSubmitFunction } from "@/lib/utils/getSubmitFunction"
+
 import LabelElement from "@/components/ui/elements/LabelElement"
 import InputElement from "@/components/ui/elements/InputElement"
 import SelectElement from "@/components/ui/elements/SelectElement"
@@ -11,32 +16,18 @@ import CalendarInputIcon from "@/components/ui/elements/CalendarInputIcon"
 import DisplayFormMessage from "@/components/home-page-components/contact-section/components/DisplayFormMessage"
 import FormTitle from "./components/FormTitle"
 
-import { useDatePicker } from "@/hooks/useDatePicker"
-
-import { courseCatArray } from "@/lib/dataCatArrays"
-
 import { type CourseFormProps } from '@/types/forms/course-form';
-
 
 export default function CourseForm({ courseData, mode = 'create' }: CourseFormProps) {
     const [selectedCategory, setSelectedCategory] = useState<string>(courseData?.course_category || '');
     const { dateInputRef, handleDateInputClick } = useDatePicker();
 
-    const submitFunction = (() => {
-
-        switch (mode) {
-            case 'edit':
-                return updateCourse;
-            case 'create':
-                return saveCourse;
-            default:
-                throw new Error(`Unknown mode: ${mode}`);
-        }
-    })();
+    const submitFunction = getSubmitFunction({
+        create: saveCourse,
+        edit: updateCourse
+    }, mode);
 
     const [state, formAction] = useActionState(submitFunction, { success: false, error: '' })
-
-
 
     return (
         <>

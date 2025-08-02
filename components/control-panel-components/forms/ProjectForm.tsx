@@ -3,6 +3,7 @@
 import { useState, useActionState } from "react";
 
 import { saveProject, updateProject } from "@/actions/projects";
+import { getSubmitFunctionWithParams } from "@/lib/utils/getSubmitFunction"
 
 import LabelElement from "@/components/ui/elements/LabelElement"
 import InputElement from "@/components/ui/elements/InputElement"
@@ -14,38 +15,33 @@ import TabsListElement from "@/components/ui/elements/TabsListElement";
 import SubmitBtn from "@/components/ui/elements/SubmitButton"
 import CalendarInputIcon from "@/components/ui/elements/CalendarInputIcon"
 import DisplayFormMessage from "@/components/home-page-components/contact-section/components/DisplayFormMessage"
-import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { Tabs } from "@/components/ui/tabs";
+import CustomTabsContent from "@/components/ui/elements/CustomTabsContent";
 import FormTitle from "./components/FormTitle";
 
 import { useDatePicker } from "@/hooks/useDatePicker"
-import { defaultData } from "@/lib/defaultData";
 
+import { defaultData } from "@/lib/defaultData";
 import { projectCatArray, difficultyArray } from "@/lib/dataCatArrays";
 import { projectFormTriggers } from "@/lib/control-panel/ProjectFormTriggers";
 
-import { type ProjectFormProps } from '@/types/forms/project-form';
+import { type ProjectFormProps, type SelectedDetailsState } from '@/types/forms/project-form';
 import { type ReturnedType } from "@/types/actionsTypes/actionsTypes"
 
 export default function ProjectForm({ projectData, mode = 'create' }: ProjectFormProps) {
-    const [selectedCategory, setSelectedCategory] = useState<string>(projectData?.project_category || '');
-    const [selectedDifficulty, setSelectedDifficulty] = useState<string>(projectData?.difficulty as string || '');
-    const { dateInputRef, handleDateInputClick } = useDatePicker();
-
+    const [selectedDetails, setSelectedDetails] = useState<SelectedDetailsState>({
+        selectedCategory: projectData?.project_category || '',
+        selectedDifficulty: projectData?.difficulty as string || '',
+        selectedTab: 'basic'
+    });
     const [clearExisting, setClearExisting] = useState<boolean>(false);
-
+    const { dateInputRef, handleDateInputClick } = useDatePicker();
     const defaultState = defaultData.returnedTypeDefault as ReturnedType;
 
-    const submitFunction = (() => {
-
-        switch (mode) {
-            case 'edit':
-                return (prevState: ReturnedType, formData: FormData) => updateProject(prevState, formData, clearExisting);
-            case 'create':
-                return (prevState: ReturnedType, formData: FormData) => saveProject(prevState, formData);
-            default:
-                throw new Error(`Unknown mode: ${mode}`);
-        }
-    })();
+    const submitFunction = getSubmitFunctionWithParams({
+        create: (prevState: ReturnedType, formData: FormData) => saveProject(prevState, formData),
+        edit: (prevState: ReturnedType, formData: FormData) => updateProject(prevState, formData, clearExisting)
+    }, mode, clearExisting);
 
     const [state, formAction] = useActionState(submitFunction, defaultState)
 
@@ -56,10 +52,14 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
             <FormTitle editTitle="Edit project" createTitle="Create new project" mode={mode} />
             <form action={formAction} className="w-fit h-fit flex flex-col items-center justify-center gap-2 text-slate-200">
                 {projectData && <input type="hidden" name="id" id="id" value={projectData?.id} />}
-                {projectData && <input type="hidden" name="project_screenName" id="project_screenName" value={projectData?.project_screenName} />}
-                <Tabs defaultValue="basic" className="w-full max-w-xl">
+                {mode === 'edit' && <input type="hidden" name="project_screenName" id="project_screenName" value={projectData?.project_screenName || ''} />}
+                <Tabs
+                    defaultValue="basic"
+                    value={selectedDetails.selectedTab}
+                    onValueChange={(val) => setSelectedDetails({ ...selectedDetails, selectedTab: val })} className="w-full max-w-xl">
                     <TabsListElement triggers={projectFormTriggers} />
-                    <TabsContent value="basic" className="flex flex-col gap-4">
+
+                    <CustomTabsContent value="basic" selectedValue={selectedDetails.selectedTab} className="flex flex-col gap-4">
                         <div>
                             <LabelElement htmlFor="project_name" className="font-bold pb-1 ml-2 text-lg tracking-wide">
                                 Project name:
@@ -80,19 +80,19 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                                 Select project category:
                             </LabelElement>
                             <SelectElement
-                                value={selectedCategory}
-                                onChange={(val) => setSelectedCategory(val)}
+                                value={selectedDetails.selectedCategory}
+                                onChange={(val) => setSelectedDetails({ ...selectedDetails, selectedCategory: val })}
                                 options={projectCatArray}
                                 placeholder="project category"
                                 className="w-full"
                             />
-                            <input type="hidden" name="project_category" value={selectedCategory} />
+                            <input type="hidden" name="project_category" value={selectedDetails.selectedCategory} />
                         </div>
 
                         <div>
                             <LabelElement htmlFor="goal" className="font-bold pb-1 ml-2 text-lg tracking-wide">Project goal:</LabelElement>
                             <TextAreaElement
-                                required
+                                required={false}
                                 id="goal"
                                 name="goal"
                                 defaultValue={projectData?.goal as string}
@@ -104,7 +104,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                         <div>
                             <LabelElement htmlFor="project_description" className="font-bold pb-1 ml-2 text-lg tracking-wide">Project description:</LabelElement>
                             <TextAreaElement
-                                required
+                                required={false}
                                 id="project_description"
                                 name="project_description"
                                 defaultValue={projectData?.project_description as string}
@@ -115,7 +115,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                         <div>
                             <LabelElement htmlFor="conclusion" className="font-bold pb-1 ml-2 text-lg tracking-wide">Conclusion:</LabelElement>
                             <TextAreaElement
-                                required
+                                required={false}
                                 id="conclusion"
                                 name="conclusion"
                                 defaultValue={projectData?.conclusion as string}
@@ -123,8 +123,9 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                                 className="text-md px-2 tracking-wide w-full"
                             />
                         </div>
-                    </TabsContent>
-                    <TabsContent value="files" className="flex flex-col gap-4">
+                    </CustomTabsContent>
+
+                    <CustomTabsContent value="files" selectedValue={selectedDetails.selectedTab} className="flex flex-col gap-4">
                         {mode === 'edit' && (
                             <SwitchElement
                                 id="clear_existing"
@@ -156,12 +157,13 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                                 className="text-md px-2 tracking-wide w-full"
                             />
                         </div>
-                    </TabsContent>
-                    <TabsContent value="translations" className="flex flex-col gap-4">
+                    </CustomTabsContent>
+
+                    <CustomTabsContent value="translations" selectedValue={selectedDetails.selectedTab} className="flex flex-col gap-4">
                         <div>
                             <LabelElement htmlFor="goal_pl" className="font-bold pb-1 ml-2 text-lg tracking-wide">Goal (PL):</LabelElement>
                             <TextAreaElement
-                                required
+                                required={false}
                                 id="goal_pl"
                                 name="goal_pl"
                                 defaultValue={projectData?.goal_pl as string}
@@ -172,7 +174,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                         <div>
                             <LabelElement htmlFor="description_pl" className="font-bold pb-1 ml-2 text-lg tracking-wide">Description (PL):</LabelElement>
                             <TextAreaElement
-                                required
+                                required={false}
                                 id="description_pl"
                                 name="description_pl"
                                 defaultValue={projectData?.description_pl as string}
@@ -183,7 +185,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                         <div>
                             <LabelElement htmlFor="long_text_pl" className="font-bold pb-1 ml-2 text-lg tracking-wide">Long description (PL):</LabelElement>
                             <TextAreaElement
-                                required
+                                required={false}
                                 id="long_text_pl"
                                 name="long_text_pl"
                                 defaultValue={projectData?.long_text_pl as string}
@@ -194,7 +196,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                         <div>
                             <LabelElement htmlFor="conclusion_pl" className="font-bold pb-1 ml-2 text-lg tracking-wide">Conclusion (PL):</LabelElement>
                             <TextAreaElement
-                                required
+                                required={false}
                                 id="conclusion_pl"
                                 name="conclusion_pl"
                                 defaultValue={projectData?.conclusion_pl as string}
@@ -202,8 +204,9 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                                 className="text-md px-2 tracking-wide w-full"
                             />
                         </div>
-                    </TabsContent>
-                    <TabsContent value="metadata" className="flex flex-col gap-4">
+                    </CustomTabsContent>
+
+                    <CustomTabsContent value="metadata" selectedValue={selectedDetails.selectedTab} className="flex flex-col gap-4">
                         <div>
                             <LabelElement htmlFor="project_URL" className="font-bold pb-1 ml-2 text-lg tracking-wide">Project URL:</LabelElement>
                             <InputElement
@@ -220,7 +223,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                         <div>
                             <LabelElement htmlFor="repo" className="font-bold pb-1 ml-2 text-lg tracking-wide">Project repository:</LabelElement>
                             <InputElement
-                                required
+                                required={false}
                                 type="url"
                                 id="repo"
                                 name="repo"
@@ -233,7 +236,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                         <div>
                             <LabelElement htmlFor="technologies" className="font-bold pb-1 ml-2 text-lg tracking-wide">Technologies:</LabelElement>
                             <InputElement
-                                required
+                                required={false}
                                 type="text"
                                 id="technologies"
                                 name="technologies"
@@ -246,13 +249,13 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                         <div>
                             <LabelElement htmlFor="difficulty" className="font-bold pb-1 ml-2 text-lg tracking-wide">Project difficulty:</LabelElement>
                             <SelectElement
-                                value={selectedDifficulty}
-                                onChange={(val) => setSelectedDifficulty(val)}
+                                value={selectedDetails.selectedDifficulty}
+                                onChange={(val) => setSelectedDetails({ ...selectedDetails, selectedDifficulty: val })}
                                 options={difficultyArray}
                                 placeholder="Select difficulty"
                                 className="w-full"
                             />
-                            <input type="hidden" name="difficulty" value={selectedDifficulty} />
+                            <input type="hidden" name="difficulty" value={selectedDetails.selectedDifficulty} />
                         </div>
 
                         <div>
@@ -262,9 +265,9 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                                 onClick={handleDateInputClick}
                             >
                                 <InputElement
-                                    required
                                     ref={dateInputRef}
                                     type="date"
+                                    required={false}
                                     name="end_date"
                                     id="end_date"
                                     className="w-full pr-10"
@@ -280,7 +283,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                         <div>
                             <LabelElement htmlFor="long_text" className="font-bold pb-1 ml-2 text-lg tracking-wide">Long description:</LabelElement>
                             <TextAreaElement
-                                required
+                                required={false}
                                 id="long_text"
                                 name="long_text"
                                 defaultValue={projectData?.long_text as string}
@@ -288,7 +291,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                                 className="text-md pl-2 tracking-wide w-full"
                             />
                         </div>
-                    </TabsContent>
+                    </CustomTabsContent>
                 </Tabs>
                 <SubmitBtn
                     pendingTxt='Saving...'

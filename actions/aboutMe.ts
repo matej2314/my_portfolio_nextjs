@@ -5,10 +5,11 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { getCache, setCache } from '@/lib/redis/redis';
 import { REDIS_KEYS } from '@/lib/redis/redisKeys';
-
+import { APP_CONFIG } from '@/config/app.config';
 import { aboutMeSchema, aboutTxtSchema } from '@/lib/zod-schemas/aboutMeSchema';
-import { type GetAboutMeType, ReturnedType, AboutTextType } from '@/types/actionsTypes/actionsTypes';
 import { convertFormData } from '@/lib/utils/formDataToObjectConvert';
+
+import { type GetAboutMeType, type ReturnedType, type AboutTextType } from '@/types/actionsTypes/actionsTypes';
 
 export const getAboutMe = async (): Promise<GetAboutMeType> => {
 	try {
@@ -18,7 +19,7 @@ export const getAboutMe = async (): Promise<GetAboutMeType> => {
 		const aboutMe = await prisma.about_me.findFirst();
 		if (!aboutMe) return { aboutMe: null };
 
-		await setCache(REDIS_KEYS.ABOUTME, aboutMe, 3600);
+		await setCache(REDIS_KEYS.ABOUTME, aboutMe, APP_CONFIG.redis.defaultExpiration);
 		return { aboutMe };
 	} catch (error) {
 		console.error(`getAboutMe error: ${String(error)}`);
@@ -52,7 +53,7 @@ export async function saveAboutMe(prevState: ReturnedType, formData: FormData): 
 			data: aboutText,
 		});
 
-		setCache<AboutTextType>(REDIS_KEYS.ABOUTME, aboutMe, 3600);
+		setCache<AboutTextType>(REDIS_KEYS.ABOUTME, aboutMe, APP_CONFIG.redis.defaultExpiration);
 		return { success: true, message: 'Description added correctly' };
 	} catch (error) {
 		console.error('saveAboutMe error:', error);
@@ -78,7 +79,7 @@ export async function updateAboutMe(prevState: ReturnedType, formData: FormData)
 			data: descriptionData,
 		});
 
-		await setCache<AboutTextType>(REDIS_KEYS.ABOUTME, updatedAboutMe, 3600);
+		await setCache<AboutTextType>(REDIS_KEYS.ABOUTME, updatedAboutMe, APP_CONFIG.redis.defaultExpiration);
 		return { success: true, message: 'About description updated correctly.' };
 	} catch (error) {
 		console.error('UpdateAboutMe error:', error);

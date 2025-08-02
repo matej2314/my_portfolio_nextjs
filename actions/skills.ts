@@ -6,10 +6,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { convertFormData } from '@/lib/utils/formDataToObjectConvert';
 import { setCache, getCache, deleteCache } from '@/lib/redis/redis';
 import { REDIS_KEYS } from '@/lib/redis/redisKeys';
-
-import { type ReturnedType, GetSkillsType, GetSkillType, Skill } from '@/types/actionsTypes/actionsTypes';
+import { APP_CONFIG } from '@/config/app.config';
 import { baseSkillSchema, updateSkillSchema } from '@/lib/zod-schemas/skillSchema';
 import { idSchema } from '@/lib/zod-schemas/idSchema';
+
+import { type ReturnedType, type GetSkillsType, type GetSkillType, type Skill } from '@/types/actionsTypes/actionsTypes';
 
 export const getSkills = async (): Promise<GetSkillsType> => {
 	const skillsKey = REDIS_KEYS.SKILLS_ALL;
@@ -20,7 +21,7 @@ export const getSkills = async (): Promise<GetSkillsType> => {
 
 		const result = await prisma.skills.findMany();
 
-		await setCache<Skill[]>(skillsKey, result, 3600);
+		await setCache<Skill[]>(skillsKey, result, APP_CONFIG.redis.defaultExpiration);
 		return { skills: result };
 	} catch (error) {
 		console.error(`getSkills error: ${String(error)}`);
@@ -37,7 +38,7 @@ export async function getSkill(id: string): Promise<GetSkillType> {
 
 		const result = await prisma.skills.findUnique({ where: { id } });
 
-		await setCache<Skill>(skillKey, result as Skill, 3600);
+		await setCache<Skill>(skillKey, result as Skill, APP_CONFIG.redis.defaultExpiration);
 		return { skill: result as Skill };
 	} catch (error) {
 		console.error(`getSkill error: ${String(error)}`);
@@ -90,6 +91,29 @@ export async function updateSkill(prevState: ReturnedType, formData: FormData): 
 	} catch (error) {
 		console.error('updateSkill error:', error);
 		return { success: false, error: 'Failed to update skill.' };
+	}
+}
+
+export async function getSkillsCategories(): Promise<{ categories: string[] } | { error: string }> {
+	const categoriesKey = REDIS_KEYS.SKILLS_CATEGORIES;
+	try {
+		const cachedCategories = await getCache<string[]>(categoriesKey);
+		if (cachedCategories) return { categories: cachedCategories };
+
+		const categoriesData = await prisma.skills.findMany({
+			select: {
+				skill_cat: true,
+			},
+			distinct: ['skill_cat'],
+		});
+
+		const categories = categoriesData.map(cat => cat.skill_cat);
+		await setCache<string[]>(categoriesKey, categories, APP_CONFIG.redis.defaultExpiration);
+
+		return { categories };
+	} catch (error) {
+		console.error('getSkillsCategories error:', error);
+		return { error: 'Failed to fetch skills categories.' };
 	}
 }
 

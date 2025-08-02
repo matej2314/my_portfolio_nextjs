@@ -2,6 +2,9 @@
 import { useState, useActionState } from "react"
 
 import { saveSkill, updateSkill } from "@/actions/skills"
+import { getSubmitFunction } from "@/lib/utils/getSubmitFunction"
+
+import { useSkillsCategories } from "@/hooks/useSkillsCategories"
 
 import LabelElement from "@/components/ui/elements/LabelElement"
 import InputElement from "@/components/ui/elements/InputElement"
@@ -9,27 +12,17 @@ import SelectElement from "@/components/ui/elements/SelectElement"
 import SubmitBtn from "@/components/ui/elements/SubmitButton"
 import FormTitle from "./components/FormTitle"
 
-import { getSkillsCategories } from "@/lib/utils/utils"
-
-import { type Category } from "@/types/skillSelectorTypes"
 import { type SkillFormProps } from '@/types/forms/skill-form';
-
 
 export default function SkillForm({ skillData, mode = 'create' }: SkillFormProps) {
     const [selectedCategory, setSelectedCategory] = useState<string>(skillData?.skill_cat || '');
 
-    const categories: Category[] = getSkillsCategories(skillData ? [skillData] : []);
+    const { categories } = useSkillsCategories();
 
-    const submitFunction = (() => {
-        switch (mode) {
-            case 'edit':
-                return updateSkill;
-            case 'create':
-                return saveSkill;
-            default:
-                throw new Error(`Unknown mode: ${mode}`);
-        }
-    })();
+    const submitFunction = getSubmitFunction({
+        create: saveSkill,
+        edit: updateSkill
+    }, mode);
 
     const [state, formAction] = useActionState(submitFunction, { success: false, error: '' })
 
@@ -63,7 +56,7 @@ export default function SkillForm({ skillData, mode = 'create' }: SkillFormProps
                     onChange={(val) => setSelectedCategory(val)}
                     options={categories.map(category =>
                     ({
-                        value: category.name as string,
+                        value: category.value as string,
                         label: category.label,
                         ariaLabel: category.label
                     }))}

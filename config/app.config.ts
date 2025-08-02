@@ -1,0 +1,51 @@
+export const APP_CONFIG = {
+	nodeEnv: process.env.NODE_ENV,
+	auth: {
+		secret: process.env.AUTH_SECRET,
+		expiresIn: 24 * 60 * 60,
+		cookie: {
+			httpOnly: true,
+			name: 'SESSID',
+			path: '/control',
+			sameSite: 'lax',
+			secure: process.env.NODE_ENV === 'production',
+		},
+		localeCookie: {
+			name: 'NEXT_LANG',
+			path: '/',
+			maxAge: 60 * 60 * 24 * 365,
+			httpOnly: true,
+			sameSite: 'lax',
+			secure: process.env.NODE_ENV === 'production',
+		},
+	},
+	redis: {
+		enabled: process.env.REDIS_ENABLED === 'true',
+		host: process.env.REDIS_HOST,
+		port: process.env.REDIS_PORT,
+		password: process.env.REDIS_PASSWORD,
+		maxRetriesPerRequest: 3,
+		enableReadyCheck: true,
+		connectTimeout: 5000,
+		keyPrefix: 'portfolio:',
+		defaultExpiration: 3600,
+		defaultHost: 'localhost',
+		defaultPort: 6379,
+	},
+	nodemailer: {
+		host: process.env.MAIL_HOST,
+		port: 465,
+		auth: {
+			user: process.env.MAIL_USER,
+			pass: process.env.MAIL_PASS,
+		},
+		to: process.env.DEL_MAIL,
+	},
+	analytics: {
+		GA_ID: process.env.GA_ID,
+		BASE_URL: process.env.BASE_URL,
+		CLIENT_MAIL: process.env.GOOGLE_CLIENT_MAIL,
+		PRIVATE_KEY: process.env.GOOGLE_PRIVATE_KEY,
+		PROPERTY_ID: process.env.GA4_PROPERTY_ID,
+	},
+} as const;

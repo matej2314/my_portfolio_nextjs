@@ -1,6 +1,7 @@
 import { type GA4Event } from '@/types/ga4-types';
+import { APP_CONFIG } from '@/config/app.config';
 
-export const GA_MEASUREMENT_ID = process.env.GA_ID;
+export const GA_MEASUREMENT_ID = APP_CONFIG.analytics.GA_ID;
 
 export const pageview = (url: string) => {
 	if (typeof window !== 'undefined' && window.gtag && GA_MEASUREMENT_ID) {

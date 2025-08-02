@@ -1,7 +1,8 @@
 import { getCourses } from "@/actions/courses";
 
 import TableWrapper from "@/components/control-panel-components/TableElementWrapper";
-import IconButton from "@/components/ui/elements/IconButton";
+import AddItemBtn from "@/components/control-panel-components/AddItemBtn";
+
 import { createColumns } from "@/lib/utils/createColumnsDef";
 
 import { type Course } from "@/types/actionsTypes/actionsTypes";
@@ -40,14 +41,7 @@ export default async function ManageCourses() {
 
     return (
         <main className="w-full h-full flex flex-col justify-start items-center text-slate-200 mt-4 px-6">
-            <IconButton
-                iconCode="mdi:plus"
-                redirectPath="/control/dashboard/courses/add"
-                title="Add Course"
-                className="w-[7rem] h-[2rem] bg-yellow-400 hover:bg-yellow-500 text-slate-800 border-[1px] border-slate-200 flex items-center"
-            >
-                Add Course
-            </IconButton>
+            <AddItemBtn redirectPath="/control/dashboard/courses/add" title="Add Course" label="Add Course" />
             <section className="w-full h-fit flex justify-center rounded-md">
                 <TableWrapper
                     data={courses}

@@ -7,6 +7,7 @@ import { redirect } from 'next/navigation';
 import prisma from '@/lib/db';
 import { sign } from 'jsonwebtoken';
 import { lucia } from '@/lib/auth';
+import { APP_CONFIG } from '@/config/app.config';
 import { loginSchema } from '@/lib/zod-schemas/authSchemas';
 import { convertFormData } from '@/lib/utils/formDataToObjectConvert';
 
@@ -14,7 +15,7 @@ export async function login(prevState: any, formData: FormData) {
 	const inputUserData = convertFormData(formData);
 	const validUserData = loginSchema.safeParse(inputUserData);
 	const nowInSeconds = Math.floor(Date.now() / 1000);
-	const expiresInSeconds = 60 * 60 * 24;
+	const expiresInSeconds = APP_CONFIG.auth.expiresIn;
 	const expiresDate = new Date(Date.now() + expiresInSeconds * 1000);
 
 	if (!validUserData.success) {
@@ -38,15 +39,15 @@ export async function login(prevState: any, formData: FormData) {
 		expiresAt: expiresDate,
 	});
 
-	const token = sign({ userId: user.id, email: user.email }, process.env.AUTH_SECRET!, { expiresIn: expiresInSeconds });
+	const token = sign({ userId: user.id, email: user.email }, APP_CONFIG.auth.secret!, { expiresIn: expiresInSeconds });
 
 	const cookieStore = await cookies();
 
-	cookieStore.set('SESSID', token, {
-		httpOnly: true,
-		path: '/control',
-		sameSite: 'lax',
-		secure: false,
+	cookieStore.set(APP_CONFIG.auth.cookie.name, token, {
+		httpOnly: APP_CONFIG.auth.cookie.httpOnly,
+		path: APP_CONFIG.auth.cookie.path,
+		sameSite: APP_CONFIG.auth.cookie.sameSite as 'lax' | 'strict' | 'none',
+		secure: APP_CONFIG.auth.cookie.secure,
 		expires: expiresDate,
 	});
 

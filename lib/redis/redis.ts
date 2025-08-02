@@ -1,18 +1,19 @@
 import Redis from 'ioredis';
+import { APP_CONFIG } from '@/config/app.config';
 
-const REDIS_ENABLED = process.env.REDIS_ENABLED === 'true';
+const REDIS_ENABLED = APP_CONFIG.redis.enabled;
 
 let redis: Redis | null = null;
 
 if (REDIS_ENABLED) {
 	redis = new Redis({
-		host: process.env.REDIS_HOST || 'localhost',
-		port: Number(process.env.REDIS_PORT) || 6379,
-		password: process.env.REDIS_PASSWORD,
-		maxRetriesPerRequest: 3,
-		enableReadyCheck: true,
-		connectTimeout: 5000,
-		keyPrefix: 'portfolio:',
+		host: APP_CONFIG.redis.host || APP_CONFIG.redis.defaultHost,
+		port: Number(APP_CONFIG.redis.port) || APP_CONFIG.redis.defaultPort,
+		password: APP_CONFIG.redis.password,
+		maxRetriesPerRequest: APP_CONFIG.redis.maxRetriesPerRequest,
+		enableReadyCheck: APP_CONFIG.redis.enableReadyCheck,
+		connectTimeout: APP_CONFIG.redis.connectTimeout,
+		keyPrefix: APP_CONFIG.redis.keyPrefix,
 	});
 
 	// Event listeners for monitoring

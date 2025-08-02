@@ -51,8 +51,8 @@ export const baseProjectSchema = z.object({
 		}),
 	description_pl: validatedString(20, 400, {
 		requiredError: 'Project description in Polish is required',
-		tooBig: 'Project description in Polish must contains maximum 400 characters',
-		tooSmall: 'Project description in Polish must contains minimum 20 characters',
+		tooBig: 'Project description in Polish must contains maximum 400 characters.',
+		tooSmall: 'Project description in Polish must contains minimum 20 characters.',
 	})
 		.nullable()
 		.refine(value => !containsXSS(value as string), {
@@ -118,7 +118,7 @@ export const baseProjectSchema = z.object({
 
 export const updateProjectSchema = baseProjectSchema.extend({
 	id: idSchema,
-	project_screenName: validatedString(10, 100, {
+	project_screenName: validatedString(5, 100, {
 		requiredError: 'Project screen name is required.',
 		tooBig: 'Project screen name must contains maximum 100 characters.',
 		tooSmall: 'Project screen name must contains minimum 10 characters.',
@@ -126,5 +126,6 @@ export const updateProjectSchema = baseProjectSchema.extend({
 		.refine(value => !containsXSS(value), {
 			message: 'Project screen name contains dangerous characters.',
 		})
-		.nullable(),
+		.nullable()
+		.optional(),
 });

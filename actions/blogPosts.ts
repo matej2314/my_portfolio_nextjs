@@ -3,13 +3,15 @@
 import prisma from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
 
-import { basePostSchema, updatePostSchema } from '@/lib/zod-schemas/postsSchema';
-import { idSchema } from '@/lib/zod-schemas/idSchema';
-
-import { type GetPostType, GetPostsType, ReturnedType, Post } from '@/types/actionsTypes/actionsTypes';
 import { convertFormData } from '@/lib/utils/formDataToObjectConvert';
 import { getCache, setCache, deleteMultipleCache } from '@/lib/redis/redis';
 import { REDIS_KEYS } from '@/lib/redis/redisKeys';
+import { APP_CONFIG } from '@/config/app.config';
+
+import { basePostSchema, updatePostSchema } from '@/lib/zod-schemas/postsSchema';
+import { idSchema } from '@/lib/zod-schemas/idSchema';
+
+import { type GetPostType, type GetPostsType, type ReturnedType, type Post } from '@/types/actionsTypes/actionsTypes';
 
 export const getBlogPosts = async (): Promise<GetPostsType> => {
 	try {
@@ -22,7 +24,7 @@ export const getBlogPosts = async (): Promise<GetPostsType> => {
 			return { error: 'Blog posts not found.' };
 		}
 
-		await setCache<Post[]>(REDIS_KEYS.BLOGPOSTS, posts, 3600);
+		await setCache<Post[]>(REDIS_KEYS.BLOGPOSTS, posts, APP_CONFIG.redis.defaultExpiration);
 		return { posts: posts };
 	} catch (error) {
 		console.error(`getPosts error:`, error);
@@ -49,7 +51,7 @@ export const getBlogPost = async (id: string): Promise<GetPostType> => {
 		if (!post) {
 			return { error: 'Post not found' };
 		}
-		await setCache(REDIS_KEYS.BLOGPOST(id), post, 3600);
+		await setCache(REDIS_KEYS.BLOGPOST(id), post, APP_CONFIG.redis.defaultExpiration);
 		return { post: post };
 	} catch (error) {
 		console.error('getBlogPost error:', error);

@@ -2,6 +2,7 @@ import { getProjects } from '@/actions/projects';
 import { getBlogPosts } from '@/actions/blogPosts';
 import { getCache, setCache } from '@/lib/redis/redis';
 import { REDIS_KEYS } from '@/lib/redis/redisKeys';
+import { APP_CONFIG } from '@/config/app.config';
 
 import { type MetadataRoute } from 'next';
 
@@ -15,7 +16,7 @@ type SitemapPage = {
 };
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-	const baseUrl = process.env.BASE_URL || 'https://msliwowski.net';
+	const baseUrl = APP_CONFIG.analytics.BASE_URL || 'https://msliwowski.net';
 
 	const cachedSitemap = await getCache<SitemapPage[]>(REDIS_KEYS.SITEMAP);
 	if (cachedSitemap) {
