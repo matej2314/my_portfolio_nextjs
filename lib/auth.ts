@@ -1,9 +1,10 @@
-import { Lucia } from 'lucia';
+import { Lucia, Session } from 'lucia';
 import { cookies } from 'next/headers';
 import { PrismaAdapter } from '@lucia-auth/adapter-prisma';
 import prisma from './db';
 import { APP_CONFIG } from '@/config/app.config';
 import { redirect } from 'next/navigation';
+import { logErrAndReturn } from './utils/logErrAndReturn';
 
 const client = prisma;
 const adapter = new PrismaAdapter(client.sessions, client.users);
@@ -50,15 +51,23 @@ export async function verifyCookie() {
 	}
 }
 
-export async function requireAuth(isPage: boolean = false) {
+export async function requireAuth() {
 	const session = await verifyCookie();
 	if (!session) {
-		if (isPage) {
-			redirect('/control');
-		} else {
-			return { success: false, error: 'Unauthorized. Please log in.' };
-		}
+		redirect('/control');
 	}
 
 	return { success: true, session };
 }
+
+export const requireActionsAuth = async (functionName: string): Promise<{ success: boolean; session: Session | null; error?: string }> => {
+	try {
+		const session = await verifyCookie();
+		if (!session) {
+			return logErrAndReturn(functionName, 'Authentication failed', { success: false, error: 'Unauthorized. Please log in.', session: null });
+		}
+		return { success: true, session: session.session };
+	} catch (error) {
+		return logErrAndReturn(functionName, error, { success: false, error: 'Failed to authenticate.', session: null });
+	}
+};

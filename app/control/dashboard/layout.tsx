@@ -4,7 +4,7 @@ import { requireAuth } from "@/lib/auth";
 import ControlSidebar from "@/components/control-panel-components/sidebar/SidebarMenu";
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
-    await requireAuth(true);
+    await requireAuth();
 
 
     return (

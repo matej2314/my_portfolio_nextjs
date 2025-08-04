@@ -7,7 +7,7 @@ import { APP_CONFIG } from '@/config/app.config';
 
 import { convertFormData } from '@/lib/utils/formDataToObjectConvert';
 import { logErrAndReturn } from '@/lib/utils/logErrAndReturn';
-import { requireAuth } from '@/lib/auth';
+import { requireActionsAuth } from '@/lib/auth';
 import { validateData } from '@/lib/utils/utils';
 import { getCache, setCache, deleteMultipleCache } from '@/lib/redis/redis';
 import { REDIS_KEYS } from '@/lib/redis/redisKeys';
@@ -55,9 +55,9 @@ export const getBlogPost = async (id: string): Promise<GetPostType> => {
 
 export async function saveBlogPost(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
-		const auth = await requireAuth(false);
+		const auth = await requireActionsAuth('saveBlogPost');
 
-		if (!auth || !auth.success) return logErrAndReturn('saveBlogPost', 'Authentication failed', { success: false, error: 'Unauthorized. Please log in.' });
+		if (!auth.success) return logErrAndReturn('saveBlogPost', auth.error, { success: false, error: 'Authentication failed' });
 
 		const postObj = convertFormData(formData);
 		const validPostObject = validateData(postObj, basePostSchema);
@@ -79,9 +79,9 @@ export async function saveBlogPost(prevState: ReturnedType, formData: FormData):
 
 export async function updateBlogPost(prevState: ReturnedType, formdata: FormData): Promise<ReturnedType> {
 	try {
-		const auth = await requireAuth(false);
+		const auth = await requireActionsAuth('updateBlogPost');
 
-		if (!auth || !auth.success) return logErrAndReturn('updateBlogPost', 'Authentication failed', { success: false, error: 'Unauthorized. Please log in.' });
+		if (!auth.success) return logErrAndReturn('updateBlogPost', auth.error, { success: false, error: 'Authentication failed' });
 
 		const inputData = convertFormData(formdata);
 		const validInputData = validateData(inputData, updatePostSchema);
@@ -101,9 +101,9 @@ export async function updateBlogPost(prevState: ReturnedType, formdata: FormData
 
 export async function deleteBlogPost(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
-		const auth = await requireAuth(false);
+		const auth = await requireActionsAuth('deleteBlogPost');
 
-		if (!auth || !auth.success) return logErrAndReturn('deleteBlogPost', 'Authentication failed', { success: false, error: 'Unauthorized. Please log in.' });
+		if (!auth.success) return logErrAndReturn('deleteBlogPost', auth.error, { success: false, error: 'Authentication failed' });
 
 		const inputId = formData.get('id') as string;
 		const validId = validateData(inputId, idSchema);

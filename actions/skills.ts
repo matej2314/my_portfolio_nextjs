@@ -9,7 +9,7 @@ import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 import { setCache, getCache, deleteCache } from '@/lib/redis/redis';
 import { convertFormData } from '@/lib/utils/formDataToObjectConvert';
 import { validateData } from '@/lib/utils/utils';
-import { requireAuth } from '@/lib/auth';
+import { requireActionsAuth } from '@/lib/auth';
 import { logErrAndReturn } from '@/lib/utils/logErrAndReturn';
 
 import { baseSkillSchema, updateSkillSchema } from '@/lib/zod-schemas/skillSchema';
@@ -51,9 +51,9 @@ export async function getSkill(id: string): Promise<GetSkillType> {
 
 export async function saveSkill(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
-		const auth = await requireAuth(false);
+		const auth = await requireActionsAuth('saveSkill');
 
-		if (!auth || !auth.success) return logErrAndReturn('saveSkill', 'Authentication failed', { success: false, error: 'Unauthorized. Please log in.' });
+		if (!auth.success) return logErrAndReturn('saveSkill', auth.error, { success: false, error: 'Authentication failed' });
 
 		const id = uuidv4();
 		const inputSkillObject = convertFormData(formData);
@@ -74,9 +74,9 @@ export async function saveSkill(prevState: ReturnedType, formData: FormData): Pr
 
 export async function updateSkill(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
-		const auth = await requireAuth(false);
+		const auth = await requireActionsAuth('updateSkill');
 
-		if (!auth || !auth.success) return logErrAndReturn('updateSkill', 'Authentication failed', { success: false, error: 'Unauthorized. Please log in.' });
+		if (!auth.success) return logErrAndReturn('updateSkill', auth.error, { success: false, error: 'Authentication failed' });
 
 		const newSkillObject = convertFormData(formData);
 		const validNewSkillObj = validateData(newSkillObject, updateSkillSchema);
@@ -113,9 +113,9 @@ export async function getSkillsCategories(): Promise<{ categories: string[] } | 
 
 export async function deleteSkill(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
-		const auth = await requireAuth(false);
+		const auth = await requireActionsAuth('deleteSkill');
 
-		if (!auth || !auth.success) return logErrAndReturn('deleteSkill', 'Authentication failed', { success: false, error: 'Unauthorized. Please log in.' });
+		if (!auth.success) return logErrAndReturn('deleteSkill', auth.error, { success: false, error: 'Authentication failed' });
 
 		const id = formData.get('id') as string;
 		const validId = validateData(id, idSchema);

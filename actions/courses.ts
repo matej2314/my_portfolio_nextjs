@@ -7,7 +7,7 @@ import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 
 import { convertFormData } from '@/lib/utils/formDataToObjectConvert';
 import { validateData } from '@/lib/utils/utils';
-import { requireAuth } from '@/lib/auth';
+import { requireActionsAuth } from '@/lib/auth';
 import { logErrAndReturn } from '@/lib/utils/logErrAndReturn';
 import { setCache, getCache, deleteCache, deleteMultipleCache } from '@/lib/redis/redis';
 import { baseCourseSchema, updateCourseSchema } from '@/lib/zod-schemas/courseSchema';
@@ -50,9 +50,9 @@ export const getCourse = async (id: string): Promise<GetCourseType> => {
 
 export async function saveCourse(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
-		const auth = await requireAuth(false);
+		const auth = await requireActionsAuth('saveCourse');
 
-		if (!auth || !auth.success) return logErrAndReturn('saveCourse', 'Authentication failed', { success: false, error: 'Unauthorized. Please log in.' });
+		if (!auth.success) return logErrAndReturn('saveCourse', auth.error, { success: false, error: 'Authentication failed' });
 
 		const inputCourseData = convertFormData(formData);
 		const validCourse = validateData(inputCourseData, baseCourseSchema);
@@ -77,9 +77,9 @@ export async function saveCourse(prevState: ReturnedType, formData: FormData): P
 
 export async function updateCourse(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
-		const auth = await requireAuth(false);
+		const auth = await requireActionsAuth('updateCourse');
 
-		if (!auth || !auth.success) return logErrAndReturn('updateCourse', 'Authentication failed', { success: false, error: 'Unauthorized. Please log in.' });
+		if (!auth.success) return logErrAndReturn('updateCourse', auth.error, { success: false, error: 'Authentication failed' });
 
 		const inputData = convertFormData(formData);
 		const validInputData = validateData(inputData, updateCourseSchema);
@@ -99,9 +99,9 @@ export async function updateCourse(prevState: ReturnedType, formData: FormData):
 
 export async function deleteCourse(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
-		const auth = await requireAuth(false);
+		const auth = await requireActionsAuth('deleteCourse');
 
-		if (!auth || !auth.success) return logErrAndReturn('deleteCourse', 'Authentication failed', { success: false, error: 'Unauthorized. Please log in.' });
+		if (!auth.success) return logErrAndReturn('deleteCourse', auth.error, { success: false, error: 'Authentication failed' });
 
 		const id = formData.get('id');
 		const validId = validateData(id, idSchema);

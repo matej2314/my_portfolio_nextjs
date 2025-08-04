@@ -4,6 +4,13 @@ import { defaultData } from '@/lib/defaultData';
 
 import { type SaveImagesResult, type OptionsObject } from '@/types/manageImages';
 
+export const extractProjectImages = (formData: FormData) => {
+	const mainFiles = (formData.getAll('project_main_screens') as File[]) || [];
+	const galleryFiles = (formData.getAll('project_gallery_screens') as File[]) || [];
+
+	return { mainFiles, galleryFiles };
+};
+
 export async function manageProjectImages(projectId: string, mainFiles?: File[] | [], galleryFiles?: File[] | [], options?: OptionsObject): Promise<SaveImagesResult> {
 	const { mode, clearExisting = false } = options || { mode: 'save', clearExisting: false };
 

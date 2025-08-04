@@ -1,6 +1,3 @@
-import { requireAuth } from "@/lib/auth"
-
-
 import { dataCounter } from "@/actions/dataCounter";
 import { formatHeader } from "@/lib/utils/utils";
 
@@ -10,7 +7,6 @@ import AnalyticsBox from "@/components/control-panel-components/analytics/Analyt
 
 export default async function DashboardPage() {
 
-    await requireAuth(true);
     const counter = await dataCounter();
 
     return (

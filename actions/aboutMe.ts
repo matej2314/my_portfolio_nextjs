@@ -9,11 +9,11 @@ import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 import { getCache, setCache } from '@/lib/redis/redis';
 import { aboutMeSchema, aboutTxtSchema } from '@/lib/zod-schemas/aboutMeSchema';
 import { convertFormData } from '@/lib/utils/formDataToObjectConvert';
+import { requireActionsAuth } from '@/lib/auth';
 import { validateData } from '@/lib/utils/utils';
 import { logErrAndReturn } from '@/lib/utils/logErrAndReturn';
 
 import { type GetAboutMeType, type ReturnedType, type AboutTextType } from '@/types/actionsTypes/actionsTypes';
-import { requireAuth } from '@/lib/auth';
 
 export const getAboutMe = async (): Promise<GetAboutMeType> => {
 	try {
@@ -32,9 +32,8 @@ export const getAboutMe = async (): Promise<GetAboutMeType> => {
 
 export async function saveAboutMe(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
-		const auth = await requireAuth(false);
-
-		if (!auth || !auth.success) return logErrAndReturn('saveAboutMe', 'Authentication failed', { success: false, error: 'Unauthorized. Please log in.' });
+		const auth = await requireActionsAuth('saveAboutMe');
+		if (!auth.success) return logErrAndReturn('saveAboutMe', auth.error, { success: false, error: 'Authentication failed' });
 
 		const id = uuidv4();
 		const about_text = formData.get('about_text') as string;
@@ -65,9 +64,8 @@ export async function saveAboutMe(prevState: ReturnedType, formData: FormData): 
 
 export async function updateAboutMe(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
-		const auth = await requireAuth(false);
-
-		if (!auth || !auth.success) return logErrAndReturn('updateAboutMe', 'Authentication failed', { success: false, error: 'Unauthorized. Please log in.' });
+		const auth = await requireActionsAuth('updateAboutMe');
+		if (!auth.success) return logErrAndReturn('updateAboutMe', auth.error, { success: false, error: 'Authentication failed' });
 
 		const updatedDescription = convertFormData(formData);
 

@@ -11,10 +11,15 @@ import { getCache, setCache } from '../redis/redis';
 import { REDIS_KEYS } from '../redis/redisKeys';
 import { getFilesList } from './getFilesList';
 import { logErrAndReturn } from './logErrAndReturn';
+import { updateProjectSchema } from '../zod-schemas/projectSchema';
 
 export const extractBaseName = (fileName: string): string => {
 	const name = path.parse(fileName).name;
 	return name.split('-')[0];
+};
+
+export const isFilesSended = (mainFiles: File[] | [], galleryFiles: File[] | []) => {
+	return mainFiles.some(file => file.size > 0) || galleryFiles.some(file => file.size > 0);
 };
 
 export const saveFile = async (file: File, dir: string): Promise<string> => {
@@ -182,3 +187,7 @@ export async function getProjectFiles(projectId: string, folder: 'main' | 'galle
 		return logErrAndReturn('getProjectFiles', error, { success: false, error: 'Failed to fetch project files.' });
 	}
 }
+
+export const validateProjectData = (projectData: Record<string, string | null>) => {
+	return updateProjectSchema.safeParse(projectData);
+};

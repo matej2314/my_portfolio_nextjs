@@ -35,7 +35,7 @@ export default async function ManageBlogPosts() {
 
     return (
         <main className="w-full h-full flex flex-col justify-start items-center text-slate-200 mt-4">
-            <AddItemBtn redirectPath="/control/dashboard/blog/add" title="add blog post" label="Add Blog Post" />
+            <AddItemBtn redirectPath="/control/dashboard/blog/add" title="add blog post" label="Add Post" />
             <section className="w-full h-fit flex justify-center rounded-md">
                 <TableWrapper
                     data={posts}

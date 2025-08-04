@@ -17,9 +17,13 @@ export type GetCoursesType = { courses: Course[] } | { error: string };
 
 export type Project = PrismaProjectType;
 
+export type ProjectCategory = 'FullStack' | 'Frontend' | 'Backend';
+
 export type GetProjectsType = { projects: Project[] } | { error: string };
 
 export type GetProjectType = { project: Project } | { error: string };
+
+export type GetProjectCategoriesType = { categories: ProjectCategory[] } | { error: string };
 
 export type Skill = PrismaSkillType;
 
