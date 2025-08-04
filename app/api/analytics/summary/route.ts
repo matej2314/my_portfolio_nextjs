@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getGA4Report } from '@/lib/google-analytics/ga4';
 import { GA4ReportResponse } from '@/types/ga4-types';
 import { processGA4Data } from '@/lib/google-analytics/processGA4Data';
+import logger from '@/lib/winston.config';
 
 export async function GET() {
 	try {
@@ -15,7 +16,7 @@ export async function GET() {
 
 		return NextResponse.json(processedData);
 	} catch (error) {
-		console.error('GA4 Summary API error:', error);
+		logger.error('GA4 Summary API error:', error);
 		return NextResponse.json({ error: 'Failed to fetch summary analytics data' }, { status: 500 });
 	}
 }

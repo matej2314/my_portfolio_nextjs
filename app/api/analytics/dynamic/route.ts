@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getGA4Report } from '@/lib/google-analytics/ga4';
+import logger from '@/lib/winston.config';
 
 export async function POST(request: NextRequest) {
 	try {
@@ -18,7 +19,7 @@ export async function POST(request: NextRequest) {
 
 		return NextResponse.json(data);
 	} catch (error) {
-		console.error('GA4 Dynamic API error:', error);
+		logger.error('GA4 Dynamic API error:', error);
 		return NextResponse.json({ error: 'Failed to fetch analytics data' }, { status: 500 });
 	}
 }
