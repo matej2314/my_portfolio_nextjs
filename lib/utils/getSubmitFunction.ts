@@ -1,4 +1,3 @@
-// lib/utils/getSubmitFunction.ts
 import { type ReturnedType } from '@/types/actionsTypes/actionsTypes';
 import { type FormMode, type SubmitFunction, type SubmitCallbacks, type ExtendedSubmitFunction } from '@/types/utils/get-submit-function';
 

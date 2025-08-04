@@ -1,5 +1,6 @@
 import { promises as fs } from 'fs';
 import { extractBaseName, saveFile, createProjectPaths, createProjectFolders, deleteFilesInDir, isDirectoryExists, createResultObject } from './manageProject';
+import { logErrAndReturn } from './logErrAndReturn';
 import { defaultData } from '@/lib/defaultData';
 
 import { type SaveImagesResult, type OptionsObject } from '@/types/manageImages';
@@ -88,7 +89,7 @@ export async function manageProjectImages(projectId: string, mainFiles?: File[] 
 
 				return createResultObject(projectId, undefined, 0, 0, mainFilesDeleted || 0, galleryFilesDeleted || 0);
 			} catch (error) {
-				console.error('Error deleting project images', error);
+				logErrAndReturn('Error deleting project images', error, defaultData.manageImagesDefaultResult);
 
 				try {
 					const baseDirExists = await isDirectoryExists(baseDir);
@@ -97,7 +98,7 @@ export async function manageProjectImages(projectId: string, mainFiles?: File[] 
 						await fs.rm(baseDir, { recursive: true, force: true });
 					}
 				} catch (rmError) {
-					console.error('Error removing base directory', rmError);
+					logErrAndReturn('Error removing base directory', rmError, defaultData.manageImagesDefaultResult);
 				}
 				return defaultData.manageImagesDefaultResult;
 			}

@@ -14,7 +14,6 @@ export const fetchAnalyticsReport = async (onError: (data: string) => void, onSu
 
 		onSuccess(data);
 	} catch (error: unknown) {
-		console.error('Error in fetchAnalyticsReport:', error);
 		if (error instanceof Error) {
 			onError(error.message);
 		} else {

@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getGA4Report } from '@/lib/google-analytics/ga4';
 import { GA4ReportResponse } from '@/types/ga4-types';
-
 import { processGA4Data } from '@/lib/google-analytics/processGA4Data';
 
 export async function GET() {

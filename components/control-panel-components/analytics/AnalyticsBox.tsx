@@ -1,31 +1,14 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import { useAnalyticsCards } from "@/hooks/analytics/useAnalyticsCards";
+import { useAnalyticsData } from "@/hooks/useAnalyticsData";
 
 import DataBoxCardElement from "@/components/ui/elements/DataBoxCardElement";
-
 import LoadingComponent from "@/components/LoadingComponent";
-import { useAnalyticsCards } from "@/hooks/analytics/useAnalyticsCards";
-
-import { fetchAnalyticsReport } from "@/lib/utils/fetchAnalyticsReport";
-
-import { type ProcessedAnalyticsData } from "@/types/ga4-types";
 
 export default function AnalyticsBox() {
 
-    const [analyticsData, setAnalyticsData] = useState<ProcessedAnalyticsData | null>(null);
-    const [error, setError] = useState<string | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
-
-    useEffect(() => {
-        const fetchData = () => fetchAnalyticsReport(
-            (errorData) => setError(errorData),
-            (data) => setAnalyticsData(data),
-            (loading) => setLoading(loading)
-        );
-        fetchData();
-    }, []);
-
+    const { analyticsData, error, loading } = useAnalyticsData();
     const analyticsCardsData = useAnalyticsCards(analyticsData);
 
     if (loading) return <LoadingComponent />;

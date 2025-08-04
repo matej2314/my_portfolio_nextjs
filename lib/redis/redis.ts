@@ -1,5 +1,7 @@
 import Redis from 'ioredis';
 import { APP_CONFIG } from '@/config/app.config';
+import logger from '../winston.config';
+import { logErrAndReturn } from '../utils/logErrAndReturn';
 
 const REDIS_ENABLED = APP_CONFIG.redis.enabled;
 
@@ -18,39 +20,39 @@ if (REDIS_ENABLED) {
 
 	// Event listeners for monitoring
 	redis.on('connect', () => {
-		console.log('✅ Redis connected successfully.');
+		logger.info('✅ Redis connected successfully.');
 	});
 
 	redis.on('ready', () => {
-		console.log('✅ Redis is ready to accept commands.');
+		logger.info('✅ Redis is ready to accept commands.');
 	});
 
 	redis.on('error', error => {
-		console.error('❌ Redis connection error:', error);
+		logger.error('❌ Redis connection error:', error);
 	});
 
 	redis.on('close', () => {
-		console.log('🔌 Redis connection closed.');
+		logger.info('🔌 Redis connection closed.');
 	});
 
 	redis.on('reconnecting', () => {
-		console.log('🔄 Redis reconnecting...');
+		logger.info('🔄 Redis reconnecting...');
 	});
 
 	// Graceful shutdown
 	process.on('SIGINT', async () => {
-		console.log('🛑 Received SIGINT, closing Redis connection...');
+		logger.info('🛑 Received SIGINT, closing Redis connection...');
 		await redis?.quit();
 		process.exit(0);
 	});
 
 	process.on('SIGTERM', async () => {
-		console.log('🛑 Received SIGTERM, closing Redis connection...');
+		logger.info('🛑 Received SIGTERM, closing Redis connection...');
 		await redis?.quit();
 		process.exit(0);
 	});
 } else {
-	console.log('Redis is disabled.');
+	logger.info('Redis is disabled.');
 }
 
 export const setCache = async <T>(key: string, value: T, expireSeconds?: number) => {
@@ -63,8 +65,7 @@ export const setCache = async <T>(key: string, value: T, expireSeconds?: number)
 		}
 		return true;
 	} catch (error) {
-		console.error(`Radis set error for key ${key}:`, error);
-		return false;
+		return logErrAndReturn(`Radis set error for key ${key}:`, error, false);
 	}
 };
 
@@ -74,8 +75,7 @@ export const getCache = async <T>(key: string): Promise<T | null> => {
 		if (!value) return null;
 		return JSON.parse(value) as T;
 	} catch (error) {
-		console.error(`Radis get error for key ${key}:`, error);
-		return null;
+		return logErrAndReturn(`Radis get error for key ${key}:`, error, null);
 	}
 };
 
@@ -84,8 +84,7 @@ export const deleteCache = async (key: string) => {
 		await redis?.del(key);
 		return true;
 	} catch (error) {
-		console.error(`Redis delete error for key ${key}:`, error);
-		return false;
+		return logErrAndReturn(`Redis delete error for key ${key}:`, error, false);
 	}
 };
 
@@ -94,7 +93,6 @@ export const deleteMultipleCache = async (...keys: string[]) => {
 		await redis?.del(...keys);
 		return true;
 	} catch (error) {
-		console.error(`Redis deletemultipleCache error:`, error);
-		return false;
+		return logErrAndReturn(`Redis deletemultipleCache error:`, error, false);
 	}
 };

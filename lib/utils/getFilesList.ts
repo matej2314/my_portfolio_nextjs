@@ -1,19 +1,18 @@
 import { promises as fs } from 'node:fs';
 import path from 'path';
+import { logErrAndReturn } from './logErrAndReturn';
 
 import { isDirectoryExists } from './manageProject';
 
 export async function getFilesList(projectId: string, photosPath: string): Promise<string[]> {
 	if (!projectId || !photosPath) {
-		console.error('getFilesList: projectId and photosPath are required');
-		return [];
+		return logErrAndReturn('getFilesList: projectId and photosPath are required', new Error('projectId and photosPath are required'), []);
 	}
 
 	const dirExists = await isDirectoryExists(path.join('public', 'projects-photos', projectId, photosPath));
 
 	if (!dirExists) {
-		console.error(`Directory ${photosPath} does not exist`);
-		return [];
+		return logErrAndReturn(`Directory ${photosPath} does not exist`, new Error(`Directory ${photosPath} does not exist`), []);
 	}
 
 	try {
@@ -22,7 +21,6 @@ export async function getFilesList(projectId: string, photosPath: string): Promi
 
 		return files.map(file => `/projects-photos/${projectId}/${photosPath}/${file}`);
 	} catch (error) {
-		console.error(`Failed to read files for project ${projectId}: ${error}`);
-		return [];
+		return logErrAndReturn(`Failed to read files for project ${projectId}: ${error}`, error, []);
 	}
 }
