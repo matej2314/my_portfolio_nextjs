@@ -35,6 +35,12 @@ export type GetPostType = { post: Post } | { error: string };
 
 export type User = PrismaUserType;
 
+export type AuthorizedUser = {
+	email: string;
+	role: string;
+	login: string;
+};
+
 export type GetShotsResult = { success: true; files: string[] } | { success: false; error: string };
 
 export type ReturnedType = { success: true; message: string } | { success: false; error: string };

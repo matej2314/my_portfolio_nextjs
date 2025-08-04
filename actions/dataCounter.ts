@@ -1,6 +1,6 @@
 'use server';
 
-import prisma from '@/lib/db';
+import { dbMethods } from '@/lib/db';
 
 type DataCounterReturnedData = {
 	projectsCount: number;
@@ -10,7 +10,11 @@ type DataCounterReturnedData = {
 };
 
 export async function dataCounter(): Promise<DataCounterReturnedData> {
-	const [projectsCount, coursesCount, skillsCount, blogPostsCount] = await Promise.all([prisma.projects.count(), prisma.courses.count(), prisma.skills.count(), prisma.posts.count()]);
+	const [projectsCount, coursesCount, skillsCount, blogPostsCount] = await Promise.all([
+		dbMethods.countRecords('projects'),
+		dbMethods.countRecords('courses'),
+		dbMethods.countRecords('skills'),
+		dbMethods.countRecords('posts')]);
 
 	return {
 		projectsCount,

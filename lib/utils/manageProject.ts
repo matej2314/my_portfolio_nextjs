@@ -6,6 +6,11 @@ import { validateData } from './utils';
 import { mainFilesSchema, galleryFilesSchema } from '../zod-schemas/fileValidationSchema';
 import { type ValidationResult } from '@/types/actionsTypes/actionsTypes';
 import { type SaveImagesResult } from '@/types/manageImages';
+import { idSchema } from '../zod-schemas/idSchema';
+import { getCache, setCache } from '../redis/redis';
+import { REDIS_KEYS } from '../redis/redisKeys';
+import { getFilesList } from './getFilesList';
+import { logErrAndReturn } from './logErrAndReturn';
 
 export const extractBaseName = (fileName: string): string => {
 	const name = path.parse(fileName).name;
@@ -148,4 +153,32 @@ export function createResultObject(projectId?: string, mainFileName?: string, ma
 		mainFilesDeleted,
 		galleryFilesDeleted,
 	};
+}
+
+export async function getProjectFiles(projectId: string, folder: 'main' | 'gallery', cache: boolean = false): Promise<{ success: boolean; files: string[] } | { success: boolean; error: string }> {
+	const shotsKey = REDIS_KEYS.PROJECT_SHOTS(projectId);
+
+	if (!cache) {
+		const inputId = validateData(projectId, idSchema);
+		if (!inputId.success) {
+			return logErrAndReturn('getProjectFiles', inputId.error.flatten(), { success: false, error: 'Invalid input data.' });
+		}
+		projectId = inputId.data as string;
+	}
+
+	if (cache && folder === 'gallery') {
+		const cachedShots = await getCache<string[]>(shotsKey);
+		if (cachedShots) return { success: true, files: cachedShots };
+	}
+
+	try {
+		const files = await getFilesList(projectId, folder);
+
+		if (cache && folder === 'gallery') {
+			await setCache<string[]>(shotsKey, files, 3600);
+		}
+		return { success: true, files };
+	} catch (error) {
+		return logErrAndReturn('getProjectFiles', error, { success: false, error: 'Failed to fetch project files.' });
+	}
 }

@@ -1,5 +1,5 @@
 'use server';
-import prisma from '@/lib/db';
+import { dbMethods } from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
 
 import { APP_CONFIG } from '@/config/app.config';
@@ -7,6 +7,7 @@ import { REDIS_KEYS } from '@/lib/redis/redisKeys';
 
 import { convertFormData } from '@/lib/utils/formDataToObjectConvert';
 import { validateData } from '@/lib/utils/utils';
+import { requireAuth } from '@/lib/auth';
 import { logErrAndReturn } from '@/lib/utils/logErrAndReturn';
 import { setCache, getCache, deleteCache, deleteMultipleCache } from '@/lib/redis/redis';
 import { baseCourseSchema, updateCourseSchema } from '@/lib/zod-schemas/courseSchema';
@@ -19,7 +20,7 @@ export const getCourses = async (): Promise<GetCoursesType> => {
 		const cachedCourses = await getCache<Course[]>(REDIS_KEYS.COURSES_ALL);
 		if (cachedCourses) return { courses: cachedCourses };
 
-		const result = await prisma.courses.findMany();
+		const result = await dbMethods.getAllRecords('courses');
 
 		await setCache(REDIS_KEYS.COURSES_ALL, result, APP_CONFIG.redis.defaultExpiration);
 		return { courses: result };
@@ -32,16 +33,12 @@ export const getCourse = async (id: string): Promise<GetCourseType> => {
 	try {
 		const validId = validateData(id, idSchema);
 
-		if (!validId.success) {
-			return logErrAndReturn('getCourse', validId.error.flatten(), { error: 'Invalid id' });
-		}
+		if (!validId.success) return logErrAndReturn('getCourse', validId.error.flatten(), { error: 'Invalid id' });
 
 		const cachedCourse = await getCache<Course>(REDIS_KEYS.COURSE(validId.data as string));
 		if (cachedCourse) return { course: cachedCourse };
 
-		const result = await prisma.courses.findUnique({
-			where: { id: validId.data as string },
-		});
+		const result = await dbMethods.getUniqueData('courses', validId.data as string);
 
 		await setCache(REDIS_KEYS.COURSE(id), result, APP_CONFIG.redis.defaultExpiration);
 
@@ -53,15 +50,14 @@ export const getCourse = async (id: string): Promise<GetCourseType> => {
 
 export async function saveCourse(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
+		const auth = await requireAuth(false);
+
+		if (!auth || !auth.success) return logErrAndReturn('saveCourse', 'Authentication failed', { success: false, error: 'Unauthorized. Please log in.' });
+
 		const inputCourseData = convertFormData(formData);
 		const validCourse = validateData(inputCourseData, baseCourseSchema);
 
-		if (!validCourse.success) {
-			return logErrAndReturn('saveCourse', validCourse.error.flatten(), {
-				success: false,
-				error: 'Invalid input data',
-			});
-		}
+		if (!validCourse.success) return logErrAndReturn('saveCourse', validCourse.error.flatten(), { success: false, error: 'Invalid input data' });
 
 		const { course_date, ...dataWithoutDate } = validCourse.data as Omit<Course, 'id'>;
 
@@ -70,9 +66,7 @@ export async function saveCourse(prevState: ReturnedType, formData: FormData): P
 
 		const course: Course = { id, ...dataWithoutDate, course_date: formattedDate };
 
-		await prisma.courses.create({
-			data: course,
-		});
+		await dbMethods.insertData('courses', course);
 
 		await deleteCache(REDIS_KEYS.COURSES_ALL);
 		return { success: true, message: 'New course added correctly' };
@@ -83,22 +77,18 @@ export async function saveCourse(prevState: ReturnedType, formData: FormData): P
 
 export async function updateCourse(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
+		const auth = await requireAuth(false);
+
+		if (!auth || !auth.success) return logErrAndReturn('updateCourse', 'Authentication failed', { success: false, error: 'Unauthorized. Please log in.' });
+
 		const inputData = convertFormData(formData);
 		const validInputData = validateData(inputData, updateCourseSchema);
 
-		if (!validInputData.success) {
-			return logErrAndReturn('updateCourse', validInputData.error.flatten(), {
-				success: false,
-				error: 'Invalid input data.',
-			});
-		}
+		if (!validInputData.success) return logErrAndReturn('updateCourse', validInputData.error.flatten(), { success: false, error: 'Invalid input data.' });
 
 		const { id, ...dataWithoutId } = validInputData.data as Course;
 
-		await prisma.courses.update({
-			where: { id: id },
-			data: { ...dataWithoutId },
-		});
+		await dbMethods.updateData('courses', id, dataWithoutId);
 
 		await deleteMultipleCache(REDIS_KEYS.COURSES_ALL, REDIS_KEYS.COURSE(id));
 		return { success: true, message: 'Course updated correctly.' };
@@ -109,19 +99,16 @@ export async function updateCourse(prevState: ReturnedType, formData: FormData):
 
 export async function deleteCourse(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
+		const auth = await requireAuth(false);
+
+		if (!auth || !auth.success) return logErrAndReturn('deleteCourse', 'Authentication failed', { success: false, error: 'Unauthorized. Please log in.' });
+
 		const id = formData.get('id');
 		const validId = validateData(id, idSchema);
 
-		if (!validId.success) {
-			return logErrAndReturn('deleteCourse', validId.error.flatten(), {
-				success: false,
-				error: 'Invalid input data.',
-			});
-		}
+		if (!validId.success) return logErrAndReturn('deleteCourse', validId.error.flatten(), { success: false, error: 'Invalid input data.' });
 
-		await prisma.courses.delete({
-			where: { id: validId.data as string },
-		});
+		await dbMethods.deleteData('courses', validId.data as string);
 
 		await deleteMultipleCache(REDIS_KEYS.COURSES_ALL, REDIS_KEYS.COURSE(String(validId.data)));
 		return { success: true, message: 'Course deleted correctly' };

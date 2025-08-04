@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { PrismaAdapter } from '@lucia-auth/adapter-prisma';
 import prisma from './db';
 import { APP_CONFIG } from '@/config/app.config';
+import { redirect } from 'next/navigation';
 
 const client = prisma;
 const adapter = new PrismaAdapter(client.sessions, client.users);
@@ -47,4 +48,17 @@ export async function verifyCookie() {
 	} catch {
 		return null;
 	}
+}
+
+export async function requireAuth(isPage: boolean = false) {
+	const session = await verifyCookie();
+	if (!session) {
+		if (isPage) {
+			redirect('/control');
+		} else {
+			return { success: false, error: 'Unauthorized. Please log in.' };
+		}
+	}
+
+	return { success: true, session };
 }

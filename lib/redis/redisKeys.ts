@@ -2,6 +2,7 @@ export const REDIS_KEYS = {
 	PROJECTS_ALL: 'projects:all',
 	PROJECT: (id: string) => `project:${id}`,
 	PROJECT_SHOTS: (id: string) => `projectShots:${id}`,
+	PROJECT_CATEGORIES: 'projects:categories',
 	SKILLS_ALL: 'skills:all',
 	SKILLS_CATEGORIES: 'skills:categories',
 	SKILL: (id: string) => `skill:${id}`,

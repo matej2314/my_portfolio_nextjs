@@ -2,7 +2,7 @@
 
 import { useState, useActionState } from "react";
 
-import { newBlogPost, updateBlogPost } from "@/actions/blogPosts";
+import { saveBlogPost, updateBlogPost } from "@/actions/blogPosts";
 import { getSubmitFunction } from "@/lib/utils/getSubmitFunction"
 
 import LabelElement from "@/components/ui/elements/LabelElement"
@@ -20,7 +20,7 @@ export default function BlogPostForm({ blogPostData, mode = 'create' }: BlogPost
     const [postContent, setPostContent] = useState<string>(blogPostData?.post_content || '');
 
     const submitFunction = getSubmitFunction({
-        create: newBlogPost,
+        create: saveBlogPost,
         edit: updateBlogPost
     }, mode);
 

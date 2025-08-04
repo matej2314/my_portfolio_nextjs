@@ -6,9 +6,7 @@ export async function POST(request: NextRequest) {
 		const body = await request.json();
 		const { startDate, endDate, metrics, dimensions, limit } = body;
 
-		if (!startDate || !endDate) {
-			return NextResponse.json({ error: 'startDate and endDate are required' }, { status: 400 });
-		}
+		if (!startDate || !endDate) return NextResponse.json({ error: 'startDate and endDate are required' }, { status: 400 });
 
 		const data = await getGA4Report({
 			startDate,

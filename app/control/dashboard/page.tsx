@@ -1,5 +1,5 @@
-import { verifyCookie } from "@/lib/auth"
-import { redirect } from "next/navigation";
+import { requireAuth } from "@/lib/auth"
+
 
 import { dataCounter } from "@/actions/dataCounter";
 import { formatHeader } from "@/lib/utils/utils";
@@ -10,12 +10,8 @@ import AnalyticsBox from "@/components/control-panel-components/analytics/Analyt
 
 export default async function DashboardPage() {
 
-    const session = await verifyCookie();
+    await requireAuth(true);
     const counter = await dataCounter();
-
-    if (!session) {
-        redirect('/control');
-    };
 
     return (
         <main className="w-full h-full flex flex-col justify-start items-center p-4 gap-8">

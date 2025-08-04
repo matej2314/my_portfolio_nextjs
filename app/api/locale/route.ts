@@ -11,9 +11,7 @@ export async function POST(req: Request) {
 		const body = await req.json();
 		const parsedBody = LocaleSchema.safeParse(body);
 
-		if (!parsedBody.success) {
-			return NextResponse.json({ success: false, error: 'Invalid input', issues: parsedBody.error?.flatten() }, { status: 400 });
-		}
+		if (!parsedBody.success) return NextResponse.json({ success: false, error: 'Invalid input', issues: parsedBody.error?.flatten() }, { status: 400 });
 
 		const { locale } = parsedBody.data;
 
@@ -29,9 +27,7 @@ export async function POST(req: Request) {
 
 		return response;
 	} catch (error: unknown) {
-		if (error instanceof Error) {
-			return NextResponse.json({ success: false, error: error }, { status: 500 });
-		}
+		if (error instanceof Error) return NextResponse.json({ success: false, error: error }, { status: 500 });
 
 		return NextResponse.json({ success: false, error: 'Unexpected error' }, { status: 500 });
 	}
