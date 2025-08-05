@@ -13,3 +13,10 @@ export type ContactFormState = {
 		content: string;
 	};
 };
+
+export type ContactObject = {
+	client: string;
+	email: string;
+	subject: string;
+	content: string;
+};

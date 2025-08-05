@@ -19,6 +19,14 @@ export const APP_CONFIG = {
 			secure: process.env.NODE_ENV === 'production',
 		},
 	},
+	contact: {
+		defaultContactObject: {
+			client: '',
+			email: '',
+			subject: '',
+			content: '',
+		},
+	},
 	redis: {
 		enabled: process.env.REDIS_ENABLED === 'true',
 		host: process.env.REDIS_HOST,

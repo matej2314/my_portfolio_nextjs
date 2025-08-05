@@ -59,3 +59,10 @@ export type ValidationResult =
 			success: false;
 			error: string;
 	  };
+
+export type DataCounterReturnedData = {
+	projectsCount: number;
+	coursesCount: number;
+	skillsCount: number;
+	blogPostsCount: number;
+};

@@ -2,13 +2,14 @@
 
 import { sendMail } from '@/lib/nodemailer.config';
 import { validateData } from '@/lib/utils/utils';
+import { contactMessageTemplate } from '@/lib/emailTemplate';
 import { contactSchema } from '@/lib/zod-schemas/contactSchema';
 import { APP_CONFIG } from '@/config/app.config';
 
-import { type ContactFormState } from '@/types/forms/contactFormTypes';
+import { type ContactFormState, type ContactObject } from '@/types/forms/contactFormTypes';
 
 export async function contactMe(prevState: ContactFormState, formData: FormData): Promise<ContactFormState> {
-	const contactObject = {
+	const contactObject: ContactObject = {
 		client: String(formData.get('client-name') ?? ''),
 		email: String(formData.get('client-mail') ?? ''),
 		subject: String(formData.get('msg-subject') ?? ''),
@@ -28,24 +29,13 @@ export async function contactMe(prevState: ContactFormState, formData: FormData)
 	try {
 		await sendMail({
 			to: APP_CONFIG.nodemailer.to as string,
-			subject: `Nowa wiadomość od użytkownika ${validatedContactObj.data.client}`,
-			html: `
-            Wiadomość od użytkownika: ${validatedContactObj.data.client}
-            Adres e-mail nadawcy: ${validatedContactObj.data.email}
-            Temat: ${validatedContactObj.data.subject}
-            Treść wiadomości:
-            ${validatedContactObj.data.content}
-            `,
+			subject: `New message from ${validatedContactObj.data.client}`,
+			html: contactMessageTemplate(validatedContactObj.data),
 		});
 
 		return {
 			success: 'Message sent',
-			values: {
-				client: '',
-				email: '',
-				subject: '',
-				content: '',
-			},
+			values: APP_CONFIG.contact.defaultContactObject,
 		};
 	} catch (error: unknown) {
 		if (error instanceof Error) {
