@@ -37,7 +37,7 @@ export default function MobileMenu({ array }: { array: MenuItem[] }) {
                 aria-controls="mobile-menu"
                 aria-label="Toggle mobile menu"
                 onClick={() => setIsOpen(prev => ({ ...prev, menu: !prev.menu }))}
-                className={`fixed top-4 right-0.5 z-50 w-fit h-fit flex flex-col transition-transform ${isOpen.menu ? 'scale-115' : 'scale-150'} hover:bg-transparent`}
+                className={`fixed top-4 right-1 z-50 w-fit h-fit flex flex-col transition-transform ${isOpen.menu ? 'scale-115' : 'scale-150'} hover:bg-transparent`}
             >
                 <MLetter mode="button" />
             </Button>
@@ -52,17 +52,17 @@ export default function MobileMenu({ array }: { array: MenuItem[] }) {
                         initial={{ clipPath: 'inset(0% 0% 100% 0%)', opacity: 1 }}
                         animate={{ clipPath: 'inset(0% 0% 0% 0%)', opacity: 1 }}
                         exit={{ clipPath: 'inset(0% 0% 100% 0%)', opacity: 0 }}
-                        transition={{ duration: 0.5, ease: easeInOut, type: 'tween' }}
+                        transition={{ duration: 0.35, ease: easeInOut, type: 'tween' }}
                         className="fixed inset-0 z-40 bg-[#000905] pt-24 px-4 text-green-400 flex flex-col gap-4 overflow-y-auto"
                     >
-                        <li className="w-full flex justify-end">
+                        <li className="w-full flex justify-start">
                             <LanguageSwitcher />
                         </li>
 
                         {array.map((item, index) => (
                             <li
                                 key={index}
-                                className="w-full h-[2rem] flex justify-center gap-4 items-center font-kanit font-semibold tracking-wide text-nowrap relative"
+                                className="w-full h-[2rem] flex justify-start gap-4 items-center font-kanit font-semibold tracking-wide text-nowrap relative pl-1"
                             >
                                 <NavLink
                                     pathName={item.path as string}
@@ -78,7 +78,7 @@ export default function MobileMenu({ array }: { array: MenuItem[] }) {
                                 )}
                             </li>
                         ))}
-                        <li className="text-slate-200 border-t-[1px] border-dotted border-green-300/25 pt-5 px-3">
+                        <li className="text-slate-200 border-t-[1px] border-dotted border-green-300/25 pt-5">
                             <ContactItems />
                         </li>
                     </motion.ul>

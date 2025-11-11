@@ -9,7 +9,7 @@ import { type MouseEvent } from "react";
 
 export default function NavLink({ children, pathName, linkClass, isActive, activeClass, variant, title, onClick, 'aria-label': ariaLabel }: NavLinkProps & { 'aria-label'?: string }) {
 
-    const baseClass = linkClass ?? "w-full h-full flex justify-center items-center hover:text-green-500/80 active:text-green-500/80 cursor-pointer";
+    const baseClass = linkClass ?? "w-full h-full flex justify-start items-center hover:text-green-500/95 active:text-green-500/95 cursor-pointer";
 
     const finalClassName = `${baseClass} ${isActive && activeClass ? activeClass : ''}`;
 

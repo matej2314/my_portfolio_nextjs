@@ -41,7 +41,7 @@ export default async function ProjectDetailsPage({ params }: DetailsProjectProps
                     <section className="w-full h-full flex flex-col justify-center items-center pt-8 gap-8">
                         <DetailsHeader selectedProject={selectedProject.project} />
                         <section
-                            className="w-[98%] h-full flex flex-col items-center justify-center text-slate-200 px-1 sm:px-[12rem] gap-7"
+                            className="w-full h-full flex flex-col items-center justify-center text-slate-200 px-1 sm:px-[12rem] gap-7"
                         >
                             <DisplayGoalDescription selectedProject={selectedProject.project} locale={locale} />
                             <GallerySection projectId={selectedProject.project.id} />

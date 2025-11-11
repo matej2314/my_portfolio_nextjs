@@ -17,7 +17,7 @@ export default async function AboutSection({ aboutText }: { aboutText: GetAboutM
                 <MetricsSection metrics={metricsArray} />
                 <div className="sm:w-1/2 h-full flex items-center">
                     <div className="w-full flex flex-col items-center text-slate-200 ">
-                        <p className="text-md xl:text-xl text-justify leading-9 md:pr-[5rem]">
+                        <p className="text-md xl:text-xl text-justify leading-9 md:pr-0">
                             {aboutText ? t("aboutSection.description") : 'Failed to load text.'}
                         </p>
                     </div>

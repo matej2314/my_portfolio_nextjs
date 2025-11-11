@@ -73,7 +73,7 @@ export default function CertsList({ courses }: { courses: Course[] }) {
                 <YearLabelSpan year={2023} />
                 <div
                     ref={containerRef}
-                    className="relative w-full sm:w-10/12 h-2 bg-green-400 rounded-full mb-10 shadow-2xl shadow-green-400"
+                    className="relative w-full h-2 bg-green-400 rounded-full mb-10 shadow-2xl shadow-green-400"
                 >
                     <motion.div
                         className="absolute top-0 h-2 bg-yellow-300 rounded-full"

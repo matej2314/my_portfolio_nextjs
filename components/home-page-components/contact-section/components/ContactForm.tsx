@@ -49,12 +49,12 @@ export default function ContactForm() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3, ease: easeInOut, delay: 0.5 }}
             action={formAction}
-            className="w-full h-fit flex flex-col items-center sm:mx-[8rem]"
+            className="w-full h-fit flex flex-col items-start sm:mx-[8rem] xl:pr-[9rem]"
         >
             <DisplayFormMessage type="success" messages={state.success} />
             <LabelElement
                 htmlFor="client-name"
-                className="font-bold pb-1 ml-2 text-lg tracking-wide"
+                className="font-bold pb-2 ml-2 text-lg tracking-wide"
             >
                 {t("contactForm.nameLabel")}
             </LabelElement>
@@ -64,14 +64,14 @@ export default function ContactForm() {
                 name="client-name"
                 id="client-name"
                 placeholder='name'
-                className="w-10/12 sm:w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md"
+                className="w-full h-fit sm:w-full text-slate-200 text-base md:text-xl pl-2 py-1 sm:py-2 border-2 border-white rounded-md"
                 defaultValue={state.values.client}
                 required={false}
             />
             <DisplayFormMessage type="error" messages={state.error?.client} />
             <LabelElement
                 htmlFor="client-mail"
-                className="font-bold pb-1 ml-2 text-lg mt-2 tracking-wide"
+                className="font-bold pb-2 ml-2 text-lg mt-3 tracking-wide"
             >
                 E-mail:
             </LabelElement>
@@ -82,13 +82,13 @@ export default function ContactForm() {
                 id="client-mail"
                 placeholder='e-mail'
                 defaultValue={state.values.email}
-                className="w-10/12 sm:w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md focus:border-green-400 active:border-green-400"
+                className="w-full h-fit sm:w-full text-slate-200 text-base md:text-xl pl-2 py-1 sm:py-2 border-2 border-white rounded-md focus:border-green-400 active:border-green-400"
                 required={false}
             />
             <DisplayFormMessage type="error" messages={state.error?.email} />
             <LabelElement
                 htmlFor="msg-subject"
-                className="font-bold pb-1 ml-2 text-lg mt-2 tracking-wide"
+                className="font-bold pb-2 ml-2 text-lg mt-3 tracking-wide"
             >
                 {t("contactForm.subjectLabel")}
             </LabelElement>
@@ -99,13 +99,13 @@ export default function ContactForm() {
                 id="msg-subject"
                 placeholder='subject'
                 defaultValue={state.values.subject}
-                className="w-10/12 sm:w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md"
+                className="w-full h-fit sm:w-full text-slate-200 text-base md:text-xl pl-2 py-1 sm:py-2 border-2 border-white rounded-md"
                 required={false}
             />
             <DisplayFormMessage type="error" messages={state.error?.subject} />
             <LabelElement
                 htmlFor="msg-content"
-                className="font-bold pb-1 ml-2 text-lg mt-2 tracking-wide"
+                className="font-bold pb-2 ml-2 text-lg mt-3 tracking-wide"
             >
                 {t("contactForm.messageLabel")}
             </LabelElement>
@@ -115,7 +115,7 @@ export default function ContactForm() {
                 title={t("contactForm.messageLabel")}
                 placeholder='message'
                 defaultValue={state.values.content}
-                className="w-10/12 sm:w-1/2 text-slate-200 text-lg p-1 border-2 border-white rounded-md"
+                className="w-full h-fit sm:w-full text-slate-200 text-base md:text-xl pl-2 py-1 border-2 border-white rounded-md"
                 required={false}
             />
             <DisplayFormMessage type="error" messages={state.error?.content} />

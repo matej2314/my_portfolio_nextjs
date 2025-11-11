@@ -19,7 +19,7 @@ export default function ProjectsGallery({ projects, images }: ProjectsGalleryPro
             viewport={{ amount: 0.4, once: false }}
             className="w-[90dvw] h-full flex justify-center items-center px-4"
         >
-            <Carousel className="w-10/12 md:w-full max-w-5xl">
+            <Carousel className="w-10/12 md:w-full">
                 <CarouselContent>
                     {projects.map((project) => {
                         const projectImages = images.find(img => img.id === project.id);

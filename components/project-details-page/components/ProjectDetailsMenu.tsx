@@ -6,7 +6,7 @@ export default function ProjectDetailsMenu({ github, demo }: { github: string, d
     const projectMenuArray = getProjectMenuArray(github, demo);
 
     return (
-        <div className="w-screen h-[2rem] flex justify-center md:translate-x-1/8 md:-translate-y-2">
+        <div className="w-full h-[2rem] flex justify-center md:translate-x-1/8 md:-translate-y-2">
             <BaseMenu array={projectMenuArray} />
         </div>
     )

@@ -16,20 +16,22 @@ export default function ContactModal() {
     const showModal = searchParams.get("modal") === 'contact';
 
     return (
-        showModal && <div className="absolute w-fit h-fit justify-self-center inset-0 bg-radial-green rounded-md border-2 border-green-200 z-10">
+        showModal && <div className="absolute w-fit h-fit justify-self-center inset-0 bg-radial-green rounded-md border-2 border-green-200 z-10 pt-2">
             <div className="text-slate-200 flex flex-col pb-3">
                 <button 
-                    className="w-full flex justify-end relative right-2 hover:text-green-300" 
+                    className="w-full flex justify-end relative right-3 hover:text-green-300" 
                     onClick={router.back}
                     aria-label="Close contact modal"
                 >
                     Zamknij
                 </button>
-                <div className="mb-3 flex justify-center">
+                <div className="mb-3 flex justify-start">
                     <ContactItems />
                 </div>
-                {device !== 'mobile' && <ContactForm />}
+                <div className="self-start sm:-ml-[7.25rem]">
+                    {device !== 'mobile' && <ContactForm />}
+                    </div>
             </div>
-        </div >
+        </div>
     )
 }

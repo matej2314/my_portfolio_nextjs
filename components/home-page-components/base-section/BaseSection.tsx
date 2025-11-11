@@ -15,7 +15,7 @@ export default async function BaseSection() {
     const deletingSpeed = defaultData.baseSectionSubHeader.deletingSpeed;
 
     return (
-        <section id="baseSection" className="w-full min-h-screen h-screen flex flex-col md:flex-row justify-center px-5 lg:pt-[3rem] gap-4 font-kanit snap-start">
+        <section id="baseSection" className="w-full min-h-screen h-screen flex flex-col md:flex-row justify-center md:px-0 lg:pt-[4rem] xl:gap-[21rem] font-kanit snap-start">
             <div className=" w-full flex flex-col items-start mt-6 md:mt-[5rem]">
                 <p className="text-4xl sm:text-5xl md:text-6xl text-yellow-300 text-glow">
                     Mateusz
@@ -26,7 +26,7 @@ export default async function BaseSection() {
                 <p className=" text-sm sm:text-base md:text-xl text-white mb-5 tracking-wide text-justify leading-[2rem] mt-3">
                     {t("baseSection.baseDescription")}
                 </p>
-                <div className="w-full sm:w-11/12 h-fit flex flex-col items-center justify-center sm:flex-row gap-4 sm:gap-2">
+                <div className="w-full sm:w-11/12 md:w-fit h-fit flex flex-col items-center justify-center sm:flex-row gap-4 sm:gap-[3rem]">
                     <NavLink
                         variant="home"
                         pathName="#contactSection"
@@ -42,7 +42,7 @@ export default async function BaseSection() {
                     <IconButton
                         iconCode="maki:arrow"
                         iconClass="mt-1 ml-1"
-                        className="w-fit md:w-fit h-fit flex px-4 sm:px-0 justify-center items-center font-bold tracking-wide xl:text-2xl pt-2 pb-3 bg-transparent border-2 border-yellow-300 text-yellow-300 hover:bg-transparent hover-shadow"
+                        className="w-[11rem] font-[1rem] md:w-fit h-fit flex px-4 sm:px-0 justify-center items-center tracking-wide xl:text-2xl pt-2 pb-3 bg-transparent border-2 border-yellow-300 text-yellow-300 hover:bg-transparent hover-shadow"
                         redirectPath="#aboutSection"
                         aria-label="Navigate to about section"
                     >

@@ -28,7 +28,7 @@ export const delay = async (ms: number) => {
 export const getSkillsCategories = (skills: Skill[]): Category[] => {
 	const uniqueCategories = [...new Set(skills.map(skill => skill.skill_cat))];
 	const categoryObjects = uniqueCategories.map(cat => ({ name: cat, label: cat }));
-	return [...categoryObjects, { name: null, label: 'All' }];
+	return [{ name: null, label: 'All' },...categoryObjects];
 };
 
 export const getFilteredSkills = (skills: Skill[], selectedCategory: string | null) => {
