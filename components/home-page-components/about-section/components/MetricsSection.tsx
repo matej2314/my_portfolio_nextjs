@@ -8,7 +8,7 @@ import { type MetricItem } from '@/types/metricTypes';
 
 export default function MetricsSection({ metrics }: { metrics: MetricItem[] }) {
 	const device = useDeviceType();
-	const dotsCount = 27;
+	const dotsCount = 23;
 
 	return (
 		<motion.section initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, ease: easeOut }} viewport={{ amount: 0.4, once: false }} id='metrics' className='w-full sm:w-1/2 h-full text-green-300 font-mono flex justify-center'>
