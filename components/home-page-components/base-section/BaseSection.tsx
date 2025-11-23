@@ -34,7 +34,7 @@ export default async function BaseSection() {
                         aria-label="Navigate to contact section"
                     >
                         <Button
-                            className="w-1/2 md:w-fit h-fit xl:mt-0 text-md flex hover:bg-yellow-300 hover:text-slate-600 justify-center items-center bg-yellow-200 text-slate-900 font-bold tracking-wide xl:text-3xl"
+                            className="w-1/2 md:w-fit h-fit xl:mt-0 text-md flex hover:bg-yellow-300 justify-center items-center bg-yellow-200 text-slate-900 font-bold tracking-wide xl:text-3xl"
                         >
                             {t("baseSection.contactTxt")}
                         </Button>
