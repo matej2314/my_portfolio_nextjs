@@ -1,4 +1,5 @@
 export const REDIS_KEYS = {
+	EXPERIENCES_ALL: 'experiences:all',
 	PROJECTS_ALL: 'projects:all',
 	PROJECT: (id: string) => `project:${id}`,
 	PROJECT_SHOTS: (id: string) => `projectShots:${id}`,

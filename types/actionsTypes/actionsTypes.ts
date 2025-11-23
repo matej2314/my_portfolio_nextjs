@@ -4,6 +4,7 @@ import { type projects as PrismaProjectType } from '@prisma/client';
 import { type skills as PrismaSkillType } from '@prisma/client';
 import { type users as PrismaUserType } from '@prisma/client';
 import { type posts as PrismaPostType } from '@prisma/client';
+import {type experience as PrismaExperienceType } from '@prisma/client';
 
 export type AboutTextType = PrismaAboutMeType;
 
@@ -66,3 +67,8 @@ export type DataCounterReturnedData = {
 	skillsCount: number;
 	blogPostsCount: number;
 };
+
+export type Experience = PrismaExperienceType;
+
+export type GetExperiencesType = { experiences: Experience[] } | { error: string };
+

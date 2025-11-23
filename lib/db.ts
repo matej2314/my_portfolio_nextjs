@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { PrismaClient, about_me, posts, courses, projects, skills, users } from '@prisma/client';
+import { PrismaClient, about_me, posts, courses, projects, skills, users,experience} from '@prisma/client';
 import './redis/redis';
 import { APP_CONFIG } from '@/config/app.config';
 
@@ -21,6 +21,7 @@ type ModelMap = {
 	projects: projects;
 	skills: skills;
 	users: users;
+	experience: experience;
 };
 
 export const dbMethods = {

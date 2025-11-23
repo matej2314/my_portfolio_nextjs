@@ -89,3 +89,15 @@ model sessions {
 
   @@index([userId], map: "userId")
 }
+
+model experience {
+  uuid           String   @id @db.VarChar(350)
+  employer       String   @db.VarChar(100)
+  isCurrent      Boolean
+  position       String   @db.Text
+  hourly_rate    Float    @db.Float
+  employed_since DateTime @db.Date
+  employed_to    String   @db.VarChar(100)
+  created_at     DateTime @default(now()) @db.DateTime(0)
+  updated_at     DateTime @db.DateTime(0)
+}
