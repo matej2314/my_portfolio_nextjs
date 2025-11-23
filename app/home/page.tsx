@@ -3,6 +3,7 @@ import AboutSection from "@/components/home-page-components/about-section/AboutS
 import SkillsSection from "@/components/home-page-components/skills-section/SkillsSection";
 import ProjectsSection from "@/components/home-page-components/projects-section/ProjectsSection";
 import CertsCoursesSection from "@/components/home-page-components/certs-courses-section/CertsCoursesSection";
+import ExperienceSection from "@/components/home-page-components/experience-section/ExperienceSection";
 import ContactSection from "@/components/home-page-components/contact-section/ContactSection";
 import SiteHeader from "@/components/home-page-components/SiteHeader";
 import ScrollToTop from "@/components/ui/elements/ScrollToTopBtn";
@@ -35,6 +36,7 @@ export default async function HomePage() {
                 <div className="w-full flex flex-col gap-16 sm:gap-20 mt-6 sm:mt-10">
                     <BaseSection />
                     <AboutSection aboutText={data?.aboutMe} />
+                    <ExperienceSection experiences={data?.experience} />
                     <SkillsSection skills={data?.skills} />
                     <CertsCoursesSection courses={data?.courses} />
                     <ProjectsSection projects={data?.projects} />

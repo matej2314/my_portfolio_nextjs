@@ -5,11 +5,12 @@ import { getBlogPosts } from './blogPosts';
 import { getCourses } from './courses';
 import { getProjects } from './projects';
 import { getSkills } from './skills';
+import { getExperience } from './experience';
 import { logErrAndReturn } from '@/lib/utils/logErrAndReturn';
 
 export async function getHomePageData() {
 	try {
-		const [aboutMe, blogPosts, courses, projects, skills] = await Promise.all([getAboutMe(), getBlogPosts(), getCourses(), getProjects(), getSkills()]);
+		const [aboutMe, blogPosts, courses, projects, skills, experience] = await Promise.all([getAboutMe(), getBlogPosts(), getCourses(), getProjects(), getSkills(), getExperience()]);
 
 		return {
 			data: {
@@ -18,6 +19,7 @@ export async function getHomePageData() {
 				courses,
 				projects,
 				skills,
+				experience,
 			},
 			error: null,
 		};

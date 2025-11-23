@@ -12,3 +12,18 @@ import { validateData } from '@/lib/utils/utils';
 import { logErrAndReturn } from '@/lib/utils/logErrAndReturn';
 import { type GetExperiencesType, type ReturnedType, type Experience } from '@/types/actionsTypes/actionsTypes';
 
+export const getExperience = async (): Promise<GetExperiencesType> => {
+    const experienceKey = REDIS_KEYS.EXPERIENCES_ALL;
+    try {
+        const cachedExperience = await getCache<Experience[]>(experienceKey);
+        if (cachedExperience) return { experiences: cachedExperience };
+
+        const experiences = await dbMethods.getAllRecords('experience');
+        if (!experiences) return logErrAndReturn('getExperience', 'Experiences not found.', { error: 'Experiences not found.' });
+
+        await setCache<Experience[]>(experienceKey, experiences, APP_CONFIG.redis.defaultExpiration);
+        return { experiences };
+    } catch (error) {
+        return logErrAndReturn('getExperience', error, { error: 'Failed to fetch experiences' });
+    }
+}
