@@ -10,6 +10,7 @@ export const DELETE_FUNCTIONS: Record<DataType, DeleteFunction> = {
 	project: deleteProject,
 	skill: deleteSkill,
 	blogPost: deleteBlogPost,
+	// experience: deleteExperience,
 } as const;
 
 export const isSupportedDataType = (dataType: string): dataType is DataType => {
