@@ -28,6 +28,10 @@ export const getExperience = async (): Promise<GetExperiencesType> => {
     }
 }
 
-// export const saveExperience = async (prevState: ReturnedType, formData: FormData): Promise<ReturnedType> => { }
+// export const saveExperience = async (prevState: ReturnedType, formData: FormData): Promise<ReturnedType> => { 
+// try {
+//     const auth = await requireActionsAuth('saveExperience');
+// }
+// }
 
 // export const updateExperience = async (prevState: ReturnedType, formData: FormData): Promise<ReturnedType> => { }
