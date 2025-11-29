@@ -2,7 +2,7 @@
 import { type Skill } from "@/types/actionsTypes/actionsTypes"
 
 import SkillForm from "./SkillForm"
-
+//edit skill form
 
 export default function EditSkill({ skillData }: { skillData: Skill }) {
     return (
