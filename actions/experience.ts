@@ -27,3 +27,7 @@ export const getExperience = async (): Promise<GetExperiencesType> => {
         return logErrAndReturn('getExperience', error, { error: 'Failed to fetch experiences' });
     }
 }
+
+// export const saveExperience = async (prevState: ReturnedType, formData: FormData): Promise<ReturnedType> => { }
+
+// export const updateExperience = async (prevState: ReturnedType, formData: FormData): Promise<ReturnedType> => { }
