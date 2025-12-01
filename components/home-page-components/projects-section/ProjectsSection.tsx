@@ -12,11 +12,11 @@ export default async function ProjectsSection({ projects }: { projects: GetProje
 
     return (
         <section id="projectsSection" className="w-full h-fit flex flex-col text-slate-200 snap-center">
-            <span className="text-4xl text-green-400 ml-2">Projects &#123;</span>
+            <span className="text-4xl text-green-400">Projects &#123;</span>
             <section className="w-full h-[100dvh] flex justify-center items-center">
                 <ProjectsGallery projects={projects?.projects} images={images} />
             </section>
-            <span className="text-green-400 text-4xl ml-2">&#125;</span>
+            <span className="text-green-400 text-4xl">&#125;</span>
         </section>
     )
 }

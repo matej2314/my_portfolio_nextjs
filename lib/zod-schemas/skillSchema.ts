@@ -29,6 +29,10 @@ export const baseSkillSchema = z.object({
 	})
 		.nullable()
 		.optional(),
+	skill_description: validatedString(5, 200, {
+		tooBig: 'Description must contain maximum 200 characters',
+		tooSmall: 'Description must contain minimum 5 characters',
+	}).nullable().optional(),
 });
 
 export const updateSkillSchema = baseSkillSchema.extend({

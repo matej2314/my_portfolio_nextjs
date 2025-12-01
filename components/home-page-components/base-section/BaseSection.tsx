@@ -26,7 +26,7 @@ export default async function BaseSection() {
                 <p className=" text-sm sm:text-base md:text-xl text-white mb-5 tracking-wide text-justify leading-[2rem] mt-3">
                     {t("baseSection.baseDescription")}
                 </p>
-                <div className="w-full sm:w-11/12 md:w-fit h-fit flex flex-col items-center justify-center sm:flex-row gap-4 sm:gap-[3rem]">
+                <div className="w-full sm:w-11/12 md:w-fit h-fit flex flex-col items-start justify-center sm:flex-row gap-4 sm:gap-[3rem]">
                     <NavLink
                         variant="home"
                         pathName="#contactSection"

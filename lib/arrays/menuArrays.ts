@@ -1,3 +1,4 @@
+
 export type Variant = 'home' | 'project' | 'external';
 
 export type MenuItem = {
@@ -40,6 +41,7 @@ export const blogMenuArray: MenuItem[] = [
 
 export const controlMenuArray: ControlMenuItem[] = [
 	{ key: 'about', label: 'About', icon: 'icon-park-outline:me', actions: ['add', 'manage'] },
+	{ key: 'experience', label: 'Experience', icon: 'bi:briefcase', actions: ['add', 'manage']},
 	{ key: 'courses', label: 'Courses', icon: 'oui:training', actions: ['add', 'manage'] },
 	{ key: 'projects', label: 'Projects', icon: 'grommet-icons:projects', actions: ['add', 'manage'] },
 	{ key: 'skills', label: 'Skills', icon: 'game-icons:skills', actions: ['add', 'manage'] },

@@ -12,6 +12,7 @@ import SwitchElement from "@/components/ui/elements/SwitchElement"
 import SkillCatInput from "./components/SkillCatInput"
 import SubmitBtn from "@/components/ui/elements/SubmitButton"
 import FormTitle from "./components/FormTitle"
+import TextAreaElement from "@/components/ui/elements/TextareaElement"
 
 import { type SkillFormProps } from '@/types/forms/skill-form';
 
@@ -34,6 +35,7 @@ export default function SkillForm({ skillData, mode = 'create' }: SkillFormProps
             {state?.success === false && <p className="text-red-400">{state.error}</p>}
             <FormTitle editTitle="Edit skill" createTitle="Create new skill" mode={mode} />
             <form action={formAction} className="w-fit h-fit flex flex-col items-center justify-center gap-2 text-slate-200">
+                <input type="hidden" name="id" value={skillData?.id} />
                 <LabelElement
                     htmlFor="skill_name"
                     className="font-bold pb-1 ml-2 text-lg tracking-wide"
@@ -68,6 +70,20 @@ export default function SkillForm({ skillData, mode = 'create' }: SkillFormProps
                     onSelectedCategory={setSelectedCategory}
                     categories={categories}
                 />
+                   <LabelElement
+                    htmlFor="skill_description"
+                    className="font-bold pb-1 ml-2 text-lg tracking-wide"
+                >
+                    Skill description:
+                </LabelElement>
+                <TextAreaElement
+                                required={false}
+                                id="skill_description"
+                                name="skill_description"
+                                defaultValue={skillData?.skill_description as string}
+                                placeholder="min 5 characters, max 300 characters"
+                                className="text-md px-2 tracking-wide w-full"
+                            />
                 <LabelElement
                     htmlFor="icon_name"
                     className="font-bold pb-1 ml-2 text-lg tracking-wide"

@@ -14,6 +14,7 @@ export default async function ManageSkills() {
         { key: 'id', header: 'ID' },
         { key: 'skill_name', header: 'Name' },
         { key: 'skill_cat', header: 'Category' },
+        {key: 'skill_description', header: 'Description'},
         { key: 'icon_name', header: 'Icon' },
         { key: 'icon_color', header: 'Icon color' }
     ]);

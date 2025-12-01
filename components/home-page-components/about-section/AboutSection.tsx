@@ -12,7 +12,7 @@ export default async function AboutSection({ aboutText }: { aboutText: GetAboutM
 
     return (
         <section id="aboutSection" className="w-full min-h-screen h-fit flex flex-col justify-center gap-3 items-start font-kanit snap-center">
-            <span className="text-4xl text-green-400 ml-2">About &#123;</span>
+            <span className="text-4xl text-green-400">About &#123;</span>
             <div className="w-full h-screen flex flex-col sm:flex-row justify-center sm:justify-center items-center gap-4 sm:gap-[5rem] pt-7 sm:pt-0">
                 <MetricsSection metrics={metricsArray} />
                 <div className="sm:w-1/2 h-full flex items-center">
@@ -23,7 +23,7 @@ export default async function AboutSection({ aboutText }: { aboutText: GetAboutM
                     </div>
                 </div>
             </div>
-            <span className="text-green-400 text-4xl ml-2 mt-8 sm:mt-0">&#125;</span>
+            <span className="text-green-400 text-4xl mt-8 sm:mt-0">&#125;</span>
         </section>
 
     )

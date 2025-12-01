@@ -2,6 +2,7 @@ import { deleteCourse } from '@/actions/courses';
 import { deleteProject } from '@/actions/projects';
 import { deleteSkill } from '@/actions/skills';
 import { deleteBlogPost } from '@/actions/blogPosts';
+import { deleteExperience } from '@/actions/experience';
 
 import { type DataType, type DeleteFunction } from '@/types/utils/get-delete-function';
 
@@ -10,7 +11,7 @@ export const DELETE_FUNCTIONS: Record<DataType, DeleteFunction> = {
 	project: deleteProject,
 	skill: deleteSkill,
 	blogPost: deleteBlogPost,
-	// experience: deleteExperience,
+	experience: deleteExperience,
 } as const;
 
 export const isSupportedDataType = (dataType: string): dataType is DataType => {

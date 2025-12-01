@@ -40,7 +40,7 @@ const SwitchElement = forwardRef<HTMLInputElement, SwitchElementProps>(({
                     ref={ref}
                     type="checkbox"
                     id={id}
-                    name={name}
+                    name={name || ''}
                     className={cn(
                         "peer absolute left-0 top-0 w-full h-full opacity-0 z-10 cursor-pointer"
                     )}

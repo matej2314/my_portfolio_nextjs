@@ -1,6 +1,6 @@
 export interface SwitchElementProps {
 	id: string;
-	name: string;
+	name?: string;
 	checked?: boolean;
 	label?: string;
 	labelPosition?: 'left' | 'right';
