@@ -13,7 +13,7 @@ export default function ContactSection() {
         <section id="contactSection" className="w-full min-h-screen flex flex-col justify-start items-start pb-2 font-kanit snap-center">
             <span className="text-4xl text-green-400">Contact &#123;</span>
             <section className="w-full h-screen flex flex-col md:flex-row md:items-center my-5 md:mb-10">
-                <div className="w-full h-full text-slate-200 flex flex-col items-start justify-end md:pb-[20rem]">
+                <div className="w-full h-full text-slate-200 flex flex-col items-start justify-end md:pb-[20rem] xl:justify-center">
                     <h2
                         className="text-2xl sm:text-3xl font-kanit bg-gradient-to-r from-green-400 via-yellow-200 to-yellow-400 bg-clip-text text-transparent sm:ml-4 mb-3"
                     >

@@ -5,11 +5,34 @@
 			"contactTxt": "Contact me",
 			"learnMoreTxt": "Learn more"
 		},
+		"experienceSection": {
+"employedSince": "Employed since",
+"employedTo": "Employed to",
+"currentPosition": "Current position",
+"visitWebsite": "Visit website"
+		},
 		"aboutSection": {
 			"description": "I'm a web developer who also has experience in SEO and a solid understanding of cybersecurity. If you're looking for a specialist who can not only build an aesthetic and functional website for you but also secure it and give you guidance on SEO - contact me and allow me to take care of your project. I constantly improve my skills and stay up to date with the latest technologies and web standards."
 		},
 		"skillsSection": {
-			"description": "I create modern, responsive web applications with a strong focus on code readability, performance, and security. I'm proficient in both frontend and backend development, using well-established tools and technologies. I have experience working with Linux systems, application containerization (Docker), process automation, as well as SEO optimization and web application security analysis. I'm continuously developing my skills in programming and cybersecurity, allowing me to build robust, scalable, and secure solutions ready for production deployment."
+			"description": "I create modern, responsive web applications with a strong focus on code readability, performance, and security. I'm proficient in both frontend and backend development, using well-established tools and technologies. I have experience working with Linux systems, application containerization (Docker), process automation, as well as SEO optimization and web application security analysis. I'm continuously developing my skills in programming and cybersecurity, allowing me to build robust, scalable, and secure solutions ready for production deployment.",
+			"skillsList": {
+				"tailwindcss": "CSS framework for creating responsive and aesthetic web applications.",
+				"styledcomponents": "Modern library for creating React components using CSS.",
+				"wordpress": "Popular CMS for creating blogs and websites.",
+				"react": "Popular library for creating user interfaces of web applications.",
+				"nextjs": "Popular framework for creating full-stack web applications.",
+				"nodejs": "Popular runtime environment for executing JavaScript code outside a browser.",
+				"kalilinux": "Operating system for testing security and performing penetration tests.",
+				"sql":"Query language for managing relational databases.",
+				"n8n": "Platform for process automation and application integration.",
+				"jenkins": "Open-source CI/CD tool. Automates the build and deployment process.",
+				"nginx": "Web server for handling HTTP and reverse proxy requests.",
+				"docker": "Platform for containerization, which allows running applications in isolated, portable environments.",
+				"gitlab": "Git repository manager for version control and collaboration.",
+				"metasploit": "Advanced framework for testing security and performing penetration tests.",
+				"github": "Popular platform for version control and collaboration."
+			}
 		},
 		"certsSection": {
 			"description": "I am constantly expanding my knowledge as a web developer and security enthusiast. The selected courses and certifications below reflect my commitment to growth and security in the dynamic world of technology."
@@ -33,6 +56,7 @@
 		"Demo": "Demo",
 		"Github": "Repo",
 		"About": "About",
+		"Experience": "Experience",
 		"Skills": "Skills",
 		"Courses": "Courses",
 		"Projects": "Projects",

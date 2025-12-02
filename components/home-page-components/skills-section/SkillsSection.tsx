@@ -24,7 +24,7 @@ export default async function SkillsSection({ skills }: { skills: GetSkillsType 
 					<SkillsList skills={skills.skills} />
 				</div>
 			</div>
-			<span className='text-4xl text-green-400 w-full mt-[13rem] lg:mt-[4rem]'>&#125;</span>
+			<span className='text-4xl text-green-400 w-full mt-[13rem] lg:mt-[8rem]'>&#125;</span>
 		</section>
 	);
 }

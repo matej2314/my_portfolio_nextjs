@@ -26,7 +26,7 @@ export default function ContactForm() {
 
     useEffect(() => {
 
-        if (isSuccess || hasErrors) {
+        if (isSuccess) {
             setShouldDisable(true);
 
             const timer = setTimeout(() => {
@@ -34,6 +34,8 @@ export default function ContactForm() {
             }, 2000);
 
             return () => clearTimeout(timer);
+        } else if (hasErrors) {
+            setShouldDisable(false);
         }
     }, [isSuccess, hasErrors]);
 

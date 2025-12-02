@@ -16,6 +16,7 @@ export type ControlMenuItem = {
 
 export const homeMenuArray: MenuItem[] = [
 	{ path: '#aboutSection', label: 'About', variant: 'home' },
+	{ path: '#experienceSection', label: 'Experience', variant: 'home' },
 	{ path: '#skillsSection', label: 'Skills', variant: 'home' },
 	{ path: '#certsSection', label: 'Courses', variant: 'home' },
 	{ path: '#projectsSection', label: 'Projects', variant: 'home' },
