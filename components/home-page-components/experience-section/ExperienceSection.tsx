@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import ExperienceDot from './components/ExperienceDot';
 import { type GetExperiencesType } from '@/types/actionsTypes/actionsTypes';
 
@@ -10,6 +10,7 @@ export default function ExperienceSection({ experiences }: { experiences: GetExp
 	const dotRefs = useRef<(HTMLDivElement | null)[]>([]);
 	const lineRef = useRef<HTMLDivElement>(null);
 	const [highlightHeight, setHighlightHeight] = useState<number>(0);
+	const [currentIndex, setCurrentIndex] = useState<number>(0);
 
 	const experienceData = experiences && !('error' in experiences) ? experiences.experiences : [];
 	const sortedExperiences = [...experienceData].sort((a, b) => {
@@ -56,6 +57,7 @@ export default function ExperienceSection({ experiences }: { experiences: GetExp
 			const height = dotCenter - lineRect.top;
 
 			setHighlightHeight(Math.max(0, height));
+			setCurrentIndex(closestIndex);
 		};
 
 		// Initial update
@@ -106,6 +108,7 @@ export default function ExperienceSection({ experiences }: { experiences: GetExp
 		const dotElement = dotRefs.current[index];
 		if (dotElement && containerRef.current) {
 			dotElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+			setCurrentIndex(index);
 		}
 	};
 
@@ -115,10 +118,10 @@ export default function ExperienceSection({ experiences }: { experiences: GetExp
 
 			<div ref={containerRef} className='w-full flex-1 overflow-y-auto scroll-smooth snap-y snap-mandatory no-scrollbar relative' style={{ maxHeight: 'calc(100vh - 4rem)' }}>
 				<div className='relative w-full flex items-start justify-center'>
-					<div className='relative flex flex-col items-center w-full max-w-full px-4'>
-						<span className='absolute top-[calc(50vh-18%)] left-1/2 -translate-x-1/2 z-20 text-xl text-green-500 whitespace-nowrap'>{sortedExperiences[0]?.employed_since ? new Date(sortedExperiences[0].employed_since).getFullYear() : 'Present'}</span>
+					<div className='relative flex flex-col items-start md:items-center w-full max-w-full px-4'>
+						<span className='absolute top-[calc(50vh-18%)] left-1/5 md:left-1/2 -translate-x-1/4 md:-translate-x-1/2 z-20 text-xl text-green-500 whitespace-nowrap'>{sortedExperiences[0]?.employed_since ? new Date(sortedExperiences[0].employed_since).getFullYear() : 'Present'}</span>
 						<div className='relative w-full' style={{ minHeight: `${sortedExperiences.length * 30}vh`, paddingTop: 'calc(50vh - 50vh)' }}>
-							<div ref={lineRef} className='absolute left-1/2 top-[20vh] -translate-x-1/2 w-2 bg-green-400 rounded-full shadow-2xl shadow-green-400 z-0' style={{ height: 'calc(100% - (50vh - 3rem))' }}>
+							<div ref={lineRef} className='absolute left-1/5 md:left-1/2 top-[20vh] -translate-x-1/2 w-2 bg-green-400 rounded-full shadow-2xl shadow-green-400 z-0' style={{ height: 'calc(100% - (50vh - 3rem))' }}>
 								<motion.div className='absolute top-0 left-0 w-2 bg-yellow-300 rounded-full shadow-2xl shadow-yellow-300' animate={{ height: highlightHeight }} transition={{ duration: 0.3, ease: 'easeInOut' }} />
 							</div>
 							{sortedExperiences.map((experience, index) => (
@@ -129,6 +132,8 @@ export default function ExperienceSection({ experiences }: { experiences: GetExp
 									}}
 									experience={experience}
 									onClick={() => handleDotClick(index)}
+									experienceIndex={index}
+									currentIndex={currentIndex}
 								/>
 							))}
 						</div>

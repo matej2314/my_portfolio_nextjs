@@ -16,7 +16,7 @@ export default function ProjectsGallery({ projects, images }: ProjectsGalleryPro
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, ease: easeOut }}
-            viewport={{ amount: 0.4, once: false }}
+            viewport={{ amount: 0.4, once: true }}
             className="w-[90dvw] h-full flex justify-center items-center px-4"
         >
             <Carousel className="w-[90%] md:w-full">

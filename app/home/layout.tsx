@@ -1,5 +1,5 @@
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
+import { getLocale, getMessages } from "next-intl/server";
 
 import DotNavigation from "@/components/home-page-components/DotNavigation";
 import HomeContent from "@/components/home-page-components/HomeContent";
@@ -12,9 +12,9 @@ export const metadata: Metadata = {
     description: 'Webdev, SEO, Security'
 }
 
-export default async function HomePageLayout({ children, params }: { children: ReactNode, params: Promise<{ locale: string }> }) {
+export default async function HomePageLayout({ children}: { children: ReactNode }) {
 
-    const { locale } = await params;
+    const locale = await getLocale();
 
     const messages = await getMessages({ locale });
 

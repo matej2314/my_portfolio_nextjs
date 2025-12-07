@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, easeInOut } from 'framer-motion';
+import { motion, easeInOut } from 'motion/react';
 import { useTranslations } from 'next-intl';
 import { forwardRef } from 'react';
 import { type Experience } from '@/types/actionsTypes/actionsTypes';
@@ -8,16 +8,18 @@ import { type Experience } from '@/types/actionsTypes/actionsTypes';
 interface ExperienceDotProps {
 	experience: Experience;
 	onClick?: () => void;
+	experienceIndex: number;
+	currentIndex: number;
 }
 
-const ExperienceDot = forwardRef<HTMLDivElement, ExperienceDotProps>(({ experience, onClick }, ref) => {
+const ExperienceDot = forwardRef<HTMLDivElement, ExperienceDotProps>(({ experience, onClick, experienceIndex, currentIndex }, ref) => {
 	const t = useTranslations('homePage.experienceSection');
 
 	return (
 		<div ref={ref} className='relative snap-center h-screen w-full flex items-center justify-center'>
-			<motion.div whileHover={{ backgroundColor: '#fde68a', scale: 1.2 }} transition={{ duration: 0.2, ease: easeInOut }} onClick={onClick} className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-5 h-5 bg-white border-2 border-yellow-300 rounded-full cursor-pointer' />
+			<motion.div whileHover={{ backgroundColor: '#fde68a', scale: 1.2 }} transition={{ duration: 0.2, ease: easeInOut }} onClick={onClick} className={`absolute left-1/5 md:left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-5 h-5 border-2 rounded-full cursor-pointer ${currentIndex === experienceIndex ? 'bg-yellow-300 border-green-600' : 'bg-white border-yellow-300'}`} />
 
-			<div className='absolute left-[calc(50%+1.5rem)] md:left-[calc(50%+2rem)] lg:left-[calc(50%+2.5rem)] top-1/2 -translate-y-1/2 w-[85%] max-w-[350px] md:max-w-[400px] lg:max-w-[450px]'>
+			<div className='absolute left-[28%] md:left-[calc(50%+2rem)] lg:left-[calc(50%+2.5rem)] top-1/2 -translate-y-1/2 w-[75%] max-w-[300px] md:max-w-[400px] lg:max-w-[450px]'>
 				<div className='bg-linear-green rounded-lg p-4 md:p-6 border border-green-400 shadow-lg'>
 					<h3 className='text-xl md:text-2xl lg:text-3xl text-green-400 font-semibold mb-2'>{experience.employer}</h3>
 					<p className='text-base md:text-lg lg:text-xl text-yellow-300 font-medium mb-3'>{experience.position}</p>

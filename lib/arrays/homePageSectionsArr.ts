@@ -1,1 +1,1 @@
-export const sections: string[] = ['baseSection','aboutSection', 'skillsSection','certsSection', 'projectsSection', 'contactSection']; 
+export const sections: string[] = ['baseSection','aboutSection', 'experienceSection', 'skillsSection','certsSection', 'projectsSection', 'contactSection']; 

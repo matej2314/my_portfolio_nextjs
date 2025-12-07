@@ -16,7 +16,7 @@ export default async function BaseSection() {
 
     return (
         <section id="baseSection" className="w-full min-h-screen h-screen flex flex-col md:flex-row justify-center md:px-0 lg:pt-[4rem] xl:gap-[21rem] font-kanit snap-start">
-            <div className=" w-full flex flex-col items-start mt-6 md:mt-[5rem]">
+            <div className=" w-full flex flex-col items-start mt-0 md:mt-[5rem]">
                 <p className="text-4xl sm:text-5xl md:text-6xl text-yellow-300 text-glow">
                     Mateusz
                 </p>

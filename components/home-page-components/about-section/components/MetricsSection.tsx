@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, easeOut } from 'framer-motion';
+import { motion, easeOut, AnimatePresence } from 'motion/react';
 
 import { useDeviceType } from '@/hooks/useDeviceType';
 
@@ -11,7 +11,7 @@ export default function MetricsSection({ metrics }: { metrics: MetricItem[] }) {
 	const dotsCount = 23;
 
 	return (
-		<motion.section initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, ease: easeOut }} viewport={{ amount: 0.4, once: false }} id='metrics' className='w-full sm:w-1/2 h-full text-green-300 font-mono flex justify-center'>
+		<motion.section initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, ease: easeOut }} viewport={{ amount: 0.3, once: true }} id='metrics' className='w-full sm:w-1/2 h-full text-green-300 font-mono flex justify-center'>
 			<div className='w-full h-full flex flex-col'>
 				{!metrics && (
 					<div className='w-full h-full flex justify-center items-center'>

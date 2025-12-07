@@ -1,17 +1,11 @@
 'use client';
 
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react';
 
 export default function PulsingCursor() {
-
-    return (
-        <motion.span
-            animate={{ opacity: [0, 1, 0] }}
-            transition={{ repeat: Infinity, duration: 1 }}
-            aria-label="Pulsing cursor"
-            role="img"
-        >
-            |
-        </motion.span>
-    )
+	return (
+		<motion.span animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 1 }} aria-label='Pulsing cursor' role='img'>
+			|
+		</motion.span>
+	);
 }

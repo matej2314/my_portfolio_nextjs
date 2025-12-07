@@ -2,11 +2,12 @@
 
 import { sendMail } from '@/lib/nodemailer.config';
 import { validateData } from '@/lib/utils/utils';
-import { contactMessageTemplate } from '@/lib/emailTemplate';
+import { contactMessageTemplate } from '@/components/emails/emailTemplate';
 import { contactSchema } from '@/lib/zod-schemas/contactSchema';
 import { APP_CONFIG } from '@/config/app.config';
 
 import { type ContactFormState, type ContactObject } from '@/types/forms/contactFormTypes';
+import { sendContactResponse } from '@/lib/utils/sendContactResponse';
 
 export async function contactMe(prevState: ContactFormState, formData: FormData): Promise<ContactFormState> {
 	const contactObject: ContactObject = {
@@ -26,11 +27,17 @@ export async function contactMe(prevState: ContactFormState, formData: FormData)
 		};
 	}
 
+	const html = await contactMessageTemplate(validatedContactObj.data);
 	try {
 		await sendMail({
 			to: APP_CONFIG.nodemailer.to as string,
 			subject: `New message from ${validatedContactObj.data.client}`,
-			html: contactMessageTemplate(validatedContactObj.data),
+			html,
+		});
+
+		await sendContactResponse({
+			to: validatedContactObj.data.email,
+			clientName: validatedContactObj.data.client,
 		});
 
 		return {

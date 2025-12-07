@@ -24,8 +24,8 @@ export const defaultData = {
 	},
 	defaultMLetter: {
 		size: 110,
-		duration: 1.5,
-		colors: ['#38a169', '#facc15', '#38a169'],
+		duration: 1.1,
+		colors: ['#242424', '#f2d768','#f0d360','#ffda45','#facc15'],
 		mode: 'animated',
 	},
 	switchElement: {

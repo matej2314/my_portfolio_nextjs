@@ -11,7 +11,7 @@ export const contactSchema = z.object({
 		message: 'Name contains disallowed characters',
 	}),
 	email: z.string().email(),
-	subject: validatedString(10, 20, {
+	subject: validatedString(10, 100, {
 		requiredError: 'Subject of the message is required.',
 		tooSmall: 'Subject must contains at least 10 characters.',
 		tooBig: 'Subject must contains maximum 20 characters.',
