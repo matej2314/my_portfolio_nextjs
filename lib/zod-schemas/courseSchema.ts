@@ -11,7 +11,7 @@ export const baseCourseSchema = z.object({
 		message: 'Course name contains dangerous characters.',
 	}),
 	course_date: validatedString(1).date(),
-	course_organizer: validatedString(10, 300, {
+	course_organizer: validatedString(5, 300, {
 		requiredError: 'Course organizer name is required.',
 		tooBig: 'Course organizer name must contains maximum 300 characters',
 		tooSmall: 'Course organizer name must contains minimum 10 characters.',
