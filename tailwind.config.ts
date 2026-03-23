@@ -6,6 +6,8 @@ const config: Config = {
 		extend: {
 			fontFamily: {
 				kanit: ['var(--font-kanit)', 'sans-serif'],
+				plusJakartaSans: ['var(--font-jakarta)', 'sans-serif'],
+				inter: ['var(--font-inter)', 'sans-serif'],
 			},
 		},
 	},
