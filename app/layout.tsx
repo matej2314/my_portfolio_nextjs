@@ -6,6 +6,7 @@ import "./globals.css";
 import ClientAnalytics from "@/components/ClientAnalytics";
 import { generatePageMetadata } from "@/lib/generatePageMetadata";
 import { APP_CONFIG } from "@/config/app.config";
+import { kanit } from "@/fonts/kanit";
 
 export const generateMetadata = () => generatePageMetadata('page', null);
 
@@ -19,8 +20,10 @@ export default async function RootLayout({
   const htmlLang = locale || 'en';
   const GA_ID = APP_CONFIG.analytics.GA_ID;
 
+  
+
   return (
-    <html lang={htmlLang} className="max-w-screen min-h-screen no-scrollbar bg-[#0c0c0c] scroll-smooth overflow-x-hidden">
+    <html lang={htmlLang} className={`max-w-screen min-h-screen no-scrollbar bg-[#0c0c0c] scroll-smooth overflow-x-hidden ${kanit.className}`}>
       <head>
         <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
         <Script id="google-analytics" strategy="afterInteractive">

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { type NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
 	const csp = `
     default-src 'self';
     script-src 'self' https://apis.google.com https://api.iconify.design https://www.googletagmanager.com 'unsafe-eval' 'unsafe-inline';
