@@ -12,9 +12,9 @@ export default function LanguageSwitcher() {
 	const t = useTranslations('mainMenu');
 	const langOptions = defaultData.langOptions;
 
-	async function handleChange(locale: string) {
-		if (locale === currentLocale) return;
+	const otherLocale = langOptions.find((opt) => opt.value !== currentLocale)?.value;
 
+	async function switchToLocale(locale: string) {
 		const res = await fetch('/api/locale', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
@@ -26,33 +26,38 @@ export default function LanguageSwitcher() {
 		}
 	}
 
+	function handleToggle() {
+		if (!otherLocale) return;
+		void switchToLocale(otherLocale);
+	}
+
+	const activeLabel =
+		langOptions.find((opt) => opt.value === currentLocale)?.label ?? currentLocale;
+
 	return (
-		<div
-			className="inline-flex items-center gap-0.5 rounded-full border border-slate-600 bg-[#000805] p-0.5 font-jakarta"
-			role="radiogroup"
-			aria-label={t('languageSwitcherLabel')}
+		<button
+			type="button"
+			className="inline-flex items-center gap-0.5 rounded-full border border-slate-600 bg-[#000805] p-0.5 font-jakarta focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#000805]"
+			aria-label={`${t('languageSwitcherLabel')}: ${activeLabel}`}
+			onClick={handleToggle}
 		>
 			{langOptions.map((opt) => {
 				const isActive = opt.value === currentLocale;
 				return (
-					<button
+					<span
 						key={opt.value}
-						type="button"
-						role="radio"
-						aria-checked={isActive}
-						aria-label={opt.ariaLabel}
-						onClick={() => void handleChange(opt.value)}
+						aria-hidden
 						className={cn(
-							'min-w-[2.75rem] rounded-full px-3 py-1.5 text-[13px] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#000805]',
+							'pointer-events-none min-w-[2.75rem] rounded-full px-3 py-1.5 text-[13px] transition-colors select-none',
 							isActive
 								? 'bg-yellow-300 font-semibold text-[#0c0c0c]'
-								: 'font-medium text-slate-400 hover:text-slate-200',
+								: 'font-medium text-slate-400',
 						)}
 					>
 						{opt.value.toUpperCase()}
-					</button>
+					</span>
 				);
 			})}
-		</div>
+		</button>
 	);
 }

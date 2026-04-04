@@ -1,6 +1,7 @@
 {
 	"homePage": {
 		"baseSection": {
+			"title": "Implementation, integration, optimization",
 			"baseDescription": "Self-taught programmer passionate about cybersecurity, especially in web application security. Always ready to take on new challenges — the more difficult, the better.",
 			"contactTxt": "Contact me",
 			"learnMoreTxt": "Learn more"

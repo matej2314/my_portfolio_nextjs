@@ -22,9 +22,9 @@ export default async function BaseSection() {
             />
             <div className="pointer-events-none absolute inset-0 bg-black/50" aria-hidden />
             <div className="relative z-[1] mt-0 flex w-full flex-col items-center justify-center gap-5 px-3 sm:px-6 md:mt-[5rem]">
-                <p className=" text-md sm:text-5xl md:text-5xl text-[#f8fafc] font-jakarta">
-                   {`Implementacja, integracja, optymalizacja`}
-                </p>
+                <h1 className=" text-md sm:text-5xl md:text-5xl text-[#f8fafc] font-jakarta">
+                   {t("baseSection.title")}
+                </h1>
                 <div className="w-fit">
                     <HomeSubHeader/>
                 </div>
