@@ -1,18 +1,11 @@
 'use client';
 
-import { useRef } from 'react';
 import { motion, AnimatePresence, easeInOut, spring } from 'motion/react';
-
-import { useClickOutside } from '@/hooks/useClickOutside';
 
 import IconButton from '../ui/elements/IconButton';
 import ExternalLink from '../links/ExternalLink';
 
-export default function CvSelector({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-	const cvRef = useRef<HTMLDivElement>(null);
-
-	useClickOutside(cvRef, () => onClose());
-
+export default function CvSelector({ isOpen }: { isOpen: boolean }) {
 	const selectorVariant = {
 		initial: { opacity: 0, y: -10 },
 		animate: { opacity: 1, y: 1 },
@@ -30,12 +23,24 @@ export default function CvSelector({ isOpen, onClose }: { isOpen: boolean; onClo
 	return (
 		<AnimatePresence initial={true}>
 			{isOpen && (
-				<motion.div key='cv-selector' ref={cvRef} variants={selectorVariant} initial='initial' animate='animate' exit='exit' transition={{ duration: 0.7, ease: easeInOut, type: spring }} className='relative right-[2rem] top-1 w-[10rem] h-fit flex flex-col items-center gap-3'>
-					<ExternalLink href='/cv/CV - Mateusz Śliwowski_en.pdf' aria-label='Download English CV' download>
-						<IconButton className='w-[5rem] bg-yellow-400 hover:bg-yellow-500 hover:text-slate-950 text-slate-600 font-semibold font-mono text-[0.9rem] flex justify-center items-center'>English</IconButton>
+				<motion.div
+					key='cv-selector'
+					variants={selectorVariant}
+					initial='initial'
+					animate='animate'
+					exit='exit'
+					transition={{ duration: 0.7, ease: easeInOut, type: spring }}
+					className='flex h-fit w-fit flex-col items-stretch gap-3 py-[0.4rem] px-[1.2rem]'
+				>
+					<ExternalLink href='/cv/CV - Mateusz Śliwowski_en.pdf' aria-label='Download English CV' download className='block w-full min-w-[5rem]'>
+						<IconButton className='h-auto min-h-0 w-full justify-center bg-yellow-300 px-3 py-0 font-jakarta text-[0.9rem] font-semibold text-slate-800 hover:bg-yellow-400 hover:text-slate-950 rounded-md'>
+							English
+						</IconButton>
 					</ExternalLink>
-					<ExternalLink href='/cv/CV - Mateusz Śliwowski.pdf' aria-label='Download Polish CV' download>
-						<IconButton className='w-[5rem] bg-yellow-400 hover:bg-yellow-500 hover:text-slate-950 text-slate-600 font-semibold font-mono text-[0.9rem] flex justify-center items-center'>Polish</IconButton>
+					<ExternalLink href='/cv/CV - Mateusz Śliwowski.pdf' aria-label='Download Polish CV' download className='block w-full min-w-[5rem]'>
+						<IconButton className='h-auto min-h-0 w-full justify-center bg-yellow-300 px-3 py-0 font-jakarta text-[0.9rem] font-semibold text-slate-800 hover:bg-yellow-400 hover:text-slate-950 rounded-md'>
+							Polish
+						</IconButton>
 					</ExternalLink>
 				</motion.div>
 			)}

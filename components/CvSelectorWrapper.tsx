@@ -2,10 +2,11 @@
 
 import CvSelector from "./home-page-components/CvSelector";
 
-export default function CvSelectorWrapper({ onClose }: { onClose: () => void }) {
+
+export default function CvSelectorWrapper() {
     return (
-        <div className="absolute top-full left-[35dvw] md:left-0 md:z-10">
-            <CvSelector isOpen={true} onClose={onClose} />
+        <div className="absolute left-1/2 top-full z-50 mt-1 -translate-x-1/2">
+            <CvSelector isOpen={true} />
         </div>
-    )
+    );
 }

@@ -5,4 +5,5 @@ export type SubmitBtnProps = {
 	hoverClass: string;
 	disabled?: boolean;
 	submitted?: boolean;
+	className?: string;
 };

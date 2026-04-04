@@ -1,23 +1,57 @@
-import { getTranslations } from "next-intl/server";
+import { getMessages, getTranslations } from 'next-intl/server';
 
-import CertsList from "./components/CertsLits";
-import CoursesSectionContent from "./components/CoursesSectionContent";
+import { type GetCoursesType } from '@/types/actionsTypes/actionsTypes';
+import { groupCoursesByCategory, skillCategorySlug } from '@/lib/utils/utils';
 
-import { type GetCoursesType } from "@/types/actionsTypes/actionsTypes";
+import CoursesByCategoryGrid, { type CoursesColumn } from './components/CoursesByCategoryGrid';
 
 export default async function CertsCoursesSection({ courses }: { courses: GetCoursesType | undefined }) {
+	const t = await getTranslations('homePage');
+	const messages = await getMessages();
+	const categoryTitles =
+		(messages.homePage?.certsSection?.categoryTitles as Record<string, string> | undefined) ?? {};
 
-    const t = await getTranslations("homePage");
+	if (!courses || 'error' in courses) {
+		return (
+			<section
+				id="certsSection"
+				className="w-full bg-transparent px-6 py-10 sm:px-10 md:px-12 md:py-12"
+			>
+				<p className="text-slate-400">{t('certsSection.fetchError')}</p>
+			</section>
+		);
+	}
 
-    if (!courses || 'error' in courses) {
-        return <p>Failed to fetch courses</p>
-    }
+	const columns: CoursesColumn[] = groupCoursesByCategory(courses.courses).map(({ category, items }) => ({
+		categoryKey: category,
+		title: categoryTitles[skillCategorySlug(category)] ?? category,
+		items,
+	}));
 
-    return (
-        <section id="certsSection" className="w-full min-h-screen h-fit flex flex-col justify-center gap-3 font-kanit snap-center">
-            <span className="text-4xl text-green-400">Certs & Courses &#123;</span>
-            <CoursesSectionContent description={t("certsSection.description")} courses={courses.courses} />
-            <span className="text-green-400 text-4xl mt-[2rem] sm:mt-0">&#125;</span>
-        </section>
-    )
+	return (
+		<section
+			id="certsSection"
+			className="flex w-full flex-col gap-8 bg-transparent px-6 py-10 sm:px-10 md:gap-8 md:px-12 md:py-12"
+		>
+			<header className="flex flex-col gap-2">
+				<p className="text-[13px] font-semibold tracking-wide text-slate-500">
+					{t('certsSection.sectionIndex')}
+				</p>
+				<h2 className="text-[2rem] font-light leading-tight text-slate-50 sm:text-[2.375rem]">
+					{t('certsSection.title')}
+				</h2>
+				<div className="h-[3px] w-12 rounded-full bg-[#facc15]" aria-hidden />
+			</header>
+
+			<p className="max-w-[640px] text-base font-normal leading-normal text-slate-400">
+				{t('certsSection.subtitle')}
+			</p>
+
+			{columns.length === 0 || columns.every((c) => c.items.length === 0) ? (
+				<p className="text-slate-500">{t('certsSection.emptyState')}</p>
+			) : (
+				<CoursesByCategoryGrid columns={columns.filter((c) => c.items.length > 0)} />
+			)}
+		</section>
+	);
 }

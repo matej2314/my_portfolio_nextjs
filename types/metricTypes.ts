@@ -1,4 +1,11 @@
-export type MetricItem = {
-    label: string;
-    value: string;
+export type AboutMetricId = 'years' | 'projects' | 'coreStack' | 'ide';
+
+export type AboutMetricConfig = {
+	id: AboutMetricId;
+	stat: string;
+};
+
+export type AboutMetricDisplay = {
+	stat: string;
+	label: string;
 };

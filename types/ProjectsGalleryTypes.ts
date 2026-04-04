@@ -9,3 +9,11 @@ export type ProjectsGalleryProps = {
 	projects: Project[];
 	images: ImageData[];
 };
+
+
+export type ProjectSlide = {
+	project: Project;
+	coverImage: string;
+	excerpt: string;
+	techLabel: string;
+};

@@ -1,22 +1,28 @@
-import ProjectsGallery from "./components/ProjectsGallery";
-import { GetProjectsType } from "@/types/actionsTypes/actionsTypes";
-import { getProjectImages } from "@/actions/projects";
+import { getTranslations } from 'next-intl/server';
+
+import ProjectsGrid from './components/ProjectsGrid';
+import { GetProjectsType } from '@/types/actionsTypes/actionsTypes';
+import { getProjectImages } from '@/actions/projects';
 
 export default async function ProjectsSection({ projects }: { projects: GetProjectsType | undefined }) {
+    const t = await getTranslations('homePage.projectsSection');
 
     if (!projects || 'error' in projects) {
-        return <p>Failed to fetch projects</p>
+        return (
+            <section id="projectsSection" className="flex w-full flex-col text-slate-200">
+                <p className="text-slate-400">{t('fetchError')}</p>
+            </section>
+        );
     }
 
     const images = await getProjectImages(projects.projects);
 
     return (
-        <section id="projectsSection" className="w-full h-fit flex flex-col text-slate-200 snap-center">
-            <span className="text-4xl text-green-400">Projects &#123;</span>
-            <section className="w-full h-[100dvh] flex justify-center items-center">
-                <ProjectsGallery projects={projects?.projects} images={images} />
-            </section>
-            <span className="text-green-400 text-4xl">&#125;</span>
+        <section
+            id="projectsSection"
+            className="flex w-full min-w-0 flex-col justify-center gap-10 overflow-x-hidden bg-[#0c0c0c] px-6 py-16 sm:px-10 md:px-12 md:py-20"
+        >
+            <ProjectsGrid projects={projects.projects} images={images} />
         </section>
-    )
+    );
 }

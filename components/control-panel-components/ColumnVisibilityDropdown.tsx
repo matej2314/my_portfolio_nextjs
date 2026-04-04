@@ -11,7 +11,7 @@ export function ColumnVisibilityDropdown<TData>({ table }: ColumnVisibilityDropd
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="text-sm bg-yellow-400 text-slate-900 hover:bg-yellow-500">
+                <Button variant="outline" className="text-sm bg-yellow-400 text-slate-900 hover:bg-yellow-500 cursor-pointer">
                     Select columns
                 </Button>
             </DropdownMenuTrigger>

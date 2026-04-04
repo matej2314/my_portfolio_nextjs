@@ -1,3 +1,6 @@
+import { type ContactChannelItem } from '@/types/contactChannelTypes';
+import { type FloatingContactData} from '@/types/floatingContactTypes';
+
 export const defaultData = {
 	auth: {
 		authError: (error: string): { success: false; error: string } => {
@@ -25,7 +28,7 @@ export const defaultData = {
 	defaultMLetter: {
 		size: 110,
 		duration: 1.1,
-		colors: ['#242424', '#f2d768','#f0d360','#ffda45','#facc15'],
+		colors: ['#242424', '#f2d768', '#f0d360', '#ffda45', '#facc15'],
 		mode: 'animated',
 	},
 	switchElement: {
@@ -53,7 +56,17 @@ export const defaultData = {
 	},
 	returnedTypeDefault: { success: false, error: '' },
 	defaultGA4Metrics: ['eventCount', 'totalUsers', 'averageSessionDuration', 'engagementRate'],
-	defaultGA4Dimensions: ['eventName', 'pagePath', 'contentId', 'deviceCategory', 'operatingSystem', 'pageReferrer', 'date', 'country', 'fileExtension'],
+	defaultGA4Dimensions: [
+		'eventName',
+		'pagePath',
+		'contentId',
+		'deviceCategory',
+		'operatingSystem',
+		'pageReferrer',
+		'date',
+		'country',
+		'fileExtension',
+	],
 	manageImagesDefaultResult: {
 		projectId: undefined,
 		mainFileName: undefined,
@@ -64,27 +77,21 @@ export const defaultData = {
 	},
 	contactItems: [
 		{
-			label: 'matej2314',
-			pathName: 'https://github.com/matej2314',
-			linkClass: 'w-full flex justify-center items-center gap-2',
-			itemClass: 'w-fit h-fit flex justify-center gap-4 hover:scale-110 hover:tracking-wider',
-			iconName: 'mdi:github',
-		},
-		{
-			label: 'mateusz-mateo2314-sliwowski',
-			pathName: 'https://www.linkedin.com/in/mateusz-mateo2314-sliwowski/',
-			linkClass: 'w-full flex justify-center gap-2',
-			itemClass: 'w-fit h-fit flex justify-center gap-4 hover:scale-110 hover:tracking-wider',
-			iconName: 'skill-icons:linkedin',
-		},
-		{
+			kind: 'email',
 			label: 'mateo2314@gmail.com',
 			pathName: 'mailto:mateo2314@gmail.com',
-			linkClass: 'w-full flex justify-center gap-2',
-			itemClass: 'w-fit h-fit flex justify-center gap-4 hover:scale-110 hover:tracking-wider',
-			iconName: 'ic:outline-email',
 		},
-	],
+		{
+			kind: 'linkedin',
+			label: 'mateusz-mateo2314-sliwowski',
+			pathName: 'https://www.linkedin.com/in/mateusz-mateo2314-sliwowski/',
+		},
+		{
+			kind: 'github',
+			label: 'matej2314',
+			pathName: 'https://github.com/matej2314',
+		},
+	] satisfies ContactChannelItem[],
 	langOptions: [
 		{ label: 'Polski', value: 'pl', ariaLabel: 'Polski' },
 		{ label: 'English', value: 'en', ariaLabel: 'English' },
@@ -95,9 +102,55 @@ export const defaultData = {
 		pauseTime: 1000,
 	},
 	baseSectionSubHeader: {
-		content: ['FullStack Web Developer', 'Security enthusiast', 'Ready to work!'],
-		typingSpeed: 100,
-		deletingSpeed: 60,
-		pauseTime: 1000,
+		content: ['Node.js', 'React', 'Next.js', 'Wordpress'],
 	},
+	floatingContactData: {
+		photoSrc: '/profilowe.jpg',
+		fullName: 'Mateusz Śliwowski',
+		contactRows: [
+			{
+				kind: 'email',
+				icon: 'mdi:email-outline',
+				href: 'mailto:mateo2314@gmail.com',
+				value: 'mateo2314@gmail.com',
+			},
+			{
+				kind: 'phone',
+				icon: 'mdi:phone',
+				href: 'tel:+48507365489',
+				value: '+48 507 365 489',
+			},
+			{
+				kind: 'location',
+				icon: 'mdi:map-marker-radius-outline',
+				value: 'Warsaw, Białystok, Wysokie Mazowieckie, Poland',
+			},
+		],
+		socialLinks: [
+			{
+				kind: 'linkedin',
+				icon: 'mdi:linkedin',
+				href: 'https://www.linkedin.com/in/mateusz-mateo2314-sliwowski/',
+				value: 'mateusz-mateo2314-sliwowski',
+			},
+			{
+				kind: 'github',
+				icon: 'mdi:github',
+				href: 'https://github.com/matej2314',
+				value: 'matej2314',
+			},
+			{
+				kind: 'facebook',
+				icon: 'mdi:facebook',
+				href: 'https://www.facebook.com/mateusz.mateo2314.sliwowski',
+				value:'Facebook',
+			}
+		],
+		config: {
+			accent: '#ffdb70',
+			cardBg: '#1e1e1f',
+			border: '#383838',
+			cardWidth: 'w-[min(20rem,calc(100vw-3rem))]',
+		}
+	} satisfies FloatingContactData,
 };

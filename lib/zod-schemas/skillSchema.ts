@@ -3,7 +3,7 @@ import { validatedString, containsXSS } from './basicValidation';
 import { idSchema } from './idSchema';
 
 export const baseSkillSchema = z.object({
-	skill_name: validatedString(5, 20, {
+	skill_name: validatedString(3, 20, {
 		requiredError: 'Skill name is required.',
 		tooBig: 'Skill name must contains maximum 20 characters',
 		tooSmall: 'Skill name must contains minimum 5 characters.',
@@ -17,7 +17,7 @@ export const baseSkillSchema = z.object({
 	}).refine(value => !containsXSS(value), {
 		message: 'Skill category contains dangerous characters.',
 	}),
-	icon_name: validatedString(5, 30, {
+	icon_name: validatedString(5, 50, {
 		tooSmall: 'Icon name must contains minimum 5 characters.',
 		tooBig: 'Icon name must contains maximum 30 characters.',
 	}).refine(value => !containsXSS(value), {

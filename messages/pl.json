@@ -6,17 +6,42 @@
 			"learnMoreTxt": "Poznaj mnie"
 		},
 		"aboutSection": {
-			"description": "Jestem webdeveloperem z doświadczeniem w SEO oraz solidną znajomością cyberbezpieczeństwa. Jeśli szukasz specjalisty, który nie tylko stworzy estetyczną i funkcjonalną stronę internetową, ale także zadba o jej bezpieczeństwo i doradzi w kwestiach SEO - skontaktuj się ze mną, a chętnie zajmę się Twoim projektem. Nieustannie rozwijam swoje umiejętności i śledzę najnowsze technologie oraz standardy internetowe."
+			"sectionIndex": "01",
+			"title": "O mnie",
+			"description": "Tworzę aplikacje webowe od fundamentu po wdrożenie — od React i Next.js po Node.js i bazy danych. W projektach stawiam na czytelny kod, wydajność i dopracowany UX. Pracuję też z WordPressem i podstawami DevOps, więc rozumiem cały łańcuch od developmentu do produkcji.",
+			"downloadCv": "Pobierz CV",
+			"viewProjects": "Zobacz projekty",
+			"metricLabels": {
+				"years": "Lat doświadczenia",
+				"projects": "Projektów",
+				"coreStack": "Główny stack",
+				"ide": "Aktualne IDE"
+			}
 		},
 		"experienceSection": {
-"employedSince": "Pracowałem od",
-"employedTo": "Pracowałem do",
-"currentPosition": "Aktualne stanowisko",
-"visitWebsite": "Odwiedź stronę firmy"
-
+			"sectionIndex": "02",
+			"title": "Doświadczenie",
+			"subtitle": "Ścieżka zawodowa — od full-stack po architekturę i współpracę w zespołach produktowych.",
+			"present": "obecnie",
+			"emptyState": "Brak wpisów o doświadczeniu.",
+			"fetchError": "Nie udało się wczytać doświadczenia.",
+			"employedSince": "Pracowałem od",
+			"employedTo": "Pracowałem do",
+			"currentPosition": "Aktualne stanowisko",
+			"visitWebsite": "Strona internetowa pracodawcy"
 		},
 		"skillsSection": {
+			"sectionIndex": "03",
+			"title": "Umiejętności",
+			"subtitle": "Frontend i backend, bazy danych, narzędzia — wybrane technologie, z których korzystam na co dzień. Każdy projekt dopasowuję do stacka i wymagań.",
+			"fetchError": "Nie udało się wczytać umiejętności.",
+			"emptyState": "Brak umiejętności do wyświetlenia.",
 			"description": "Tworzę nowoczesne, responsywne aplikacje internetowe, dbając o czytelność kodu, wydajność i bezpieczeństwo. Sprawnie poruszam się w środowisku frontendowym i backendowym, wykorzystując sprawdzone narzędzia oraz technologie. Mam doświadczenie w pracy z systemami Linux, konteneryzacją aplikacji (Docker), automatyzacją procesów, a także optymalizacją SEO i analizą bezpieczeństwa aplikacji webowych. Stale rozwijam się w kierunku programistycznym i w obszarze cyberbezpieczeństwa, co pozwala mi tworzyć solidne, skalowalne i bezpieczne rozwiązania gotowe do wdrożenia na środowisku produkcyjnym.",
+			"categoryTitles": {
+				"web_development": "Web Development",
+				"security": "Bezpieczeństwo",
+				"devops": "DevOps"
+			},
 			"skillsList": {
 				"tailwindcss": "Framework CSS do tworzenia responsywnych i estetycznych aplikacji internetowych.",
 				"styledcomponents": "Biblioteka CSS do tworzenia komponentów React z użyciem CSS.",
@@ -32,24 +57,68 @@
 				"docker": "Platforma do konteneryzacji, która pozwala uruchamiać aplikacje w izolowanych, przenośnych środowiskach.",
 				"gitlab": "Menedżer repozytoriów Git. Usprawnia współpracę w zespole.",
 				"metasploit": "Zaawansowany framework do testowania bezpieczeństwa i wykonywania testów penetracyjnych.",
-				"github": "Popularna platforma do wersjonowania kodu aplikacji i współpracy w zespole."
-
+				"github": "Popularna platforma do wersjonowania kodu aplikacji i współpracy w zespole.",
+				"mcp": "Wykorzystuję i tworzę serwery MCP w codziennej pracy."
 			}
 		},
 		"certsSection": {
-			"description": "Nieustannie poszerzam swoją wiedzę jako twórca stron internetowych i pasjonat bezpieczeństwa. Wybrane kursy i certyfikaty poniżej odzwierciedlają moje zaangażowanie w rozwój i dbałość o bezpieczeństwo w dynamicznym świecie technologii."
+			"sectionIndex": "04",
+			"title": "Szkolenia i certyfikaty",
+			"subtitle": "Kursy i certyfikaty uzupełniam praktyką w projektach — od React i Node po bezpieczeństwo i bazy danych. Najważniejsze jest dla mnie łączenie wiedzy z realnymi wdrożeniami.",
+			"fetchError": "Nie udało się wczytać kursów.",
+			"emptyState": "Brak kursów do wyświetlenia.",
+			"description": "Nieustannie poszerzam swoją wiedzę jako twórca stron internetowych i pasjonat bezpieczeństwa. Wybrane kursy i certyfikaty poniżej odzwierciedlają moje zaangażowanie w rozwój i dbałość o bezpieczeństwo w dynamicznym świecie technologii.",
+			"categoryTitles": {
+				"web_development": "Web Development",
+				"seo": "SEO",
+				"security": "Security",
+				"other": "Inne"
+			}
+		},
+		"projectsSection": {
+			"sectionIndex": "05",
+			"title": "Projekty",
+			"description": "Kliknij kartę — przechodzi w pełnoekranowy widok szczegółów (nad przyciemnioną stroną). W środku: cel, założenia, galeria i podsumowanie.",
+			"openDetails": "Otwórz szczegóły →",
+			"backToProjects": "← Wróć do strony głównej",
+			"breadcrumbPrefix": "Projekty",
+			"fetchError": "Nie udało się wczytać projektów."
 		},
 		"contactSection": {
-			"title": "Masz projekt do zrealizowania?",
-			"subTitle": "Z przyjemnością porozmawiam o nowych możliwościach współpracy.",
+			"sectionIndex": "06",
+			"title": "Kontakt",
+			"intro": "Masz pytanie lub chcesz omówić projekt? Napisz — odpowiem w ciągu 24 godzin. Chętnie odpowiem na pytania o współpracę, wyceny lub techniczne szczegóły. Możesz skorzystać z formularza poniżej albo napisać bezpośrednio na maila lub LinkedIn.",
+			"cards": {
+				"email": "Email",
+				"linkedin": "LinkedIn",
+				"github": "GitHub"
+			},
+			"linkedinCta": "Dodaj mnie do swojej sieci",
 			"contactForm": {
-				"nameLabel": "Imię:",
-				"subjectLabel": "Temat:",
-				"messageLabel": "Wiadomość:",
+				"nameLabel": "Imię i nazwisko",
+				"emailLabel": "Adres e-mail",
+				"subjectLabel": "Temat wiadomości",
+				"messageLabel": "Wiadomość",
 				"submitBtn": {
 					"pendingTxt": "Wysyłanie...",
-					"idleTxt": "Wyślij wiadomość"
+					"idleTxt": "Wyślij"
 				}
+			}
+		},
+		"floatingContact": {
+			"regionLabel": "Szybki kontakt",
+			"toggleOpen": "Otwórz kartę kontaktu",
+			"toggleClose": "Zamknij kartę kontaktu",
+			"roleBadge": "Software Developer",
+			"rows": {
+				"email": "E-mail",
+				"phone": "Telefon",
+				"location": "Lokalizacja"
+			},
+			"social": {
+				"linkedin": "Profil LinkedIn",
+				"github": "Profil GitHub",
+				"facebook": "Profil Facebook"
 			}
 		}
 	},
@@ -64,7 +133,9 @@
 		"Projects": "Projekty",
 		"Blog": "Blog",
 		"Contact": "Kontakt",
-		"Resume": "CV"
+		"Resume": "CV",
+		"CV": "CV",
+		"languageSwitcherLabel": "Język strony"
 	},
 	"projectDetailsPage": {
 		"stackLabel": "Stack:",
@@ -72,6 +143,9 @@
 		"conclusion": "Podsumowanie",
 		"demoLabel": "Demo projektu:",
 		"goalLabel": "Cel projektu:",
-		"descriptionLabel": "Opis projektu:"
+		"descriptionLabel": "Opis projektu:",
+		"assumptionsLabel": "Założenia",
+		"metaDemo": "Demo",
+		"metaRepo": "Repo"
 	}
 }

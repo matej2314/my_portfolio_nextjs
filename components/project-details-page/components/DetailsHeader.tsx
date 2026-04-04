@@ -21,22 +21,18 @@ export default async function DetailsHeader({ selectedProject }: DetailsHeaderPr
 
 
     return (
-        <header className="w-full h-fit flex flex-col items-center gap-8">
-            <h2
-                className="w-full h-fit flex justify-center text-yellow-300 text-2xl sm:text-5xl tracking-wide font-kanit"
-            >
+        <header className="flex h-fit w-full max-w-4xl flex-col items-center gap-6 sm:gap-8">
+            <h2 className="flex w-full justify-center text-center text-3xl font-semibold tracking-wide text-[#fbbf24] sm:text-4xl md:text-5xl font-kanit">
                 {selectedProject.project_name}
             </h2>
             <DisplayDifficulty selectedProject={selectedProject} />
-            <div className="w-full h-fit flex justify-center items-center gap-2 sm:gap-3">
-                <span
-                    className="text-slate-200 text-[0.8rem] sm:text-base font-semibold font-kanit tracking-wide"
-                >
+            <div className="flex h-fit w-full flex-wrap items-center justify-center gap-2 sm:gap-3">
+                <span className="text-[0.8rem] font-semibold tracking-wide text-slate-200 sm:text-base font-kanit">
                     {t("stackLabel")}
                 </span>
                 <BadgeList items={techArray} />
             </div>
-            <p className="w-fit h-fit flex flex-col justify-center items-center gap-3">
+            <p className="flex h-fit w-full max-w-2xl flex-col items-center justify-center gap-3">
                 <span className="text-md font-semibold tracking-wide text-slate-200">
                     {t("demoLabel")}
                 </span>

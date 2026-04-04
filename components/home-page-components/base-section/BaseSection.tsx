@@ -1,56 +1,37 @@
+import Image from "next/image"
 import { getTranslations } from "next-intl/server"
 
-import { Button } from "../../ui/button"
-import NavLink from "@/components/links/NavLink"
 import HomeSubHeader from "./components/HomeSubHeader"
-import SloganWrapper from "./components/SloganWrapper"
-import IconButton from "@/components/ui/elements/IconButton"
-import { defaultData } from "@/lib/defaultData"
 
 export default async function BaseSection() {
 
     const t = await getTranslations("homePage");
-    const contentArray = defaultData.baseSectionSubHeader.content;
-    const typingSpeed = defaultData.baseSectionSubHeader.typingSpeed;
-    const deletingSpeed = defaultData.baseSectionSubHeader.deletingSpeed;
-
+   
     return (
-        <section id="baseSection" className="w-full min-h-screen h-screen flex flex-col md:flex-row justify-center md:px-0 lg:pt-[4rem] xl:gap-[21rem] font-kanit snap-start">
-            <div className=" w-full flex flex-col items-start mt-0 md:mt-[5rem]">
-                <p className="text-4xl sm:text-5xl md:text-6xl text-yellow-300 text-glow">
-                    Mateusz
+        <section
+            id="baseSection"
+            className="relative isolate flex min-h-0 w-full flex-1 flex-col items-center justify-center font-jakarta md:flex-row md:px-0 lg:pt-0 xl:gap-[21rem]"
+        >
+            <Image
+                src="/base-section-background.webp"
+                alt=""
+                fill
+                priority
+                className="object-cover object-center"
+                sizes="100vw"
+            />
+            <div className="pointer-events-none absolute inset-0 bg-black/50" aria-hidden />
+            <div className="relative z-[1] mt-0 flex w-full flex-col items-center justify-center gap-5 px-3 sm:px-6 md:mt-[5rem]">
+                <p className=" text-md sm:text-5xl md:text-5xl text-[#f8fafc] font-jakarta">
+                   {`Implementacja, integracja, optymalizacja`}
                 </p>
                 <div className="w-fit">
-                    <HomeSubHeader texts={contentArray} typingSpeed={typingSpeed} deletingSpeed={deletingSpeed} />
+                    <HomeSubHeader/>
                 </div>
-                <p className=" text-sm sm:text-base md:text-xl text-white mb-5 tracking-wide text-justify leading-[2rem] mt-3">
+                <p className="max-w-[80vw]  md:max-w-[75%] text-sm sm:text-base md:text-lg text-white mb-5 tracking-wide text-justify leading-[2rem] mt-3">
                     {t("baseSection.baseDescription")}
                 </p>
-                <div className="w-full sm:w-11/12 md:w-fit h-fit flex flex-col items-start justify-center sm:flex-row gap-4 sm:gap-[3rem]">
-                    <NavLink
-                        variant="home"
-                        pathName="#contactSection"
-                        title='Contact me'
-                        aria-label="Navigate to contact section"
-                    >
-                        <Button
-                            className="w-1/2 md:w-fit h-fit xl:mt-0 text-md flex hover:bg-yellow-300 justify-center items-center bg-yellow-200 text-slate-900 font-bold tracking-wide xl:text-3xl"
-                        >
-                            {t("baseSection.contactTxt")}
-                        </Button>
-                    </NavLink>
-                    <IconButton
-                        iconCode="maki:arrow"
-                        iconClass="mt-1 ml-1"
-                        className="w-[11rem] font-[1rem] md:w-fit h-fit flex px-4 sm:px-0 justify-center items-center tracking-wide xl:text-2xl pt-2 pb-3 bg-transparent border-2 border-yellow-300 text-yellow-300 hover:bg-transparent hover-shadow"
-                        redirectPath="#aboutSection"
-                        aria-label="Navigate to about section"
-                    >
-                        {t("baseSection.learnMoreTxt")}
-                    </IconButton>
-                </div>
             </div>
-            <SloganWrapper />
         </section>
 
     )

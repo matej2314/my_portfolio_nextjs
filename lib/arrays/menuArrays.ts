@@ -21,8 +21,8 @@ export const homeMenuArray: MenuItem[] = [
 	{ path: '#certsSection', label: 'Courses', variant: 'home' },
 	{ path: '#projectsSection', label: 'Projects', variant: 'home' },
 	// { path: '', label: 'Blog', variant: 'home' },
-	{ path: '#contactSection', label: 'Contact', variant: 'home' },
-	{ path: '', label: 'Resume', variant: 'project' },
+	// { path: '#contactSection', label: 'Contact', variant: 'home' },
+	{ path: '', label: 'CV', variant: 'project' },
 ];
 
 export const getProjectMenuArray = (github: string, demo: string): MenuItem[] => {
@@ -31,7 +31,7 @@ export const getProjectMenuArray = (github: string, demo: string): MenuItem[] =>
 		{ path: demo, label: 'Demo', variant: 'external' },
 		{ path: github, label: 'Github', variant: 'external' },
 		{ path: '?modal=contact', label: 'Contact', variant: 'project' },
-		{ path: '', label: 'Resume', variant: 'project' },
+		{ path: '', label: 'CV', variant: 'project' },
 	];
 };
 
@@ -47,5 +47,5 @@ export const controlMenuArray: ControlMenuItem[] = [
 	{ key: 'projects', label: 'Projects', icon: 'grommet-icons:projects', actions: ['add', 'manage'] },
 	{ key: 'skills', label: 'Skills', icon: 'game-icons:skills', actions: ['add', 'manage'] },
 	{ key: 'blog', label: 'Blog', icon: 'icomoon-free:blog', actions: ['add', 'manage'] },
-	{ key: 'resume', label: 'Resume', icon: 'mdi:resume', actions: ['add'] },
+	{ key: 'cv', label: 'CV', icon: 'mdi:resume', actions: ['add'] },
 ];

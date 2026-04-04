@@ -4,8 +4,11 @@ import { blogMenuArray } from "@/lib/arrays/menuArrays"
 export default function BlogPageMenu() {
 
     return (
-        <section id="blog-page-menu" className="w-9/12 h-[2rem] flex justify-end items-end ml-[5rem]">
-            < BaseMenu array={blogMenuArray} />
+        <section
+            id="blog-page-menu"
+            className="w-full border-b border-green-900/20 bg-[#000805]"
+        >
+            <BaseMenu array={blogMenuArray} />
         </section>
     )
 }

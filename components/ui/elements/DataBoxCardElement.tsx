@@ -12,9 +12,9 @@ type DataBoxCardProps = {
 
 export default function DataBoxCardElement({ header, value, valueColor = 'text-slate-300', suffix = '' }: DataBoxCardProps) {
     return (
-        <Card className="w-full select-none bg-radial-green text-slate-300 border-2 border-green-500/15 flex gap-y-2">
+        <Card className="w-full select-none bg-[#0a0f0d] text-slate-300 border-2 border-green-500/15 flex gap-y-2">
             <CardHeader>
-                <CardTitle className="w-full flex justify-center text-xl font-semibold">
+                <CardTitle className="w-full flex justify-center text-lg font-semibold">
                     {header}
                     <span>{suffix}</span>
                 </CardTitle>

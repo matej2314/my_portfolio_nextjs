@@ -1,33 +1,57 @@
 'use client';
 
 import { motion, type Variants } from 'motion/react';
+import { useTranslations } from 'next-intl';
 
 import { defaultData } from '@/lib/defaultData';
-import { ListItem } from '@/components/ListItem';
+import { type ContactChannelItem } from '@/types/contactChannelTypes';
 
-const contactItemsVariants: Variants = {
-	hidden: { opacity: 0, scale: 0.8 },
+const listVariants: Variants = {
+	hidden: { opacity: 0 },
 	visible: {
 		opacity: 1,
-		scale: 1,
-		transition: {
-			delay: 0.2,
-			staggerChildren: 0.2,
-		},
+		transition: { staggerChildren: 0.08 },
 	},
-	exit: { opacity: 0, scale: 0.5 },
 };
 
+const itemVariants: Variants = {
+	hidden: { opacity: 0, y: 8 },
+	visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
+};
+
+function channelValue(item: ContactChannelItem, linkedinCta: string): string {
+	return item.kind === 'linkedin' ? linkedinCta : item.label;
+}
+
 export default function ContactItems() {
+	const t = useTranslations('homePage.contactSection');
 	const contactItems = defaultData.contactItems;
 
 	return (
-		<>
-			<motion.ul variants={contactItemsVariants} initial='hidden' whileInView='visible' exit='exit' className='w-fit h-fit flex flex-col gap-7 xl:pl-3 font-kanit' viewport={{ amount: 0.3, once: true }}>
-				{contactItems.map(item => (
-					<ListItem key={item.label} itemClass={item.itemClass} pathName={item.pathName} label={item.label} iconName={item.iconName} linkClass={item.linkClass} />
-				))}
-			</motion.ul>
-		</>
+		<motion.ul
+			variants={listVariants}
+			initial='hidden'
+			whileInView='visible'
+			viewport={{ amount: 0.2, once: true }}
+			className='flex w-full max-w-[520px] flex-col gap-4'
+		>
+			{contactItems.map(item => (
+				<motion.li key={item.pathName} variants={itemVariants}>
+					<a
+						href={item.pathName}
+						className='flex items-center gap-3 rounded-lg border border-slate-700 bg-[#0c0c0c] px-5 py-3.5 transition-colors hover:border-slate-600'
+						{...(item.pathName.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+					>
+						<span className='h-8 w-1 shrink-0 rounded-sm bg-[#facc15]' aria-hidden />
+						<div className='flex min-w-0 flex-col gap-1'>
+							<span className='text-xs font-semibold text-slate-500'>{t(`cards.${item.kind}`)}</span>
+							<span className={`truncate text-base ${item.kind === 'linkedin' ? 'font-normal text-[#facc15]' : 'text-slate-200'}`}>
+								{channelValue(item, t('linkedinCta'))}
+							</span>
+						</div>
+					</a>
+				</motion.li>
+			))}
+		</motion.ul>
 	);
 }

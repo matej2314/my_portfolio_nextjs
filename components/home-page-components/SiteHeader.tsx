@@ -1,5 +1,5 @@
 import HomePageMenu from "./HomePageMenu";
-import ProjectDetailsMenu from "../project-details-page/components/ProjectDetailsMenu";
+// import ProjectDetailsMenu from "../project-details-page/components/ProjectDetailsMenu";
 import BlogPageMenu from "../blog-page-components/BlogPageMenu";
 
 import { type ReactNode } from "react";
@@ -10,9 +10,9 @@ export default function SiteHeader({ variant, github, demo }: SiteHeaderProps) {
     let SelectedMenu: ReactNode;
 
     switch (variant) {
-        case 'project':
-            SelectedMenu = < ProjectDetailsMenu github={github as string} demo={demo as string} />
-            break;
+        // case 'project':
+        //     SelectedMenu = < ProjectDetailsMenu github={github as string} demo={demo as string} />
+        //     break;
         case 'home':
             SelectedMenu = <HomePageMenu />
             break;
@@ -25,7 +25,7 @@ export default function SiteHeader({ variant, github, demo }: SiteHeaderProps) {
 
 
     return (
-        <header id="headerSection" className="w-[100dvw] flex justify-center md:mr-[25dvw] z-10">
+        <header id="headerSection" className="relative z-40 w-full">
             {SelectedMenu}
         </header>
     );

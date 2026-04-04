@@ -4,7 +4,10 @@ import BaseMenu from "../BaseMenu";
 export default function HomePageMenu() {
 
     return (
-        <section id="home-page-menu" className="w-screen md:h-[5rem] relative top-0 flex justify-end items-center md:translate-x-9.5 md:items-end md:fixed bg-[#000905]">
+        <section
+            id="home-page-menu"
+            className="sticky top-0 z-40 w-full border-b border-green-900/20 bg-[#000805]"
+        >
             <BaseMenu array={homeMenuArray} />
         </section>
     )

@@ -1,33 +1,35 @@
-import { NextIntlClientProvider } from "next-intl";
-import { getLocale, getMessages } from "next-intl/server";
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale, getMessages } from 'next-intl/server';
+import FloatingContactBox from '@/components/floating-contact-box/FloatingContactBox';
+// import FloatingChatBox from '@/components/floating-chat-box/FloatingChatBox';
+import ContentContainer from '@/components/ContentContainer';
+import HomeContent from '@/components/home-page-components/HomeContent';
+import { HomeProjectTransitionProvider } from '@/context/HomeProjectTransitionContext';
 
-import DotNavigation from "@/components/home-page-components/DotNavigation";
-import HomeContent from "@/components/home-page-components/HomeContent";
-
-import { type ReactNode } from "react";
-import { type Metadata } from "next";
+import { type ReactNode } from 'react';
+import { type Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'msliwowski.net | WebDev, SEO, Security',
-    description: 'Webdev, SEO, Security'
-}
+	title: 'msliwowski.net | WebDev, SEO, Security',
+	description: 'Webdev, SEO, Security',
+};
 
-export default async function HomePageLayout({ children}: { children: ReactNode }) {
+export default async function HomePageLayout({ children, projectModal }: { children: ReactNode; projectModal: ReactNode }) {
+	const locale = await getLocale();
+	const messages = await getMessages({ locale });
 
-    const locale = await getLocale();
-
-    const messages = await getMessages({ locale });
-
-    return (
-        <main className="min-h-screen w-full bg-[#000805] flex justify-center items-start">
-            <HomeContent>
-                <div className="fixed right-4 sm:right-10 top-1/3 transform -translate-y-1/2 z-50">
-                    <DotNavigation />
-                </div>
-                <NextIntlClientProvider messages={messages}>
-                    {children}
-                </NextIntlClientProvider>
-            </HomeContent>
-        </main>
-    )
+	return (
+		<ContentContainer>
+			<main className='flex min-h-screen w-full justify-center bg-[#000805]'>
+				<HomeProjectTransitionProvider>
+					<NextIntlClientProvider messages={messages}>
+						<HomeContent>{children}</HomeContent>
+						{projectModal}
+						<FloatingContactBox />
+						{/* <FloatingChatBox /> */}
+					</NextIntlClientProvider>
+				</HomeProjectTransitionProvider>
+			</main>
+		</ContentContainer>
+	);
 }

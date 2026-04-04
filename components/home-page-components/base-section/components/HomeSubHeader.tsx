@@ -1,44 +1,11 @@
-'use client';
+import { defaultData } from "@/lib/defaultData";
+import TechList from "./TechList";
 
-import { motion } from 'motion/react';
-import { useState, useEffect } from 'react';
-
-import { defaultData } from '@/lib/defaultData';
-
-import { type HomesubHeaderType } from '@/types/homeSubHeaderTypes';
-
-export default function HomeSubHeader({ texts, typingSpeed = defaultData.homeSubHeaderValues.typingSpeed, deletingSpeed = defaultData.homeSubHeaderValues.deletingSpeed, pauseTime = defaultData.homeSubHeaderValues.pauseTime }: HomesubHeaderType) {
-	const [currentIndex, setCurrentIndex] = useState<number>(0);
-	const [currentText, setCurrentText] = useState<string | null>('');
-	const [isDeleting, setIsDeleting] = useState<boolean>(false);
-
-	useEffect(() => {
-		const fullText = texts[currentIndex];
-		const speed = isDeleting ? deletingSpeed : typingSpeed;
-
-		let updatedText = '';
-
-		if (isDeleting) {
-			updatedText = fullText.substring(0, (currentText as string).length - 1);
-		} else {
-			updatedText = fullText.substring(0, (currentText as string).length + 1);
-		}
-
-		const timeout = setTimeout(() => {
-			setCurrentText(updatedText);
-
-			if (!isDeleting && updatedText === fullText) {
-				setTimeout(() => setIsDeleting(true), pauseTime);
-			}
-
-			if (isDeleting && updatedText === '') {
-				setIsDeleting(false);
-				setCurrentIndex(prevIndex => (prevIndex + 1) % texts.length);
-			}
-		}, speed);
-
-		return () => clearTimeout(timeout);
-	}, [currentText, isDeleting, currentIndex, texts, typingSpeed, deletingSpeed, pauseTime]);
-
-	return <motion.p className='h-[2.25rem] mb-1 text-2xl xl:text-4xl text-green-600 font-kanit mt-1'>{currentText}</motion.p>;
+export default function HomeSubHeader() {
+	const contentArray = defaultData.baseSectionSubHeader.content;
+	return (
+		<p className="mb-1 mt-1 text-center font-inter text-md md:text-2xl leading-normal text-yellow-300 xl:text-3xl">
+			<TechList techArray={contentArray} />
+		</p>
+	);
 }

@@ -14,11 +14,12 @@ export default function ScrollToTop() {
 
     return (
         <IconButton
-            iconCode="bx:arrow-to-top"
+            iconCode="mingcute:arrow-up-fill"
+            iconClass="size-4"
             redirectPath="#baseSection"
             title="Scroll to top"
             aria-label="Scroll to top of page"
-            className={`fixed bottom-6 right-6 transition-opacity duration-300 ${scroll ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            className={`fixed bottom-[3.5rem] right-[5vw] w-[32px] h-[32px] rounded-full transition-opacity duration-300 ${scroll ? 'opacity-100' : 'opacity-0 pointer-events-none'
                 } bg-yellow-300 text-slate-900 hover:bg-yellow-400`}
         />
     )

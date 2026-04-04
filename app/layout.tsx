@@ -7,6 +7,9 @@ import ClientAnalytics from "@/components/ClientAnalytics";
 import { generatePageMetadata } from "@/lib/generatePageMetadata";
 import { APP_CONFIG } from "@/config/app.config";
 import { kanit } from "@/fonts/kanit";
+import { plusJakartaSans } from "@/fonts/jakarta";
+import { inter } from "@/fonts/inter";
+
 
 export const generateMetadata = () => generatePageMetadata('page', null);
 
@@ -23,7 +26,7 @@ export default async function RootLayout({
   
 
   return (
-    <html lang={htmlLang} className={`max-w-screen min-h-screen no-scrollbar bg-[#0c0c0c] scroll-smooth overflow-x-hidden ${kanit.className}`}>
+    <html lang={htmlLang} className={`max-w-screen min-h-screen no-scrollbar bg-[#000805] scroll-smooth overflow-x-hidden ${plusJakartaSans.className} ${inter.className}`}>
       <head>
         <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
         <Script id="google-analytics" strategy="afterInteractive">
@@ -37,7 +40,7 @@ export default async function RootLayout({
           `}
         </Script>
       </head>
-      <body>
+      <body className="bg-[#000805]">
         <NextIntlClientProvider locale={locale}>
           {children}
         </NextIntlClientProvider>

@@ -8,6 +8,7 @@ export const courseCatArray: Option[] = [
 	{ value: 'Security', label: 'Security', ariaLabel: 'Security' },
 	{ value: 'SEO', label: 'SEO', ariaLabel: 'SEO' },
 	{ value: 'WebDev', label: 'WebDev', ariaLabel: 'WebDev' },
+	{ value: 'AI', label: 'AI', ariaLabel: 'AI' },
 ];
 
 export const projectCatArray: Option[] = [
