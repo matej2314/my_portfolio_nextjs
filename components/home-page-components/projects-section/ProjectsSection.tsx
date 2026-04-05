@@ -9,7 +9,10 @@ export default async function ProjectsSection({ projects }: { projects: GetProje
 
     if (!projects || 'error' in projects) {
         return (
-            <section id="projectsSection" className="flex w-full flex-col text-slate-200">
+            <section
+                id="projectsSection"
+                className="flex w-full flex-col text-slate-200 max-[480px]:mx-auto max-[480px]:max-w-[100vw]"
+            >
                 <p className="text-slate-400">{t('fetchError')}</p>
             </section>
         );
@@ -20,7 +23,7 @@ export default async function ProjectsSection({ projects }: { projects: GetProje
     return (
         <section
             id="projectsSection"
-            className="flex w-full min-w-0 flex-col justify-center gap-10 overflow-x-hidden bg-[#0c0c0c] px-6 py-16 sm:px-10 md:px-12 md:py-20"
+            className="flex w-full min-w-0 flex-col justify-center gap-10 overflow-x-hidden bg-[#0c0c0c] px-6 py-16 max-[480px]:mx-auto max-[480px]:max-w-[100vw] sm:px-10 md:px-12 md:py-20"
         >
             <ProjectsGrid projects={projects.projects} images={images} />
         </section>

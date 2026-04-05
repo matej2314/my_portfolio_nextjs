@@ -22,19 +22,28 @@ export default async function AboutSection({ aboutText }: { aboutText: AboutText
 	return (
 		<section
 			id="aboutSection"
-			className="flex min-h-dvh w-full flex-col justify-center gap-8 bg-[#0c0c0c] px-6 py-10 sm:px-10 md:gap-8 md:px-12 md:py-12"
+			className="flex min-h-dvh w-full flex-col justify-center gap-8 bg-[#0c0c0c] px-6 py-10 max-[480px]:mx-auto max-[480px]:max-w-[100vw] max-[480px]:gap-6 max-[480px]:px-4 max-[480px]:py-8 sm:px-10 md:gap-8 md:px-12 md:py-12"
 		>
-			<header className="flex flex-col gap-2">
-				<p className="text-[13px] font-semibold tracking-wide text-slate-500">{t('aboutSection.sectionIndex')}</p>
-				<h2 className="text-[2rem] font-light leading-tight text-slate-50 sm:text-[2.375rem]">{t('aboutSection.title')}</h2>
-				<div className="h-[3px] w-12 rounded-full bg-[#facc15]" aria-hidden />
+			<header className="flex flex-col gap-2 max-[480px]:gap-1.5">
+				<p className="text-[13px] font-semibold tracking-wide text-slate-500 max-[480px]:text-xs">
+					{t('aboutSection.sectionIndex')}
+				</p>
+				<h2 className="text-[2rem] font-light leading-tight text-slate-50 max-[480px]:text-[1.625rem] max-[480px]:leading-snug sm:text-[2.375rem]">
+					{t('aboutSection.title')}
+				</h2>
+				<div className="h-[3px] w-12 rounded-full bg-[#facc15] max-[480px]:w-10" aria-hidden />
 			</header>
 
 			<MetricsSection metrics={metrics} />
 
-			<p className="max-w-none text-base font-normal leading-[1.6] text-[#e2e8f0]">{description}</p>
+			<p className="max-w-none text-base font-normal leading-[1.6] text-[#e2e8f0] max-[480px]:text-[15px] max-[480px]:leading-relaxed">
+				{description}
+			</p>
 
-			<div className="flex flex-wrap gap-3" data-name="aboutCta">
+			<div
+				className="flex flex-wrap gap-3 max-[480px]:flex-col max-[480px]:gap-2.5 [&>a]:max-[480px]:w-full [&>a]:max-[480px]:justify-center"
+				data-name="aboutCta"
+			>
 				<Link
 					href={cvHref}
 					download={cvFileName}

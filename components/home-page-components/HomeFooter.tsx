@@ -8,7 +8,7 @@ export default async function HomeFooter() {
 
     return (
         <footer className="w-full h-full max-h-[50px] flex justify-start items-center px-4 py-4">
-            <div className="w-full h-fit flex justify-between items-center text-slate-400">
+            <div className="grid grid-rows-2 w-full h-fit md:flex md:justify-between items-center text-slate-400">
                 <p>© 2025 Mateusz Śliwowski. Wszelkie prawa zastrzeżone.</p>
                 <div className="flex gap-4">
                 <Link className="text-yellow-300 hover:text-yellow-400 focus:text-yellow-400 focus:outline-none" href={cvHref} download={cvFileName}>Download CV</Link>

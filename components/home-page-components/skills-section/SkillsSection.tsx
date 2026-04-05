@@ -15,7 +15,7 @@ export default async function SkillsSection({ skills }: { skills: GetSkillsType 
 		return (
 			<section
 				id="skillsSection"
-				className="flex min-h-dvh w-full flex-col justify-center bg-[#0c0c0c] px-6 py-10 sm:px-10 md:px-12 md:py-12"
+				className="flex min-h-dvh w-full flex-col justify-center bg-[#0c0c0c] px-6 py-10 max-[480px]:mx-auto max-[480px]:max-w-[100vw] sm:px-10 md:px-12 md:py-12"
 			>
 				<p className="text-slate-400">{t('skillsSection.fetchError')}</p>
 			</section>
@@ -31,7 +31,7 @@ export default async function SkillsSection({ skills }: { skills: GetSkillsType 
 	return (
 		<section
 			id="skillsSection"
-			className="flex min-h-dvh w-full flex-col justify-center gap-8 bg-[#0c0c0c] px-6 py-10 sm:px-10 md:gap-8 md:px-12 md:py-12"
+			className="flex min-h-dvh w-full flex-col justify-center gap-8 bg-[#0c0c0c] px-6 py-10 max-[480px]:mx-auto max-[480px]:max-w-[100vw] sm:px-10 md:gap-8 md:px-12 md:py-12"
 		>
 			<header className='flex flex-col gap-2'>
 				<p className='text-[13px] font-semibold tracking-wide text-slate-500'>{t('skillsSection.sectionIndex')}</p>

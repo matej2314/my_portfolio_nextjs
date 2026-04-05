@@ -10,7 +10,10 @@ export default async function ExperienceSection({ experiences }: { experiences: 
 
 	if (!experiences || 'error' in experiences) {
 		return (
-			<section id="experienceSection" className="w-full bg-transparent px-6 py-16 sm:px-10 md:px-12 md:py-20">
+			<section
+				id="experienceSection"
+				className="w-full bg-transparent px-6 py-16 max-[480px]:mx-auto max-[480px]:max-w-[100vw] sm:px-10 md:px-12 md:py-20"
+			>
 				<p className="text-slate-400">{t('fetchError')}</p>
 			</section>
 		);
@@ -25,7 +28,7 @@ export default async function ExperienceSection({ experiences }: { experiences: 
 	return (
 		<section
 			id="experienceSection"
-			className="flex w-full flex-col gap-10 bg-transparent px-6 py-16 sm:px-10 md:gap-10 md:px-12 md:py-20"
+			className="flex w-full flex-col gap-10 bg-transparent px-6 py-16 max-[480px]:mx-auto max-[480px]:max-w-[100vw] sm:px-10 md:gap-10 md:px-12 md:py-20"
 		>
 			<header className="flex flex-col gap-2">
 				<p className="text-[13px] font-semibold tracking-wide text-slate-500">{t('sectionIndex')}</p>

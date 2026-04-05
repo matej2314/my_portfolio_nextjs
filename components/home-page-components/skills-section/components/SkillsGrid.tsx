@@ -30,7 +30,10 @@ export default function SkillsGrid({ columns }: { columns: SkillsGridColumn[] })
 
 	return (
 		<AnimatePresence>
-			<div ref={gridRef} className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-12">
+			<div
+				ref={gridRef}
+				className="grid grid-cols-1 gap-10 max-[480px]:grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 lg:gap-12"
+			>
 				{columns.map((col, colIndex) => {
 					const { titleStep, itemSteps } = columnSteps[colIndex]!;
 					return (
