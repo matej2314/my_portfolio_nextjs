@@ -7,7 +7,7 @@ export default function BlogPostCard({ title, lead, date, isoDate, imageSrc, ima
 
 
     return (
-        <Card className="w-[18rem] h-fit flex flex-col justify-between text-slate-200 bg-radial-green">
+        <Card className="flex h-fit w-full min-w-0 flex-col justify-between text-slate-200 bg-radial-green">
             <CardHeader>
                 <div className="relative w-full h-[10rem] rounded-md overflow-hidden border-[3px] border-green-200/35">
                     <Image

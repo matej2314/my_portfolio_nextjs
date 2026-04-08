@@ -57,7 +57,7 @@ export const ProjectsTrack = ({
 				style={{ WebkitOverflowScrolling: 'touch' }}
 			>
 				<motion.ul
-					className='flex w-max min-w-full snap-x snap-mandatory gap-4 pb-2 pl-0 pr-4 sm:gap-5 sm:pr-6 md:pr-8'
+					className='flex w-max min-w-full snap-x snap-mandatory pb-2 pl-0 max-xl:gap-4 max-xl:pr-4 xl:gap-5 xl:pr-8'
 					initial='hidden'
 					animate={listInView ? 'visible' : 'hidden'}
 					variants={listVariants}
@@ -68,7 +68,7 @@ export const ProjectsTrack = ({
 							variants={itemVariants}
 							role='group'
 							aria-roledescription='slide'
-							className='w-[min(22rem,calc(100vw-2.5rem))] shrink-0 snap-center snap-always sm:w-[min(24rem,calc(50vw-1.75rem))] md:w-[min(24rem,calc(50vw-2rem))] lg:w-[min(26rem,calc(33.333vw-1.75rem))]'
+							className='w-[min(22rem,calc(100vw-2.5rem))] shrink-0 snap-center snap-always xl:w-[min(24rem,calc(50vw-2rem))] 2xl:w-[min(26rem,calc(33.333vw-1.75rem))]'
 						>
 							<ProjectCard slide={slide} openLabel={openLabel} overlayActive={overlayCardProjectId === slide.project.id} onBeforeNavigate={onBeforeNavigate} />
 						</motion.li>
@@ -85,7 +85,7 @@ export const ProjectsTrack = ({
 		<Carousel setApi={setApi} className='w-full min-w-0 outline-none ring-0 focus:outline-none focus-visible:outline-none focus-visible:ring-0' aria-label={ariaLabel}>
 			<CarouselContent className='-ml-0 gap-4'>
 				{slides.map((slide, index) => (
-					<CarouselItem key={slide.project.id} className='basis-full pl-0 md:basis-1/2 lg:basis-1/3'>
+					<CarouselItem key={slide.project.id} className='basis-full pl-0 xl:basis-1/2 2xl:basis-1/3'>
 						<motion.div
 							className='h-full w-full'
 							initial={{ opacity: 0, y: 18 }}

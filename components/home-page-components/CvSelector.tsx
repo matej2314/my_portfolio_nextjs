@@ -3,7 +3,7 @@
 import { motion, AnimatePresence, easeInOut, spring } from 'motion/react';
 
 const cvLinkClass =
-	'flex h-auto min-h-0 w-full min-w-[5rem] items-center justify-center rounded-md border border-transparent bg-yellow-300 px-3 py-0 font-jakarta text-[0.9rem] font-semibold text-slate-800 outline-none ring-0 ring-offset-0 transition-[border-color] hover:border-[#ffdb70] focus-visible:border-[#ffdb70] focus-visible:outline-none focus-visible:ring-0';
+	'flex h-auto min-h-0 w-full min-w-[5rem] items-center justify-center rounded-md bg-yellow-300 px-3 py-0 font-jakarta text-[0.9rem] font-semibold text-[#0c0c0c] transition-colors hover:bg-yellow-400 focus:bg-yellow-400 focus-visible:bg-yellow-400 focus:outline-none focus-visible:outline-none';
 
 export default function CvSelector({ isOpen, cvLinksAsMenuItems }: { isOpen: boolean; cvLinksAsMenuItems?: boolean }) {
 	const selectorVariant = {

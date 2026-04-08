@@ -42,7 +42,7 @@ export default function ContactFloatingField(props: ContactFloatingFieldProps) {
 
 	const labelClass = cn(
 		labelBase,
-		'text-base md:text-base',
+		'text-sm xl:text-base',
 		isInput ? cn('top-1/2 -translate-y-1/2', floatAboveInput) : cn('top-3 translate-y-0', floatAboveInput)
 	);
 

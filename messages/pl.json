@@ -9,14 +9,14 @@
 		"aboutSection": {
 			"sectionIndex": "01",
 			"title": "O mnie",
-			"description": "Tworzę aplikacje webowe od fundamentu po wdrożenie — od React i Next.js po Node.js i bazy danych. W projektach stawiam na czytelny kod, wydajność i dopracowany UX. Pracuję też z WordPressem i podstawami DevOps, więc rozumiem cały łańcuch od developmentu do produkcji.",
+			"description": "Tworzę aplikacje webowe kompleksowo — od developmentu po wdrożenie. Pracuję z Reactem i Next.js po stronie frontendu oraz Node.js i bazami danych po stronie backendu, koncentrując się na czystym kodzie, wydajności i poprawnej implementacji doświadczenia użytkownika. Mam również doświadczenie z WordPressem oraz podstawami DevOps, co pozwala mi ogarniać cały proces od tworzenia aplikacji po produkcję.",
 			"downloadCv": "Pobierz CV",
 			"viewProjects": "Zobacz projekty",
 			"metricLabels": {
 				"years": "Lat doświadczenia",
 				"projects": "Projektów",
-				"coreStack": "Główny stack",
-				"ide": "Aktualne IDE"
+				"coreFramework": "Główny framework",
+				"ide": "IDE"
 			}
 		},
 		"experienceSection": {

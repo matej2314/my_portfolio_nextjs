@@ -30,10 +30,10 @@ export default async function HomePage() {
 	return (
 		<LenisProvider
 			id='mainSection'
-			className='no-scrollbar flex h-screen max-h-screen w-full flex-col items-center overflow-x-hidden overflow-y-auto px-3 sm:px-8 z-0'
+			className='no-scrollbar z-0 flex h-[100dvh] max-h-[100dvh] w-full min-w-0 flex-col items-center overflow-x-hidden overflow-y-auto max-xl:px-3 xl:px-8'
 		>
 			<div className='flex h-fit w-full flex-col items-center justify-start'>
-				<div className='flex h-[100dvh] w-full shrink-0 flex-col'>
+				<div className='flex h-[65dvh] w-full shrink-0 flex-col xl:h-[100dvh]'>
 					<SiteHeader variant='home' />
 					<BaseSection />
 				</div>
@@ -47,9 +47,7 @@ export default async function HomePage() {
 					<HomeFooter />
 				</div>
 			</div>
-			<div className='fixed bottom-2 right-[2rem]'>
-				<ScrollToTop />
-			</div>
+			<ScrollToTop />
 			<KeyboardNavigation />
 		</LenisProvider>
 	);

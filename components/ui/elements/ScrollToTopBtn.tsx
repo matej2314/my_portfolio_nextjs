@@ -7,7 +7,7 @@ import { useActiveSection } from '@/hooks/useActiveSection';
 import { sections } from '@/lib/arrays/homePageSectionsArr';
 
 const scrollToTopBtnClass =
-	'fixed bottom-[3.5rem] right-[5vw] z-[1] h-8 w-8 rounded-full bg-yellow-300 text-slate-900 transition-opacity duration-300 hover:bg-yellow-400 focus-visible:bg-yellow-400 active:bg-yellow-400 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none';
+	'fixed z-[1] h-8 w-8 rounded-full bg-yellow-300 text-slate-900 transition-opacity duration-300 hover:bg-yellow-400 focus-visible:bg-yellow-400 active:bg-yellow-400 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none bottom-[max(0.75rem,calc(env(safe-area-inset-bottom)+0.5rem))] right-[max(0.75rem,calc(env(safe-area-inset-right)+0.75rem))] sm:bottom-8 sm:right-[min(2rem,5vw)]';
 
 export default function ScrollToTop() {
 	const section = useActiveSection(sections) as string;

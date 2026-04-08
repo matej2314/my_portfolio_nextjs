@@ -15,7 +15,7 @@ export default async function SkillsSection({ skills }: { skills: GetSkillsType 
 		return (
 			<section
 				id="skillsSection"
-				className="flex min-h-dvh w-full flex-col justify-center bg-[#0c0c0c] px-6 py-10 max-[480px]:mx-auto max-[480px]:max-w-[100vw] sm:px-10 md:px-12 md:py-12"
+				className="flex min-h-dvh w-full flex-col justify-center bg-[#0c0c0c] max-xl:mx-auto max-xl:max-w-[100vw] max-xl:px-4 max-xl:py-8 xl:px-12 xl:py-12"
 			>
 				<p className="text-slate-400">{t('skillsSection.fetchError')}</p>
 			</section>
@@ -31,15 +31,15 @@ export default async function SkillsSection({ skills }: { skills: GetSkillsType 
 	return (
 		<section
 			id="skillsSection"
-			className="flex min-h-dvh w-full flex-col justify-center gap-8 bg-[#0c0c0c] px-6 py-10 max-[480px]:mx-auto max-[480px]:max-w-[100vw] sm:px-10 md:gap-8 md:px-12 md:py-12"
+			className="flex min-h-dvh w-full flex-col justify-center gap-8 bg-[#0c0c0c] max-xl:mx-auto max-xl:max-w-[100vw] max-xl:px-4 max-xl:py-8 xl:px-12 xl:py-12"
 		>
-			<header className='flex flex-col gap-2'>
-				<p className='text-[13px] font-semibold tracking-wide text-slate-500'>{t('skillsSection.sectionIndex')}</p>
-				<h2 className='text-[2rem] font-light leading-tight text-slate-50 sm:text-[2.375rem]'>{t('skillsSection.title')}</h2>
-				<div className='h-[3px] w-12 rounded-full bg-[#facc15]' aria-hidden />
+			<header className='flex flex-col gap-2 max-xl:gap-1.5 xl:gap-2'>
+				<p className='font-semibold tracking-wide text-slate-500 max-xl:text-xs xl:text-[13px]'>{t('skillsSection.sectionIndex')}</p>
+				<h2 className='font-light leading-tight text-slate-50 max-xl:text-[1.625rem] max-xl:leading-snug xl:text-[2.375rem]'>{t('skillsSection.title')}</h2>
+				<div className='h-[3px] rounded-full bg-[#facc15] max-xl:w-10 xl:w-12' aria-hidden />
 			</header>
 
-			<p className='max-w-3xl text-base font-normal leading-normal text-slate-400'>{t('skillsSection.subtitle')}</p>
+			<p className='max-w-3xl font-normal text-slate-400 max-xl:text-[15px] max-xl:leading-relaxed xl:text-base xl:leading-normal'>{t('skillsSection.subtitle')}</p>
 
 			{columns.length === 0 ? <p className='text-slate-500'>{t('skillsSection.emptyState')}</p> : <SkillsGrid columns={columns} />}
 		</section>

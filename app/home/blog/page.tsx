@@ -34,8 +34,11 @@ export default async function BlogPage() {
             : posts.posts;
 
     return (
-        <div className="w-full h-full flex flex-col bg-linear-green overflow-hidden">
-            <section id="main-blog-section" className="w-full h-full flex flex-col justify-start items-start px-4 py-5 gap-6.5">
+        <div className="flex w-full min-w-0 flex-col bg-linear-green pb-6">
+            <section
+                id="main-blog-section"
+                className="flex w-full min-w-0 flex-col items-stretch justify-start gap-6 px-1 py-4 sm:gap-8 sm:px-2 sm:py-5"
+            >
                 {postsToDisplay.length === 0 ? (
                     <p className="text-white">No posts yet — check back later!</p>
                 ) : (

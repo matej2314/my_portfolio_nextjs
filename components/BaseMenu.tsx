@@ -34,7 +34,7 @@ export default function BaseMenu({ array }: { array: MenuItem[] }) {
         return { navItems: nav, resumeItem: resume };
     }, [array]);
 
-    if (device === "mobile") return <MobileMenu array={array} />;
+    if (device === "mobile" || device === "tablet") return <MobileMenu array={array} />;
 
     return (
         <nav

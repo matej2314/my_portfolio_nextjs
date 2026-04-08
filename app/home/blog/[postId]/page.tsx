@@ -21,8 +21,8 @@ export default async function BlogPostDetailsPage({ params }: DetailsBlogPostPro
     const selectedBlogPost = blogPostDetails.post;
 
     return (
-        <main className="w-full h-full flex justify-center items-center">
-            <p className="text-xl text-slate-200">{selectedBlogPost.post_title}</p>
+        <main className="flex min-h-[50dvh] w-full min-w-0 items-center justify-center px-4 py-8">
+            <p className="text-center text-lg text-slate-200 sm:text-xl">{selectedBlogPost.post_title}</p>
         </main>
     )
 }

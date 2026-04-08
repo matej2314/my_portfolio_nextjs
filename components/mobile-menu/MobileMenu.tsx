@@ -15,8 +15,8 @@ import MLetter from '../ui/elements/MLetterElement';
 import { type MenuItem } from '@/lib/arrays/menuArrays';
 import { type OpenState } from '@/types/mobileMenuTypes';
 
-/** Tymczasowo wyłączone — zsynchronizuj z BaseMenu.showLanguageSwitcher przy przywracaniu. */
-const showLanguageSwitcher = false;
+/** Zsynchronizuj z BaseMenu.showLanguageSwitcher */
+const showLanguageSwitcher = true;
 
 const FOCUSABLE_SELECTOR =
 	'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';

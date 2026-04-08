@@ -21,14 +21,14 @@
 		"aboutSection": {
 			"sectionIndex": "01",
 			"title": "About me",
-			"description": "I build web applications from the ground up to deployment — from React and Next.js to Node.js and databases. In projects I focus on clean code, performance, and polished UX. I also work with WordPress and DevOps basics, so I understand the full chain from development to production.",
+			"description": "I build web applications end to end — from development to deployment. I work with React and Next.js on the frontend, Node.js and databases on the backend, and focus on clean code, performance, and well-implemented user experience. I also have experience with WordPress and DevOps fundamentals, which allows me to understand and manage the full development-to-production workflow.",
 			"downloadCv": "Download CV",
 			"viewProjects": "View projects",
 			"metricLabels": {
 				"years": "Years experience",
 				"projects": "Projects",
-				"coreStack": "Core stack",
-				"ide": "Current IDE"
+				"coreFramework": "Core framework",
+				"ide": "IDE"
 			}
 		},
 		"skillsSection": {

@@ -5,10 +5,11 @@ import { useMediaQuery } from 'react-responsive';
 
 import { type DeviceType } from '@/types/deviceTypes';
 
+/** Desktop = wide enough for horizontal nav; matches Tailwind xl (1280px) minus 1px for boundary stability. */
 export const useDeviceType = (): DeviceType => {
-	const isMobile = useMediaQuery({ minWidth: 360, maxWidth: 767 });
-	const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1024 });
-	const isDesktop = useMediaQuery({ minWidth: 1025 });
+	const isMobile = useMediaQuery({ maxWidth: 767 });
+	const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1279 });
+	const isDesktop = useMediaQuery({ minWidth: 1280 });
 
 	const [deviceType, setDeviceType] = useState<DeviceType>('unknown');
 

@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 
 export default function DetailsPageLayout({ children }: { children: ReactNode }) {
     return (
-        <div className="relative flex min-h-screen w-full flex-col bg-[#000805] pb-8 pt-6 no-scrollbar">
-            <div className="mx-auto flex w-full max-w-[1200px] flex-1 flex-col px-4 sm:px-6">{children}</div>
+        <div className="relative flex min-h-screen w-full min-w-0 flex-col bg-[#000805] pb-8 pt-4 no-scrollbar sm:pt-6">
+            <div className="mx-auto flex w-full min-w-0 max-w-[1200px] flex-1 flex-col px-3 sm:px-6">{children}</div>
             <FloatingContactBox />
         </div>
     );

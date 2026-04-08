@@ -1,26 +1,29 @@
 'use client';
 
-import { motion, type Variants } from 'motion/react';
+import { motion, easeOut, type Variants } from 'motion/react';
 import { useTranslations } from 'next-intl';
 
 import { defaultData } from '@/lib/defaultData';
 import { type ContactChannelItem } from '@/types/contactChannelTypes';
 
-/** Spójnie z polami w ContactForm (`inputClass` / `textareaClass`). */
 const contactCardClass =
-	'flex items-center gap-3 rounded-md border border-slate-700 bg-[#0c0c0c] px-5 py-3.5 outline-none transition-[color,box-shadow,border-color] hover:border-slate-600 hover:ring-1 hover:ring-slate-600 focus:border-slate-600 focus:outline-none focus:ring-1 focus:ring-slate-600 focus-visible:border-slate-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-600';
+	'flex w-full items-center gap-3 rounded-md border border-slate-700 bg-[#0c0c0c] px-5 py-3.5 outline-none transition-[color,box-shadow,border-color] hover:border-slate-600 hover:ring-1 hover:ring-slate-600 focus:border-slate-600 focus:outline-none focus:ring-1 focus:ring-slate-600 focus-visible:border-slate-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-600';
 
 const listVariants: Variants = {
 	hidden: { opacity: 0 },
 	visible: {
 		opacity: 1,
-		transition: { staggerChildren: 0.08 },
+		transition: { staggerChildren: 0.12, delayChildren: 0.06 },
 	},
 };
 
 const itemVariants: Variants = {
-	hidden: { opacity: 0, y: 8 },
-	visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
+	hidden: { opacity: 0, y: 14 },
+	visible: {
+		opacity: 1,
+		y: 0,
+		transition: { duration: 0.48, ease: easeOut },
+	},
 };
 
 function channelValue(item: ContactChannelItem, linkedinCta: string): string {
@@ -37,7 +40,7 @@ export default function ContactItems() {
 			initial='hidden'
 			whileInView='visible'
 			viewport={{ amount: 0.2, once: true }}
-			className='flex w-full max-w-[520px] flex-col gap-4'
+			className='flex w-full max-w-[520px] flex-col gap-4 md:max-w-none xl:max-w-[520px]'
 		>
 			{contactItems.map(item => (
 				<motion.li key={item.pathName} variants={itemVariants}>
