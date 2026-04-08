@@ -10,6 +10,7 @@ export default async function BaseSection() {
     return (
         <section
             id="baseSection"
+            tabIndex={-1}
             className="relative isolate flex min-h-0 w-full flex-1 flex-col items-center justify-center font-jakarta max-xl:flex-col xl:flex-row xl:px-0 xl:pt-0 xl:gap-[21rem]"
         >
             <Image

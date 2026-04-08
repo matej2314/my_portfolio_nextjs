@@ -4,6 +4,8 @@ import Link from "next/link";
 
 import ExternalLink from "./ExternalLink";
 
+import { scrollToSection } from '@/lib/utils/keyboard-navigation';
+
 import { type NavLinkProps } from "@/types/navLinkTypes";
 import { type MouseEvent } from "react";
 
@@ -19,10 +21,7 @@ export default function NavLink({ children, pathName, linkClass, isActive, activ
         if (pathName?.startsWith('#')) {
             e.preventDefault();
             const id = pathName.slice(1);
-            const el = document.getElementById(id);
-            if (el) {
-                el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-            }
+            scrollToSection(id);
         } else if (!pathName || pathName === '') {
             e.preventDefault();
         }

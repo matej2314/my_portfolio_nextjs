@@ -5,6 +5,7 @@ import { Button } from '../button';
 import { Icon } from '@iconify/react';
 
 import { event } from '@/lib/google-analytics/gtag';
+import { scrollToSection } from '@/lib/utils/keyboard-navigation';
 
 import { type IconButtonType } from '@/types/iconButtonTypes';
 
@@ -31,8 +32,7 @@ export default function IconButton({ iconCode, children, redirectPath, iconClass
 				onClick();
 			}
 			const id = redirectPath.slice(1);
-			const el = document.getElementById(id);
-			el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			scrollToSection(id);
 		};
 
 		return (

@@ -21,6 +21,7 @@ export default async function AboutSection({ aboutText }: { aboutText: AboutText
 	return (
 		<section
 			id="aboutSection"
+			tabIndex={-1}
 			className="flex min-h-dvh w-full flex-col justify-center bg-[#0c0c0c] max-xl:mx-auto max-xl:max-w-[100vw] max-xl:gap-6 max-xl:px-4 max-xl:py-8 xl:gap-8 xl:px-12 xl:py-12"
 		>
 			<header className="flex flex-col gap-2 max-xl:gap-1.5 xl:gap-2">

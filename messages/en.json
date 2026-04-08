@@ -122,6 +122,9 @@
 				"github": "GitHub profile",
 				"facebook": "Facebook profile"
 			}
+		},
+		"keyboardNavigation": {
+			"hint": "Section shortcuts on this page (when focus is not in a form field): Down arrow or Page Down — next section; Up arrow or Page Up — previous section; keys 1 to 6 — jump to sections 1 to 6; Space — jump to the hero section."
 		}
 	},
 	"mainMenu": {

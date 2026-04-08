@@ -7,7 +7,7 @@ export default async function ContactSection() {
 	const t = await getTranslations('homePage');
 
 	return (
-		<section id='contactSection' className='w-full bg-[#000805] max-xl:px-4 max-xl:py-8 xl:px-12 xl:py-20'>
+		<section id='contactSection' tabIndex={-1} className='w-full bg-[#000805] max-xl:px-4 max-xl:py-8 xl:px-12 xl:py-20'>
 			<header className='flex flex-col gap-2 max-xl:gap-1.5 xl:gap-2'>
 				<p className='font-semibold tracking-wide text-slate-500 max-xl:text-xs xl:text-[13px]'>{t('contactSection.sectionIndex')}</p>
 				<h2 className='font-light leading-tight text-slate-50 max-xl:text-[1.625rem] max-xl:leading-snug xl:text-[2.375rem]'>{t('contactSection.title')}</h2>

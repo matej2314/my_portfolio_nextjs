@@ -122,6 +122,9 @@
 				"github": "Profil GitHub",
 				"facebook": "Profil Facebook"
 			}
+		},
+		"keyboardNavigation": {
+			"hint": "Skróty sekcji na tej stronie (gdy fokus nie jest w polu formularza): strzałka w dół lub Page Down — następna sekcja; strzałka w górę lub Page Up — poprzednia sekcja; klawisze 1–6 — skok do sekcji 1–6; spacja — skok do sekcji powitalnej."
 		}
 	},
 	"mainMenu": {
