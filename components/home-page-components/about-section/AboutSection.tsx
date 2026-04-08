@@ -47,7 +47,7 @@ export default async function AboutSection({ aboutText }: { aboutText: AboutText
 				<Link
 					href={cvHref}
 					download={cvFileName}
-					className="inline-flex items-center justify-center rounded-lg bg-yellow-300 px-6 py-3 text-[15px] font-semibold text-[#0c0c0c] transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#facc15]"
+					className="inline-flex items-center justify-center rounded-lg bg-yellow-300 px-6 py-3 text-[15px] font-semibold text-[#0c0c0c] outline-none ring-0 transition-opacity hover:opacity-90 focus:opacity-90 focus:outline-none focus-visible:opacity-90 focus-visible:outline-none focus-visible:ring-0"
 				>
 					{t('aboutSection.downloadCv')}
 				</Link>
@@ -56,7 +56,7 @@ export default async function AboutSection({ aboutText }: { aboutText: AboutText
 					pathName="#projectsSection"
 					title={t('aboutSection.viewProjects')}
 					aria-label={t('aboutSection.viewProjects')}
-					linkClass="inline-flex items-center justify-center rounded-lg border border-yellow-300 bg-transparent px-6 py-3 text-[15px] font-normal text-[#facc15] transition-colors hover:bg-[#facc15]/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#facc15]"
+					linkClass="inline-flex items-center justify-center rounded-lg border border-yellow-300 bg-transparent px-6 py-3 text-[15px] font-normal text-[#facc15] outline-none ring-0 transition-colors hover:bg-[#facc15]/10 focus:bg-[#facc15]/10 focus:outline-none focus-visible:bg-[#facc15]/10 focus-visible:outline-none focus-visible:ring-0"
 				>
 					{t('aboutSection.viewProjects')}
 				</NavLink>

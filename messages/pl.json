@@ -107,6 +107,7 @@
 			}
 		},
 		"floatingContact": {
+			"contactRowsListLabel": "Informacje kontaktowe",
 			"regionLabel": "Szybki kontakt",
 			"toggleOpen": "Otwórz kartę kontaktu",
 			"toggleClose": "Zamknij kartę kontaktu",

@@ -7,11 +7,13 @@ import ExternalLink from "./ExternalLink";
 import { type NavLinkProps } from "@/types/navLinkTypes";
 import { type MouseEvent } from "react";
 
-export default function NavLink({ children, pathName, linkClass, isActive, activeClass, variant, title, onClick, 'aria-label': ariaLabel }: NavLinkProps & { 'aria-label'?: string }) {
+export default function NavLink({ children, pathName, linkClass, isActive, activeClass, variant, title, onClick, 'aria-label': ariaLabel, role, 'aria-expanded': ariaExpanded, 'aria-haspopup': ariaHaspopup, tabIndex }: NavLinkProps & { 'aria-label'?: string }) {
 
     const baseClass = linkClass ?? "w-full h-full flex justify-start items-center hover:text-green-500/95 active:text-green-500/95 cursor-pointer";
 
     const finalClassName = `${baseClass} ${isActive && activeClass ? activeClass : ''}`;
+
+    const homeHref = pathName?.startsWith('#') || pathName ? (pathName ?? '') : '#';
 
     const handleHomeClick = (e: MouseEvent<HTMLAnchorElement>) => {
         if (pathName?.startsWith('#')) {
@@ -21,6 +23,8 @@ export default function NavLink({ children, pathName, linkClass, isActive, activ
             if (el) {
                 el.scrollIntoView({ behavior: 'smooth', block: 'start' })
             }
+        } else if (!pathName || pathName === '') {
+            e.preventDefault();
         }
         onClick?.(e)
     };
@@ -28,10 +32,14 @@ export default function NavLink({ children, pathName, linkClass, isActive, activ
     switch (variant) {
         case 'home':
             return <Link
-                href={pathName ?? ''}
+                href={homeHref}
                 className={finalClassName}
                 title={title}
                 aria-label={ariaLabel}
+                role={role}
+                aria-expanded={ariaExpanded}
+                aria-haspopup={ariaHaspopup}
+                tabIndex={tabIndex}
                 onClick={handleHomeClick}
             >
                 {children}
@@ -42,6 +50,10 @@ export default function NavLink({ children, pathName, linkClass, isActive, activ
                 className={finalClassName}
                 title={title}
                 aria-label={ariaLabel}
+                role={role}
+                aria-expanded={ariaExpanded}
+                aria-haspopup={ariaHaspopup}
+                tabIndex={tabIndex}
                 onClick={onClick}
             >
                 {children}
@@ -53,6 +65,10 @@ export default function NavLink({ children, pathName, linkClass, isActive, activ
                     className={finalClassName}
                     title={title}
                     aria-label={ariaLabel}
+                    role={role}
+                    aria-expanded={ariaExpanded}
+                    aria-haspopup={ariaHaspopup}
+                    tabIndex={tabIndex}
                     onClick={onClick as () => void}
                 >
                     {children}

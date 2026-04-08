@@ -2,68 +2,45 @@
 
 import { Icon } from '@iconify/react';
 import Image from 'next/image';
-import { motion, useReducedMotion } from 'motion/react';
-import { useTranslations } from 'next-intl';
-import { useId, useState } from 'react';
+import { motion} from 'motion/react';
 
 import ContactRow from './ContactRow';
+import FloatingContactSocialLinks from './FloatingContactSocialLinks';
 
-import { defaultData } from '@/lib/defaultData';
 import { cn } from '@/lib/utils/utils';
-import { type FloatingContactRow, type SocialLinkItem } from '@/types/floatingContactTypes';
+import { useFloatingContactBox } from '@/hooks/useFloatingContactBox';
+import { type FloatingContactRow } from '@/types/floatingContactTypes';
 
-const SHOW_DELAY_S = 3;
+const contactRowLiClass = (hasHref: boolean) =>
+	cn(
+		'list-none border-b border-solid py-2.5 last:border-b-0 transition-[border-bottom-color] duration-150',
+		hasHref && 'focus-within:[border-bottom-color:#ffdb70!important]',
+	);
+
+const SHOW_DELAY_S = 2;
 const ENTER_DURATION_S = 0.72;
 
 export default function FloatingContactBox() {
-	const t = useTranslations('homePage.floatingContact');
-	const reduced = useReducedMotion();
-	const [open, setOpen] = useState(false);
-	const regionId = useId();
-	const { photoSrc, fullName, contactRows, socialLinks, config } = defaultData.floatingContactData;
 
-	const ACCENT = config.accent;
-	const CARD_BG = config.cardBg;
-	const BORDER = config.border;
-	const CARD_W = config.cardWidth;
-
-	const PANEL_DURATION = reduced ? 0 : 0.5;
-	const panelTransition = reduced ? { duration: 0 } : { duration: PANEL_DURATION, ease: 'easeInOut' as const };
-
-	const tuckAfterOpen = reduced ? 0 : PANEL_DURATION * 0.55;
-	const tuckDuration = reduced ? 0 : 0.38;
-	const revealAfterClose = reduced ? 0 : PANEL_DURATION * 0.42;
-	const revealDuration = reduced ? 0 : 0.42;
+	const { open, setOpen, panelTransition, reduced, regionId, photoSrc, fullName, contactRows, socialLinks, ACCENT, CARD_BG, BORDER, CARD_W, tuckAfterOpen, tuckDuration, revealAfterClose, revealDuration, t } = useFloatingContactBox();
+	
 
 	return (
-		<motion.div
-			className={`pointer-events-none fixed right-1 top-1/2 ${open ? 'z-30' : 'z-10'} flex -translate-y-1/2 flex-row items-start overflow-visible`}
-			style={{ gap: open ? 0 : 8 }}
-			initial={reduced ? false : { opacity: 0, x: 20 }}
-			animate={{ opacity: 1, x: 0 }}
-			transition={
-				reduced
-					? { duration: 0 }
-					: { delay: SHOW_DELAY_S, duration: ENTER_DURATION_S, ease: [0.22, 1, 0.36, 1] }
-			}
-		>
-			<motion.div
-				aria-hidden
-				className='shrink-0'
-				initial={false}
-				animate={{ width: open ? 0 : 56 }}
-				transition={panelTransition}
-			/>
+		<motion.div className={`pointer-events-none fixed right-1 top-1/2 ${open ? 'z-30' : 'z-10'} flex -translate-y-1/2 flex-row items-start overflow-visible`} style={{ gap: open ? 0 : 8 }} initial={reduced ? false : { opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={reduced ? { duration: 0 } : { delay: SHOW_DELAY_S, duration: ENTER_DURATION_S, ease: [0.22, 1, 0.36, 1] }}>
+			<motion.div aria-hidden className='shrink-0' initial={false} animate={{ width: open ? 0 : 56 }} transition={panelTransition} />
 			<motion.button
 				type='button'
-				aria-expanded={false}
+				aria-expanded={open}
 				aria-controls={regionId}
 				aria-label={t('toggleOpen')}
 				aria-hidden={open}
 				tabIndex={open ? -1 : 0}
 				onClick={() => setOpen(true)}
 				className={cn(
-					'pointer-events-auto absolute left-0 top-1/2 z-[5] flex size-14 cursor-pointer items-center justify-center rounded-full border-2 shadow-lg',
+					'pointer-events-auto absolute left-0 top-1/2 z-[5] flex size-14 cursor-pointer items-center justify-center rounded-full border-2 border-solid shadow-lg',
+					'outline-none ring-0 ring-offset-0 transition-[border-color] duration-400 ease-[cubic-bezier(0.4,0,0.2,1)]',
+					'hover:!border-[#ffdb70] focus:!border-[#ffdb70] focus-visible:!border-[#ffdb70]',
+					'focus:outline-none focus-visible:outline-none focus-visible:ring-0',
 					open && 'pointer-events-none',
 				)}
 				style={{
@@ -101,86 +78,39 @@ export default function FloatingContactBox() {
 									rotate: 0,
 								}
 				}
-				transition={
-					reduced
-						? { duration: 0 }
-						: open
-							? { delay: tuckAfterOpen, duration: tuckDuration, ease: [0.4, 0, 0.2, 1] }
-							: { delay: revealAfterClose, duration: revealDuration, ease: [0.22, 1, 0.36, 1] }
-				}
+				transition={reduced ? { duration: 0 } : open ? { delay: tuckAfterOpen, duration: tuckDuration, ease: [0.4, 0, 0.2, 1] } : { delay: revealAfterClose, duration: revealDuration, ease: [0.22, 1, 0.36, 1] }}
 				whileHover={reduced || open ? undefined : { opacity: 1 }}
 				whileTap={reduced || open ? undefined : { scale: 0.96 }}
 			>
 				<Icon icon='mdi:contact' width={26} height={26} style={{ color: ACCENT }} />
 			</motion.button>
 
-			<motion.div
-				className={cn('relative z-10 overflow-hidden', open ? 'pointer-events-auto' : 'pointer-events-none')}
-				initial={false}
-				animate={{ width: open ? 'auto' : 0 }}
-				transition={panelTransition}
-			>
-				<div
-					id={regionId}
-					role='region'
-					aria-label={t('regionLabel')}
-					aria-hidden={!open}
-					className={cn('flex flex-col rounded-2xl border shadow-xl', CARD_W)}
-					style={{ backgroundColor: CARD_BG, borderColor: BORDER }}
-				>
-					<header className='relative flex gap-3 border-b p-4' style={{ borderColor: BORDER }}>
-						<motion.button
-							type='button'
-							aria-label={t('toggleClose')}
-							onClick={() => setOpen(false)}
-							className='absolute right-2 top-2 rounded-lg p-1.5'
-							style={{ color: ACCENT }}
-							whileHover={reduced ? undefined : { opacity: 0.9 }}
-							whileTap={reduced ? undefined : { scale: 0.95 }}
-						>
-							<Icon icon='mdi:close' width={22} height={22} />
+			<motion.div className={cn('relative z-10 overflow-hidden', open ? 'pointer-events-auto' : 'pointer-events-none')} initial={false} animate={{ width: open ? 'auto' : 0 }} transition={panelTransition}>
+				<div id={regionId} role='region' aria-label={t('regionLabel')} aria-hidden={!open} className={cn('flex flex-col rounded-2xl border shadow-xl', CARD_W)} style={{ backgroundColor: CARD_BG, borderColor: BORDER }}>
+					<header className='group relative flex gap-3 border-b p-4' style={{ borderColor: BORDER }}>
+						<motion.button type='button' aria-label={t('toggleClose')} onClick={() => setOpen(false)} className='absolute right-2 top-2 rounded-lg border border-transparent p-1.5 outline-none ring-0 ring-offset-0 focus-visible:border-[#ffdb70] focus-visible:outline-none focus-visible:ring-0' style={{ color: ACCENT }} whileHover={reduced ? undefined : { opacity: 0.9 }} whileTap={reduced ? undefined : { scale: 0.95 }}>
+							<Icon icon='mdi:close' width={22} height={22} aria-hidden />
 						</motion.button>
 						<div className='relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-[#2a2a2b]'>
-							<Image src={photoSrc} alt='' fill className='object-cover' sizes='64px' />
+							<Image src={photoSrc} alt='Zdjęcie profilowe - Mateusz Śliwowski' fill className='object-cover' sizes='64px' />
 						</div>
-						<div className='min-w-0 flex flex-col justify-center gap-1.5 pr-9'>
-							<p className='truncate text-lg font-semibold text-white'>{fullName}</p>
-							<span className='w-fit rounded-full bg-[#2a2a2b] px-2.5 py-0.5 text-xs text-slate-300'>
+						<h2 className='min-w-0 flex flex-col justify-center gap-1.5 pr-9'>
+							<span className='truncate text-lg font-semibold text-white transition-colors group-focus-within:text-slate-200'>{fullName}</span>
+							<span className='w-fit rounded-full bg-[#2a2a2b] px-2.5 py-0.5 text-xs text-slate-300 transition-colors group-focus-within:text-slate-400'>
 								{t('roleBadge')}
 							</span>
-						</div>
+						</h2>
 					</header>
 
-					<div className='flex flex-col px-4 py-2'>
+					<ul className='m-0 flex list-none flex-col px-4 py-2' aria-label={t('contactRowsListLabel')}>
 						{contactRows.map((row: FloatingContactRow, index: number) => (
-							<ContactRow
-								key={row.kind}
-								row={row}
-								index={index}
-								label={t(`rows.${row.kind}`)}
-								accent={ACCENT}
-								border={BORDER}
-							/>
+							<li key={row.kind} className={contactRowLiClass(Boolean(row.href))} style={{ borderBottomColor: BORDER }}>
+								<ContactRow row={row} index={index} label={t(`rows.${row.kind}`)} accent={ACCENT} />
+							</li>
 						))}
-					</div>
+					</ul>
 
-					<div className='border-t px-4 py-3' style={{ borderColor: BORDER }}>
-						<div className='flex flex-wrap gap-3'>
-							{socialLinks.map((link: SocialLinkItem) => (
-								<motion.a
-									key={link.href}
-									href={link.href}
-									target='_blank'
-									rel='noopener noreferrer'
-									className='text-slate-500'
-									aria-label={t(`social.${link.kind}`)}
-									whileHover={reduced ? undefined : { scale: 1.08, color: 'rgb(203 213 225)' }}
-								>
-									<Icon icon={link.icon} width={22} height={22} />
-								</motion.a>
-							))}
-						</div>
-					</div>
+					<FloatingContactSocialLinks links={socialLinks} borderColor={BORDER} ariaLabel={kind => t(`social.${kind}`)} reducedMotion={reduced} />
 				</div>
 			</motion.div>
 		</motion.div>

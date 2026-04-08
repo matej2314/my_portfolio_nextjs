@@ -1,4 +1,4 @@
-import { type ReactNode, MouseEventHandler, MouseEvent } from 'react';
+import { type ReactNode, type AriaRole, MouseEvent } from 'react';
 
 type NavLinkType = {
 	children?: ReactNode;
@@ -12,4 +12,8 @@ export type NavLinkProps = NavLinkType & {
 	variant: 'home' | 'project' | 'external';
 	title: string;
 	onClick?: (e: MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
+	role?: AriaRole;
+	'aria-expanded'?: boolean;
+	'aria-haspopup'?: boolean | 'menu' | 'dialog' | 'true' | 'false';
+	tabIndex?: number;
 };

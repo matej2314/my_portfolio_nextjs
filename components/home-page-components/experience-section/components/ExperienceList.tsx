@@ -52,7 +52,7 @@ export default function ExperienceList({ experiences, locale }: { experiences: E
 								<p className='text-base font-normal text-slate-400'>{exp.position}</p>
 								<p className='text-sm leading-[1.5] text-slate-500'>{formatDateRange(locale, exp, t('present'))}</p>
 								{exp.employer_url ? (
-									<a href={exp.employer_url.includes('://') ? exp.employer_url : `https://${exp.employer_url}`} target='_blank' rel='noopener noreferrer' className='w-fit text-sm font-normal text-[#facc15] hover:underline'>
+									<a href={exp.employer_url.includes('://') ? exp.employer_url : `https://${exp.employer_url}`} target='_blank' rel='noopener noreferrer' className='w-fit text-sm font-normal text-[#facc15] hover:underline focus:underline focus-visible:underline focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0'>
 										{t('visitWebsite')}
 									</a>
 								) : null}

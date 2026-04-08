@@ -43,7 +43,7 @@ export default function BaseMenu({ array }: { array: MenuItem[] }) {
         >
             <Link
                 href="/home"
-                className="flex shrink-0 items-center self-stretch rounded-sm text-[1.8rem] font-bold leading-none text-yellow-400 transition-colors hover:text-yellow-100 focus:text-yellow-100 focus-visible:text-yellow-100 focus:outline-none focus-visible:outline-none"
+                className="flex shrink-0 items-center self-stretch rounded-sm text-[1.8rem] font-bold leading-none text-yellow-400 transition-colors hover:text-yellow-500 focus:text-yellow-500 focus-visible:text-yellow-500 focus:outline-none focus-visible:outline-none"
                 aria-label={t("mainMenu.Home")}
             >
                 <MLetter

@@ -6,6 +6,10 @@ import { useTranslations } from 'next-intl';
 import { defaultData } from '@/lib/defaultData';
 import { type ContactChannelItem } from '@/types/contactChannelTypes';
 
+/** Spójnie z polami w ContactForm (`inputClass` / `textareaClass`). */
+const contactCardClass =
+	'flex items-center gap-3 rounded-md border border-slate-700 bg-[#0c0c0c] px-5 py-3.5 outline-none transition-[color,box-shadow,border-color] hover:border-slate-600 hover:ring-1 hover:ring-slate-600 focus:border-slate-600 focus:outline-none focus:ring-1 focus:ring-slate-600 focus-visible:border-slate-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-600';
+
 const listVariants: Variants = {
 	hidden: { opacity: 0 },
 	visible: {
@@ -39,7 +43,7 @@ export default function ContactItems() {
 				<motion.li key={item.pathName} variants={itemVariants}>
 					<a
 						href={item.pathName}
-						className='flex items-center gap-3 rounded-lg border border-slate-700 bg-[#0c0c0c] px-5 py-3.5 transition-colors hover:border-slate-600'
+						className={contactCardClass}
 						{...(item.pathName.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
 					>
 						<span className='h-8 w-1 shrink-0 rounded-sm bg-[#facc15]' aria-hidden />

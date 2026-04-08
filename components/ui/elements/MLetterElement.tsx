@@ -8,7 +8,7 @@ export default function MLetter({ size = defaultData.defaultMLetter.size, svgHei
 
 	if (mode === 'button') {
 		return (
-			<svg width={size} height={height} viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg' className={cn(` fill-yellow-400`, className)} aria-hidden={ariaHidden}>
+			<svg width={size} height={height} viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg' className={cn('fill-current', className)} aria-hidden={ariaHidden}>
 				<rect x='0' y='0' width='10' height='65' />
 				<rect x='0' y='0' width='10' height='65' transform='translate(-20, -42) rotate(135 20 60)' />
 				<rect x='0' y='0' width='10' height='65' transform='translate(30, 25) rotate(45 60 60)' />

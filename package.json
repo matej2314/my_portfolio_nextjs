@@ -13,8 +13,7 @@
 	"dependencies": {
 		"@anthropic-ai/sdk": "^0.82.0",
 		"@lucia-auth/adapter-prisma": "^4.0.1",
-		"@modelcontextprotocol/client": "^2.0.0-alpha.2",
-		"@modelcontextprotocol/node": "^2.0.0-alpha.2",
+		"@modelcontextprotocol/sdk": "^1.29.0",
 		"@prisma/client": "^5.22.0",
 		"@radix-ui/react-dialog": "^1.1.14",
 		"@radix-ui/react-dropdown-menu": "^2.1.15",

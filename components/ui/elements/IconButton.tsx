@@ -1,60 +1,52 @@
 'use client';
 
-import { useRouter } from "next/navigation";
-import { Button } from "../button";
+import { useRouter } from 'next/navigation';
+import { Button } from '../button';
 import { Icon } from '@iconify/react';
 
-import NavLink from "@/components/links/NavLink";
+import { event } from '@/lib/google-analytics/gtag';
 
-import { event } from "@/lib/google-analytics/gtag";
-
-import { type IconButtonType } from "@/types/iconButtonTypes";
+import { type IconButtonType } from '@/types/iconButtonTypes';
 
 export default function IconButton({ iconCode, children, redirectPath, iconClass, title, onClick, gaEvent, ...props }: IconButtonType) {
+	const router = useRouter();
 
-    const router = useRouter();
+	const handleClick = () => {
+		if (onClick) {
+			if (gaEvent) {
+				event(gaEvent);
+			}
+			onClick();
+		} else if (redirectPath) {
+			router.push(redirectPath);
+		}
+	};
 
-    const handleClick = () => {
-        if (onClick) {
-            if (gaEvent) {
-                event(gaEvent);
-            }
-            onClick();
-        } else if (redirectPath) {
-            router.push(redirectPath);
-        }
-    }
+	if (redirectPath?.startsWith('#')) {
+		const handleHashClick = () => {
+			if (onClick) {
+				if (gaEvent) {
+					event(gaEvent);
+				}
+				onClick();
+			}
+			const id = redirectPath.slice(1);
+			const el = document.getElementById(id);
+			el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		};
 
-    if (redirectPath?.startsWith('#')) {
-        return (
-            <NavLink
-                variant="home"
-                pathName={redirectPath}
-                title="Scroll to top"
-                linkClass="w-fit h-fit flex justify-center items-center"
-            >
-                <Button
-                    type="button"
-                    {...props}
-                    aria-label={title}
-                >
-                    {children}
-                    {iconCode && <Icon className={iconClass} icon={iconCode as string} />}
-                </Button>
-            </NavLink>
-        )
-    }
+		return (
+			<Button type="button" onClick={handleHashClick} title={title} {...props} aria-label={props['aria-label'] ?? title}>
+				{children}
+				{iconCode ? <Icon className={iconClass} icon={iconCode as string} /> : null}
+			</Button>
+		);
+	}
 
-    return (
-        <Button
-            type="button"
-            onClick={handleClick}
-            title={title}
-            {...props}
-            aria-label={title}
-        >
-            {children}
-            {iconCode && <Icon className={iconClass} icon={iconCode as string} />}
-        </Button>
-    )
+	return (
+		<Button type="button" onClick={handleClick} title={title} {...props} aria-label={props['aria-label'] ?? title}>
+			{children}
+			{iconCode ? <Icon className={iconClass} icon={iconCode as string} /> : null}
+		</Button>
+	);
 }

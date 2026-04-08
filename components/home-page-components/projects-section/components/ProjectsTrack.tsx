@@ -49,7 +49,13 @@ export const ProjectsTrack = ({
 }) => {
 	if (nativeScroll) {
 		return (
-			<div  role='region' aria-roledescription='carousel' aria-label={ariaLabel} className='touch-pan-x overscroll-x-contain overflow-x-auto overflow-y-hidden scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden' style={{ WebkitOverflowScrolling: 'touch' }}>
+			<div
+				role='region'
+				aria-roledescription='carousel'
+				aria-label={ariaLabel}
+				className='touch-pan-x overscroll-x-contain overflow-x-auto overflow-y-hidden scroll-smooth outline-none focus:outline-none focus-visible:outline-none [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
+				style={{ WebkitOverflowScrolling: 'touch' }}
+			>
 				<motion.ul
 					className='flex w-max min-w-full snap-x snap-mandatory gap-4 pb-2 pl-0 pr-4 sm:gap-5 sm:pr-6 md:pr-8'
 					initial='hidden'
@@ -76,7 +82,7 @@ export const ProjectsTrack = ({
 	useEmblaWheelScroll(api);
 
 	return (
-		<Carousel setApi={setApi} className='w-full min-w-0'>
+		<Carousel setApi={setApi} className='w-full min-w-0 outline-none ring-0 focus:outline-none focus-visible:outline-none focus-visible:ring-0' aria-label={ariaLabel}>
 			<CarouselContent className='-ml-0 gap-4'>
 				{slides.map((slide, index) => (
 					<CarouselItem key={slide.project.id} className='basis-full pl-0 md:basis-1/2 lg:basis-1/3'>

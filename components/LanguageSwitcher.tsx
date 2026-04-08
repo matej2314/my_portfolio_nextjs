@@ -37,7 +37,7 @@ export default function LanguageSwitcher() {
 	return (
 		<button
 			type="button"
-			className="inline-flex items-center gap-0.5 rounded-full border border-slate-600 bg-[#000805] p-0.5 font-jakarta focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#000805]"
+			className="inline-flex items-center gap-0.5 rounded-full border border-slate-600 bg-[#000805] p-0.5 font-jakarta outline-none ring-0 ring-offset-0 transition-colors hover:border-[#ffdb70] focus:outline-none focus-visible:border-[#ffdb70] focus-visible:outline-none focus-visible:ring-0"
 			aria-label={`${t('languageSwitcherLabel')}: ${activeLabel}`}
 			onClick={handleToggle}
 		>
