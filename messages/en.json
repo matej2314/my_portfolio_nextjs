@@ -16,6 +16,25 @@
 			"employedSince": "Employed since",
 			"employedTo": "Employed to",
 			"currentPosition": "Current position",
+			"keyResponsibilities": "Key responsibilities",
+			"responsibilities": {
+				"JSONCrewInternship": [
+					"Developed application features based on provided requirements and internal guidelines.",
+					"Implemented user interfaces according to prepared design specifications and visual guidelines.",
+					"Maintained code quality by following established standards and improving existing implementations.",
+					"Collaborated with more experienced team members and designers to clarify requirements and implementation details.",
+					"Applied feedback from code reviews to improve functionality and readability of the codebase.",
+					"Assisted in identifying and fixing bugs during development and testing."
+				],
+				"JSONCrew": [
+					"Built and maintained web application features based on provided requirements within a CMS-based environment.",
+					"Developed frontend components and application logic using JavaScript frameworks, including state handling and UI behavior implementation.",
+					"Created and maintained backend endpoints and server-side logic for application features.",
+					"Integrated external APIs and services into existing features when required.",
+					"Fixed bugs and participated in resolving production and development issues.",
+					"Worked on feature implementation in collaboration with other developers and adjusted work based on feedback."
+				]
+			},
 			"visitWebsite": "Employer's website"
 		},
 		"aboutSection": {

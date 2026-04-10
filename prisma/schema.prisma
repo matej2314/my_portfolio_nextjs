@@ -92,14 +92,15 @@ model sessions {
 }
 
 model experience {
-  id             String    @id @db.VarChar(350)
-  employer       String    @db.VarChar(100)
-  employer_url   String?   @db.Text
-  is_current     Boolean   @default(false)
-  position       String    @db.Text
-  hourly_rate    String?   @db.Text
-  employed_since String?   @db.Text
-  employed_to    String?   @db.Text
-  created_at     DateTime  @default(now()) @db.DateTime(0)
-  updated_at     DateTime? @db.DateTime(0)
+  id               String    @id @db.VarChar(350)
+  employer         String    @db.VarChar(100)
+  employer_url     String?   @db.Text
+  is_current       Boolean   @default(false)
+  responsibilities String?   @db.Text
+  position         String    @db.Text
+  hourly_rate      String?   @db.Text
+  employed_since   String?   @db.Text
+  employed_to      String?   @db.Text
+  created_at       DateTime  @default(now()) @db.DateTime(0)
+  updated_at       DateTime? @default(now()) @db.DateTime(0)
 }

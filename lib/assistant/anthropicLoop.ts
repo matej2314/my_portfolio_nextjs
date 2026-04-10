@@ -20,7 +20,7 @@ function joinToolTextParts(parts: Array<{ type: string; text: string }>): string
 	return parts.map(p => p.text).join('\n');
 }
 
-export async function runAssistantLoop(userMessage: string, locale = 'pl'): Promise<string | undefined> {
+export async function runAssistantLoop(userMessage: string): Promise<string | undefined> {
 	const loc = await resolveLocale();
 
 	return withMcpClient(async (client: Client) => {

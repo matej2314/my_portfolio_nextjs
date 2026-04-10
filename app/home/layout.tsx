@@ -1,7 +1,7 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
 import FloatingContactBox from '@/components/floating-contact-box/FloatingContactBox';
-// import FloatingChatBox from '@/components/floating-chat-box/FloatingChatBox';
+import FloatingChatBox from '@/components/floating-chat-box/FloatingChatBox';
 import ContentContainer from '@/components/ContentContainer';
 import HomeContent from '@/components/home-page-components/HomeContent';
 import { HomeProjectTransitionProvider } from '@/context/HomeProjectTransitionContext';
@@ -26,7 +26,7 @@ export default async function HomePageLayout({ children, projectModal }: { child
 						<HomeContent>{children}</HomeContent>
 						{projectModal}
 						<FloatingContactBox />
-						{/* <FloatingChatBox /> */}
+						<FloatingChatBox />
 					</NextIntlClientProvider>
 				</HomeProjectTransitionProvider>
 			</main>

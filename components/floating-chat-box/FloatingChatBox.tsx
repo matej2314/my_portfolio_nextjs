@@ -3,6 +3,7 @@
 import { Icon } from '@iconify/react';
 import { motion, useReducedMotion } from 'motion/react';
 import { type CSSProperties, useId, useState } from 'react';
+import { useLocale } from 'next-intl';
 
 import { defaultData } from '@/lib/defaultData';
 import { cn } from '@/lib/utils/utils';
@@ -16,13 +17,36 @@ const MOCK_USER_MESSAGE =
 const MOCK_AI_REPLY =
 	'W projektach webowych najczęściej pracuję w React i Next.js, z TypeScriptem jako językiem bazowym. Stylowanie to głównie Tailwind CSS, a do animacji lubię Motion. Backend i integracje obsługuję wtedy, gdy trzeba — np. API Routes w Next albo proste endpointy.';
 
-/** Szerzej niż karta kontaktu (`20rem`), żeby czat był czytelniejszy. */
 const CHAT_PANEL_W = 'w-[min(25rem,calc(100vw-3rem))]';
+
+type ChatRole = 'user' | 'assistant';
+
+interface PosChatLine {
+	id: string;
+	role: ChatRole;
+	text: string;
+}
+
+interface RejecteedChatLine {
+	id: string;
+	role: 'rejected';
+	topis: string[];
+	exampleQuestions?: Record<string, string[]>;
+}
+
+type ChatLine = PosChatLine | RejecteedChatLine;
+
+function refusalCopy(locale: string): string {
+	return locale === 'pl'
+		? 'To pytanie wykracza poza tematykę portfolio. Możesz zadać pytanie w jednym z poniższych tematów albo użyć przykładu.'
+		: 'That question is outside the professional scope of this portfolio. Try one of the topics below or use a suggested question.';
+}
 
 export default function FloatingChatBox() {
 	const reduced = useReducedMotion();
 	const [open, setOpen] = useState(false);
 	const regionId = useId();
+	const locale = useLocale();
 	const { config } = defaultData.floatingContactData;
 
 	const ACCENT = config.accent;

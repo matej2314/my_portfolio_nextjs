@@ -29,6 +29,25 @@
 			"employedSince": "Pracowałem od",
 			"employedTo": "Pracowałem do",
 			"currentPosition": "Aktualne stanowisko",
+			"keyResponsibilities": "Kluczowe obowiązki",
+			"responsibilities": {
+				"JSONCrewInternship": [
+					"Implementacja funkcjonalności aplikacji na podstawie przekazanych wymagań i wewnętrznych wytycznych.",
+					"Tworzenie interfejsów użytkownika zgodnie z dostarczonymi projektami oraz zasadami wizualnymi.",
+					"Dbanie o jakość kodu poprzez stosowanie obowiązujących standardów i usprawnianie istniejących rozwiązań.",
+					"Współpraca z bardziej doświadczonymi członkami zespołu i designerami w celu doprecyzowania wymagań i sposobu implementacji.",
+					"Wprowadzanie poprawek na podstawie code review oraz otrzymanego feedbacku.",
+					"Pomoc w analizie i naprawie błędów na etapie developmentu i testów."
+				],
+				"JSONCrew": [
+					"Budowałem i utrzymywałem funkcje aplikacji webowych zgodnie z wymaganiami w środowisku opartym o CMS.",
+					"Tworzyłem komponenty frontendowe i logikę aplikacji w frameworkach JavaScript, w tym obsługę stanu i zachowania UI.",
+					"Tworzyłem i utrzymywałem endpointy backendowe oraz logikę po stronie serwera dla funkcji aplikacji.",
+					"Integrowałem zewnętrzne API i usługi z istniejącymi funkcjami w razie potrzeby.",
+					"Naprawiałem błędy i uczestniczyłem w rozwiązywaniu problemów na produkcji i w środowisku developerskim.",
+					"Realizowałem funkcje we współpracy z innymi deweloperami i dostosowywałem pracę do feedbacku."
+				]
+			},
 			"visitWebsite": "Strona internetowa pracodawcy"
 		},
 		"skillsSection": {
