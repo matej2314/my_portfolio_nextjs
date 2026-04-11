@@ -1,7 +1,12 @@
+export interface ChatHistoryTurn {
+    role: 'user' | 'assistant';
+    text: string;
+}
+
 export interface ChatRequest {
     message: string;
-    locale?: string;
     conversationId?: string;
+    history?: ChatHistoryTurn[];
 }
 
 export interface ChatResponse {
@@ -13,3 +18,21 @@ export interface ChatResponse {
     error?: string;
 }
 
+
+
+ export type ChatRole = 'user' | 'assistant';
+
+interface PosChatLine {
+	id: string;
+	role: ChatRole;
+	text: string;
+}
+
+interface RejectedChatLine {
+	id: string;
+	role: 'rejected';
+	topics: string[];
+	exampleQuestions?: Record<string, string[]>;
+}
+
+export type ChatLine = PosChatLine | RejectedChatLine;

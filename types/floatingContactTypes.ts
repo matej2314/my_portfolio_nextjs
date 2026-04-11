@@ -25,6 +25,13 @@ export type FloatingContactData = {
 		accent: string;
 		cardBg: string;
 		border: string;
-		cardWidth: string;
+		contactBoxWidth: string;
+		chatBoxWidth: string;
+		enterDurationBox: number;
+		showDelayContactBox: number;
+		showDelayChatBox: number;
+		calcTuckDuration: (reduced: boolean) => number;
+		calcPanelDuration: (reduced: boolean) => number;
+		calcRevealDuration: (reduced: boolean) => number;
 	}
 };

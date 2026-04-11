@@ -8,20 +8,17 @@ export const useFloatingContactBox = () => {
 	const reduced = useReducedMotion();
 	const [open, setOpen] = useState(false);
 	const regionId = useId();
-	const { photoSrc, fullName, contactRows, socialLinks, config } = defaultData.floatingContactData;
+	const { photoSrc, fullName, contactRows, socialLinks, config } = defaultData.floatingBoxesData;
 
-	const ACCENT = config.accent;
-	const CARD_BG = config.cardBg;
-	const BORDER = config.border;
-	const CARD_W = config.cardWidth;
+    const {accent: ACCENT, cardBg: CARD_BG, border: BORDER, contactBoxWidth: CONTACT_BOX_WIDTH, enterDurationBox: ENTER_DURATION_CONTACT_BOX, showDelayContactBox: SHOW_DELAY_CONTACT_BOX, calcPanelDuration, calcRevealDuration, calcTuckDuration} = config;
 
-	const PANEL_DURATION = reduced ? 0 : 0.5;
-	const panelTransition = reduced ? { duration: 0 } : { duration: PANEL_DURATION, ease: 'easeInOut' as const };
+	const PANEL_DURATION = calcPanelDuration(reduced ?? false);
+	const contactBoxPanelTransition = reduced ? { duration: 0 } : { duration: PANEL_DURATION, ease: 'easeInOut' as const };
 
 	const tuckAfterOpen = reduced ? 0 : PANEL_DURATION * 0.55;
-	const tuckDuration = reduced ? 0 : 0.38;
+	const tuckDuration = calcTuckDuration(reduced ?? false);
 	const revealAfterClose = reduced ? 0 : PANEL_DURATION * 0.42;
-	const revealDuration = reduced ? 0 : 0.42;
+	const revealDuration = calcRevealDuration(reduced ?? false);
 
 	useEffect(() => {
 		if (!open) return;
@@ -34,7 +31,7 @@ export const useFloatingContactBox = () => {
     return {
         open,
         setOpen,
-        panelTransition,
+        contactBoxPanelTransition,
         reduced,
         regionId,
         photoSrc,
@@ -44,11 +41,13 @@ export const useFloatingContactBox = () => {
         ACCENT,
         CARD_BG,
         BORDER,
-        CARD_W,
+        CONTACT_BOX_WIDTH,
         tuckAfterOpen,
         tuckDuration,
         revealAfterClose,
         revealDuration,
+        ENTER_DURATION_CONTACT_BOX,
+        SHOW_DELAY_CONTACT_BOX,
         t,
     }
 }

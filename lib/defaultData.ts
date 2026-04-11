@@ -104,7 +104,7 @@ export const defaultData = {
 	baseSectionSubHeader: {
 		content: ['Node.js', 'React', 'Next.js', 'Wordpress'],
 	},
-	floatingContactData: {
+	floatingBoxesData: {
 		photoSrc: '/profilowe.jpg',
 		fullName: 'Mateusz Śliwowski',
 		contactRows: [
@@ -150,7 +150,14 @@ export const defaultData = {
 			accent: '#ffdb70',
 			cardBg: '#1e1e1f',
 			border: '#383838',
-			cardWidth: 'w-[min(20rem,calc(100vw-3rem))]',
+			contactBoxWidth: 'w-[min(20rem,calc(100vw-3rem))]',
+			chatBoxWidth: 'w-[min(25rem,calc(100vw-3rem))]',
+			enterDurationBox: 0.72,
+			showDelayContactBox: 2,
+			showDelayChatBox: 2.5,
+			calcTuckDuration: (reduced: boolean) => reduced ? 0 : 0.38,
+			calcPanelDuration: (reduced: boolean) => reduced ? 0 : 0.5,
+			calcRevealDuration: (reduced: boolean) => reduced ? 0 : 0.42,
 		}
 	} satisfies FloatingContactData,
 };

@@ -1,3 +1,5 @@
+import crypto from 'crypto';
+
 export const REDIS_KEYS = {
 	EXPERIENCES_ALL: 'experiences:all',
 	EXPERIENCE: (id: string) => `experience:${id}`,
@@ -15,3 +17,23 @@ export const REDIS_KEYS = {
 	ABOUTME: 'aboutMe',
 	SITEMAP: 'sitemap:xml',
 };
+
+
+export function assistantReplyKey(
+	version: string,
+	locale: string,
+	message: string
+): string {
+	const hash = crypto.createHash('sha256')
+		.update(message.toLocaleLowerCase().trim())
+		.digest('hex')
+		.substring(0, 16);
+	return `assistant:reply:${version}:${locale}:${hash}`;
+}
+
+export function assistantRateLimitKey(
+	fingerprint: string
+): string {
+	return `assistant:rl:${fingerprint}`;
+}
+
