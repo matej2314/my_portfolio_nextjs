@@ -26,7 +26,7 @@ export default function FloatingChatBox() {
 		input: '',
 		loading: false,
 		error: null,
-	})
+	});
 	const regionId = useId();
 	const locale = useLocale();
 	const { config } = defaultData.floatingBoxesData;
@@ -63,6 +63,15 @@ export default function FloatingChatBox() {
 			});
 
 			const data = (await response.json()) as ChatResponse;
+
+			if (response.status === 429) {
+				const retryAfter = response.headers.get('Retry-After');
+				const minutes = retryAfter ? Math.ceil(Number(retryAfter) / 60) : 15;
+				const errorMsg = locale === 'pl' ? `Za dużo żądań. Spróbuj ponownie za ${minutes} min.` : `Too many requests. Try again in ${minutes} min.`;
+				setChatBoxState(prev => ({ ...prev, lines: prev.lines.filter(line => line.id !== userId) }));
+				setChatBoxState(prev => ({ ...prev, error: errorMsg }));
+				return;
+			}
 
 			if (!response.ok || !data.success) {
 				setChatBoxState(prev => ({ ...prev, lines: prev.lines.filter(line => line.id !== userId) }));
@@ -115,7 +124,7 @@ export default function FloatingChatBox() {
 								filter: 'none',
 								rotate: 0,
 							}
-							: chatBoxState.open
+						: chatBoxState.open
 							? {
 									scale: 0.14,
 									x: 52,

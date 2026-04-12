@@ -96,3 +96,27 @@ export const deleteMultipleCache = async (...keys: string[]) => {
 		return logErrAndReturn(`Redis deletemultipleCache error:`, error, false);
 	}
 };
+
+export const incrementWithExpiry = async (key: string, expireSeconds: number): Promise<number | null> => {
+	if (!REDIS_ENABLED || !redis) return null;
+	try {
+		const count = await redis.incr(key);
+		if (count === 1) {
+			await redis.expire(key, expireSeconds);
+		}
+		return count;
+	} catch (error) {
+		return logErrAndReturn(`Redis incrementWithExpiry error for key ${key}:`, error, null);
+	}
+};
+
+export const getKeyTtlSeconds = async (key: string): Promise<number | null> => {
+	if (!REDIS_ENABLED || !redis) return null;
+	try {
+		const ttl = await redis.ttl(key);
+		if (ttl < 0) return null;
+		return ttl;
+	} catch (error) {
+		return logErrAndReturn(`Redis getKeyTtlSeconds error for key ${key}:`, error, null);
+	}
+};

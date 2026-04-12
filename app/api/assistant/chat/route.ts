@@ -4,10 +4,12 @@ import { APP_CONFIG } from '@/config/app.config';
 import { getCache, setCache } from '@/lib/redis/redis';
 import { checkTopic } from '@/lib/assistant/topicGate';
 import { runAssistantLoop } from '@/lib/assistant/anthropicLoop';
-import { type ChatRequest, type ChatResponse } from '@/lib/assistant/types';
 import { assistantReplyKey } from '@/lib/redis/redisKeys';
 import { cacheLocaleTag } from '@/lib/assistant/cacheLocaleTag';
 import { normalizeHistory } from '@/lib/assistant/normalizeHistory';
+import { consumeAssistantRateLimit } from '@/lib/assistant/assistantRateLimit';
+
+import { type ChatRequest, type ChatResponse } from '@/lib/assistant/types';
 
 const CONTENT_VERSION = process.env.ASSISTANT_CONTENT_VERSION || '1.0.0';
 const CACHE_TTL = Number(process.env.ASSISTANT_CACHE_TTL) || 60 * 60 * 24;
@@ -21,6 +23,20 @@ export async function POST(req: NextRequest) {
 
 		if (!message || typeof message !== 'string' || message.length > MAX_MESSAGE_LENGTH) {
 			return NextResponse.json({ success: false, error: 'Invalid message length' } satisfies ChatResponse, { status: 400 });
+		}
+
+		const rateLimit = await consumeAssistantRateLimit(req);
+
+		if (!rateLimit.allowed) {
+			return NextResponse.json({
+				success: false,
+				error: 'Too many requests.'
+			} satisfies ChatResponse, {
+				status: 429,
+				headers: {
+					'Retry-After': String(rateLimit.retryAfterSec),
+				},
+			});
 		}
 
 		const localeTag = cacheLocaleTag(await getLocale());

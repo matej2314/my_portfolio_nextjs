@@ -117,10 +117,10 @@ The project uses Tailwind CSS 4 with custom configuration in `tailwind.config.ts
 -   **Caching** - Redis cache for data
 -   **SEO** - Dynamic meta tags and sitemap
 
+## 🤖 AI agent
+
+This repository is set up for AI-assisted development (for example in Cursor). The coding agent does **not** rely only on the model’s built-in knowledge: it is wired to a **custom MCP (Model Context Protocol) server that acts as the primary knowledge source**—project- and stack-specific documentation and context are served through MCP so suggestions stay aligned with the actual Next.js version, conventions, and files in this repo. See `AGENTS.md` for how documentation is indexed and when to refresh it.
+
 ## 📝 License
 
 This project is private and not subject to open source licensing.
-
----
-
-⭐ If you like this project, give it a star!
