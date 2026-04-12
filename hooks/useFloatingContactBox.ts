@@ -1,4 +1,4 @@
-import { useState, useId, useEffect } from 'react'
+import { useState, useId, useEffect, useRef, useCallback } from 'react'
 import { useTranslations } from 'next-intl';
 import { useReducedMotion } from 'motion/react';
 import { defaultData } from '@/lib/defaultData';
@@ -7,6 +7,27 @@ export const useFloatingContactBox = () => {
     const t = useTranslations('homePage.floatingContact');
 	const reduced = useReducedMotion();
 	const [open, setOpen] = useState(false);
+	const openRef = useRef(open);
+	openRef.current = open;
+
+	const [elevateStackUntilCloseDone, setElevateStackUntilCloseDone] = useState(false);
+	const stackAboveChat = open || elevateStackUntilCloseDone;
+
+	const openContactBox = useCallback(() => {
+		setElevateStackUntilCloseDone(false);
+		setOpen(true);
+	}, []);
+
+	const closeContactBox = useCallback(() => {
+		setElevateStackUntilCloseDone(true);
+		setOpen(false);
+	}, []);
+
+	const onContactLauncherAnimationComplete = useCallback(() => {
+		if (openRef.current) return;
+		setElevateStackUntilCloseDone(false);
+	}, []);
+
 	const regionId = useId();
 	const { photoSrc, fullName, contactRows, socialLinks, config } = defaultData.floatingBoxesData;
 
@@ -31,6 +52,10 @@ export const useFloatingContactBox = () => {
     return {
         open,
         setOpen,
+        stackAboveChat,
+        openContactBox,
+        closeContactBox,
+        onContactLauncherAnimationComplete,
         contactBoxPanelTransition,
         reduced,
         regionId,

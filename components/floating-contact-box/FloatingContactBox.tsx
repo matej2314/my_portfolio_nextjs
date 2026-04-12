@@ -2,7 +2,7 @@
 
 import { Icon } from '@iconify/react';
 import Image from 'next/image';
-import { motion} from 'motion/react';
+import { motion } from 'motion/react';
 
 import ContactRow from './ContactRow';
 import FloatingContactSocialLinks from './FloatingContactSocialLinks';
@@ -17,11 +17,10 @@ import { type FloatingContactRow } from '@/types/floatingContactTypes';
 
 export default function FloatingContactBox() {
 
-	const { open, setOpen, contactBoxPanelTransition, reduced, regionId, photoSrc, fullName, contactRows, socialLinks, ACCENT, CARD_BG, BORDER, CONTACT_BOX_WIDTH, tuckAfterOpen, tuckDuration, revealAfterClose, revealDuration, ENTER_DURATION_CONTACT_BOX, SHOW_DELAY_CONTACT_BOX, t } = useFloatingContactBox();
-	
+	const { open, stackAboveChat, openContactBox, closeContactBox, onContactLauncherAnimationComplete, contactBoxPanelTransition, reduced, regionId, photoSrc, fullName, contactRows, socialLinks, ACCENT, CARD_BG, BORDER, CONTACT_BOX_WIDTH, tuckAfterOpen, tuckDuration, revealAfterClose, revealDuration, ENTER_DURATION_CONTACT_BOX, SHOW_DELAY_CONTACT_BOX, t } = useFloatingContactBox();
 
 	return (
-		<motion.div className={`pointer-events-none fixed right-1 top-1/2 ${open ? 'z-30' : 'z-10'} flex -translate-y-1/2 flex-row items-start overflow-visible`} style={{ gap: open ? 0 : 8 }} initial={reduced ? false : { opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={reduced ? { duration: 0 } : { delay: SHOW_DELAY_CONTACT_BOX, duration: ENTER_DURATION_CONTACT_BOX, ease: [0.22, 1, 0.36, 1] }}>
+		<motion.div className={`pointer-events-none fixed right-1 top-1/2 ${stackAboveChat ? 'z-30' : 'z-10'} flex -translate-y-1/2 flex-row items-start overflow-visible`} style={{ gap: open ? 0 : 8 }} initial={reduced ? false : { opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={reduced ? { duration: 0 } : { delay: SHOW_DELAY_CONTACT_BOX, duration: ENTER_DURATION_CONTACT_BOX, ease: [0.22, 1, 0.36, 1] }}>
 			<motion.div aria-hidden className='shrink-0' initial={false} animate={{ width: open ? 0 : 56 }} transition={contactBoxPanelTransition} />
 			<motion.button
 				type='button'
@@ -30,7 +29,7 @@ export default function FloatingContactBox() {
 				aria-label={t('toggleOpen')}
 				aria-hidden={open}
 				tabIndex={open ? -1 : 0}
-				onClick={() => setOpen(true)}
+				onClick={openContactBox}
 				className={cn(
 					'pointer-events-auto absolute left-0 top-1/2 z-[5] flex size-14 cursor-pointer items-center justify-center rounded-full border-2 border-solid shadow-lg',
 					'outline-none ring-0 ring-offset-0 transition-[border-color] duration-400 ease-[cubic-bezier(0.4,0,0.2,1)]',
@@ -74,6 +73,7 @@ export default function FloatingContactBox() {
 								}
 				}
 				transition={reduced ? { duration: 0 } : open ? { delay: tuckAfterOpen, duration: tuckDuration, ease: [0.4, 0, 0.2, 1] } : { delay: revealAfterClose, duration: revealDuration, ease: [0.22, 1, 0.36, 1] }}
+				onAnimationComplete={onContactLauncherAnimationComplete}
 				whileHover={reduced || open ? undefined : { opacity: 1 }}
 				whileTap={reduced || open ? undefined : { scale: 0.96 }}
 			>
@@ -83,7 +83,15 @@ export default function FloatingContactBox() {
 			<motion.div className={cn('relative z-10 overflow-hidden', open ? 'pointer-events-auto' : 'pointer-events-none')} initial={false} animate={{ width: open ? 'auto' : 0 }} transition={contactBoxPanelTransition}>
 				<div id={regionId} role='region' aria-label={t('regionLabel')} aria-hidden={!open} className={cn('flex flex-col rounded-2xl border shadow-xl', CONTACT_BOX_WIDTH)} style={{ backgroundColor: CARD_BG, borderColor: BORDER }}>
 					<header className='group relative flex gap-3 border-b p-4' style={{ borderColor: BORDER }}>
-						<motion.button type='button' aria-label={t('toggleClose')} onClick={() => setOpen(false)} className='absolute right-2 top-2 rounded-lg border border-transparent p-1.5 outline-none ring-0 ring-offset-0 focus-visible:border-[#ffdb70] focus-visible:outline-none focus-visible:ring-0' style={{ color: ACCENT }} whileHover={reduced ? undefined : { opacity: 0.9 }} whileTap={reduced ? undefined : { scale: 0.95 }}>
+						<motion.button
+							type='button'
+							aria-label={t('toggleClose')}
+							onClick={closeContactBox}
+							className='absolute right-2 top-2 rounded-lg border border-transparent p-1.5 outline-none ring-0 ring-offset-0 focus-visible:border-[#ffdb70] focus-visible:outline-none focus-visible:ring-0'
+							style={{ color: ACCENT }}
+							whileHover={reduced ? undefined : { opacity: 0.9 }}
+							whileTap={reduced ? undefined : { scale: 0.95 }}
+						>
 							<Icon icon='mdi:close' width={22} height={22} aria-hidden />
 						</motion.button>
 						<div className='relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-[#2a2a2b]'>
