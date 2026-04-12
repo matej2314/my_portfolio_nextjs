@@ -26,7 +26,7 @@ export default async function HomePageLayout({ children, projectModal }: { child
 						<HomeContent>{children}</HomeContent>
 						{projectModal}
 						<FloatingContactBox />
-						{/* <FloatingChatBox /> */}
+						<FloatingChatBox />
 					</NextIntlClientProvider>
 				</HomeProjectTransitionProvider>
 			</main>
