@@ -14,16 +14,19 @@ import { buildChatHistory } from '@/lib/assistant/buildChatHistory';
 
 import { defaultData } from '@/lib/defaultData';
 
-import { type ChatLine } from '@/lib/assistant/types';
 import { type ChatResponse } from '@/lib/assistant/types';
+import { type FloatingChatBoxState } from '@/types/floatingChatBoxTypes';
 
 export default function FloatingChatBox() {
 	const reduced = useReducedMotion();
-	const [open, setOpen] = useState(false);
-	const [lines, setLines] = useState<ChatLine[]>([]);
-	const [input, setInput] = useState('');
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState<string | null>(null);
+
+	const [chatBoxState, setChatBoxState] = useState<FloatingChatBoxState>({
+		open: false,
+		lines: [],
+		input: '',
+		loading: false,
+		error: null,
+	})
 	const regionId = useId();
 	const locale = useLocale();
 	const { config } = defaultData.floatingBoxesData;
@@ -37,20 +40,20 @@ export default function FloatingChatBox() {
 	const revealAfterClose = reduced ? 0 : CHAT_BOX_PANEL_DURATION * 0.42;
 	const revealDuration = config.calcRevealDuration(reduced ?? false);
 
-	const subtitle = useMemo(() => (loading ? (locale === 'pl' ? 'Odpowiadam…' : 'Thinking…') : locale === 'pl' ? 'msliwowski.net - asystent AI' : 'msliwowski.net - AI assistant'), [loading, locale]);
+	const subtitle = useMemo(() => (chatBoxState.loading ? (locale === 'pl' ? 'Odpowiadam…' : 'Thinking…') : locale === 'pl' ? 'msliwowski.net - asystent AI' : 'msliwowski.net - AI assistant'), [chatBoxState.loading, locale]);
 
 	async function handleSubmit(e: React.FormEvent) {
 		e.preventDefault();
-		const text = input.trim();
-		if (!text || loading) return;
+		const text = chatBoxState.input.trim();
+		if (!text || chatBoxState.loading) return;
 
-		setError(null);
-		setInput('');
+		setChatBoxState(prev => ({ ...prev, error: null }));
+		setChatBoxState(prev => ({ ...prev, input: '' }));
 		const userId = uuidv4();
-		setLines(prev => [...prev, { id: userId, role: 'user', text }]);
-		setLoading(true);
+		setChatBoxState(prev => ({ ...prev, lines: [...prev.lines, { id: userId, role: 'user', text }] }));
+		setChatBoxState(prev => ({ ...prev, loading: true }));
 
-		const history = buildChatHistory(lines);
+		const history = buildChatHistory(chatBoxState.lines);
 
 		try {
 			const response = await fetch('/api/assistant/chat', {
@@ -62,50 +65,39 @@ export default function FloatingChatBox() {
 			const data = (await response.json()) as ChatResponse;
 
 			if (!response.ok || !data.success) {
-				setLines(prev => prev.filter(line => line.id !== userId));
-				setError(data.error ?? (locale === 'pl' ? 'Nie udało się wysłać wiadomości.' : 'Could not sent the message.'));
+				setChatBoxState(prev => ({ ...prev, lines: prev.lines.filter(line => line.id !== userId) }));
+				setChatBoxState(prev => ({ ...prev, error: data.error ?? (locale === 'pl' ? 'Nie udało się wysłać wiadomości.' : 'Could not sent the message.') }));
 				return;
 			}
 
 			if (data.rejected) {
-				setLines(
-					prev =>
-						[
-							...prev,
-							{
-								id: uuidv4(),
-								role: 'rejected',
-								topics: data.topics ?? [],
-								exampleQuestions: data.exampleQuestions,
-							},
-						] as ChatLine[],
-				);
+				setChatBoxState(prev => ({ ...prev, lines: [...prev.lines, { id: uuidv4(), role: 'rejected', topics: data.topics ?? [], exampleQuestions: data.exampleQuestions }] }));
 				return;
 			}
 
 			if (data.reply) {
-				setLines(prev => [...prev, { id: uuidv4(), role: 'assistant', text: data.reply }] as ChatLine[]);
+				setChatBoxState(prev => ({ ...prev, lines: [...prev.lines, { id: uuidv4(), role: 'assistant', text: data.reply ?? '' }] }));
 			}
 		} catch (error) {
-			setLines(prev => prev.filter(line => line.id !== userId));
-			setError(locale === 'pl' ? 'Błąd sieciowy.' : 'Network error.');
+			setChatBoxState(prev => ({ ...prev, lines: prev.lines.filter(line => line.id !== userId) }));
+			setChatBoxState(prev => ({ ...prev, error: locale === 'pl' ? 'Błąd sieciowy.' : 'Network error.' }));
 		} finally {
-			setLoading(false);
+			setChatBoxState(prev => ({ ...prev, loading: false }));
 		}
 	}
 
 	return (
-		<motion.div className={`pointer-events-none fixed right-1 top-[calc(50%+6.25rem)] ${open ? 'z-30' : 'z-10'} flex -translate-y-1/2 flex-row items-start overflow-visible`} style={{ gap: open ? 0 : 8 }} initial={reduced ? false : { opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={reduced ? { duration: 0 } : { delay: SHOW_DELAY_CHAT_BOX, duration: ENTER_DURATION_CHAT_BOX, ease: [0.22, 1, 0.36, 1] }}>
-			<motion.div aria-hidden className='shrink-0' initial={false} animate={{ width: open ? 0 : 56 }} transition={chatBoxPanelTransition} />
+		<motion.div className={`pointer-events-none fixed right-1 top-[calc(50%+6.25rem)] ${chatBoxState.open ? 'z-30' : 'z-10'} flex -translate-y-1/2 flex-row items-start overflow-visible`} style={{ gap: chatBoxState.open ? 0 : 8 }} initial={reduced ? false : { opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={reduced ? { duration: 0 } : { delay: SHOW_DELAY_CHAT_BOX, duration: ENTER_DURATION_CHAT_BOX, ease: [0.22, 1, 0.36, 1] }}>
+			<motion.div aria-hidden className='shrink-0' initial={false} animate={{ width: chatBoxState.open ? 0 : 56 }} transition={chatBoxPanelTransition} />
 			<motion.button
 				type='button'
-				aria-expanded={open}
+				aria-expanded={chatBoxState.open}
 				aria-controls={regionId}
 				aria-label={locale === 'pl' ? 'Otwórz czat z asystentem AI' : 'Open AI assistant chat'}
-				aria-hidden={open}
-				tabIndex={open ? -1 : 0}
-				onClick={() => setOpen(true)}
-				className={cn('pointer-events-auto absolute left-0 top-1/2 z-[5] flex size-14 cursor-pointer items-center justify-center rounded-full border-2 shadow-lg', open && 'pointer-events-none')}
+				aria-hidden={chatBoxState.open}
+				tabIndex={chatBoxState.open ? -1 : 0}
+				onClick={() => setChatBoxState(prev => ({ ...prev, open: true }))}
+				className={cn('pointer-events-auto absolute left-0 top-1/2 z-[5] flex size-14 cursor-pointer items-center justify-center rounded-full border-2 shadow-lg', chatBoxState.open && 'pointer-events-none')}
 				style={{
 					backgroundColor: CARD_BG,
 					borderColor: BORDER,
@@ -116,14 +108,14 @@ export default function FloatingChatBox() {
 				animate={
 					reduced
 						? {
-								scale: open ? 0.01 : 1,
+								scale: chatBoxState.open ? 0.01 : 1,
 								x: 0,
 								y: '-50%',
-								opacity: open ? 0 : 1,
+								opacity: chatBoxState.open ? 0 : 1,
 								filter: 'none',
 								rotate: 0,
 							}
-						: open
+							: chatBoxState.open
 							? {
 									scale: 0.14,
 									x: 52,
@@ -141,16 +133,16 @@ export default function FloatingChatBox() {
 									rotate: 0,
 								}
 				}
-				transition={reduced ? { duration: 0 } : open ? { delay: tuckAfterOpen, duration: tuckDuration, ease: [0.4, 0, 0.2, 1] } : { delay: revealAfterClose, duration: revealDuration, ease: [0.22, 1, 0.36, 1] }}
-				whileHover={reduced || open ? undefined : { opacity: 1 }}
-				whileTap={reduced || open ? undefined : { scale: 0.96 }}
+				transition={reduced ? { duration: 0 } : chatBoxState.open ? { delay: tuckAfterOpen, duration: tuckDuration, ease: [0.4, 0, 0.2, 1] } : { delay: revealAfterClose, duration: revealDuration, ease: [0.22, 1, 0.36, 1] }}
+				whileHover={reduced || chatBoxState.open ? undefined : { opacity: 1 }}
+				whileTap={reduced || chatBoxState.open ? undefined : { scale: 0.96 }}
 			>
 				<Icon icon='mdi:robot' width={26} height={26} style={{ color: ACCENT }} />
 			</motion.button>
-			<motion.div className={cn('relative z-10 overflow-hidden min-h-[500px] h-full flex align-stretch', open ? 'pointer-events-auto' : 'pointer-events-none')} initial={false} animate={{ width: open ? 'auto' : 0 }} transition={chatBoxPanelTransition}>
-				<div id={regionId} role='region' aria-label={locale === 'pl' ? 'Okno czatu z asystentem AI' : 'AI assistant chat panel'} aria-hidden={!open} className={cn('flex max-h-[min(32rem,calc(100vh-4rem))] flex-col rounded-2xl border shadow-xl', CHAT_PANEL_WIDTH)} style={{ backgroundColor: CARD_BG, borderColor: BORDER }}>
+			<motion.div className={cn('relative z-10 overflow-hidden min-h-[500px] h-full flex align-stretch', chatBoxState.open ? 'pointer-events-auto' : 'pointer-events-none')} initial={false} animate={{ width: chatBoxState.open ? 'auto' : 0 }} transition={chatBoxPanelTransition}>
+				<div id={regionId} role='region' aria-label={locale === 'pl' ? 'Okno czatu z asystentem AI' : 'AI assistant chat panel'} aria-hidden={!chatBoxState.open} className={cn('flex max-h-[min(32rem,calc(100vh-4rem))] flex-col rounded-2xl border shadow-xl', CHAT_PANEL_WIDTH)} style={{ backgroundColor: CARD_BG, borderColor: BORDER }}>
 					<header className='relative flex shrink-0 items-center gap-3 border-b p-4 pr-12' style={{ borderColor: BORDER }}>
-						<motion.button type='button' aria-label={locale === 'pl' ? 'Zamknij czat' : 'Close chat'} onClick={() => setOpen(false)} className='absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1.5' style={{ color: ACCENT }} whileHover={reduced ? undefined : { opacity: 0.9 }} whileTap={reduced ? undefined : { scale: 0.95 }}>
+						<motion.button type='button' aria-label={locale === 'pl' ? 'Zamknij czat' : 'Close chat'} onClick={() => setChatBoxState(prev => ({ ...prev, open: false }))} className='absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1.5' style={{ color: ACCENT }} whileHover={reduced ? undefined : { opacity: 0.9 }} whileTap={reduced ? undefined : { scale: 0.95 }}>
 							<Icon icon='mdi:close' width={22} height={22} />
 						</motion.button>
 						<div className='flex size-11 shrink-0 items-center justify-center rounded-xl bg-[#2a2a2b]' aria-hidden>
@@ -162,8 +154,8 @@ export default function FloatingChatBox() {
 						</div>
 					</header>
 					<div className='flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto no-scrollbar px-3 py-3' style={{ scrollbarGutter: 'stable' }}>
-						{lines.length === 0 && !loading && <p className='px-1 text-center text-sm text-slate-500'>{locale === 'pl' ? 'Zadaj pytanie o projekty, umiejętności lub doświadczenie.' : 'Ask about projects, skills, or experience.'}</p>}
-						{lines.map(line =>
+						{chatBoxState.lines.length === 0 && !chatBoxState.loading && <p className='px-1 text-center text-sm text-slate-500'>{locale === 'pl' ? 'Zadaj pytanie o projekty, umiejętności lub doświadczenie.' : 'Ask about projects, skills, or experience.'}</p>}
+						{chatBoxState.lines.map(line =>
 							line.role === 'rejected' ? (
 								<div key={line.id} className='flex flex-col gap-2 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2.5 text-sm text-slate-200'>
 									<p>{refusalCopy(locale)}</p>
@@ -212,8 +204,8 @@ export default function FloatingChatBox() {
 								</div>
 							),
 						)}
-						{loading && <p className='text-center text-xs text-slate-500'>{locale === 'pl' ? 'Generuję odpowiedź…' : 'Generating reply…'}</p>}
-						{error && <p className='text-center text-sm text-red-400'>{error}</p>}
+						{chatBoxState.loading && <p className='text-center text-xs text-slate-500'>{locale === 'pl' ? 'Generuję odpowiedź…' : 'Generating reply…'}</p>}
+						{chatBoxState.error && <p className='text-center text-sm text-red-400'>{chatBoxState.error}</p>}
 					</div>
 					<div className='shrink-0 border-t p-3' style={{ borderColor: BORDER }}>
 						<form className='flex flex-col gap-2 sm:flex-row sm:items-stretch' onSubmit={handleSubmit}>
@@ -223,9 +215,9 @@ export default function FloatingChatBox() {
 							<input
 								id={`${regionId}-chat-input`}
 								type='text'
-								value={input}
-								onChange={e => setInput(e.target.value)}
-								disabled={loading}
+								value={chatBoxState.input}
+								onChange={e => setChatBoxState(prev => ({ ...prev, input: e.target.value }))}
+								disabled={chatBoxState.loading}
 								placeholder={locale === 'pl' ? 'Napisz wiadomość…' : 'Type a message…'}
 								className='min-h-9 w-full flex-1 rounded-lg border bg-[#2a2a2b] px-3 py-2 text-sm text-white placeholder:text-slate-500 outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--chat-input-focus)] focus-visible:ring-offset-0 focus-visible:ring-offset-transparent disabled:opacity-60'
 								style={
@@ -236,7 +228,7 @@ export default function FloatingChatBox() {
 								}
 								autoComplete='off'
 							/>
-							<motion.button type='submit' disabled={loading || !input.trim()} className='shrink-0 rounded-lg px-4 py-2 text-sm font-medium text-[#1a1a1b] disabled:opacity-80' style={{ backgroundColor: ACCENT }} whileHover={reduced || loading ? undefined : { filter: 'brightness(1.06)' }} whileTap={reduced || loading ? undefined : { scale: 0.98 }}>
+							<motion.button type='submit' disabled={chatBoxState.loading || !chatBoxState.input.trim()} className='shrink-0 rounded-lg px-4 py-2 text-sm font-medium text-[#1a1a1b] disabled:opacity-80' style={{ backgroundColor: ACCENT }} whileHover={reduced || chatBoxState.loading ? undefined : { filter: 'brightness(1.06)' }} whileTap={reduced || chatBoxState.loading ? undefined : { scale: 0.98 }}>
 								{locale === 'pl' ? 'Wyślij' : 'Send'}
 							</motion.button>
 						</form>
