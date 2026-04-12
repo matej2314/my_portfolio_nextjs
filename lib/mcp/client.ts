@@ -5,7 +5,7 @@ import { type MCPTool, type McpToolResult } from './types';
 
 const MCP_BASE_URL = process.env.MCP_BASE_URL || 'http://127.0.0.1:3333';
 const MCP_ENDPOINT = process.env.MCP_ENDPOINT_PATH || '/mcp';
-const MCP_TOKEN = process.env.MCP_INTERNAL_TOKEN;
+const MCP_TOKEN = process.env.MCP_INTERNAL_TOKEN?.trim() ?? '';
 const NAMESPACE = process.env.MCP_NAMESPACE || 'portfolio';
 
 function mcpServerUrl() {

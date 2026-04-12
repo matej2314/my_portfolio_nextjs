@@ -4,7 +4,7 @@ import { APP_CONFIG } from '@/config/app.config';
 import { getCache, setCache } from '@/lib/redis/redis';
 import { checkTopic } from '@/lib/assistant/topicGate';
 import { runAssistantLoop } from '@/lib/assistant/anthropicLoop';
-import { type ChatRequest, type ChatResponse} from '@/lib/assistant/types';
+import { type ChatRequest, type ChatResponse } from '@/lib/assistant/types';
 import { assistantReplyKey } from '@/lib/redis/redisKeys';
 import { cacheLocaleTag } from '@/lib/assistant/cacheLocaleTag';
 import { normalizeHistory } from '@/lib/assistant/normalizeHistory';
@@ -48,25 +48,34 @@ export async function POST(req: NextRequest) {
 		const reply = await runAssistantLoop(message.trim(), { history });
 
 		if (reply === null || reply === '') {
-			return NextResponse.json({
-				success: false,
-				error: 'Assistant returned an empty response'
-			} satisfies ChatResponse, { status: 502 });
+			return NextResponse.json(
+				{
+					success: false,
+					error: 'Assistant returned an empty response',
+				} satisfies ChatResponse,
+				{ status: 502 },
+			);
 		}
 
 		if (useCache) {
 			await setCache(cacheKey, reply, CACHE_TTL);
 		}
 
-		return NextResponse.json({
-			success: true,
-			reply
-		} satisfies ChatResponse, { status: 200 });
+		return NextResponse.json(
+			{
+				success: true,
+				reply,
+			} satisfies ChatResponse,
+			{ status: 200 },
+		);
 	} catch (error) {
 		console.error('[ASSISTANT CHAT ERROR] :', error);
-		return NextResponse.json({
-			success: false,
-			error: 'Internal server error'
-		} satisfies ChatResponse, { status: 500 });
+		return NextResponse.json(
+			{
+				success: false,
+				error: 'Internal server error',
+			} satisfies ChatResponse,
+			{ status: 500 },
+		);
 	}
 }
