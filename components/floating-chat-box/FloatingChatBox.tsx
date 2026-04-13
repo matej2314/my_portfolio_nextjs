@@ -1,9 +1,10 @@
 'use client';
 
 import { Icon } from '@iconify/react';
+import { type FormEvent } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { motion, useReducedMotion } from 'motion/react';
-import { type CSSProperties, useId, useMemo, useState } from 'react';
+import { type CSSProperties, useId, useMemo, useState, useRef, useEffect } from 'react';
 import { useLocale } from 'next-intl';
 
 import MarkdownRenderer from '@/components/blog-page-components/MarkdownRenderer';
@@ -14,8 +15,9 @@ import { buildChatHistory } from '@/lib/assistant/buildChatHistory';
 
 import { defaultData } from '@/lib/defaultData';
 
-import { type ChatResponse } from '@/lib/assistant/types';
+import { ChatLine, type ChatResponse } from '@/lib/assistant/types';
 import { type FloatingChatBoxState } from '@/types/floatingChatBoxTypes';
+import { type AssistantStreamServerEvent } from '@/lib/assistant/types';
 
 export default function FloatingChatBox() {
 	const reduced = useReducedMotion();
@@ -27,6 +29,12 @@ export default function FloatingChatBox() {
 		loading: false,
 		error: null,
 	});
+
+	// STREAM-REFACTOR-INTERVAL: zmiana z RAF na setInterval dla kontrolowanej częstotliwości
+	const streamBufferRef = useRef<{ id: string; text: string } | null>(null);
+	const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
+	const messagesEndRef = useRef<HTMLDivElement>(null);
+
 	const regionId = useId();
 	const locale = useLocale();
 	const { config } = defaultData.floatingBoxesData;
@@ -42,56 +50,250 @@ export default function FloatingChatBox() {
 
 	const subtitle = useMemo(() => (chatBoxState.loading ? (locale === 'pl' ? 'Odpowiadam…' : 'Thinking…') : locale === 'pl' ? 'msliwowski.net - asystent AI' : 'msliwowski.net - AI assistant'), [chatBoxState.loading, locale]);
 
-	async function handleSubmit(e: React.FormEvent) {
+	useEffect(() => {
+		if (chatBoxState.loading && messagesEndRef.current) {
+			messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+		}
+	}, [chatBoxState.lines.length, chatBoxState.loading]);
+
+	// STREAM-REFACTOR-INTERVAL: cleanup interval przy unmount
+	useEffect(() => {
+		return () => {
+			if (intervalIdRef.current) {
+				clearInterval(intervalIdRef.current);
+			}
+		};
+	}, []);
+
+	// STREAM-REFACTOR-INTERVAL-FIX: interval uruchamia się tylko raz przy pierwszej delcie
+	const updateStreamingText = (assistantId: string, deltaText: string) => {
+		// Pierwsza delta dla nowego asystenta - inicjalizuj bufor i uruchom interval
+		if (!streamBufferRef.current || streamBufferRef.current.id !== assistantId) {
+			streamBufferRef.current = { id: assistantId, text: deltaText };
+
+			// Uruchom interval TYLKO przy pierwszej delcie
+			const UPDATE_INTERVAL_MS = 50;
+			intervalIdRef.current = setInterval(() => {
+				if (streamBufferRef.current) {
+					const { id, text } = streamBufferRef.current;
+					setChatBoxState(prev => ({
+						...prev,
+						lines: prev.lines.map(l => (l.id === id && l.role === 'assistant' ? { ...l, text } : l)),
+					}));
+				}
+			}, UPDATE_INTERVAL_MS);
+		} else {
+			// Kolejne delty - tylko akumuluj w buforze (interval już działa)
+			streamBufferRef.current.text += deltaText;
+		}
+	};
+
+	// STREAM-REFACTOR-INTERVAL: finalizacja streamu z clearInterval
+	const finalizeStream = () => {
+		if (intervalIdRef.current) {
+			clearInterval(intervalIdRef.current);
+			intervalIdRef.current = null;
+		}
+		if (streamBufferRef.current) {
+			const { id, text } = streamBufferRef.current;
+			setChatBoxState(prev => ({
+				...prev,
+				lines: prev.lines.map(l => (l.id === id && l.role === 'assistant' ? { ...l, text } : l)),
+				loading: false,
+			}));
+			streamBufferRef.current = null;
+		} else {
+			setChatBoxState(prev => ({ ...prev, loading: false }));
+		}
+	};
+
+	async function handleSubmit(e: FormEvent) {
 		e.preventDefault();
 		const text = chatBoxState.input.trim();
 		if (!text || chatBoxState.loading) return;
-
-		setChatBoxState(prev => ({ ...prev, error: null }));
-		setChatBoxState(prev => ({ ...prev, input: '' }));
+		setChatBoxState(prev => ({ ...prev, error: null, input: '' }));
 		const userId = uuidv4();
-		setChatBoxState(prev => ({ ...prev, lines: [...prev.lines, { id: userId, role: 'user', text }] }));
+		setChatBoxState(prev => ({
+			...prev,
+			lines: [...prev.lines, { id: userId, role: 'user', text }],
+		}));
 		setChatBoxState(prev => ({ ...prev, loading: true }));
-
 		const history = buildChatHistory(chatBoxState.lines);
-
+		const abortController = new AbortController();
 		try {
 			const response = await fetch('/api/assistant/chat', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ message: text, history }),
+				signal: abortController.signal,
 			});
-
-			const data = (await response.json()) as ChatResponse;
-
 			if (response.status === 429) {
 				const retryAfter = response.headers.get('Retry-After');
 				const minutes = retryAfter ? Math.ceil(Number(retryAfter) / 60) : 15;
-				const errorMsg = locale === 'pl' ? `Za dużo żądań. Spróbuj ponownie za ${minutes} min.` : `Too many requests. Try again in ${minutes} min.`;
-				setChatBoxState(prev => ({ ...prev, lines: prev.lines.filter(line => line.id !== userId) }));
-				setChatBoxState(prev => ({ ...prev, error: errorMsg }));
+				const errorMsg = locale === 'pl' ? `Przekroczono limit zapytań. Spróbuj ponownie za ${minutes} minut.` : `You've exceeded the request limit. Please try again in ${minutes} minutes.`;
+				setChatBoxState(prev => ({
+					...prev,
+					lines: prev.lines.filter(line => line.id !== userId),
+					error: errorMsg,
+					loading: false,
+				}));
 				return;
 			}
-
-			if (!response.ok || !data.success) {
-				setChatBoxState(prev => ({ ...prev, lines: prev.lines.filter(line => line.id !== userId) }));
-				setChatBoxState(prev => ({ ...prev, error: data.error ?? (locale === 'pl' ? 'Nie udało się wysłać wiadomości.' : 'Could not sent the message.') }));
+			if (response.status === 503) {
+				const errorMsg = locale === 'pl' ? `Usługa asystenta jest obciążona. Spróbuj ponownie później.` : `The assistant service is overloaded. Please try again later.`;
+				setChatBoxState(prev => ({
+					...prev,
+					lines: prev.lines.filter(line => line.id !== userId),
+					error: errorMsg,
+					loading: false,
+				}));
 				return;
 			}
-
+			if (!response.ok) {
+				const errorMsg = locale === 'pl' ? 'Wystąpił błąd podczas komunikacji z usługą asystenta. Spróbuj ponownie.' : 'An error occurred while communicating with the assistant service. Please try again.';
+				setChatBoxState(prev => ({
+					...prev,
+					lines: prev.lines.filter(line => line.id !== userId),
+					error: errorMsg,
+					loading: false,
+				}));
+				return;
+			}
+			const contentType = response.headers.get('content-type');
+			if (contentType?.includes('text/event-stream')) {
+				const assistantId = uuidv4();
+				setChatBoxState(prev => ({
+					...prev,
+					lines: [...prev.lines, { id: assistantId, role: 'assistant', text: '' }],
+				}));
+				const reader = response.body?.getReader();
+				if (!reader) {
+					throw new Error('No response body reader');
+				}
+				const decoder = new TextDecoder();
+				let buffer = '';
+				while (true) {
+					const { done, value } = await reader.read();
+					if (done) break;
+					buffer += decoder.decode(value, { stream: true });
+					const lines = buffer.split('\n\n');
+					buffer = lines.pop() ?? '';
+					for (const line of lines) {
+						if (!line.trim() || !line.startsWith('data: ')) continue;
+						try {
+							const jsonStr = line.slice(6);
+							const event = JSON.parse(jsonStr) as AssistantStreamServerEvent;
+							if (event.type === 'delta') {
+								updateStreamingText(assistantId, event.text);
+							} else if (event.type === 'done') {
+								finalizeStream();
+							} else if (event.type === 'error') {
+								// STREAM-REFACTOR-INTERVAL: cleanup przy błędzie
+								if (intervalIdRef.current) {
+									clearInterval(intervalIdRef.current);
+									intervalIdRef.current = null;
+								}
+								streamBufferRef.current = null;
+								setChatBoxState(prev => ({
+									...prev,
+									lines: prev.lines.filter(l => l.id !== assistantId),
+									error: event.error,
+									loading: false,
+								}));
+							} else if (event.type === 'rejected') {
+								// STREAM-REFACTOR-INTERVAL: cleanup przy rejected
+								if (intervalIdRef.current) {
+									clearInterval(intervalIdRef.current);
+									intervalIdRef.current = null;
+								}
+								streamBufferRef.current = null;
+								setChatBoxState(prev => ({
+									...prev,
+									lines: [
+										...prev.lines.filter(l => l.id !== assistantId),
+										{
+											id: uuidv4(),
+											role: 'rejected',
+											topics: event.topics,
+											exampleQuestions: event.exampleQuestions,
+										} as ChatLine,
+									],
+									loading: false,
+								}));
+							}
+						} catch (parseError) {
+							console.error('[SSE PARSE ERROR]:', parseError, line);
+						}
+					}
+				}
+				return;
+			}
+			const data = (await response.json()) as ChatResponse;
+			if (!data.success) {
+				const errorMsg = data.error ?? (locale === 'pl' ? 'Wystąpił błąd podczas komunikacji z usługą asystenta. Spróbuj ponownie.' : 'An error occurred while communicating with the assistant service. Please try again.');
+				setChatBoxState(prev => ({
+					...prev,
+					lines: prev.lines.filter(line => line.id !== userId),
+					error: errorMsg,
+					loading: false,
+				}));
+				return;
+			}
 			if (data.rejected) {
-				setChatBoxState(prev => ({ ...prev, lines: [...prev.lines, { id: uuidv4(), role: 'rejected', topics: data.topics ?? [], exampleQuestions: data.exampleQuestions }] }));
+				setChatBoxState(prev => ({
+					...prev,
+					lines: [
+						...prev.lines,
+						{
+							id: uuidv4(),
+							role: 'rejected',
+							topics: data.topics ?? [],
+							exampleQuestions: data.exampleQuestions,
+						} as ChatLine,
+					],
+					loading: false,
+				}));
 				return;
 			}
-
 			if (data.reply) {
-				setChatBoxState(prev => ({ ...prev, lines: [...prev.lines, { id: uuidv4(), role: 'assistant', text: data.reply ?? '' }] }));
+				setChatBoxState(prev => ({
+					...prev,
+					lines: [
+						...prev.lines,
+						{
+							id: uuidv4(),
+							role: 'assistant',
+							text: data.reply ?? '',
+						} as ChatLine,
+					],
+					loading: false,
+				}));
+			} else {
+				setChatBoxState(prev => ({ ...prev, loading: false }));
 			}
 		} catch (error) {
-			setChatBoxState(prev => ({ ...prev, lines: prev.lines.filter(line => line.id !== userId) }));
-			setChatBoxState(prev => ({ ...prev, error: locale === 'pl' ? 'Błąd sieciowy.' : 'Network error.' }));
-		} finally {
-			setChatBoxState(prev => ({ ...prev, loading: false }));
+			// STREAM-REFACTOR-INTERVAL: cleanup przy błędzie sieciowym
+			if (intervalIdRef.current) {
+				clearInterval(intervalIdRef.current);
+				intervalIdRef.current = null;
+			}
+			streamBufferRef.current = null;
+
+			if (error instanceof Error && error.name === 'AbortError') {
+				setChatBoxState(prev => ({
+					...prev,
+					lines: prev.lines.filter(line => line.id !== userId),
+					error: locale === 'pl' ? 'Anulowano.' : 'Cancelled.',
+					loading: false,
+				}));
+				return;
+			}
+			setChatBoxState(prev => ({
+				...prev,
+				lines: prev.lines.filter(line => line.id !== userId),
+				error: locale === 'pl' ? 'Wystąpił błąd sieci.' : 'Network error occurred.',
+				loading: false,
+			}));
 		}
 	}
 
@@ -215,6 +417,7 @@ export default function FloatingChatBox() {
 						)}
 						{chatBoxState.loading && <p className='text-center text-xs text-slate-500'>{locale === 'pl' ? 'Generuję odpowiedź…' : 'Generating reply…'}</p>}
 						{chatBoxState.error && <p className='text-center text-sm text-red-400'>{chatBoxState.error}</p>}
+						<div ref={messagesEndRef} />
 					</div>
 					<div className='shrink-0 border-t p-3' style={{ borderColor: BORDER }}>
 						<form className='flex flex-col gap-2 sm:flex-row sm:items-stretch' onSubmit={handleSubmit}>
