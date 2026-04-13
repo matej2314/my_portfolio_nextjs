@@ -30,7 +30,7 @@ export default function FloatingChatBox() {
 		error: null,
 	});
 
-	// STREAM-REFACTOR-INTERVAL: zmiana z RAF na setInterval dla kontrolowanej częstotliwości
+	
 	const streamBufferRef = useRef<{ id: string; text: string } | null>(null);
 	const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -56,7 +56,6 @@ export default function FloatingChatBox() {
 		}
 	}, [chatBoxState.lines.length, chatBoxState.loading]);
 
-	// STREAM-REFACTOR-INTERVAL: cleanup interval przy unmount
 	useEffect(() => {
 		return () => {
 			if (intervalIdRef.current) {
@@ -65,13 +64,18 @@ export default function FloatingChatBox() {
 		};
 	}, []);
 
-	// STREAM-REFACTOR-INTERVAL-FIX: interval uruchamia się tylko raz przy pierwszej delcie
+
 	const updateStreamingText = (assistantId: string, deltaText: string) => {
-		// Pierwsza delta dla nowego asystenta - inicjalizuj bufor i uruchom interval
+	
 		if (!streamBufferRef.current || streamBufferRef.current.id !== assistantId) {
+			
+			if (intervalIdRef.current) {
+				clearInterval(intervalIdRef.current);
+				intervalIdRef.current = null;
+			}
+
 			streamBufferRef.current = { id: assistantId, text: deltaText };
 
-			// Uruchom interval TYLKO przy pierwszej delcie
 			const UPDATE_INTERVAL_MS = 50;
 			intervalIdRef.current = setInterval(() => {
 				if (streamBufferRef.current) {
@@ -83,7 +87,7 @@ export default function FloatingChatBox() {
 				}
 			}, UPDATE_INTERVAL_MS);
 		} else {
-			// Kolejne delty - tylko akumuluj w buforze (interval już działa)
+			
 			streamBufferRef.current.text += deltaText;
 		}
 	};
@@ -111,6 +115,14 @@ export default function FloatingChatBox() {
 		e.preventDefault();
 		const text = chatBoxState.input.trim();
 		if (!text || chatBoxState.loading) return;
+
+		// CRITICAL-FIX: Wyczyść stary interval przed nowym requestem
+		if (intervalIdRef.current) {
+			clearInterval(intervalIdRef.current);
+			intervalIdRef.current = null;
+		}
+		streamBufferRef.current = null;
+
 		setChatBoxState(prev => ({ ...prev, error: null, input: '' }));
 		const userId = uuidv4();
 		setChatBoxState(prev => ({
