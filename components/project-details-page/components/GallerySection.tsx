@@ -35,7 +35,7 @@ export default async function GallerySection({
                                 alt=""
                                 fill
                                 className="object-cover"
-                                sizes="320px"
+                                sizes="(max-width: 640px) 320px, (max-width: 1024px) 640px, 960px"
                                 loading={index === 0 ? 'eager' : 'lazy'}
                             />
                         </div>

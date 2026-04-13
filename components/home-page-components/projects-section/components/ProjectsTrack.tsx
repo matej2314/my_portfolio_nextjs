@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, easeInOut } from 'framer-motion';
+import { motion, easeInOut } from 'motion/react';
 import { useState } from 'react';
 
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';

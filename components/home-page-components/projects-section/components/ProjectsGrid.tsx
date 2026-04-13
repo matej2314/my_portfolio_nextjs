@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, easeInOut, AnimatePresence, useInView } from 'framer-motion';
+import { motion, easeInOut, AnimatePresence, useInView } from 'motion/react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useCallback, useMemo, useRef } from 'react';
 

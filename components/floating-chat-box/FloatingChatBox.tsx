@@ -30,9 +30,6 @@ export default function FloatingChatBox() {
 		error: null,
 	});
 
-	
-	const streamBufferRef = useRef<{ id: string; text: string } | null>(null);
-	const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 
 	const regionId = useId();
@@ -56,72 +53,27 @@ export default function FloatingChatBox() {
 		}
 	}, [chatBoxState.lines.length, chatBoxState.loading]);
 
-	useEffect(() => {
-		return () => {
-			if (intervalIdRef.current) {
-				clearInterval(intervalIdRef.current);
-			}
-		};
-	}, []);
 
 
 	const updateStreamingText = (assistantId: string, deltaText: string) => {
-	
-		if (!streamBufferRef.current || streamBufferRef.current.id !== assistantId) {
-			
-			if (intervalIdRef.current) {
-				clearInterval(intervalIdRef.current);
-				intervalIdRef.current = null;
-			}
-
-			streamBufferRef.current = { id: assistantId, text: deltaText };
-
-			const UPDATE_INTERVAL_MS = 50;
-			intervalIdRef.current = setInterval(() => {
-				if (streamBufferRef.current) {
-					const { id, text } = streamBufferRef.current;
-					setChatBoxState(prev => ({
-						...prev,
-						lines: prev.lines.map(l => (l.id === id && l.role === 'assistant' ? { ...l, text } : l)),
-					}));
-				}
-			}, UPDATE_INTERVAL_MS);
-		} else {
-			
-			streamBufferRef.current.text += deltaText;
-		}
+		setChatBoxState(prev => ({
+			...prev,
+			lines: prev.lines.map(l =>
+				l.id === assistantId && l.role === 'assistant'
+					? { ...l, text: l.text + deltaText }
+					: l
+			),
+		}));
 	};
 
-	// STREAM-REFACTOR-INTERVAL: finalizacja streamu z clearInterval
 	const finalizeStream = () => {
-		if (intervalIdRef.current) {
-			clearInterval(intervalIdRef.current);
-			intervalIdRef.current = null;
-		}
-		if (streamBufferRef.current) {
-			const { id, text } = streamBufferRef.current;
-			setChatBoxState(prev => ({
-				...prev,
-				lines: prev.lines.map(l => (l.id === id && l.role === 'assistant' ? { ...l, text } : l)),
-				loading: false,
-			}));
-			streamBufferRef.current = null;
-		} else {
-			setChatBoxState(prev => ({ ...prev, loading: false }));
-		}
+		setChatBoxState(prev => ({ ...prev, loading: false }));
 	};
 
 	async function handleSubmit(e: FormEvent) {
 		e.preventDefault();
 		const text = chatBoxState.input.trim();
 		if (!text || chatBoxState.loading) return;
-
-		// CRITICAL-FIX: Wyczyść stary interval przed nowym requestem
-		if (intervalIdRef.current) {
-			clearInterval(intervalIdRef.current);
-			intervalIdRef.current = null;
-		}
-		streamBufferRef.current = null;
 
 		setChatBoxState(prev => ({ ...prev, error: null, input: '' }));
 		const userId = uuidv4();
@@ -200,12 +152,6 @@ export default function FloatingChatBox() {
 							} else if (event.type === 'done') {
 								finalizeStream();
 							} else if (event.type === 'error') {
-								// STREAM-REFACTOR-INTERVAL: cleanup przy błędzie
-								if (intervalIdRef.current) {
-									clearInterval(intervalIdRef.current);
-									intervalIdRef.current = null;
-								}
-								streamBufferRef.current = null;
 								setChatBoxState(prev => ({
 									...prev,
 									lines: prev.lines.filter(l => l.id !== assistantId),
@@ -213,12 +159,6 @@ export default function FloatingChatBox() {
 									loading: false,
 								}));
 							} else if (event.type === 'rejected') {
-								// STREAM-REFACTOR-INTERVAL: cleanup przy rejected
-								if (intervalIdRef.current) {
-									clearInterval(intervalIdRef.current);
-									intervalIdRef.current = null;
-								}
-								streamBufferRef.current = null;
 								setChatBoxState(prev => ({
 									...prev,
 									lines: [
@@ -284,13 +224,6 @@ export default function FloatingChatBox() {
 				setChatBoxState(prev => ({ ...prev, loading: false }));
 			}
 		} catch (error) {
-			// STREAM-REFACTOR-INTERVAL: cleanup przy błędzie sieciowym
-			if (intervalIdRef.current) {
-				clearInterval(intervalIdRef.current);
-				intervalIdRef.current = null;
-			}
-			streamBufferRef.current = null;
-
 			if (error instanceof Error && error.name === 'AbortError') {
 				setChatBoxState(prev => ({
 					...prev,

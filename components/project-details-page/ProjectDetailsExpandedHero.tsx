@@ -28,7 +28,7 @@ export default function ProjectDetailsExpandedHero({
                         alt={project.project_name}
                         fill
                         className="object-cover"
-                        sizes="100vw"
+                        sizes="(max-width: 640px) 85vw, (max-width: 1024px) 90vw, 95vw"
                         priority={navMode === 'intercept'}
                     />
                 ) : (

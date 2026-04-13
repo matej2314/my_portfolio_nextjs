@@ -101,46 +101,29 @@ export async function runAssistantLoopStreaming(
 
 		const messages = buildMessagesFromHistory(prior, userMessage, loc);
 
-		for (let i = 0; i < MAX_ITERATIONS; i++) {
-			const forceTools = i === 0 && anthropicTools.length > 0;
+	for (let i = 0; i < MAX_ITERATIONS; i++) {
+		const stream = anthropic.messages.stream({
+			model: MODEL,
+			max_tokens: 1500,
+			system: SYSTEM_PROMPTS[loc],
+			messages,
+			tools: anthropicTools,
+			stream: true,
+			temperature: 0.4,
+			tool_choice: { type: 'auto' },
+		});
 
-			const stream = anthropic.messages.stream({
-				model: MODEL,
-				max_tokens: 1500,
-				system: SYSTEM_PROMPTS[loc],
-				messages,
-				tools: anthropicTools,
-				stream: true,
-				temperature: 0.4,
-				tool_choice: forceTools ? { type: 'any' } : { type: 'auto' },
-			});
+		stream.on('text', (textDelta: string) => {
+			options.onTextDelta(textDelta);
+		});
 
-			
-			let charBuffer = '';
-			const CHARS_PER_CHUNK = 2;
-
-			stream.on('text', (textDelta: string) => {
-				charBuffer += textDelta;
-
-				while (charBuffer.length >= CHARS_PER_CHUNK) {
-					const chunk = charBuffer.slice(0, CHARS_PER_CHUNK);
-					charBuffer = charBuffer.slice(CHARS_PER_CHUNK);
-					options.onTextDelta(chunk);
-				}
-			});
-
-			let finalMessage: Anthropic.Message;
-			try {
-				finalMessage = await stream.finalMessage();
-
-				if (charBuffer.length > 0) {
-					options.onTextDelta(charBuffer);
-					charBuffer = '';
-				}
-			} catch (error: any) {
-				console.error('[ANTHROPIC STREAM ERROR]:', error);
-				throw error;
-			}
+		let finalMessage: Anthropic.Message;
+		try {
+			finalMessage = await stream.finalMessage();
+		} catch (error: any) {
+			console.error('[ANTHROPIC STREAM ERROR]:', error);
+			throw error;
+		}
 
 			const toolUses = finalMessage.content.filter((block): block is Anthropic.ToolUseBlock => block.type === 'tool_use');
 

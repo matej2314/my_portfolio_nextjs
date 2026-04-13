@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useAnimate, useReducedMotion } from 'framer-motion';
+import { motion, useAnimate, useReducedMotion } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useLayoutEffect, useState, useMemo, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
@@ -100,19 +100,13 @@ export default function ProjectInterceptedShell({ projectId, children }: Props) 
 
 	// Jedna krzywa dla top/left/width/height/x/y — mieszanie spring + różnych czasów x/width
 	// powodowało „najpierw lewa strona, potem prawa”; tween zsynchronizowany = równomierne powiększenie.
-	const transition = useMemo(
-		() =>
-			reduced
-				? { duration: 0.12, ease: 'easeOut' as const }
-				: { duration: 0.52, ease: [0.22, 1, 0.36, 1] as const },
-		[reduced],
-	);
+	const transition = useMemo(() => (reduced ? { duration: 0.12, ease: 'easeOut' as const } : { duration: 0.52, ease: [0.22, 1, 0.36, 1] as const }), [reduced]);
 
 	if (!portalEl) return null;
 
 	return createPortal(
 		<>
-			<motion.button type='button' aria-label='Close project' className='fixed inset-0 z-40 cursor-default bg-black/60' initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: reduced ? 0.05 : 0.2 }} onClick={() => void handleClose()} />
+			<motion.button type='button' aria-label='Close project' className='fixed inset-0 z-40 cursor-default bg-[#000805]' initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: reduced ? 0.05 : 0.2 }} onClick={() => void handleClose()} />
 			<motion.div
 				ref={scope}
 				className='fixed z-50 flex flex-col overflow-hidden bg-[#0c0c0c] shadow-2xl'

@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import Autoplay from 'embla-carousel-autoplay';
 import Image from "next/image";
-import { motion, easeOut } from "framer-motion";
+import { motion, easeOut } from "motion/react";
 
 export default function ScreenshotsGallery({ paths }: { paths: string[] }) {
 

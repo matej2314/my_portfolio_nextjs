@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, easeInOut } from 'framer-motion';
+import { motion, easeInOut } from 'motion/react';
 
 const containerVariants = {
 	hidden: {},

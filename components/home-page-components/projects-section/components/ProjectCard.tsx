@@ -1,9 +1,8 @@
-import { type ProjectSlide } from "@/types/ProjectsGalleryTypes";
-import { useRef } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { event } from "@/lib/google-analytics/gtag";
-
+import { type ProjectSlide } from '@/types/ProjectsGalleryTypes';
+import { useRef } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { event } from '@/lib/google-analytics/gtag';
 
 export const ProjectCard = ({ slide, openLabel, overlayActive, onBeforeNavigate }: { slide: ProjectSlide; openLabel: string; overlayActive: boolean; onBeforeNavigate: (projectId: string, root: HTMLElement | null) => void }) => {
 	const rootRef = useRef<HTMLDivElement>(null);
@@ -36,4 +35,4 @@ export const ProjectCard = ({ slide, openLabel, overlayActive, onBeforeNavigate 
 			</Link>
 		</div>
 	);
-}
+};

@@ -13,6 +13,39 @@ function mcpServerUrl() {
 	return new URL(MCP_ENDPOINT.replace(/^\//, ''), base);
 }
 
+let mcpClientInstance: Client | null = null;
+let toolsCache: MCPTool[] | null = null;
+
+async function getOrCreateMcpClient(): Promise<Client> {
+	if (!mcpClientInstance) {
+		const transport = new StreamableHTTPClientTransport(mcpServerUrl(), {
+			requestInit: {
+				headers: {
+					...(MCP_TOKEN ? { Authorization: `Bearer ${MCP_TOKEN}` } : {}),
+				},
+			},
+		});
+
+		const client = new Client(
+			{
+				name: 'portfolio-next-assistant',
+				version: '1.0.0',
+			},
+			{ capabilities: {} },
+		);
+
+		await client.connect(transport);
+		mcpClientInstance = client;
+
+		client.onclose = () => {
+			console.error('[MCP Client] Connection closed, will reconnect on next request');
+			mcpClientInstance = null;
+			toolsCache = null;
+		};
+	}
+	return mcpClientInstance;
+}
+
 export function assertAllowedToolName(toolName: string, allowedNames: Set<string>): void {
 	if (!allowedNames.has(toolName)) {
 		throw new Error(`Tool: ${toolName} not allowed.`);
@@ -20,34 +53,17 @@ export function assertAllowedToolName(toolName: string, allowedNames: Set<string
 }
 
 export async function withMcpClient<T>(fn: (client: Client) => Promise<T>): Promise<T> {
-	const transport = new StreamableHTTPClientTransport(mcpServerUrl(), {
-		requestInit: {
-			headers: {
-				...(MCP_TOKEN ? { Authorization: `Bearer ${MCP_TOKEN}` } : {}),
-			},
-		},
-	});
-
-	const client = new Client(
-		{
-			name: 'portfolio-next-assistant',
-			version: '1.0.0',
-		},
-		{ capabilities: {} },
-	);
-
-	await client.connect(transport);
-
-	try {
-		return await fn(client);
-	} finally {
-		await client.close();
-	}
+	const client = await getOrCreateMcpClient();
+	return fn(client);
 }
 
 export async function getPortfolioTools(client: Client): Promise<MCPTool[]> {
-	const { tools } = await client.listTools();
-	return tools.filter(tool => tool.name.startsWith(`${NAMESPACE}_`));
+	if (!toolsCache) {
+		const { tools } = await client.listTools();
+		toolsCache = tools.filter(tool => tool.name.startsWith(`${NAMESPACE}_`));
+		console.log(`[MCP Client] Cached ${toolsCache.length} portfolio tools`);
+	}
+	return toolsCache;
 }
 
 export async function callTool(client: Client, toolName: string, args: Record<string, unknown> = {}): Promise<McpToolResult> {
