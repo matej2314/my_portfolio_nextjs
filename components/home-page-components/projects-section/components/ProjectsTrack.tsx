@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
 import { useEmblaWheelScroll } from '@/hooks/useEmblaWheelScroll';
 import { ProjectCard } from './ProjectCard';
+import ProjectCardPlaceholder from './ProjectCardPlaceholder';
 import { type ProjectSlide } from '@/types/ProjectsGalleryTypes';
 
 const listVariants = {
@@ -33,16 +34,14 @@ const DELAY_CHILDREN = 0.06;
 export const ProjectsTrack = ({
 	slides,
 	openLabel,
-	overlayCardProjectId,
-	onBeforeNavigate,
+	flightProjectId,
 	ariaLabel,
 	nativeScroll,
 	listInView,
 }: {
 	slides: ProjectSlide[];
 	openLabel: string;
-	overlayCardProjectId: string | null;
-	onBeforeNavigate: (projectId: string, root: HTMLElement | null) => void;
+	flightProjectId: string | null;
 	ariaLabel: string;
 	nativeScroll: boolean;
 	listInView: boolean;
@@ -70,7 +69,11 @@ export const ProjectsTrack = ({
 							aria-roledescription='slide'
 							className='w-[min(22rem,calc(100vw-2.5rem))] shrink-0 snap-center snap-always xl:w-[min(24rem,calc(50vw-2rem))] 2xl:w-[min(26rem,calc(33.333vw-1.75rem))]'
 						>
-							<ProjectCard slide={slide} openLabel={openLabel} overlayActive={overlayCardProjectId === slide.project.id} onBeforeNavigate={onBeforeNavigate} />
+							{flightProjectId === slide.project.id ? (
+								<ProjectCardPlaceholder />
+							) : (
+								<ProjectCard slide={slide} openLabel={openLabel} />
+							)}
 						</motion.li>
 					))}
 				</motion.ul>
@@ -96,7 +99,11 @@ export const ProjectsTrack = ({
 								delay: listInView ? DELAY_CHILDREN + index * STAGGER : 0,
 							}}
 						>
-							<ProjectCard slide={slide} openLabel={openLabel} overlayActive={overlayCardProjectId === slide.project.id} onBeforeNavigate={onBeforeNavigate} />
+							{flightProjectId === slide.project.id ? (
+								<ProjectCardPlaceholder />
+							) : (
+								<ProjectCard slide={slide} openLabel={openLabel} />
+							)}
 						</motion.div>
 					</CarouselItem>
 				))}

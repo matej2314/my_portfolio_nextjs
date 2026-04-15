@@ -2,12 +2,11 @@
 
 import { motion, easeInOut, AnimatePresence, useInView } from 'motion/react';
 import { useLocale, useTranslations } from 'next-intl';
-import { useCallback, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 
 import { ProjectsTrack } from './ProjectsTrack';
-import { useHomeProjectTransition } from '@/context/HomeProjectTransitionContext';
+import { useProjectEnterTransition } from '@/context/ProjectEnterTransitionContext';
 import { useCoarsePointer } from '@/hooks/useCoarsePointer';
-import { readRect } from '@/lib/utils/utils';
 import { buildSlides } from '@/lib/utils/buildSlides';
 import { type ProjectsGalleryProps } from '@/types/ProjectsGalleryTypes';
 
@@ -15,21 +14,20 @@ export default function ProjectsGrid({ projects, images }: ProjectsGalleryProps)
 	const t = useTranslations('homePage.projectsSection');
 	const locale = useLocale();
 	const nativeScroll = useCoarsePointer();
-	const { beginOpen, overlayCardProjectId } = useHomeProjectTransition();
+	const { flightProjectId } = useProjectEnterTransition();
 
 	const slides = useMemo(() => buildSlides(projects, images, locale), [projects, images, locale]);
 	const trackRef = useRef<HTMLDivElement>(null);
 	const listInView = useInView(trackRef, { once: true, amount: 0.2 });
 
-	const onBeforeNavigate = useCallback(
-		(projectId: string, root: HTMLElement | null) => {
-			if (root) beginOpen(projectId, readRect(root));
-		},
-		[beginOpen],
-	);
-
 	return (
-		<motion.section initial={{ opacity: 0, scale: 0.98 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, ease: easeInOut }} viewport={{ amount: 0.25, once: true }} className='flex w-full min-w-0 flex-col gap-10 max-xl:gap-6 xl:gap-10'>
+		<motion.section
+			initial={{ opacity: 0, scale: 0.98 }}
+			whileInView={{ opacity: 1, scale: 1 }}
+			transition={{ duration: 0.5, ease: easeInOut }}
+			viewport={{ amount: 0.25, once: true }}
+			className='flex w-full min-w-0 flex-col gap-10 max-xl:gap-6 xl:gap-10'
+		>
 			<header className='flex w-full max-w-6xl flex-col gap-2 max-xl:gap-1.5 xl:gap-2'>
 				<p className='font-semibold tracking-wide text-slate-500 max-xl:text-xs xl:text-[13px]'>{t('sectionIndex')}</p>
 				<h2 className='font-light leading-tight text-slate-50 max-xl:text-[1.625rem] max-xl:leading-snug xl:text-[2.375rem]'>{t('title')}</h2>
@@ -45,8 +43,7 @@ export default function ProjectsGrid({ projects, images }: ProjectsGalleryProps)
 					<ProjectsTrack
 						slides={slides}
 						openLabel={t('openDetails')}
-						overlayCardProjectId={overlayCardProjectId}
-						onBeforeNavigate={onBeforeNavigate}
+						flightProjectId={flightProjectId}
 						ariaLabel={t('title')}
 						nativeScroll={nativeScroll}
 						listInView={listInView}

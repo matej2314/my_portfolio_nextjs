@@ -46,7 +46,11 @@ export default async function ProjectDetailsView({ selectedProject, variant = 'p
     const navMode = isIntercept ? 'intercept' : 'page';
 
     return (
-        <div className="relative flex min-h-0 flex-1 flex-col bg-[#0c0c0c] text-slate-200">
+        <div
+            className="relative flex min-h-0 flex-1 flex-col bg-[#0c0c0c] text-slate-200"
+            data-project-enter-end
+            data-project-id={selectedProject.id}
+        >
             <ProjectDetailsExpandedHero
                 project={selectedProject}
                 coverSrc={coverSrc}
