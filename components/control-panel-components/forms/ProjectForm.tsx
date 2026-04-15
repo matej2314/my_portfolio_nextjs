@@ -210,11 +210,11 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                         <div>
                             <LabelElement htmlFor="project_URL" className="font-bold pb-1 ml-2 text-lg tracking-wide">Project URL:</LabelElement>
                             <InputElement
-                                required
+                                required={false}
                                 type="url"
                                 id="project_URL"
                                 name="project_URL"
-                                defaultValue={projectData?.project_URL}
+                                defaultValue={projectData?.project_URL as string || ''}
                                 placeholder="min 5 characters, max 300 characters"
                                 className="text-md px-2 tracking-wide w-full"
                             />

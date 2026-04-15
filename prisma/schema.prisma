@@ -38,7 +38,7 @@ model projects {
   id                  String    @id @db.VarChar(500)
   project_name        String    @db.VarChar(300)
   project_category    String    @db.VarChar(300)
-  project_URL         String    @db.VarChar(300)
+  project_URL         String?   @db.VarChar(300)
   project_screenName  String    @db.VarChar(100)
   goal                String?   @db.Text
   goal_pl             String?   @db.Text

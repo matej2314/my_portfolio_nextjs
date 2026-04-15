@@ -3,6 +3,14 @@ import { z } from 'zod';
 const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
 const maxFileSize = 5 * 1024 * 1024; // 5MB
 
+/** Ostatnie rozszerzenie z nazwy pliku (basename), trim — unika fałszywych błędów przy spacji/CR po `.pop()`. */
+function fileExtension(fileName: string): string {
+	const base = (fileName.split(/[/\\]/).pop() ?? '').trim();
+	const lastDot = base.lastIndexOf('.');
+	if (lastDot === -1 || lastDot >= base.length - 1) return '';
+	return base.slice(lastDot + 1).trim().toLowerCase();
+}
+
 export const mainFilesSchema = z
 	.array(z.instanceof(File))
 	.nonempty({ message: 'Minimum 1 file required.' })
@@ -12,8 +20,8 @@ export const mainFilesSchema = z
 	.refine(
 		files =>
 			files.every(file => {
-				const ext = file.name.split('.').pop()?.toLowerCase();
-				return allowedExtensions.includes(ext || '');
+				const ext = fileExtension(file.name);
+				return allowedExtensions.includes(ext);
 			}),
 		{ message: `Allowed extensions: ${allowedExtensions.join(',')}` }
 	)
@@ -28,8 +36,8 @@ export const galleryFilesSchema = z
 	.refine(
 		files =>
 			files.every(file => {
-				const ext = file.name.split('.').pop()?.toLowerCase();
-				return allowedExtensions.includes(ext || '');
+				const ext = fileExtension(file.name);
+				return allowedExtensions.includes(ext);
 			}),
 		{ message: `Allowed extensions: ${allowedExtensions.join(',')}` }
 	)
@@ -42,8 +50,7 @@ export const cvFileSchema = z
 	})
 	.refine(
 		file => {
-			const ext = file.name.split('.').pop()?.toLowerCase();
-			return ext === 'pdf';
+			return fileExtension(file.name) === 'pdf';
 		},
 		{
 			message: 'Only PDF file is allowed.',

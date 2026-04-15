@@ -36,15 +36,19 @@ export default async function DetailsHeader({ selectedProject }: DetailsHeaderPr
                 <span className="text-md font-semibold tracking-wide text-slate-200">
                     {t("demoLabel")}
                 </span>
-                <ExternalLink
-                    initialColor='#4ade80'
-                    hoverColor='#facc15'
-                    targetColor='#4ade80'
-                    href={selectedProject.project_URL}
-                    className="font-kanit text-xl text-green-300 hover:text-green-400"
-                >
-                    {selectedProject.project_name}
-                </ExternalLink>
+                {selectedProject.project_URL ? (
+                    <ExternalLink
+                        initialColor='#4ade80'
+                        hoverColor='#facc15'
+                        targetColor='#4ade80'
+                        href={selectedProject.project_URL}
+                        className="font-kanit text-xl text-green-300 hover:text-green-400"
+                    >
+                        {selectedProject.project_name}
+                    </ExternalLink>
+                ) : (
+                    <span className="font-kanit text-xl text-slate-500">{selectedProject.project_name}</span>
+                )}
                 <span className="text-md font-semibold font-kanit tracking-wide text-slate-200">
                     Github repo:
                 </span>

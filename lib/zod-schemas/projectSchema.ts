@@ -21,7 +21,10 @@ export const baseProjectSchema = z.object({
 		requiredError: 'Project URL is required.',
 		tooSmall: 'Project URL must contains minimum 5 characters.',
 		tooBig: 'Project URL must contains maximum 300 characters.',
-	}),
+	})
+		.optional()
+		.nullable()
+		.transform((v): string | null => v ?? null),
 	goal: validatedString(5, 300, {
 		requiredError: 'Project goal description is required.',
 		tooBig: 'Project goal must contains maximum 300 characters.',
@@ -31,7 +34,7 @@ export const baseProjectSchema = z.object({
 			message: 'Project goal contains dangerous characters.',
 		})
 		.nullable(),
-	goal_pl: validatedString(5, 300, {
+	goal_pl: validatedString(5, 500, {
 		requiredError: 'Project goal description in Polish is required.',
 		tooBig: 'Project goal in Polish must contains maximum 300 characters.',
 		tooSmall: 'Project goal in Polish must contains minimum 5 characters.',
@@ -40,7 +43,7 @@ export const baseProjectSchema = z.object({
 			message: 'Project goal in Polish contains dangerous characters.',
 		})
 		.nullable(),
-	project_description: validatedString(20, 300, {
+	project_description: validatedString(20, 500, {
 		requiredError: 'Project description is required',
 		tooBig: 'Project description must contains maximum 300 characters',
 		tooSmall: 'Project description must contains minimum 20 characters',
@@ -49,7 +52,7 @@ export const baseProjectSchema = z.object({
 		.refine(value => !containsXSS(value as string), {
 			message: 'Project description contains dangerous characters.',
 		}),
-	description_pl: validatedString(20, 400, {
+	description_pl: validatedString(20, 500, {
 		requiredError: 'Project description in Polish is required',
 		tooBig: 'Project description in Polish must contains maximum 400 characters.',
 		tooSmall: 'Project description in Polish must contains minimum 20 characters.',

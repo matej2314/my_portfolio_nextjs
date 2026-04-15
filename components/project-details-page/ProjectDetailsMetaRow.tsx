@@ -6,7 +6,7 @@ import ExternalLink from '@/components/links/ExternalLink';
 
 type Props = {
     stackSummary: string;
-    demoUrl: string;
+    demoUrl: string | null;
     repoUrl: string | null;
 };
 

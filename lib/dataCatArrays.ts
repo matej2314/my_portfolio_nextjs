@@ -15,6 +15,7 @@ export const projectCatArray: Option[] = [
 	{ value: 'FullStack', label: 'FullStack', ariaLabel: 'FullStack' },
 	{ value: 'Frontend', label: 'Frontend', ariaLabel: 'Frontend' },
 	{ value: 'Backend', label: 'Backend', ariaLabel: 'Backend' },
+	{ value: 'AI Systems', label: 'AI Systems', ariaLabel: 'AI Systems' },
 ];
 
 export const difficultyArray: Option[] = [

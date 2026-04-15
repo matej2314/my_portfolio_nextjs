@@ -24,7 +24,7 @@ export const ProjectCard = ({ slide, openLabel, overlayActive, onBeforeNavigate 
 				}}
 			>
 				<div className='relative flex h-[280px] w-full flex-col justify-end overflow-hidden rounded-xl border border-[#facc15] bg-[#0c0c0c] shadow-md'>
-					<Image src={coverImage} alt={project.project_name} fill className='object-cover opacity-90 transition duration-300 group-hover:scale-105 group-hover:opacity-100 group-focus:scale-105 group-focus:opacity-100 group-focus-visible:scale-105 group-focus-visible:opacity-100' sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw' />
+					<Image src={coverImage} alt={project.project_name} fill className='object-cover opacity-70 transition duration-300 group-hover:scale-105 group-hover:opacity-100 group-focus:scale-105 group-focus:opacity-100 group-focus-visible:scale-105 group-focus-visible:opacity-85' sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw' />
 					<div className='relative z-[1] flex flex-col gap-3 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-6 pt-14'>
 						<h3 className='text-xl font-semibold text-[#fbbf24]'>{project.project_name}</h3>
 						<p className='text-xs font-semibold uppercase tracking-wide text-slate-200'>{techLabel}</p>
