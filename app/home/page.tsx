@@ -33,7 +33,7 @@ export default async function HomePage() {
 			className='no-scrollbar z-0 flex h-[100dvh] max-h-[100dvh] w-full min-w-0 flex-col items-center overflow-x-hidden overflow-y-auto max-xl:px-3 xl:px-8'
 		>
 			<div className='flex h-fit w-full flex-col items-center justify-start'>
-				<div className='flex h-[65dvh] w-full shrink-0 flex-col xl:h-[100dvh]'>
+				<div className='flex h-[60dvh] w-full shrink-0 flex-col xl:h-[100dvh]'>
 					<SiteHeader variant='home' />
 					<BaseSection />
 				</div>

@@ -20,7 +20,7 @@ export default async function HomePageLayout({ children, projectModal }: { child
 
 	return (
 		<ContentContainer>
-			<main className='flex min-h-screen w-full min-w-0 justify-center bg-[#000805]'>
+			<main className='flex min-h-screen w-full min-w-0 justify-center bg-[#000805] focus:outline-none focus-visible:outline-none'>
 				<ProjectEnterTransitionProvider>
 					<NextIntlClientProvider messages={messages}>
 						<HomeContent>{children}</HomeContent>

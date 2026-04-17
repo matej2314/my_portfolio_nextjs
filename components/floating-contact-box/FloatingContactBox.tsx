@@ -38,15 +38,7 @@ export default function FloatingContactBox() {
 			cardBorderColor={BORDER}
 		>
 			<FloatingBoxHeader className='group relative flex gap-3 border-b p-4' style={{ borderColor: BORDER }}>
-				<motion.button
-					type='button'
-					aria-label={t('toggleClose')}
-					onClick={closeContactBox}
-					className='absolute right-2 top-2 rounded-lg border border-transparent p-1.5 outline-none ring-0 ring-offset-0 focus-visible:border-[#ffdb70] focus-visible:outline-none focus-visible:ring-0'
-					style={{ color: ACCENT }}
-					whileHover={reduced ? undefined : { opacity: 0.9 }}
-					whileTap={reduced ? undefined : { scale: 0.95 }}
-				>
+				<motion.button type='button' aria-label={t('toggleClose')} onClick={closeContactBox} className='absolute right-2 top-2 rounded-lg border border-transparent p-1.5 outline-none ring-0 ring-offset-0 focus-visible:border-[#ffdb70] focus-visible:outline-none focus-visible:ring-0' style={{ color: ACCENT }} whileHover={reduced ? undefined : { opacity: 0.9 }} whileTap={reduced ? undefined : { scale: 0.95 }}>
 					<Icon icon='mdi:close' width={22} height={22} aria-hidden />
 				</motion.button>
 				<div className='relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-[#2a2a2b]'>
@@ -54,9 +46,7 @@ export default function FloatingContactBox() {
 				</div>
 				<h2 className='min-w-0 flex flex-col justify-center gap-1.5 pr-9'>
 					<span className='truncate text-lg font-semibold text-white transition-colors group-focus-within:text-slate-200'>{fullName}</span>
-					<span className='w-fit rounded-full bg-[#2a2a2b] px-2.5 py-0.5 text-xs text-slate-300 transition-colors group-focus-within:text-slate-400'>
-						{t('roleBadge')}
-					</span>
+					<span className='w-fit rounded-full bg-[#2a2a2b] px-2.5 py-0.5 text-xs text-slate-300 transition-colors group-focus-within:text-slate-400'>{t('roleBadge')}</span>
 				</h2>
 			</FloatingBoxHeader>
 			<ul className='m-0 flex list-none flex-col px-4 py-2' aria-label={t('contactRowsListLabel')}>

@@ -36,15 +36,7 @@ export default function FloatingChatBox() {
 			cardBorderColor={BORDER}
 		>
 			<FloatingBoxHeader className='relative flex shrink-0 items-center gap-3 border-b p-4 pr-12' style={{ borderColor: BORDER }}>
-				<motion.button
-					type='button'
-					aria-label={locale === 'pl' ? 'Zamknij czat' : 'Close chat'}
-					onClick={() => setChatBoxState(prev => ({ ...prev, open: false }))}
-					className='absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1.5'
-					style={{ color: ACCENT }}
-					whileHover={reduced ? undefined : { opacity: 0.9 }}
-					whileTap={reduced ? undefined : { scale: 0.95 }}
-				>
+				<motion.button type='button' aria-label={locale === 'pl' ? 'Zamknij czat' : 'Close chat'} onClick={() => setChatBoxState(prev => ({ ...prev, open: false }))} className='absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1.5' style={{ color: ACCENT }} whileHover={reduced ? undefined : { opacity: 0.9 }} whileTap={reduced ? undefined : { scale: 0.95 }}>
 					<Icon icon='mdi:close' width={22} height={22} />
 				</motion.button>
 				<div className='flex size-11 shrink-0 items-center justify-center rounded-xl bg-[#2a2a2b]' aria-hidden>
