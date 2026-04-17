@@ -101,29 +101,29 @@ export async function runAssistantLoopStreaming(
 
 		const messages = buildMessagesFromHistory(prior, userMessage, loc);
 
-	for (let i = 0; i < MAX_ITERATIONS; i++) {
-		const stream = anthropic.messages.stream({
-			model: MODEL,
-			max_tokens: 1500,
-			system: SYSTEM_PROMPTS[loc],
-			messages,
-			tools: anthropicTools,
-			stream: true,
-			temperature: 0.4,
-			tool_choice: { type: 'auto' },
-		});
+		for (let i = 0; i < MAX_ITERATIONS; i++) {
+			const stream = anthropic.messages.stream({
+				model: MODEL,
+				max_tokens: 1500,
+				system: SYSTEM_PROMPTS[loc],
+				messages,
+				tools: anthropicTools,
+				stream: true,
+				temperature: 0.4,
+				tool_choice: i === 0 ? { type: 'any' } : { type: 'auto' },
+			});
 
-		stream.on('text', (textDelta: string) => {
-			options.onTextDelta(textDelta);
-		});
+			stream.on('text', (textDelta: string) => {
+				options.onTextDelta(textDelta);
+			});
 
-		let finalMessage: Anthropic.Message;
-		try {
-			finalMessage = await stream.finalMessage();
-		} catch (error: any) {
-			console.error('[ANTHROPIC STREAM ERROR]:', error);
-			throw error;
-		}
+			let finalMessage: Anthropic.Message;
+			try {
+				finalMessage = await stream.finalMessage();
+			} catch (error: any) {
+				console.error('[ANTHROPIC STREAM ERROR]:', error);
+				throw error;
+			}
 
 			const toolUses = finalMessage.content.filter((block): block is Anthropic.ToolUseBlock => block.type === 'tool_use');
 
@@ -161,6 +161,13 @@ export async function runAssistantLoopStreaming(
 					}
 				}),
 			);
+
+			if (finalMessage.stop_reason === 'pause_turn') {
+				messages.push({
+					role: 'assistant',
+					content: finalMessage.content,
+				});
+			}
 
 			messages.push({
 				role: 'assistant',
