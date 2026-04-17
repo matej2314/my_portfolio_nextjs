@@ -4,5 +4,5 @@ export const metricsArray: AboutMetricConfig[] = [
 	{ id: 'years', stat: '1+' },
 	{ id: 'projects', stat: '20+' },
 	{ id: 'coreFramework', stat: 'React' },
-	{ id: 'ide', stat: 'Cursor' },
+	{ id: 'english', stat: 'B2' },
 ];

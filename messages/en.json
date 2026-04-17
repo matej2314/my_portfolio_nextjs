@@ -47,7 +47,7 @@
 				"years": "Years experience",
 				"projects": "Projects",
 				"coreFramework": "Core framework",
-				"ide": "IDE"
+				"english": "English"
 			}
 		},
 		"skillsSection": {
@@ -148,6 +148,9 @@
 		},
 		"keyboardNavigation": {
 			"hint": "Section shortcuts on this page (when focus is not in a form field): Down arrow or Page Down — next section; Up arrow or Page Up — previous section; keys 1 to 6 — jump to sections 1 to 6; Space — jump to the hero section."
+		},
+		"homeFooter": {
+			"copyright": "Mateusz Śliwowski. All rights reserved."
 		}
 	},
 	"mainMenu": {

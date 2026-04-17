@@ -102,7 +102,7 @@ export const defaultData = {
 		pauseTime: 1000,
 	},
 	baseSectionSubHeader: {
-		content: ['Node.js', 'React', 'Next.js', 'Wordpress'],
+		content: ['Node.js', 'React', 'Next.js', 'WordPress'],
 	},
 	floatingBoxesData: {
 		photoSrc: '/profilowe.jpg',

@@ -12,7 +12,7 @@ export default async function HomeFooter() {
 	return (
 		<footer className='flex w-full max-h-[50px] h-fit mt-[3rem] items-center justify-start max-xl:px-4 max-xl:py-3 xl:px-6 xl:py-4'>
 			<div className='grid h-fit w-full grid-rows-2 items-center text-slate-400 max-xl:gap-2 xl:flex xl:justify-between'>
-				<p>© {date} Mateusz Śliwowski. Wszelkie prawa zastrzeżone.</p>
+				<p>{`© ${date} ${t('homeFooter.copyright')}`}</p>
 				<div className='flex gap-4'>
 					<Link className='text-yellow-300 hover:text-yellow-400 focus:text-yellow-400 focus:outline-none' href={cvHref} download={cvFileName}>
 						{t('aboutSection.downloadCv')}
