@@ -110,7 +110,7 @@ export async function runAssistantLoopStreaming(
 				tools: anthropicTools,
 				stream: true,
 				temperature: 0.4,
-				tool_choice: i === 0 ? { type: 'any' } : { type: 'auto' },
+				tool_choice: { type: 'auto' },
 			});
 
 			stream.on('text', (textDelta: string) => {
