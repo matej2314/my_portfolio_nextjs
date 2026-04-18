@@ -9,6 +9,8 @@ const anthropic = new Anthropic({
 	apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
+// STREAM-REFACTOR
+
 const MODEL = process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-4-5-20250929';
 
 const MAX_ITERATIONS = Number.parseInt(process.env.ASSISTANT_MAX_ITERATIONS ?? '5');
