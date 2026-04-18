@@ -58,11 +58,29 @@ export async function withMcpClient<T>(fn: (client: Client) => Promise<T>): Prom
 }
 
 export async function getPortfolioTools(client: Client): Promise<MCPTool[]> {
-	if (!toolsCache) {
-		const { tools } = await client.listTools();
-		toolsCache = tools.filter(tool => tool.name.startsWith(`${NAMESPACE}_`));
-		console.log(`[MCP Client] Cached ${toolsCache.length} portfolio tools`);
+	if (toolsCache !== null && toolsCache.length > 0) {
+		return toolsCache;
 	}
+
+	const { tools } = await client.listTools();
+	const filtered = tools.filter(tool => tool.name.startsWith(`${NAMESPACE}_`));
+
+	if (filtered.length === 0) {
+		const sample = tools.slice(0, 12).map(t => t.name);
+		if (tools.length > 0) {
+			console.error(
+				`[MCP Client] No tools match MCP_NAMESPACE="${NAMESPACE}_". listTools returned ${tools.length} tools; sample names:`,
+				sample.join(', ') || '(none)',
+			);
+		} else {
+			console.error('[MCP Client] listTools returned 0 tools (MCP server may have failed to load modules).');
+		}
+		toolsCache = null;
+		return [];
+	}
+
+	toolsCache = filtered;
+	console.log(`[MCP Client] Cached ${toolsCache.length} portfolio tools`);
 	return toolsCache;
 }
 

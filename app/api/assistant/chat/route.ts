@@ -119,7 +119,26 @@ export async function POST(req: NextRequest) {
 
 		const stream = new ReadableStream({
 			async start(controller) {
-				const push = (event: AssistantStreamServerEvent) => controller.enqueue(sseData(event));
+				let canWrite = true;
+
+				const push = (event: AssistantStreamServerEvent) => {
+					if (!canWrite) return;
+					try {
+						controller.enqueue(sseData(event));
+					} catch (e) {
+						canWrite = false;
+						console.error('[ASSISTANT SSE] enqueue failed (client disconnected or stream closed):', e);
+					}
+				};
+
+				const closeSafe = () => {
+					try {
+						controller.close();
+					} catch (e) {
+						console.error('[ASSISTANT SSE] controller.close:', e);
+					}
+					canWrite = false;
+				};
 
 				try {
 					const fulltext = await runAssistantLoopStreaming(message.trim(), {
@@ -138,16 +157,22 @@ export async function POST(req: NextRequest) {
 					push({ type: 'done' });
 				} catch (error: any) {
 					console.error('[ASSISTANT STREAM ERROR]:', error);
+					const msg =
+						typeof error?.message === 'string' && error.message.includes('No MCP portfolio tools')
+							? error.message
+							: null;
 					if (error?.status === 529 || error?.type === 'overloaded_error') {
 						push({ type: 'error', error: 'The AI service is temporarily overloaded. Please try again in a moment.' });
 					} else if (error?.status === 429) {
 						push({ type: 'error', error: 'Too many requests to Assistant Service. Please wait a minute.' });
+					} else if (msg) {
+						push({ type: 'error', error: msg });
 					} else {
 						push({ type: 'error', error: 'An error occurred while processing your request.' });
 					}
 					push({ type: 'done' });
 				} finally {
-					controller.close();
+					closeSafe();
 				}
 			},
 		});

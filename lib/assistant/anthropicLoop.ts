@@ -86,6 +86,12 @@ export async function runAssistantLoopStreaming(
 
 	return withMcpClient(async (client: Client) => {
 		const tools = await getPortfolioTools(client);
+		if (tools.length === 0) {
+			throw new Error(
+				'No MCP portfolio tools available. Align Next MCP_NAMESPACE with the MCP server PORTFOLIO_NAMESPACE (same prefix, e.g. portfolio_).',
+			);
+		}
+
 		const allowedToolNames = new Set(tools.map(t => t.name));
 
 		const anthropicTools: Anthropic.Tool[] = tools.map(tool => {
@@ -163,13 +169,6 @@ export async function runAssistantLoopStreaming(
 					}
 				}),
 			);
-
-			if (finalMessage.stop_reason === 'pause_turn') {
-				messages.push({
-					role: 'assistant',
-					content: finalMessage.content,
-				});
-			}
 
 			messages.push({
 				role: 'assistant',
