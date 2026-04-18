@@ -8,6 +8,9 @@ import { assistantReplyKey } from '@/lib/redis/redisKeys';
 import { cacheLocaleTag } from '@/lib/assistant/cacheLocaleTag';
 import { normalizeHistory } from '@/lib/assistant/normalizeHistory';
 import { consumeAssistantRateLimit } from '@/lib/assistant/assistantRateLimit';
+import { handleNotAllowedTopic } from '@/lib/assistant/handleNotAllowedTopic';
+import { getAssistantStreamErrorMsg } from '@/lib/assistant/getAssistantStreamErrorMsg';
+import { getAssistantChatErrorResponse } from '@/lib/assistant/getAssistantChatErrorResponse';
 import { sseData } from '@/lib/assistant/streamSse';
 
 import { type ChatRequest, type ChatResponse, type AssistantStreamServerEvent } from '@/lib/assistant/types';
@@ -15,8 +18,16 @@ import { type ChatRequest, type ChatResponse, type AssistantStreamServerEvent } 
 const CONTENT_VERSION = process.env.ASSISTANT_CONTENT_VERSION || '1.0.0';
 const CACHE_TTL = Number(process.env.ASSISTANT_CACHE_TTL) || 60 * 60 * 24;
 const MAX_MESSAGE_LENGTH = Number(process.env.ASSISTANT_MAX_MESSAGE_LENGTH) || 500;
+const SSE_HEADERS = {
+	'Content-Type': 'text/event-stream',
+	'Cache-Control': 'no-cache, no-store, must-revalidate',
+	Connection: 'keep-alive',
+	'X-Accel-Buffering': 'no',
+	'Transfer-Encoding': 'chunked',
+} as const;
 
 export async function POST(req: NextRequest) {
+	const redisOn = APP_CONFIG.redis.enabled;
 	try {
 		const body: ChatRequest = await req.json();
 		const { message } = body;
@@ -50,7 +61,6 @@ export async function POST(req: NextRequest) {
 		}
 
 		const localeTag = cacheLocaleTag(await getLocale());
-		const redisOn = APP_CONFIG.redis.enabled;
 		const useCache = redisOn && history.length === 0;
 
 		const cacheKey = assistantReplyKey(CONTENT_VERSION, localeTag, message);
@@ -78,44 +88,13 @@ export async function POST(req: NextRequest) {
 
 				return new Response(stream, {
 					status: 200,
-					headers: {
-						'Content-Type': 'text/event-stream',
-						'Cache-Control': 'no-cache, no-store, must-revalidate',
-						Connection: 'keep-alive',
-						'X-Accel-Buffering': 'no',
-						'Transfer-Encoding': 'chunked', // Wymuś chunked encoding
-					},
+					headers: SSE_HEADERS,
 				});
 			}
 		}
 
 		const topicCheck = await checkTopic(message);
-		if (!topicCheck.allowed) {
-			const stream = new ReadableStream({
-				start(controller) {
-					controller.enqueue(
-						sseData({
-							type: 'rejected',
-							topics: topicCheck?.topics || [],
-							exampleQuestions: topicCheck.exampleQuestions,
-						}),
-					);
-					controller.enqueue(sseData({ type: 'done' }));
-					controller.close();
-				},
-			});
-
-			return new Response(stream, {
-				status: 200,
-				headers: {
-					'Content-Type': 'text/event-stream',
-					'Cache-Control': 'no-cache, no-store, must-revalidate',
-					Connection: 'keep-alive',
-					'X-Accel-Buffering': 'no',
-					'Transfer-Encoding': 'chunked',
-				},
-			});
-		}
+		if (!topicCheck.allowed) return handleNotAllowedTopic({ topicCheck, SSE_HEADERS });
 
 		const stream = new ReadableStream({
 			async start(controller) {
@@ -155,21 +134,10 @@ export async function POST(req: NextRequest) {
 					}
 
 					push({ type: 'done' });
-				} catch (error: any) {
+				} catch (error: unknown) {
 					console.error('[ASSISTANT STREAM ERROR]:', error);
-					const msg =
-						typeof error?.message === 'string' && error.message.includes('No MCP portfolio tools')
-							? error.message
-							: null;
-					if (error?.status === 529 || error?.type === 'overloaded_error') {
-						push({ type: 'error', error: 'The AI service is temporarily overloaded. Please try again in a moment.' });
-					} else if (error?.status === 429) {
-						push({ type: 'error', error: 'Too many requests to Assistant Service. Please wait a minute.' });
-					} else if (msg) {
-						push({ type: 'error', error: msg });
-					} else {
-						push({ type: 'error', error: 'An error occurred while processing your request.' });
-					}
+					const errorMessage = getAssistantStreamErrorMsg(error);
+					push({ type: 'error', error: errorMessage });
 					push({ type: 'done' });
 				} finally {
 					closeSafe();
@@ -178,64 +146,10 @@ export async function POST(req: NextRequest) {
 		});
 		return new Response(stream, {
 			status: 200,
-			headers: {
-				'Content-Type': 'text/event-stream',
-				'Cache-Control': 'no-cache, no-store, must-revalidate',
-				Connection: 'keep-alive',
-				'X-Accel-Buffering': 'no',
-				'Transfer-Encoding': 'chunked',
-			},
+			headers: SSE_HEADERS,
 		});
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.error('[ASSISTANT CHAT ERROR]:', error);
-		// STREAM-REFACTOR: błędy przed utworzeniem strumienia — zwracamy JSON
-		if (error?.status === 529 || error?.type === 'overloaded_error') {
-			return NextResponse.json(
-				{
-					success: false,
-					error: 'The AI service is temporarily overloaded. Please try again in a moment.',
-				} satisfies ChatResponse,
-				{
-					status: 503,
-					headers: {
-						'Retry-After': '30',
-					},
-				},
-			);
-		}
-		if (error?.status === 429) {
-			return NextResponse.json(
-				{
-					success: false,
-					error: 'Too many requests to Assistant Service. Please wait a minute.',
-				} satisfies ChatResponse,
-				{
-					status: 429,
-					headers: {
-						'Retry-After': '60',
-					},
-				},
-			);
-		}
-		if (error?.status >= 400 && error?.status < 600) {
-			return NextResponse.json(
-				{
-					success: false,
-					error: 'Assistant Service error. Please try again later.',
-				} satisfies ChatResponse,
-				{
-					status: 502,
-				},
-			);
-		}
-		return NextResponse.json(
-			{
-				success: false,
-				error: 'Internal server error.',
-			} satisfies ChatResponse,
-			{
-				status: 500,
-			},
-		);
+		return getAssistantChatErrorResponse(error);
 	}
 }
