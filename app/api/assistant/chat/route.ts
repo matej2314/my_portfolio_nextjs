@@ -11,7 +11,9 @@ import { consumeAssistantRateLimit } from '@/lib/assistant/assistantRateLimit';
 import { handleNotAllowedTopic } from '@/lib/assistant/handleNotAllowedTopic';
 import { getAssistantStreamErrorMsg } from '@/lib/assistant/getAssistantStreamErrorMsg';
 import { getAssistantChatErrorResponse } from '@/lib/assistant/getAssistantChatErrorResponse';
+import { sseResponse } from '@/lib/assistant/sseResponse';
 import { sseData } from '@/lib/assistant/streamSse';
+import { validateAssistantUserMessage } from '@/lib/assistant/validateAssistantUserMessage';
 
 import { type ChatRequest, type ChatResponse, type AssistantStreamServerEvent } from '@/lib/assistant/types';
 
@@ -33,15 +35,11 @@ export async function POST(req: NextRequest) {
 		const { message } = body;
 		const history = normalizeHistory(body.history);
 
-		if (!message || typeof message !== 'string' || message.length > MAX_MESSAGE_LENGTH) {
-			return NextResponse.json(
-				{
-					success: false,
-					error: 'Invalid message length',
-				} satisfies ChatResponse,
-				{ status: 400 },
-			);
-		}
+		const invalidMessage = validateAssistantUserMessage({
+			message,
+			maxMessageLength: MAX_MESSAGE_LENGTH,
+		});
+		if (invalidMessage) return invalidMessage;
 
 		const rateLimit = await consumeAssistantRateLimit(req);
 
@@ -85,11 +83,7 @@ export async function POST(req: NextRequest) {
 						controller.close();
 					},
 				});
-
-				return new Response(stream, {
-					status: 200,
-					headers: SSE_HEADERS,
-				});
+				return sseResponse({ stream, status: 200, headers: SSE_HEADERS });
 			}
 		}
 
@@ -144,10 +138,7 @@ export async function POST(req: NextRequest) {
 				}
 			},
 		});
-		return new Response(stream, {
-			status: 200,
-			headers: SSE_HEADERS,
-		});
+		return sseResponse({ stream, status: 200, headers: SSE_HEADERS });
 	} catch (error: unknown) {
 		console.error('[ASSISTANT CHAT ERROR]:', error);
 		return getAssistantChatErrorResponse(error);

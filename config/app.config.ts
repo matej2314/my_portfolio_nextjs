@@ -63,4 +63,9 @@ export const APP_CONFIG = {
 		maxFiles: '3d',
 		zippedArchive: false,
 	},
+	assistantConfig: {
+		apiKey: process.env.ANTHROPIC_API_KEY,
+		model: process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-4-5-20250929',
+		maxIterations: Number.parseInt(process.env.ASSISTANT_MAX_ITERATIONS ?? '5'),
+	}
 } as const;

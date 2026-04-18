@@ -1,19 +1,21 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { type Client } from '@modelcontextprotocol/sdk/client';
+
 import { getLocale } from 'next-intl/server';
 import { assertAllowedToolName, callTool, withMcpClient, getPortfolioTools } from '../mcp/client';
 import { SYSTEM_PROMPTS, type AssistantLocale, toolResultPrefix, wrapUserContentForModel } from './prompts';
+
+import { APP_CONFIG } from '@/config/app.config';
+
 import { type ChatHistoryTurn } from './types';
+import { type Client } from '@modelcontextprotocol/sdk/client';
+
+const MODEL = APP_CONFIG.assistantConfig.model;
+const API_KEY = APP_CONFIG.assistantConfig.apiKey;
+const MAX_ITERATIONS = APP_CONFIG.assistantConfig.maxIterations;
 
 const anthropic = new Anthropic({
-	apiKey: process.env.ANTHROPIC_API_KEY,
+	apiKey: API_KEY,
 });
-
-// STREAM-REFACTOR
-
-const MODEL = process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-4-5-20250929';
-
-const MAX_ITERATIONS = Number.parseInt(process.env.ASSISTANT_MAX_ITERATIONS ?? '5');
 
 async function callAnthropicWithRetry<T>(fn: () => Promise<T>, maxRetries: number = 3, baseDelay: number = 1000): Promise<T> {
 	for (let attempt = 0; attempt < maxRetries; attempt++) {
@@ -110,8 +112,6 @@ export async function runAssistantLoopStreaming(
 		const messages = buildMessagesFromHistory(prior, userMessage, loc);
 
 		for (let i = 0; i < MAX_ITERATIONS; i++) {
-			// Pierwsza odpowiedź w danej iteracji pętli: wymuś użycie MCP (auto pozwala modelowi
-			// zwrócić sam tekst „nie mam informacji” bez żadnego tool_use — wtedy dane z MCP w ogóle nie wchodzą).
 			const toolChoice = i === 0 ? ({ type: 'any' } as const) : ({ type: 'auto' } as const);
 
 			const stream = anthropic.messages.stream({
