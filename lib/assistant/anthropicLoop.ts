@@ -110,6 +110,10 @@ export async function runAssistantLoopStreaming(
 		const messages = buildMessagesFromHistory(prior, userMessage, loc);
 
 		for (let i = 0; i < MAX_ITERATIONS; i++) {
+			// Pierwsza odpowiedź w danej iteracji pętli: wymuś użycie MCP (auto pozwala modelowi
+			// zwrócić sam tekst „nie mam informacji” bez żadnego tool_use — wtedy dane z MCP w ogóle nie wchodzą).
+			const toolChoice = i === 0 ? ({ type: 'any' } as const) : ({ type: 'auto' } as const);
+
 			const stream = anthropic.messages.stream({
 				model: MODEL,
 				max_tokens: 1500,
@@ -118,7 +122,7 @@ export async function runAssistantLoopStreaming(
 				tools: anthropicTools,
 				stream: true,
 				temperature: 0.4,
-				tool_choice: { type: 'auto' },
+				tool_choice: toolChoice,
 			});
 
 			stream.on('text', (textDelta: string) => {
