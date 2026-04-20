@@ -44,9 +44,9 @@
 			"downloadCv": "Download CV",
 			"viewProjects": "View projects",
 			"metricLabels": {
-				"years": "Years experience",
+				"years": "Experience",
 				"projects": "Projects",
-				"coreFramework": "Core framework",
+				"commits": "Commits",
 				"english": "English"
 			}
 		},

@@ -15,7 +15,7 @@
 			"metricLabels": {
 				"years": "Lat doświadczenia",
 				"projects": "Projektów",
-				"coreFramework": "Główny framework",
+				"commits": "Commitów",
 				"english": " Język Angielski"
 			}
 		},

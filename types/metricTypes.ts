@@ -1,4 +1,4 @@
-export type AboutMetricId = 'years' | 'projects' | 'coreFramework' | 'english';
+export type AboutMetricId = 'years' | 'projects' | 'commits' | 'english';
 
 export type AboutMetricConfig = {
 	id: AboutMetricId;
