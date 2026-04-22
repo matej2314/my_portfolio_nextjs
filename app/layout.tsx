@@ -1,12 +1,11 @@
 import { type ReactNode } from "react";
 import { NextIntlClientProvider } from "next-intl";
-import { getLocale } from "next-intl/server";
+import { getLocale, getMessages } from "next-intl/server";
 import Script from "next/script";
 import "./globals.css";
 import ClientAnalytics from "@/components/ClientAnalytics";
 import { generatePageMetadata } from "@/lib/generatePageMetadata";
 import { APP_CONFIG } from "@/config/app.config";
-import { kanit } from "@/fonts/kanit";
 import { plusJakartaSans } from "@/fonts/jakarta";
 import { inter } from "@/fonts/inter";
 
@@ -20,6 +19,7 @@ export default async function RootLayout({
 }>) {
 
   const locale = await getLocale();
+  const messages = await getMessages({ locale });
   const htmlLang = locale || 'en';
   const GA_ID = APP_CONFIG.analytics.GA_ID;
 
@@ -41,7 +41,7 @@ export default async function RootLayout({
         </Script>
       </head>
       <body className="bg-[#000805]">
-        <NextIntlClientProvider locale={locale}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
           {children}
         </NextIntlClientProvider>
         <ClientAnalytics />
