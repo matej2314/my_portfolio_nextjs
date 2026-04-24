@@ -10,7 +10,7 @@ export function proxy(request: NextRequest) {
     form-action 'self';
     base-uri 'self';
     img-src 'self' data:;
-    connect-src 'self' https://api.iconify.design https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com https://*.googletagmanager.com;
+    connect-src 'self' https://api.iconify.design https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com https://*.googletagmanager.com https://api.simplesvg.com;
     frame-src 'none';
   `
 		.replace(/\s{2,}/g, ' ')

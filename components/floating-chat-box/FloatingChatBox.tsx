@@ -14,7 +14,7 @@ import FloatingBoxLayout from '@/components/ui/elements/floating-boxes/FloatingB
 import { refusalCopy } from '@/lib/assistant/refusalCopy';
 
 export default function FloatingChatBox() {
-	const { chatBoxState, setChatBoxState, handleSubmit, messagesEndRef, regionId, locale, chatBoxPanelTransition, tuckAfterOpen, tuckDuration, revealAfterClose, revealDuration, subtitle, streamingAssistantLineId, CHAT_PANEL_WIDTH, ACCENT, CARD_BG, BORDER, SHOW_DELAY_CHAT_BOX, ENTER_DURATION_CHAT_BOX, reduced } = useFloatingChatBox();
+	const { chatBoxState, setChatBoxState, handleSubmit, messagesEndRef, chatInputRef, regionId, locale, chatBoxPanelTransition, tuckAfterOpen, tuckDuration, revealAfterClose, revealDuration, subtitle, streamingAssistantLineId, CHAT_PANEL_WIDTH, ACCENT, CARD_BG, BORDER, SHOW_DELAY_CHAT_BOX, ENTER_DURATION_CHAT_BOX, reduced } = useFloatingChatBox();
 
 	return (
 		<FloatingBoxLayout
@@ -89,6 +89,7 @@ export default function FloatingChatBox() {
 						{locale === 'pl' ? 'Treść wiadomości' : 'Message'}
 					</label>
 					<input
+						ref={chatInputRef}
 						id={`${regionId}-chat-input`}
 						type='text'
 						value={chatBoxState.input}

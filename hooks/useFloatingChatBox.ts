@@ -30,6 +30,7 @@ export const useFloatingChatBox = () => {
 	});
 
 	const messagesEndRef = useRef<HTMLDivElement>(null);
+	const chatInputRef = useRef<HTMLInputElement>(null);
 
 	const regionId = useId();
 	const locale = useLocale();
@@ -57,6 +58,14 @@ export const useFloatingChatBox = () => {
 			messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
 		}
 	}, [chatBoxState.lines.length, chatBoxState.loading]);
+
+	useEffect(() => {
+		if (!chatBoxState.open) return;
+		const id = requestAnimationFrame(() => {
+			chatInputRef.current?.focus({ preventScroll: true });
+		});
+		return () => cancelAnimationFrame(id);
+	}, [chatBoxState.open]);
 
 	async function handleSubmit(e: FormEvent) {
 		e.preventDefault();
@@ -158,6 +167,7 @@ export const useFloatingChatBox = () => {
         setChatBoxState,
         handleSubmit,
         messagesEndRef,
+        chatInputRef,
         regionId,
         locale,
         config,
