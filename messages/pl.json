@@ -29,7 +29,7 @@
 			"employedSince": "Pracowałem od",
 			"employedTo": "Pracowałem do",
 			"currentPosition": "Aktualne stanowisko",
-			"keyResponsibilities": "Kluczowe obowiązki",
+			"keyResponsibilities": "Kluczowe obowiązki i osiągnięcia",
 			"responsibilities": {
 				"JSONCrewInternship": [
 					"Implementacja funkcjonalności aplikacji na podstawie przekazanych wymagań i wewnętrznych wytycznych.",
@@ -40,12 +40,13 @@
 					"Pomoc w analizie i naprawie błędów na etapie developmentu i testów."
 				],
 				"JSONCrew": [
-					"Budowałem i utrzymywałem funkcje aplikacji webowych zgodnie z wymaganiami w środowisku opartym o CMS.",
-					"Tworzyłem komponenty frontendowe i logikę aplikacji w frameworkach JavaScript, w tym obsługę stanu i zachowania UI.",
-					"Tworzyłem i utrzymywałem endpointy backendowe oraz logikę po stronie serwera dla funkcji aplikacji.",
-					"Integrowałem zewnętrzne API i usługi z istniejącymi funkcjami w razie potrzeby.",
-					"Naprawiałem błędy i uczestniczyłem w rozwiązywaniu problemów na produkcji i w środowisku developerskim.",
-					"Realizowałem funkcje we współpracy z innymi deweloperami i dostosowywałem pracę do feedbacku."
+					"W ramach pracy przy aplikacjach webowych w oparciu o CMS zrealizowałem 6 projektów oraz 7 migracji (m.in. środowisk i aktualizacji stacku).",
+					"Zaproponowałem i wdrożyłem usprawnienia pracy oparte o sztuczną inteligencję: planowanie i implementacja procesu, kompleksowe środowisko pracy (m.in. Cursor) oraz szkolenia dla zespołu.",
+					"Samodzielnie opracowałem i wdrożyłem integrację platformy e-commerce z systemem GoPOS — od analizy założeń i implementacji po uruchomienie i nadzór. Integracja zapewnia pełną synchronizację danych operacyjnych i stabilną wymianą informacji między systemami.",
+					"Tworzyłem komponenty frontendowe i logikę (stan i zachowanie UI) oraz endpointy i logikę backendową dla funkcji aplikacji.",
+					"Integrowałem zewnętrzne API i usługi z istniejącymi funkcjami produktów.",
+					"Utrzymywałem wdrożenia na produkcji: poprawki, obsługa incydentów oraz zmiany wprowadzane po akceptacji klienta.",
+					"Sprawna współpraca w zespole — komunikatywność, otwartość na feedback (w tym z code review) i wspólne doprecyzowywanie wymagań z deweloperami oraz web designerami."
 				]
 			},
 			"visitWebsite": "Strona internetowa pracodawcy"

@@ -16,7 +16,7 @@
 			"employedSince": "Employed since",
 			"employedTo": "Employed to",
 			"currentPosition": "Current position",
-			"keyResponsibilities": "Key responsibilities",
+			"keyResponsibilities": "Key responsibilities & achievements",
 			"responsibilities": {
 				"JSONCrewInternship": [
 					"Developed application features based on provided requirements and internal guidelines.",
@@ -27,12 +27,12 @@
 					"Assisted in identifying and fixing bugs during development and testing."
 				],
 				"JSONCrew": [
-					"Built and maintained web application features based on provided requirements within a CMS-based environment.",
-					"Developed frontend components and application logic using JavaScript frameworks, including state handling and UI behavior implementation.",
-					"Created and maintained backend endpoints and server-side logic for application features.",
-					"Integrated external APIs and services into existing features when required.",
-					"Fixed bugs and participated in resolving production and development issues.",
-					"Worked on feature implementation in collaboration with other developers and adjusted work based on feedback."
+					"Delivered 6 projects and completed 7 migrations (including environments and stack updates) while building CMS-based web applications.",
+					"Proposed and implemented AI-driven workflow improvements: process design and delivery, a comprehensive work environment (including Cursor), and training for the team.",
+					"I independently designed and implemented the integration of an e-commerce platform with the GoPOS system — from requirements analysis to deployment and ongoing supervision. The integration delivers full synchronization of operational data and ensures stable, reliable data exchange between the systems.",
+					"Integrated external APIs and services into existing product functionality.",
+					"Maintained production deployments: fixes, incident handling, and changes rolled out after client approval.",
+					"Effective teamwork—clear communication, responsiveness to feedback (including code reviews), and refining requirements with developers and web designers."
 				]
 			},
 			"visitWebsite": "Employer's website"

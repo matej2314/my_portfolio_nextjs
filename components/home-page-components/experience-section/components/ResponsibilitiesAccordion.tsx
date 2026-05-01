@@ -41,9 +41,9 @@ export default function ResponsibilitiesAccordion({ title, items, itemKeyPrefix,
 				className='grid grid-rows-[0fr] transition-[grid-template-rows] duration-[480ms] ease-[cubic-bezier(0.22,1,0.36,1)] data-[state=open]:grid-rows-[1fr]'
 			>
 				<div className='min-h-0 overflow-hidden' aria-hidden={!open}>
-					<ul className='mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed text-slate-400'>
+					<ul className='mt-2 list-disc space-y-1 px-8 text-sm leading-relaxed text-slate-400'>
 						{items.map((line, index) => (
-							<li key={`${itemKeyPrefix}-r-${index}`}>{line}</li>
+							<li key={`${itemKeyPrefix}-r-${index}`} className='w-[85%]'>{line}</li>
 						))}
 					</ul>
 				</div>
