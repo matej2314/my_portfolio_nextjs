@@ -178,5 +178,10 @@
 		"assumptionsLabel": "Założenia",
 		"metaDemo": "Demo",
 		"metaRepo": "Repo"
+	},
+	"references": {
+		"jsonCrew": "Referencje od firmy JSON Crew",
+		"download": "Pobierz",
+		"backToHome": "Wróć do strony głównej"
 	}
 }

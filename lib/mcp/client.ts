@@ -6,11 +6,13 @@ import { type MCPTool, type McpToolResult } from './types';
 const MCP_BASE_URL = process.env.MCP_BASE_URL || 'http://127.0.0.1:3333';
 const MCP_ENDPOINT = process.env.MCP_ENDPOINT_PATH || '/mcp';
 const MCP_TOKEN = process.env.MCP_INTERNAL_TOKEN?.trim() ?? '';
-const NAMESPACE = process.env.MCP_NAMESPACE || 'portfolio';
+const NAMESPACE = process.env.MCP_NAMESPACE?.trim() ?? 'portfolio';
 
 function mcpServerUrl() {
-	const base = MCP_BASE_URL.endsWith('/') ? MCP_BASE_URL : `${MCP_BASE_URL}/`;
-	return new URL(MCP_ENDPOINT.replace(/^\//, ''), base);
+	const origin = MCP_BASE_URL.replace(/\/+$/, '');
+	const endpoint = MCP_ENDPOINT.replace(/^\/+|\/+$/g, '');
+	const namespace = NAMESPACE.replace(/^\/+|\/+$/g, '');
+	return new URL(`${origin}/${endpoint}/${namespace}`);
 }
 
 let mcpClientInstance: Client | null = null;
@@ -102,20 +104,7 @@ export async function getPortfolioTools(_client: Client): Promise<MCPTool[]> {
 	}
 
 	const { tools } = await withMcpSessionRetry(c => c.listTools());
-	const filtered = tools.filter(tool => tool.name.startsWith(`${NAMESPACE}_`));
-
-	if (filtered.length === 0) {
-		const sample = tools.slice(0, 12).map(t => t.name);
-		if (tools.length > 0) {
-			console.error(`[MCP Client] No tools match MCP_NAMESPACE="${NAMESPACE}_". listTools returned ${tools.length} tools; sample names:`, sample.join(', ') || '(none)');
-		} else {
-			console.error('[MCP Client] listTools returned 0 tools (MCP server may have failed to load modules).');
-		}
-		toolsCache = null;
-		return [];
-	}
-
-	toolsCache = filtered;
+	toolsCache = tools;
 	console.log(`[MCP Client] Cached ${toolsCache.length} portfolio tools`);
 	return toolsCache;
 }
