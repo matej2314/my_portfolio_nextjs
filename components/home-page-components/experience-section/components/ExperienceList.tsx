@@ -33,6 +33,7 @@ const accordionEase = [0.22, 1, 0.36, 1] as const;
 
 export default function ExperienceList({ experiences, locale }: { experiences: Experience[]; locale: Locale }) {
 	const t = useTranslations('homePage.experienceSection');
+	const tr = useTranslations('references');
 	const listRef = useRef<HTMLDivElement>(null);
 	const inView = useInView(listRef, { once: true, amount: 0.6 });
 
@@ -67,6 +68,9 @@ export default function ExperienceList({ experiences, locale }: { experiences: E
 										<ResponsibilitiesAccordion title={t('keyResponsibilities')} items={respItems} itemKeyPrefix={String(exp.id)} accordionEase={accordionEase} />
 									) : null}
 									<p className='text-sm leading-[1.5] text-slate-500'>{formatDateRange(locale, exp, t('present'))}</p>
+									{exp.referencesFile ? (
+										<p className='text-xs leading-snug text-yellow-300/90 max-xl:text-[11px]'>{tr('referencesText')}</p>
+									) : null}
 								</div>
 							</motion.article>
 						);

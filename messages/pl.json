@@ -41,11 +41,11 @@
 				],
 				"JSONCrew": [
 					"W ramach pracy przy aplikacjach webowych w oparciu o CMS zrealizowałem 6 projektów oraz 7 migracji (m.in. środowisk i aktualizacji stacku).",
-					"Zaproponowałem i wdrożyłem usprawnienia pracy oparte o sztuczną inteligencję: planowanie i implementacja procesu, kompleksowe środowisko pracy (m.in. Cursor) oraz szkolenia dla zespołu.",
+					"Zaproponowałem i wdrożyłem usprawnienia pracy oparte o sztuczną inteligencję: planowanie i implementacja procesu, kompleksowe środowisko pracy (m.in. Cursor, MCP) oraz szkolenia dla zespołu.",
 					"Samodzielnie opracowałem i wdrożyłem integrację platformy e-commerce z systemem GoPOS — od analizy założeń i implementacji po uruchomienie i nadzór. Integracja zapewnia pełną synchronizację danych operacyjnych i stabilną wymianą informacji między systemami.",
 					"Tworzyłem komponenty frontendowe i logikę (stan i zachowanie UI) oraz endpointy i logikę backendową dla funkcji aplikacji.",
 					"Integrowałem zewnętrzne API i usługi z istniejącymi funkcjami produktów.",
-					"Utrzymywałem wdrożenia na produkcji: poprawki, obsługa incydentów oraz zmiany wprowadzane po akceptacji klienta.",
+					"Utrzymywałem wdrożenia na produkcji: poprawki, wsparcie na produkcji oraz zmiany wprowadzane po akceptacji klienta.",
 					"Sprawna współpraca w zespole — komunikatywność, otwartość na feedback (w tym z code review) i wspólne doprecyzowywanie wymagań z deweloperami oraz web designerami."
 				]
 			},
@@ -181,6 +181,7 @@
 		"metaRepo": "Repo"
 	},
 	"references": {
+		"referencesText": "Referencje dostępne na żądanie.",
 		"jsonCrew": "Referencje od firmy JSON Crew",
 		"download": "Pobierz",
 		"backToHome": "Wróć do strony głównej"

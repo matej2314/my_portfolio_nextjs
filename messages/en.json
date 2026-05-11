@@ -28,8 +28,9 @@
 				],
 				"JSONCrew": [
 					"Delivered 6 projects and completed 7 migrations (including environments and stack updates) while building CMS-based web applications.",
-					"Proposed and implemented AI-driven workflow improvements: process design and delivery, a comprehensive work environment (including Cursor), and training for the team.",
+					"Proposed and implemented AI-driven workflow improvements: process design and delivery, a comprehensive work environment (including Cursor, MCP), and training for the team.",
 					"I independently designed and implemented the integration of an e-commerce platform with the GoPOS system — from requirements analysis to deployment and ongoing supervision. The integration delivers full synchronization of operational data and ensures stable, reliable data exchange between the systems.",
+					"I built frontend components and UI logic (state and behavior) alongside API endpoints and backend logic for application features.",
 					"Integrated external APIs and services into existing product functionality.",
 					"Maintained production deployments: fixes, incident handling, and changes rolled out after client approval.",
 					"Effective teamwork—clear communication, responsiveness to feedback (including code reviews), and refining requirements with developers and web designers."
@@ -180,6 +181,7 @@
 		"metaRepo": "Repo"
 	},
 	"references": {
+		"referencesText": "References available on request.",
 		"jsonCrew": "References from JSON Crew company",
 		"download": "Download",
 		"backToHome": "Back to home page"

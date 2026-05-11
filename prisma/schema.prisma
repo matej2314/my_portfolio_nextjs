@@ -42,8 +42,8 @@ model projects {
   project_screenName  String    @db.VarChar(100)
   goal                String?   @db.Text
   goal_pl             String?   @db.Text
-  project_description String?   @db.VarChar(300)
-  description_pl      String?   @db.VarChar(400)
+  project_description String?   @db.VarChar(500)
+  description_pl      String?   @db.VarChar(500)
   repo                String?   @db.VarChar(100)
   technologies        String?   @db.VarChar(250)
   difficulty          String?   @db.VarChar(10)
@@ -96,6 +96,7 @@ model experience {
   employer         String    @db.VarChar(100)
   employer_url     String?   @db.Text
   is_current       Boolean   @default(false)
+  referencesFile   Boolean   @default(false)
   responsibilities String?   @db.Text
   position         String    @db.Text
   hourly_rate      String?   @db.Text
