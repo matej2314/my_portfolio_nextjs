@@ -54,7 +54,8 @@
 		"skillsSection": {
 			"sectionIndex": "03",
 			"title": "Umiejętności",
-			"subtitle": "Frontend i backend, bazy danych, narzędzia — wybrane technologie, z których korzystam na co dzień. Każdy projekt dopasowuję do stacka i wymagań.",
+			"subtitle": "Kompetencje inżynierskie, które wykorzystuję w projektach, oraz stack technologiczny — narzędzia i frameworki z codziennej pracy.",
+			"toolsSubsectionTitle": "Stack i narzędzia",
 			"fetchError": "Nie udało się wczytać umiejętności.",
 			"emptyState": "Brak umiejętności do wyświetlenia.",
 			"description": "Tworzę nowoczesne, responsywne aplikacje internetowe, dbając o czytelność kodu, wydajność i bezpieczeństwo. Sprawnie poruszam się w środowisku frontendowym i backendowym, wykorzystując sprawdzone narzędzia oraz technologie. Mam doświadczenie w pracy z systemami Linux, konteneryzacją aplikacji (Docker), automatyzacją procesów, a także optymalizacją SEO i analizą bezpieczeństwa aplikacji webowych. Stale rozwijam się w kierunku programistycznym i w obszarze cyberbezpieczeństwa, co pozwala mi tworzyć solidne, skalowalne i bezpieczne rozwiązania gotowe do wdrożenia na środowisku produkcyjnym.",
@@ -80,6 +81,15 @@
 				"metasploit": "Zaawansowany framework do testowania bezpieczeństwa i wykonywania testów penetracyjnych.",
 				"github": "Popularna platforma do wersjonowania kodu aplikacji i współpracy w zespole.",
 				"mcp": "Wykorzystuję i tworzę serwery MCP w codziennej pracy."
+			},
+			"competenciesSubsectionTitle": "Kompetencje",
+			"competenciesList": {
+				"backendapi": "Tworzenie systemów backendowych i interfejsów API skalujących się wraz z rozwojem produktu i łatwych w utrzymaniu.",
+				"databases": "Modelowanie struktur danych i zarządzanie ich ewolucją bez przestojów i ryzyka utraty informacji.",
+				"architecture": "Projektowanie architektury modularnej umożliwiającej niezależny rozwój i testowanie poszczególnych obszarów systemu.",
+				"clean_code": "Pisanie kodu z naciskiem na czytelność, wzorce projektowe i minimalizację długu technicznego.",
+				"automation": "Budowanie pipeline'ów automatyzujących integrację, testy i wdrożenia — od commita do produkcji.",
+				"ai": "Wykorzystanie rozwiązań opartych na AI do automatyzacji pracy i przyspieszenia procesów przy kontroli kosztów i jakości."
 			}
 		},
 		"certsSection": {

@@ -19,10 +19,13 @@ export const baseSkillSchema = z.object({
 	}),
 	icon_name: validatedString(5, 50, {
 		tooSmall: 'Icon name must contains minimum 5 characters.',
-		tooBig: 'Icon name must contains maximum 30 characters.',
-	}).refine(value => !containsXSS(value), {
-		message: 'Icon name contains dangerous characters.',
-	}),
+		tooBig: 'Icon name must contains maximum 50 characters.',
+	})
+		.refine(value => !containsXSS(value), {
+			message: 'Icon name contains dangerous characters.',
+		})
+		.nullable()
+		.optional(),
 	icon_color: validatedString(5, 10, {
 		tooBig: 'Icon color must contain maximum 10 characters.',
 		tooSmall: 'Icon color must contains minimum 5 characters.',
@@ -32,7 +35,11 @@ export const baseSkillSchema = z.object({
 	skill_description: validatedString(5, 200, {
 		tooBig: 'Description must contain maximum 200 characters',
 		tooSmall: 'Description must contain minimum 5 characters',
-	}).nullable().optional(),
+	})
+		.nullable()
+		.optional(),
+
+	isTool: z.string().transform(val => val === 'true'),
 });
 
 export const updateSkillSchema = baseSkillSchema.extend({

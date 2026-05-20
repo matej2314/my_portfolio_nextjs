@@ -3,7 +3,8 @@ import { getMessages, getTranslations } from 'next-intl/server';
 import { type GetSkillsType } from '@/types/actionsTypes/actionsTypes';
 import { groupSkillsIntoColumns, skillCategorySlug } from '@/lib/utils/utils';
 
-import SkillsGrid from './components/SkillsGrid';
+import SkillsList from './components/SkillsList';
+import ToolsGrid from './components/ToolsGrid';
 import { type SkillsGridColumn } from '@/types/skillsGrid';
 
 export default async function SkillsSection({ skills }: { skills: GetSkillsType | undefined }) {
@@ -13,12 +14,8 @@ export default async function SkillsSection({ skills }: { skills: GetSkillsType 
 
 	if (!skills || 'error' in skills) {
 		return (
-			<section
-				id="skillsSection"
-				tabIndex={-1}
-				className="flex min-h-dvh w-full flex-col justify-center bg-[#0c0c0c] max-xl:mx-auto max-xl:max-w-[100vw] max-xl:px-4 max-xl:py-8 xl:px-12 xl:py-12"
-			>
-				<p className="text-slate-400">{t('skillsSection.fetchError')}</p>
+			<section id='skillsSection' tabIndex={-1} className='flex min-h-dvh w-full flex-col justify-center bg-[#0c0c0c] max-xl:mx-auto max-xl:max-w-[100vw] max-xl:px-4 max-xl:py-8 xl:px-12 xl:py-12'>
+				<p className='text-slate-400'>{t('skillsSection.fetchError')}</p>
 			</section>
 		);
 	}
@@ -29,12 +26,10 @@ export default async function SkillsSection({ skills }: { skills: GetSkillsType 
 		skills: list,
 	}));
 
+	const competenciesList = skills.skills.filter(skill => skill.isTool === false);
+
 	return (
-		<section
-			id="skillsSection"
-			tabIndex={-1}
-			className="flex min-h-dvh w-full flex-col justify-center gap-8 bg-[#0c0c0c] max-xl:mx-auto max-xl:max-w-[100vw] max-xl:px-4 max-xl:py-8 xl:px-12 xl:py-12"
-		>
+		<section id='skillsSection' tabIndex={-1} className='flex min-h-dvh w-full flex-col justify-center gap-8 bg-[#0c0c0c] max-xl:mx-auto max-xl:max-w-[100vw] max-xl:px-4 max-xl:py-8 xl:px-12 xl:py-12'>
 			<header className='flex flex-col gap-2 max-xl:gap-1.5 xl:gap-2'>
 				<p className='font-semibold tracking-wide text-slate-500 max-xl:text-xs xl:text-[13px]'>{t('skillsSection.sectionIndex')}</p>
 				<h2 className='font-light leading-tight text-slate-50 max-xl:text-[1.625rem] max-xl:leading-snug xl:text-[2.375rem]'>{t('skillsSection.title')}</h2>
@@ -43,7 +38,9 @@ export default async function SkillsSection({ skills }: { skills: GetSkillsType 
 
 			<p className='max-w-3xl font-normal text-slate-400 max-xl:text-[15px] max-xl:leading-relaxed xl:text-base xl:leading-normal'>{t('skillsSection.subtitle')}</p>
 
-			{columns.length === 0 ? <p className='text-slate-500'>{t('skillsSection.emptyState')}</p> : <SkillsGrid columns={columns} />}
+			<SkillsList competenciesList={competenciesList} />
+
+			{columns.length === 0 ? <p className='text-slate-500'>{t('skillsSection.emptyState')}</p> : <ToolsGrid columns={columns} />}
 		</section>
 	);
 }

@@ -54,7 +54,8 @@
 		"skillsSection": {
 			"sectionIndex": "03",
 			"title": "Skills",
-			"subtitle": "Frontend and backend, databases, tools — selected technologies I use every day. I adapt the stack to each project and its requirements.",
+			"subtitle": "Engineering competencies I bring to projects, and the tech stack—tools and frameworks I use in day-to-day work.",
+			"toolsSubsectionTitle": "Tech stack & tools",
 			"fetchError": "Failed to load skills.",
 			"emptyState": "No skills to display yet.",
 			"description": "I create modern, responsive web applications with a strong focus on code readability, performance, and security. I'm proficient in both frontend and backend development, using well-established tools and technologies. I have experience working with Linux systems, application containerization (Docker), process automation, as well as SEO optimization and web application security analysis. I'm continuously developing my skills in programming and cybersecurity, allowing me to build robust, scalable, and secure solutions ready for production deployment.",
@@ -80,6 +81,15 @@
 				"metasploit": "Advanced framework for testing security and performing penetration tests.",
 				"github": "Popular platform for version control and collaboration.",
 				"mcp": "I use and set up MCP servers in my daily work."
+			},
+			"competenciesSubsectionTitle": "Competencies",
+			"competenciesList": {
+				"backendapi": "Developing backend systems and APIs that scale with product growth and are easy to maintain.",
+				"databases": "Modeling data structures and managing their evolution without downtime or the risk of data loss.",
+				"architecture": "Designing a modular architecture that enables independent development and testing of individual system components.",
+				"clean_code": "Writing code with an emphasis on readability, design patterns, and minimizing technical debt.",
+				"automation": "Building pipelines that automate integration, testing, and deployment—from commit to production.",
+				"artificalIntelligence": "Utilizing AI-based solutions to automate work and accelerate processes while controlling costs and quality."
 			}
 		},
 		"certsSection": {

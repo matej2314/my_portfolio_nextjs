@@ -61,12 +61,15 @@ model services {
 }
 
 model skills {
-  id                String  @id @db.VarChar(300)
-  skill_name        String  @db.VarChar(100)
-  skill_cat         String  @db.VarChar(100)
-  skill_description String? @db.VarChar(300)
-  icon_name         String? @db.VarChar(100)
-  icon_color        String? @db.VarChar(100)
+  id                String   @id @db.VarChar(300)
+  skill_name        String   @db.VarChar(100)
+  isTool            Boolean? @default(true)
+  skill_cat         String   @db.VarChar(100)
+  skill_description String?  @db.VarChar(300)
+  icon_name         String?  @db.VarChar(100)
+  icon_color        String?  @db.VarChar(100)
+
+  @@index([isTool], map: "skill_type")
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.

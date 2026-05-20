@@ -22,18 +22,25 @@ function buildColumnSteps(columns: SkillsGridColumn[]) {
 	});
 }
 
-export default function SkillsGrid({ columns }: { columns: SkillsGridColumn[] }) {
-	const t = useTranslations('homePage.skillsSection.skillsList');
+export default function ToolsGrid({ columns }: { columns: SkillsGridColumn[] }) {
+	const t = useTranslations('homePage.skillsSection');
+	const tSkillsList = useTranslations('homePage.skillsSection.skillsList');
 	const gridRef = useRef<HTMLDivElement>(null);
 	const inView = useInView(gridRef, { once: true, amount: 0.2 });
 	const columnSteps = useMemo(() => buildColumnSteps(columns), [columns]);
 
 	return (
 		<AnimatePresence>
-			<div
-				ref={gridRef}
-				className="grid grid-cols-1 gap-10 max-[480px]:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 xl:gap-12"
-			>
+			<div ref={gridRef} className='flex flex-col mt-7 gap-5 font-jakarta max-xl:gap-4'>
+				<motion.h3
+					className='font-semibold tracking-wide text-[#facc15] max-xl:text-[15px] xl:text-base'
+					initial={{ opacity: 0, y: 10 }}
+					animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+					transition={{ duration: 0.35, ease: easeInOut }}
+				>
+					{t('toolsSubsectionTitle')}
+				</motion.h3>
+				<div className='grid grid-cols-1 gap-10 max-[480px]:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 xl:gap-12'>
 				{columns.map((col, colIndex) => {
 					const { titleStep, itemSteps } = columnSteps[colIndex]!;
 					return (
@@ -55,7 +62,7 @@ export default function SkillsGrid({ columns }: { columns: SkillsGridColumn[] })
 									const descKey = skill.skill_description?.trim();
 									const tooltipContent =
 										descKey && descKey.length > 0
-											? (t as (key: string) => string)(descKey)
+											? (tSkillsList as (key: string) => string)(descKey)
 											: null;
 									const itemStep = itemSteps[skillIndex]!;
 									return (
@@ -96,6 +103,7 @@ export default function SkillsGrid({ columns }: { columns: SkillsGridColumn[] })
 						</div>
 					);
 				})}
+				</div>
 			</div>
 		</AnimatePresence>
 	);
