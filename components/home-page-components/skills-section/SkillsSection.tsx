@@ -20,7 +20,9 @@ export default async function SkillsSection({ skills }: { skills: GetSkillsType 
 		);
 	}
 
-	const columns: SkillsGridColumn[] = groupSkillsIntoColumns(skills.skills).map(({ category, skills: list }) => ({
+	const toolSkills = skills.skills.filter(skill => skill.isTool === true);
+
+	const columns: SkillsGridColumn[] = groupSkillsIntoColumns(toolSkills).map(({ category, skills: list }) => ({
 		categoryKey: category,
 		title: categoryTitles[skillCategorySlug(category)] ?? category,
 		skills: list,
