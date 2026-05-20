@@ -73,3 +73,12 @@ export type Experience = PrismaExperienceType;
 export type GetExperiencesType = { experiences: Experience[] } | { error: string };
 
 export type GetSingleExperienceType = { experience: Experience } | { error: string };
+
+export type CvFileEntry = {
+	id: string;
+	fileName: string;
+	extension: string;
+	lastModified: string;
+};
+
+export type GetCvFilesListType = { files: CvFileEntry[] } | { error: string };

@@ -89,7 +89,7 @@
 				"architecture": "Projektowanie architektury modularnej umożliwiającej niezależny rozwój i testowanie poszczególnych obszarów systemu.",
 				"clean_code": "Pisanie kodu z naciskiem na czytelność, wzorce projektowe i minimalizację długu technicznego.",
 				"automation": "Budowanie pipeline'ów automatyzujących integrację, testy i wdrożenia — od commita do produkcji.",
-				"ai": "Wykorzystanie rozwiązań opartych na AI do automatyzacji pracy i przyspieszenia procesów przy kontroli kosztów i jakości."
+				"artificalIntel": "Wykorzystanie rozwiązań opartych na AI do automatyzacji pracy i przyspieszenia procesów przy kontroli kosztów i jakości."
 			}
 		},
 		"certsSection": {

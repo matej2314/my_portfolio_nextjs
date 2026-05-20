@@ -3,7 +3,6 @@ import { z } from 'zod';
 const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
 const maxFileSize = 5 * 1024 * 1024; // 5MB
 
-/** Ostatnie rozszerzenie z nazwy pliku (basename), trim — unika fałszywych błędów przy spacji/CR po `.pop()`. */
 function fileExtension(fileName: string): string {
 	const base = (fileName.split(/[/\\]/).pop() ?? '').trim();
 	const lastDot = base.lastIndexOf('.');
@@ -58,9 +57,8 @@ export const cvFileSchema = z
 	)
 	.refine(
 		file => {
-			const fileName = file.name.toLowerCase();
-			const pattern = /^CV - [A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+(_en)?\.pdf$/;
-			return pattern.test(fileName);
+			const pattern = /^CV - [A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+_[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+(_en)?\.pdf$/u;
+			return pattern.test(file.name);
 		},
 		{
 			message: 'Invalid file name.',

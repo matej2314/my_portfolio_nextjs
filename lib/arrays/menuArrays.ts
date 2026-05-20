@@ -1,4 +1,3 @@
-
 export type Variant = 'home' | 'project' | 'external';
 
 export type MenuItem = {
@@ -20,8 +19,6 @@ export const homeMenuArray: MenuItem[] = [
 	{ path: '#skillsSection', label: 'Skills', variant: 'home' },
 	{ path: '#certsSection', label: 'Courses', variant: 'home' },
 	{ path: '#projectsSection', label: 'Projects', variant: 'home' },
-	// { path: '', label: 'Blog', variant: 'home' },
-	// { path: '#contactSection', label: 'Contact', variant: 'home' },
 	{ path: '', label: 'CV', variant: 'project' },
 ];
 
@@ -42,10 +39,10 @@ export const blogMenuArray: MenuItem[] = [
 
 export const controlMenuArray: ControlMenuItem[] = [
 	{ key: 'about', label: 'About', icon: 'icon-park-outline:me', actions: ['add', 'manage'] },
-	{ key: 'experience', label: 'Experience', icon: 'bi:briefcase', actions: ['add', 'manage']},
+	{ key: 'experience', label: 'Experience', icon: 'bi:briefcase', actions: ['add', 'manage'] },
 	{ key: 'courses', label: 'Courses', icon: 'oui:training', actions: ['add', 'manage'] },
 	{ key: 'projects', label: 'Projects', icon: 'grommet-icons:projects', actions: ['add', 'manage'] },
 	{ key: 'skills', label: 'Skills', icon: 'game-icons:skills', actions: ['add', 'manage'] },
 	{ key: 'blog', label: 'Blog', icon: 'icomoon-free:blog', actions: ['add', 'manage'] },
-	{ key: 'cv', label: 'CV', icon: 'mdi:resume', actions: ['add'] },
+	{ key: 'resume', label: 'Resume', icon: 'mdi:resume', actions: ['add', 'manage'] },
 ];

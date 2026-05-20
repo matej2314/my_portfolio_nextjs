@@ -2,10 +2,15 @@
 
 import { motion, AnimatePresence, easeInOut, spring } from 'motion/react';
 
+import { getCvHref } from '@/lib/utils/getCvHref';
+
 const cvLinkClass =
 	'flex h-auto min-h-0 w-full min-w-[5rem] items-center justify-center rounded-md bg-yellow-300 px-3 py-0 font-jakarta text-[0.9rem] font-semibold text-[#0c0c0c] transition-colors hover:bg-yellow-400 focus:bg-yellow-400 focus-visible:bg-yellow-400 focus:outline-none focus-visible:outline-none';
 
 export default function CvSelector({ isOpen, cvLinksAsMenuItems }: { isOpen: boolean; cvLinksAsMenuItems?: boolean }) {
+	const { cvHref: plCvHref } = getCvHref('pl');
+	const { cvHref: enCvHref } = getCvHref('en');
+
 	const selectorVariant = {
 		initial: { opacity: 0, y: -10 },
 		animate: { opacity: 1, y: 1 },
@@ -35,7 +40,7 @@ export default function CvSelector({ isOpen, cvLinksAsMenuItems }: { isOpen: boo
 					aria-label={cvLinksAsMenuItems ? undefined : 'CV language'}
 				>
 					<a
-						href="/cv/CV - Mateusz Śliwowski_en.pdf"
+						href={enCvHref}
 						download
 						className={cvLinkClass}
 						aria-label="Download English CV"
@@ -44,7 +49,7 @@ export default function CvSelector({ isOpen, cvLinksAsMenuItems }: { isOpen: boo
 						English
 					</a>
 					<a
-						href="/cv/CV - Mateusz Śliwowski.pdf"
+						href={plCvHref}
 						download
 						className={cvLinkClass}
 						aria-label="Download Polish CV"
