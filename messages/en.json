@@ -89,7 +89,7 @@
 				"architecture": "Designing a modular architecture that enables independent development and testing of individual system components.",
 				"clean_code": "Writing code with an emphasis on readability, design patterns, and minimizing technical debt.",
 				"automation": "Building pipelines that automate integration, testing, and deployment—from commit to production.",
-				"artificalIntelligence": "Utilizing AI-based solutions to automate work and accelerate processes while controlling costs and quality."
+				"artificalIntel": "Utilizing AI-based solutions to automate work and accelerate processes while controlling costs and quality."
 			}
 		},
 		"certsSection": {
