@@ -5,6 +5,11 @@ import { assertAllowedToolName, callTool, withMcpClient, getPortfolioTools } fro
 import { SYSTEM_PROMPTS, type AssistantLocale, toolResultPrefix, wrapUserContentForModel } from './prompts';
 
 import { APP_CONFIG } from '@/config/app.config';
+import {
+	assistantLlmIterations,
+	assistantLlmRetriesTotal,
+	incrementAssistantTokensTotal,
+} from '@/lib/metrics/assistantMetrics';
 
 import { type ChatHistoryTurn } from './types';
 import { type Client } from '@modelcontextprotocol/sdk/client';
@@ -17,6 +22,13 @@ const anthropic = new Anthropic({
 	apiKey: API_KEY,
 });
 
+export class McpToolsUnavailableError extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = 'McpToolsUnavailableError';
+	}
+}
+
 async function callAnthropicWithRetry<T>(fn: () => Promise<T>, maxRetries: number = 3, baseDelay: number = 1000): Promise<T> {
 	for (let attempt = 0; attempt < maxRetries; attempt++) {
 		try {
@@ -26,6 +38,7 @@ async function callAnthropicWithRetry<T>(fn: () => Promise<T>, maxRetries: numbe
 			const shouldRetry = error?.headers?.get?.('x-should-retry') === 'true' || error?.headers?.['x-should-retry'] === 'true';
 
 			if (isOverloaded && shouldRetry && attempt < maxRetries - 1) {
+				assistantLlmRetriesTotal.inc();
 				const delay = baseDelay * Math.pow(2, attempt);
 				console.log(`[ANTHROPIC RETRY] Attempt ${attempt + 1}/${maxRetries}, waiting ${delay}ms before retrying...`);
 				await new Promise(resolve => setTimeout(resolve, delay));
@@ -89,7 +102,7 @@ export async function runAssistantLoopStreaming(
 	return withMcpClient(async (client: Client) => {
 		const tools = await getPortfolioTools(client);
 		if (tools.length === 0) {
-			throw new Error(
+			throw new McpToolsUnavailableError(
 				'No MCP portfolio tools available. Align Next MCP_NAMESPACE with the MCP server PORTFOLIO_NAMESPACE (same prefix, e.g. portfolio_).',
 			);
 		}
@@ -114,32 +127,34 @@ export async function runAssistantLoopStreaming(
 		for (let i = 0; i < MAX_ITERATIONS; i++) {
 			const toolChoice = i === 0 ? ({ type: 'any' } as const) : ({ type: 'auto' } as const);
 
-			const stream = anthropic.messages.stream({
-				model: MODEL,
-				max_tokens: 1500,
-				system: SYSTEM_PROMPTS[loc],
-				messages,
-				tools: anthropicTools,
-				stream: true,
-				temperature: 0.4,
-				tool_choice: toolChoice,
+			const finalMessage = await callAnthropicWithRetry(async () => {
+				const stream = anthropic.messages.stream({
+					model: MODEL,
+					max_tokens: 1500,
+					system: SYSTEM_PROMPTS[loc],
+					messages,
+					tools: anthropicTools,
+					stream: true,
+					temperature: 0.4,
+					tool_choice: toolChoice,
+				});
+
+				stream.on('text', (textDelta: string) => {
+					options.onTextDelta(textDelta);
+				});
+
+				return stream.finalMessage();
 			});
 
-			stream.on('text', (textDelta: string) => {
-				options.onTextDelta(textDelta);
-			});
-
-			let finalMessage: Anthropic.Message;
-			try {
-				finalMessage = await stream.finalMessage();
-			} catch (error: any) {
-				console.error('[ANTHROPIC STREAM ERROR]:', error);
-				throw error;
+			if (finalMessage.usage) {
+				incrementAssistantTokensTotal('input', finalMessage.usage.input_tokens);
+				incrementAssistantTokensTotal('output', finalMessage.usage.output_tokens);
 			}
 
 			const toolUses = finalMessage.content.filter((block): block is Anthropic.ToolUseBlock => block.type === 'tool_use');
 
 			if (toolUses.length === 0) {
+				assistantLlmIterations.observe(i + 1);
 				const textBlock = finalMessage.content.find((block): block is Anthropic.TextBlock => block.type === 'text');
 				return textBlock?.text ?? 'Przepraszam, nie mogę odpowiedzieć na Twoje pytanie.';
 			}

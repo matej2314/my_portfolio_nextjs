@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence, easeInOut, spring } from 'motion/react';
 
+import { trackClientEvent } from '@/lib/metrics/trackClientEvent';
 import { getCvHref } from '@/lib/utils/getCvHref';
 
 const cvLinkClass =
@@ -42,6 +43,7 @@ export default function CvSelector({ isOpen, cvLinksAsMenuItems }: { isOpen: boo
 					<a
 						href={enCvHref}
 						download
+						onClick={() => trackClientEvent({ type: 'cv_download', locale: 'en' })}
 						className={cvLinkClass}
 						aria-label="Download English CV"
 						role={cvLinksAsMenuItems ? 'menuitem' : undefined}
@@ -51,6 +53,7 @@ export default function CvSelector({ isOpen, cvLinksAsMenuItems }: { isOpen: boo
 					<a
 						href={plCvHref}
 						download
+						onClick={() => trackClientEvent({ type: 'cv_download', locale: 'pl' })}
 						className={cvLinkClass}
 						aria-label="Download Polish CV"
 						role={cvLinksAsMenuItems ? 'menuitem' : undefined}

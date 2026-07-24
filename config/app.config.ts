@@ -1,5 +1,11 @@
 export const APP_CONFIG = {
 	nodeEnv: process.env.NODE_ENV,
+	metrics: {
+		enabled: true,
+		protectWithToken: process.env.METRICS_BEARER_TOKEN,
+		collectDefaultMetrics: true,
+		prefix: process.env.METRICS_PREFIX ?? 'portfolio_',
+	},
 	auth: {
 		secret: process.env.AUTH_SECRET,
 		expiresIn: 24 * 60 * 60,
@@ -67,5 +73,5 @@ export const APP_CONFIG = {
 		apiKey: process.env.ANTHROPIC_API_KEY,
 		model: process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-4-5-20250929',
 		maxIterations: Number.parseInt(process.env.ASSISTANT_MAX_ITERATIONS ?? '5'),
-	}
+	},
 } as const;

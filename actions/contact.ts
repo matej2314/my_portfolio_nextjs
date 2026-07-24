@@ -5,9 +5,9 @@ import { validateData } from '@/lib/utils/utils';
 import { contactMessageTemplate } from '@/components/emails/emailTemplate';
 import { contactSchema } from '@/lib/zod-schemas/contactSchema';
 import { APP_CONFIG } from '@/config/app.config';
-
-import { type ContactFormState, type ContactObject } from '@/types/forms/contactFormTypes';
+import { incrementContactFormSubmissions } from '@/lib/metrics/contactMetrics';
 import { sendContactResponse } from '@/lib/utils/sendContactResponse';
+import { type ContactFormState, type ContactObject } from '@/types/forms/contactFormTypes';
 
 export async function contactMe(prevState: ContactFormState, formData: FormData): Promise<ContactFormState> {
 	const contactObject: ContactObject = {
@@ -33,12 +33,18 @@ export async function contactMe(prevState: ContactFormState, formData: FormData)
 			to: APP_CONFIG.nodemailer.to as string,
 			subject: `New message from ${validatedContactObj.data.client}`,
 			html,
+			type: 'contact',
 		});
 
-		await sendContactResponse({
-			to: validatedContactObj.data.email,
-			clientName: validatedContactObj.data.client,
-		});
+		await sendContactResponse(
+			{
+				to: validatedContactObj.data.email,
+				clientName: validatedContactObj.data.client,
+			},
+			'auto_reply',
+		);
+
+		incrementContactFormSubmissions('success');
 
 		return {
 			success: 'Message sent',

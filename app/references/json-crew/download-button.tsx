@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Icon } from '@iconify/react';
 
+import { trackClientEvent } from '@/lib/metrics/trackClientEvent';
 
 const PDF_PATH = '/references/referencje_json_crew.pdf';
 const FILE_NAME = 'referencje_json_crew.pdf';
@@ -27,6 +28,7 @@ export function ReferencesDownloadButton({btnText}: {btnText: string}) {
 			a.click();
 			a.remove();
 			URL.revokeObjectURL(url);
+			trackClientEvent({ type: 'reference_download', reference: 'json_crew' });
 		} catch {
 		} finally {
 			setPending(false);

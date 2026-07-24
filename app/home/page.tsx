@@ -1,3 +1,5 @@
+import { headers } from 'next/headers';
+
 import BaseSection from '@/components/home-page-components/base-section/BaseSection';
 import AboutSection from '@/components/home-page-components/about-section/AboutSection';
 import SkillsSection from '@/components/home-page-components/skills-section/SkillsSection';
@@ -14,12 +16,23 @@ import { LenisProvider } from '@/providers/LenisProvider';
 
 import { getHomePageData } from '@/actions/homePage';
 import { generatePageMetadata } from '@/lib/generatePageMetadata';
+import { deviceClassFromUserAgent } from '@/lib/metrics/deviceClass';
+import { observeHomePageView } from '@/lib/metrics/productMetrics';
 
 export async function generateMetadata() {
 	return generatePageMetadata('page', null);
 }
 
 export default async function HomePage() {
+	const h = await headers();
+	const isPrefetch =
+		h.get('next-router-prefetch') === '1' ||
+		h.get('purpose') === 'prefetch';
+
+	if (!isPrefetch) {
+		observeHomePageView(deviceClassFromUserAgent(h.get('user-agent')));
+	}
+
 	const { data, error } = await getHomePageData();
 
 	if (error) {
