@@ -78,8 +78,8 @@ export const defaultData = {
 	contactItems: [
 		{
 			kind: 'email',
-			label: 'mateo2314@gmail.com',
-			pathName: 'mailto:mateo2314@gmail.com',
+			label: 'mateo2314@msliwowski.net',
+			pathName: 'mailto:mateo2314@msliwowski.net',
 		},
 		{
 			kind: 'linkedin',
@@ -111,8 +111,8 @@ export const defaultData = {
 			{
 				kind: 'email',
 				icon: 'mdi:email-outline',
-				href: 'mailto:mateo2314@gmail.com',
-				value: 'mateo2314@gmail.com',
+				href: 'mailto:mateo2314@msliwowski.net',
+				value: 'mateo2314@msliwowski.net',
 			},
 			{
 				kind: 'phone',
