@@ -53,7 +53,7 @@ export const APP_CONFIG = {
 			user: process.env.MAIL_USER,
 			pass: process.env.MAIL_PASS,
 		},
-		to: process.env.DEL_MAIL,
+		to:'contact@msliwowski.net',
 	},
 	analytics: {
 		GA_ID: process.env.GA_ID,

@@ -13,6 +13,9 @@ export const transporter: Transporter<SMTPTransport.SentMessageInfo> = nodemaile
 		user: APP_CONFIG.nodemailer.auth.user,
 		pass: APP_CONFIG.nodemailer.auth.pass,
 	},
+	tls: {
+		rejectUnauthorized: true,
+	},
 } as SMTPTransport.Options);
 
 export const sendMail = async (data: { to: string | undefined; subject: string; html: string; type?: SendMailType }) => {
