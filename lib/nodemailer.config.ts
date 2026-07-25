@@ -23,7 +23,7 @@ export const sendMail = async (data: { to: string | undefined; subject: string; 
 	const startTime = process.hrtime.bigint();
 	try {
 		const info = await transporter.sendMail({
-			from: 'mateo2314@msliwowski.net',
+			from: 'noreply@msliwowski.net',
 			to: data.to,
 			subject: data.subject,
 			html: data.html,
