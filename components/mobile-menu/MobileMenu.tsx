@@ -15,7 +15,7 @@ import MLetter from '../ui/elements/MLetterElement';
 import { type MenuItem } from '@/lib/arrays/menuArrays';
 import { type OpenState } from '@/types/mobileMenuTypes';
 
-/** Zsynchronizuj z BaseMenu.showLanguageSwitcher */
+
 const showLanguageSwitcher = true;
 
 const FOCUSABLE_SELECTOR =
@@ -135,7 +135,7 @@ export default function MobileMenu({ array }: { array: MenuItem[] }) {
 						animate={{ clipPath: 'inset(0% 0% 0% 0%)', opacity: 1 }}
 						exit={{ clipPath: 'inset(0% 0% 100% 0%)', opacity: 0 }}
 						transition={{ duration: 0.35, ease: easeInOut, type: 'tween' }}
-						className="fixed inset-0 z-40 flex flex-col gap-4 overflow-y-auto bg-[#000905] px-4 pt-24 text-green-400"
+						className="fixed inset-0 z-40 flex flex-col gap-4 overflow-y-auto bg-[#000905] px-4 pt-24 text-yellow-400"
 					>
 						{showLanguageSwitcher ? (
 							<li className="flex w-full justify-start" role="none">
