@@ -88,14 +88,14 @@
 				"databases": "Modeling data structures and managing their evolution without downtime or the risk of data loss.",
 				"architecture": "Designing a modular architecture that enables independent development and testing of individual system components.",
 				"clean_code": "Writing code with an emphasis on readability, design patterns, and minimizing technical debt.",
-				"automation": "Building pipelines that automate integration, testing, and deployment—from commit to production.",
+				"automation": "Building pipelines that automate integration, testing, and deployment - from commit to production.",
 				"artificalIntel": "Utilizing AI-based solutions to automate work and accelerate processes while controlling costs and quality."
 			}
 		},
 		"certsSection": {
 			"sectionIndex": "04",
 			"title": "Training & certifications",
-			"subtitle": "I complement courses and certificates with hands-on project work — from React and Node to security and databases. What matters most to me is connecting knowledge with real deployments.",
+			"subtitle": "I complement courses and certificates with hands-on project work - from React and Node to security and databases. What matters most to me is connecting knowledge with real deployments.",
 			"fetchError": "Failed to load courses.",
 			"emptyState": "No courses to display yet.",
 			"description": "I am constantly expanding my knowledge as a web developer and security enthusiast. The selected courses and certifications below reflect my commitment to growth and security in the dynamic world of technology.",
