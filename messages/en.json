@@ -2,14 +2,14 @@
 	"homePage": {
 		"baseSection": {
 			"title": "Implementation, integration, optimization",
-			"baseDescription": "Self-taught programmer passionate about cybersecurity, especially in web application security. Always ready to take on new challenges — the more difficult, the better.",
+			"baseDescription": "Self-taught programmer passionate about cybersecurity, especially in web application security. Always ready to take on new challenges - the more difficult, the better.",
 			"contactTxt": "Contact me",
 			"learnMoreTxt": "Learn more"
 		},
 		"experienceSection": {
 			"sectionIndex": "02",
 			"title": "Experience",
-			"subtitle": "Career path — from full-stack to architecture and collaboration in product teams.",
+			"subtitle": "Career path - from full-stack to architecture and collaboration in product teams.",
 			"present": "Present",
 			"emptyState": "No experience entries yet.",
 			"fetchError": "Failed to load experience.",
@@ -41,7 +41,7 @@
 		"aboutSection": {
 			"sectionIndex": "01",
 			"title": "About me",
-			"description": "I build web applications end to end — from development to deployment. I work with React and Next.js on the frontend, Node.js and databases on the backend, and focus on clean code, performance, and well-implemented user experience. I also have experience with WordPress and DevOps fundamentals, which allows me to understand and manage the full development-to-production workflow.",
+			"description": "I build web applications end to end - from development to deployment. I work with React and Next.js on the frontend, Node.js and databases on the backend, and focus on clean code, performance, and well-implemented user experience. I also have experience with WordPress and DevOps fundamentals, which allows me to understand and manage the full development-to-production workflow.",
 			"downloadCv": "Download CV",
 			"viewProjects": "View projects",
 			"metricLabels": {
@@ -109,7 +109,7 @@
 		"projectsSection": {
 			"sectionIndex": "05",
 			"title": "Projects",
-			"description": "Click a card — it expands into a full-screen project view over a dimmed page: goal, assumptions, gallery, and summary.",
+			"description": "Click a card - it expands into a full-screen project view over a dimmed page: goal, assumptions, gallery, and summary.",
 			"openDetails": "Open details →",
 			"backToProjects": "← Back to Home Page",
 			"breadcrumbPrefix": "Projects",
@@ -118,7 +118,7 @@
 		"contactSection": {
 			"sectionIndex": "06",
 			"title": "Contact",
-			"intro": "Have a question or want to discuss a project? Write to me — I will reply within 24 hours. I am happy to answer questions about collaboration, estimates, or technical details. You can use the form below or write directly by email or LinkedIn.",
+			"intro": "Have a question or want to discuss a project? Write to me - I will reply within 24 hours. I am happy to answer questions about collaboration, estimates, or technical details. You can use the form below or write directly by email or LinkedIn.",
 			"cards": {
 				"email": "Email",
 				"linkedin": "LinkedIn",
@@ -158,7 +158,7 @@
 			"toggleClose": "Close chat with AI assistant"
 		},
 		"keyboardNavigation": {
-			"hint": "Section shortcuts on this page (when focus is not in a form field): Down arrow or Page Down — next section; Up arrow or Page Up — previous section; keys 1 to 6 — jump to sections 1 to 6; Space — jump to the hero section."
+			"hint": "Section shortcuts on this page (when focus is not in a form field): Down arrow or Page Down - next section; Up arrow or Page Up - previous section; keys 1 to 6 - jump to sections 1 to 6; Space - jump to the hero section."
 		},
 		"homeFooter": {
 			"copyright": "Mateusz Śliwowski. All rights reserved."

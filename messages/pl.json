@@ -9,7 +9,7 @@
 		"aboutSection": {
 			"sectionIndex": "01",
 			"title": "O mnie",
-			"description": "Tworzę aplikacje webowe kompleksowo — od developmentu po wdrożenie. Pracuję z Reactem i Next.js po stronie frontendu oraz Node.js i bazami danych po stronie backendu, koncentrując się na czystym kodzie, wydajności i poprawnej implementacji doświadczenia użytkownika. Mam również doświadczenie z WordPressem oraz podstawami DevOps, co pozwala mi ogarniać cały proces od tworzenia aplikacji po produkcję.",
+			"description": "Tworzę aplikacje webowe kompleksowo - od developmentu po wdrożenie. Pracuję z Reactem i Next.js po stronie frontendu oraz Node.js i bazami danych po stronie backendu, koncentrując się na czystym kodzie, wydajności i poprawnej implementacji doświadczenia użytkownika. Mam również doświadczenie z WordPressem oraz podstawami DevOps, co pozwala mi ogarniać cały proces od tworzenia aplikacji po produkcję.",
 			"downloadCv": "Pobierz CV",
 			"viewProjects": "Zobacz projekty",
 			"metricLabels": {
@@ -22,7 +22,7 @@
 		"experienceSection": {
 			"sectionIndex": "02",
 			"title": "Doświadczenie",
-			"subtitle": "Ścieżka zawodowa — od full-stack po architekturę i współpracę w zespołach produktowych.",
+			"subtitle": "Ścieżka zawodowa - od full-stack po architekturę i współpracę w zespołach produktowych.",
 			"present": "obecnie",
 			"emptyState": "Brak wpisów o doświadczeniu.",
 			"fetchError": "Nie udało się wczytać doświadczenia.",
@@ -95,7 +95,7 @@
 		"certsSection": {
 			"sectionIndex": "04",
 			"title": "Szkolenia i certyfikaty",
-			"subtitle": "Kursy i certyfikaty uzupełniam praktyką w projektach — od React i Node po bezpieczeństwo i bazy danych. Najważniejsze jest dla mnie łączenie wiedzy z realnymi wdrożeniami.",
+			"subtitle": "Kursy i certyfikaty uzupełniam praktyką w projektach - od React i Node po bezpieczeństwo i bazy danych. Najważniejsze jest dla mnie łączenie wiedzy z realnymi wdrożeniami.",
 			"fetchError": "Nie udało się wczytać kursów.",
 			"emptyState": "Brak kursów do wyświetlenia.",
 			"description": "Nieustannie poszerzam swoją wiedzę jako twórca stron internetowych i pasjonat bezpieczeństwa. Wybrane kursy i certyfikaty poniżej odzwierciedlają moje zaangażowanie w rozwój i dbałość o bezpieczeństwo w dynamicznym świecie technologii.",
@@ -109,7 +109,7 @@
 		"projectsSection": {
 			"sectionIndex": "05",
 			"title": "Projekty",
-			"description": "Kliknij kartę — przechodzi w pełnoekranowy widok szczegółów (nad przyciemnioną stroną). W środku: cel, założenia, galeria i podsumowanie.",
+			"description": "Kliknij kartę - przechodzi w pełnoekranowy widok szczegółów (nad przyciemnioną stroną). W środku: cel, założenia, galeria i podsumowanie.",
 			"openDetails": "Otwórz szczegóły →",
 			"backToProjects": "← Wróć do strony głównej",
 			"breadcrumbPrefix": "Projekty",
@@ -118,7 +118,7 @@
 		"contactSection": {
 			"sectionIndex": "06",
 			"title": "Kontakt",
-			"intro": "Masz pytanie lub chcesz omówić projekt? Napisz — odpowiem w ciągu 24 godzin. Chętnie odpowiem na pytania o współpracę, wyceny lub techniczne szczegóły. Możesz skorzystać z formularza poniżej albo napisać bezpośrednio na maila lub LinkedIn.",
+			"intro": "Masz pytanie lub chcesz omówić projekt? Napisz - odpowiem w ciągu 24 godzin. Chętnie odpowiem na pytania o współpracę, wyceny lub techniczne szczegóły. Możesz skorzystać z formularza poniżej albo napisać bezpośrednio na maila lub LinkedIn.",
 			"cards": {
 				"email": "Email",
 				"linkedin": "LinkedIn",
@@ -158,7 +158,7 @@
 			"toggleClose": "Zamknij czat z asystentem AI"
 		},
 		"keyboardNavigation": {
-			"hint": "Skróty sekcji na tej stronie (gdy fokus nie jest w polu formularza): strzałka w dół lub Page Down — następna sekcja; strzałka w górę lub Page Up — poprzednia sekcja; klawisze 1–6 — skok do sekcji 1–6; spacja — skok do sekcji powitalnej."
+			"hint": "Skróty sekcji na tej stronie (gdy fokus nie jest w polu formularza): strzałka w dół lub Page Down - następna sekcja; strzałka w górę lub Page Up - poprzednia sekcja; klawisze 1–6 - skok do sekcji 1–6; spacja - skok do sekcji powitalnej."
 		},
 		"homeFooter": {
 			"copyright": "Mateusz Śliwowski. Wszelkie prawa zastrzeżone."
