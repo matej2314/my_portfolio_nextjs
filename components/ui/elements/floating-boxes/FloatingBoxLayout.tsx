@@ -43,12 +43,35 @@ export interface FloatingBoxLayoutProps {
 	regionAriaLabel: string;
 	cardBackgroundColor: string;
 	cardBorderColor: string;
+	/** When true, built-in edge launcher is hidden (external dock controls open state). */
+	hideLauncher?: boolean;
 	children: ReactNode;
 }
 
 const OUTER_ENTER_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-export default function FloatingBoxLayout({ open, reduced, regionId, rootOverlayClassName, enterDelay, enterDuration, panelTransition, onOpenLauncher, launcherTranslationKey, launcherIconName, launcherStyle, onLauncherAnimationComplete, launcherAriaAttributes, panelClassName, cardClassName, regionAriaLabel, cardBackgroundColor, cardBorderColor, children }: FloatingBoxLayoutProps) {
+export default function FloatingBoxLayout({
+	open,
+	reduced,
+	regionId,
+	rootOverlayClassName,
+	enterDelay,
+	enterDuration,
+	panelTransition,
+	onOpenLauncher,
+	launcherTranslationKey,
+	launcherIconName,
+	launcherStyle,
+	onLauncherAnimationComplete,
+	launcherAriaAttributes,
+	panelClassName,
+	cardClassName,
+	regionAriaLabel,
+	cardBackgroundColor,
+	cardBorderColor,
+	hideLauncher = false,
+	children,
+}: FloatingBoxLayoutProps) {
 	const regionRef = useRef<HTMLDivElement>(null);
 
 	useLayoutEffect(() => {
@@ -58,10 +81,41 @@ export default function FloatingBoxLayout({ open, reduced, regionId, rootOverlay
 	}, [open]);
 
 	return (
-		<motion.div className={cn('pointer-events-none fixed right-1 flex -translate-y-1/2 flex-row items-start overflow-visible', rootOverlayClassName)} style={{ gap: open ? 0 : 8 }} initial={reduced ? false : { opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={reduced ? { duration: 0 } : { delay: enterDelay, duration: enterDuration, ease: OUTER_ENTER_EASE }}>
-			<motion.div aria-hidden className='shrink-0' initial={false} animate={{ width: open ? 0 : 56 }} transition={panelTransition} />
-			<OpenFloatingBoxBtn open={open} regionId={regionId} openFloatingBox={onOpenLauncher} reduced={reduced} translationKey={launcherTranslationKey} style={launcherStyle} iconName={launcherIconName} onLauncherAnimationComplete={onLauncherAnimationComplete} ariaAttributes={launcherAriaAttributes} />
-			<motion.div className={cn('relative z-10 overflow-hidden', open ? 'pointer-events-auto' : 'pointer-events-none', panelClassName)} initial={false} animate={{ width: open ? 'auto' : 0 }} transition={panelTransition}>
+		<motion.div
+			className={cn(
+				'pointer-events-none fixed flex flex-row items-start overflow-visible',
+				hideLauncher
+					? 'bottom-[max(5rem,calc(env(safe-area-inset-bottom)+4.5rem))] right-[max(1rem,calc(env(safe-area-inset-right)+1rem))] z-50 translate-y-0'
+					: 'right-[max(0.25rem,env(safe-area-inset-right))] max-md:translate-y-0 md:-translate-y-1/2',
+				rootOverlayClassName,
+			)}
+			style={{ gap: open ? 0 : 8 }}
+			initial={reduced || hideLauncher ? false : { opacity: 0, x: 20 }}
+			animate={{ opacity: 1, x: 0 }}
+			transition={reduced || hideLauncher ? { duration: 0 } : { delay: enterDelay, duration: enterDuration, ease: OUTER_ENTER_EASE }}
+		>
+			{hideLauncher ? null : (
+				<>
+					<motion.div aria-hidden className='shrink-0' initial={false} animate={{ width: open ? 0 : 56 }} transition={panelTransition} />
+					<OpenFloatingBoxBtn
+						open={open}
+						regionId={regionId}
+						openFloatingBox={onOpenLauncher}
+						reduced={reduced}
+						translationKey={launcherTranslationKey}
+						style={launcherStyle}
+						iconName={launcherIconName}
+						onLauncherAnimationComplete={onLauncherAnimationComplete}
+						ariaAttributes={launcherAriaAttributes}
+					/>
+				</>
+			)}
+			<motion.div
+				className={cn('relative z-10 overflow-hidden', open ? 'pointer-events-auto' : 'pointer-events-none', panelClassName)}
+				initial={false}
+				animate={{ width: open ? 'auto' : 0, opacity: open ? 1 : 0 }}
+				transition={panelTransition}
+			>
 				<div
 					ref={regionRef}
 					id={regionId}

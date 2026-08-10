@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
+import { LayoutGroup, motion } from 'motion/react';
 
 import { defaultData } from '@/lib/defaultData';
 import { cn } from '@/lib/utils/utils';
@@ -11,8 +12,6 @@ export default function LanguageSwitcher() {
 	const router = useRouter();
 	const t = useTranslations('mainMenu');
 	const langOptions = defaultData.langOptions;
-
-	const otherLocale = langOptions.find((opt) => opt.value !== currentLocale)?.value;
 
 	async function switchToLocale(locale: string) {
 		const res = await fetch('/api/locale', {
@@ -26,38 +25,43 @@ export default function LanguageSwitcher() {
 		}
 	}
 
-	function handleToggle() {
-		if (!otherLocale) return;
-		void switchToLocale(otherLocale);
-	}
-
-	const activeLabel =
-		langOptions.find((opt) => opt.value === currentLocale)?.label ?? currentLocale;
+	const activeLabel = langOptions.find(opt => opt.value === currentLocale)?.label ?? currentLocale;
 
 	return (
-		<button
-			type="button"
-			className="inline-flex items-center gap-0.5 rounded-full border border-slate-600 bg-[#000805] p-0.5 font-jakarta outline-none ring-0 ring-offset-0 transition-colors hover:border-[#ffdb70] focus:outline-none focus-visible:border-[#ffdb70] focus-visible:outline-none focus-visible:ring-0"
+		<div
+			role='group'
 			aria-label={`${t('languageSwitcherLabel')}: ${activeLabel}`}
-			onClick={handleToggle}
+			className='relative inline-flex items-center rounded-full border border-line bg-surface-0/60 p-0.5'
 		>
-			{langOptions.map((opt) => {
-				const isActive = opt.value === currentLocale;
-				return (
-					<span
-						key={opt.value}
-						aria-hidden
-						className={cn(
-							'pointer-events-none min-w-[2.75rem] rounded-full px-3 py-1.5 text-[13px] transition-colors select-none',
-							isActive
-								? 'bg-yellow-300 font-semibold text-[#0c0c0c]'
-								: 'font-medium text-slate-400',
-						)}
-					>
-						{opt.value.toUpperCase()}
-					</span>
-				);
-			})}
-		</button>
+			<LayoutGroup id='lang-switcher-pill'>
+				{langOptions.map(opt => {
+					const isActive = opt.value === currentLocale;
+					return (
+						<button
+							key={opt.value}
+							type='button'
+							onClick={() => {
+								if (!isActive) void switchToLocale(opt.value);
+							}}
+							className={cn(
+								'relative z-[1] min-w-[2.5rem] rounded-full px-3 py-1.5 text-[12px] font-medium transition-colors duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]',
+								'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/60',
+								isActive ? 'text-surface-0' : 'text-ink-2 hover:text-ink-0',
+							)}
+							aria-pressed={isActive}
+						>
+							{isActive ? (
+								<motion.span
+									layoutId='lang-active-pill'
+									className='absolute inset-0 rounded-full bg-brand'
+									transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+								/>
+							) : null}
+							<span className='relative z-[1]'>{opt.value.toUpperCase()}</span>
+						</button>
+					);
+				})}
+			</LayoutGroup>
+		</div>
 	);
 }

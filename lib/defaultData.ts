@@ -1,5 +1,6 @@
 import { type ContactChannelItem } from '@/types/contactChannelTypes';
 import { type FloatingContactData} from '@/types/floatingContactTypes';
+import { firebaserules } from 'googleapis/build/src/apis/firebaserules';
 
 export const defaultData = {
 	auth: {
@@ -27,8 +28,8 @@ export const defaultData = {
 	},
 	defaultMLetter: {
 		size: 110,
-		duration: 1.1,
-		colors: ['#242424', '#f2d768', '#f0d360', '#ffda45', '#facc15'],
+		duration: 0.7,
+		colors: ['#1a1f1c', '#6a9e74', '#7fb889', '#8FCB9A', '#8FCB9A'],
 		mode: 'animated',
 	},
 	switchElement: {
@@ -102,7 +103,8 @@ export const defaultData = {
 		pauseTime: 1000,
 	},
 	baseSectionSubHeader: {
-		content: ['Node.js', 'React', 'Next.js', 'WordPress'],
+		content: ['Node.js', 'NestJS', 'Next.js', 'WordPress'],
+		availableForWork: process.env.AVAILABLE_FOR_WORK === 'true' ? true : false
 	},
 	floatingBoxesData: {
 		photoSrc: '/profilowe.jpg',
@@ -147,9 +149,9 @@ export const defaultData = {
 			}
 		],
 		config: {
-			accent: '#ffdb70',
-			cardBg: '#1e1e1f',
-			border: '#383838',
+			accent: '#8FCB9A',
+			cardBg: '#17191E',
+			border: 'rgba(255,255,255,0.1)',
 			contactBoxWidth: 'w-[min(20rem,calc(100vw-3rem))]',
 			chatBoxWidth: 'w-[min(25rem,calc(100vw-3rem))]',
 			enterDurationBox: 0.72,

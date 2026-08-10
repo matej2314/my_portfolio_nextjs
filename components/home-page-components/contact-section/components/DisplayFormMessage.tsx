@@ -8,7 +8,7 @@ export default function DisplayFormMessage({ type, messages }: DisplayFormMessag
 
     if (type === 'error') {
         return (
-            <ul className="text-red-400 text-sm mt-1">
+            <ul className="mt-1 text-sm text-state-error">
                 {Array.isArray(messages) ? (
                     messages.map((error, index) => (
                         <li key={index}>{error}</li>
@@ -21,7 +21,7 @@ export default function DisplayFormMessage({ type, messages }: DisplayFormMessag
     }
 
     return (
-        <p className="text-green-400 text-md mb-2">
+        <p className="text-state-success text-md mb-2">
             {typeof messages === 'string' ? messages : messages?.join(', ')}
         </p>
     )

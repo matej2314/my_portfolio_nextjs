@@ -11,10 +11,10 @@ type FloatingContactSocialLinksProps = {
 
 const socialLinkClass = (allowMotion: boolean) =>
 	cn(
-		'inline-flex text-slate-500 outline-none ring-0 transition-[transform,color] duration-400 ease-[cubic-bezier(0.4,0,0.2,1)] [transform-origin:center]',
-		'hover:text-slate-300 focus:text-slate-300 focus:outline-none focus-visible:text-slate-300 focus-visible:outline-none focus-visible:ring-0',
-		allowMotion && 'hover:scale-[1.08] focus:scale-[1.08] focus-visible:scale-[1.08]',
-    );
+		'inline-flex rounded-full text-ink-3 outline-none transition-[transform,color] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] [transform-origin:center]',
+		'hover:text-brand focus:outline-none focus-visible:text-brand focus-visible:ring-2 focus-visible:ring-brand/60 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-0',
+		allowMotion && 'hover:scale-[1.08] focus-visible:scale-[1.08]',
+	);
     
     export default function FloatingContactSocialLinks({ links, borderColor, ariaLabel, reducedMotion }: FloatingContactSocialLinksProps) {
         const allowMotion = !reducedMotion;

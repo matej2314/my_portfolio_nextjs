@@ -1,33 +1,16 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, easeInOut, AnimatePresence, useInView } from 'motion/react';
+import { motion, AnimatePresence, useInView, useReducedMotion } from 'motion/react';
 import { Locale, useTranslations } from 'next-intl';
 
 import ResponsibilitiesAccordion from './ResponsibilitiesAccordion';
 import { getResponsibilitiesArray } from '@/lib/utils/getResponsibilitiesArray';
 import { formatDateRange } from '@/lib/utils/formatDateRange';
+import { cn } from '@/lib/utils/utils';
+import { fadeUp, stagger } from '@/lib/motion/variants';
 
 import { type Experience } from '@/types/actionsTypes/actionsTypes';
-
-const listVariants = {
-	hidden: {},
-	visible: {
-		transition: {
-			staggerChildren: 0.12,
-			delayChildren: 0.06,
-		},
-	},
-};
-
-const itemVariants = {
-	hidden: { opacity: 0, y: 18 },
-	visible: {
-		opacity: 1,
-		y: 0,
-		transition: { duration: 0.45, ease: easeInOut },
-	},
-};
 
 const accordionEase = [0.22, 1, 0.36, 1] as const;
 
@@ -35,41 +18,93 @@ export default function ExperienceList({ experiences, locale }: { experiences: E
 	const t = useTranslations('homePage.experienceSection');
 	const tr = useTranslations('references');
 	const listRef = useRef<HTMLDivElement>(null);
-	const inView = useInView(listRef, { once: true, amount: 0.6 });
+	const inView = useInView(listRef, { once: true, amount: 0.35 });
+	const reduced = useReducedMotion();
+	const listVariants = stagger(0.12, 0.06);
+	const itemVariants = fadeUp(!!reduced);
 
 	return (
 		<AnimatePresence>
-			<motion.div ref={listRef} className='flex flex-col gap-6' initial='hidden' animate={inView ? 'visible' : 'hidden'} variants={listVariants}>
+			<motion.div
+				ref={listRef}
+				className='relative flex flex-col'
+				initial={reduced ? false : 'hidden'}
+				animate={inView ? 'visible' : 'hidden'}
+				variants={listVariants}
+			>
 				{experiences.length === 0 ? (
-					<p className='text-slate-500'>{t('emptyState')}</p>
+					<p className='text-ink-3'>{t('emptyState')}</p>
 				) : (
-					experiences.map(exp => {
+					experiences.map((exp, index) => {
 						const respItems = getResponsibilitiesArray(exp, t);
+						const isLast = index === experiences.length - 1;
+
 						return (
-							<motion.article key={exp.id} variants={itemVariants} className='flex rounded-xl border border-slate-700 bg-[#0c0c0c] max-xl:gap-3 max-xl:px-4 max-xl:py-5 xl:gap-5 xl:px-7 xl:py-6'>
-								<div className='w-1 shrink-0 self-stretch rounded-sm bg-[#facc15] max-xl:min-h-[3.5rem]' aria-hidden />
-								<div className='flex min-w-0 flex-1 flex-col max-xl:gap-2 xl:gap-2.5'>
-									<h3 className='font-semibold max-xl:text-base xl:text-lg'>
-										{exp.employer_url ? (
-											<a
-												href={exp.employer_url.includes('://') ? exp.employer_url : `https://${exp.employer_url}`}
-												target='_blank'
-												rel='noopener noreferrer'
-												className='text-slate-50 transition-colors hover:text-yellow-300 focus-visible:text-yellow-300'
-											>
-												{exp.employer}
-											</a>
-										) : (
-											<span className='text-slate-50'>{exp.employer}</span>
+							<motion.article
+								key={exp.id}
+								variants={itemVariants}
+								className='relative grid grid-cols-[auto_1fr] gap-x-5 max-xl:gap-x-4 xl:gap-x-8'
+							>
+								<div className='relative flex w-4 flex-col items-center'>
+									<span
+										className={cn(
+											'relative z-[1] mt-1.5 size-2.5 shrink-0 rounded-full border border-brand bg-surface-0',
+											'ring-4 ring-brand/15',
 										)}
-									</h3>
-									<p className='font-normal text-slate-400 max-xl:text-sm xl:text-base'>{exp.position}</p>
-									{respItems.length > 0 ? (
-										<ResponsibilitiesAccordion title={t('keyResponsibilities')} items={respItems} itemKeyPrefix={String(exp.id)} accordionEase={accordionEase} />
+										aria-hidden
+									/>
+									{!isLast ? (
+										<span
+											className='absolute top-4 bottom-0 w-px bg-gradient-to-b from-brand-line to-line'
+											aria-hidden
+										/>
 									) : null}
-									<p className='text-sm leading-[1.5] text-slate-500'>{formatDateRange(locale, exp, t('present'))}</p>
+								</div>
+
+								<div
+									className={cn('min-w-0 pb-10 max-xl:pb-8', isLast && 'pb-2')}
+								>
+									<div className='flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1'>
+										<h3 className='font-display text-lg font-medium tracking-tight text-ink-0 xl:text-xl'>
+											{exp.employer_url ? (
+												<a
+													href={
+														exp.employer_url.includes('://')
+															? exp.employer_url
+															: `https://${exp.employer_url}`
+													}
+													target='_blank'
+													rel='noopener noreferrer'
+													className='transition-colors duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/60'
+												>
+													{exp.employer}
+												</a>
+											) : (
+												<span>{exp.employer}</span>
+											)}
+										</h3>
+										<p className='font-mono text-xs tracking-wide text-ink-3'>
+											{formatDateRange(locale, exp, t('present'))}
+										</p>
+									</div>
+
+									<p className='mt-1 text-sm text-ink-2 xl:text-base'>{exp.position}</p>
+
+									{respItems.length > 0 ? (
+										<div className='mt-3'>
+											<ResponsibilitiesAccordion
+												title={t('keyResponsibilities')}
+												items={respItems}
+												itemKeyPrefix={String(exp.id)}
+												accordionEase={accordionEase}
+											/>
+										</div>
+									) : null}
+
 									{exp.referencesFile ? (
-										<p className='text-xs leading-snug text-yellow-300/90 max-xl:text-[11px]'>{tr('referencesText')}</p>
+										<p className='mt-3 font-mono text-[0.6875rem] tracking-wide text-brand'>
+											{tr('referencesText')}
+										</p>
 									) : null}
 								</div>
 							</motion.article>

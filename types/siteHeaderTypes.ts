@@ -1,5 +1,3 @@
 export type SiteHeaderProps = {
-	variant: 'home' | 'project' | 'blog';
-	github?: string;
-	demo?: string;
+	variant: 'home' | 'blog';
 };

@@ -1,18 +1,8 @@
-import { useEffect, useState } from 'react';
+'use client';
+
 import LoadingScreen from './LoadingScreen';
 
+/** Route-level suspense fallback — short brand overlay without the home gate. */
 export default function LoadingComponent() {
-	const [show, setShow] = useState(true);
-
-	useEffect(() => {
-		const timeout = setTimeout(() => {
-			setShow(false);
-		}, 20000);
-
-		return () => clearTimeout(timeout);
-	}, []);
-
-	if (!show) return null;
-
-	return <LoadingScreen />;
+	return <LoadingScreen phase='draw' />;
 }

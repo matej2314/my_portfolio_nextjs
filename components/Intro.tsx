@@ -66,7 +66,7 @@ export default function Intro() {
     if (introState.cleared) {
         return (
             <div className="h-screen flex justify-center items-center bg-black">
-                <p className="w-fit h-fit flex justify-center items-center text-4xl text-green-400">
+                <p className="w-fit h-fit flex justify-center items-center text-4xl text-brand">
                     Welcome!
                 </p>
             </div>
@@ -76,7 +76,7 @@ export default function Intro() {
     return (
         <ul className="w-full max-w-full md:w-fit h-full flex flex-col gap-2 pt-20 md:pl-9 text-sm xl:text-xl">
             {linesStatic.map((line, index) => (
-                <li key={index} className="w-fit h-fit text-green-400 flex items-center">{line.text}</li>
+                <li key={index} className="w-fit h-fit text-brand flex items-center">{line.text}</li>
             ))}
             {linesDynamic.slice(0, introState.currentLine + 1).map((line, index) => (
                 <li className="w-full h-fit flex flex-wrap sm:flex-nowrap" key={`${line.text}-${index}`}>

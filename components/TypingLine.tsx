@@ -26,7 +26,7 @@ const TypingLine = ({ text, speed = 40, onComplete, cursor }: TypingLineType) =>
     }, [index, text, onComplete, speed]);
 
     return (
-        <span className='whitespace-pre font-mono text-green-400'>
+        <span className='whitespace-pre font-mono text-brand'>
             (kali@kali)-[~]: <span>{displayed}</span>
             {cursor && <PulsingCursor />}
         </span>

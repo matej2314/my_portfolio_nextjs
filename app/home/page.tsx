@@ -9,7 +9,8 @@ import ExperienceSection from '@/components/home-page-components/experience-sect
 import ContactSection from '@/components/home-page-components/contact-section/ContactSection';
 import HomeFooter from '@/components/home-page-components/HomeFooter';
 import SiteHeader from '@/components/home-page-components/SiteHeader';
-import ScrollToTop from '@/components/ui/elements/ScrollToTopBtn';
+import HeroScene from '@/components/home-page-components/base-section/components/HeroScene';
+import ScrollProgressBar from '@/components/ScrollProgressBar';
 
 import KeyboardNavigation from '@/components/KeyboardNavigation';
 import { LenisProvider } from '@/providers/LenisProvider';
@@ -25,9 +26,7 @@ export async function generateMetadata() {
 
 export default async function HomePage() {
 	const h = await headers();
-	const isPrefetch =
-		h.get('next-router-prefetch') === '1' ||
-		h.get('purpose') === 'prefetch';
+	const isPrefetch = h.get('next-router-prefetch') === '1' || h.get('purpose') === 'prefetch';
 
 	if (!isPrefetch) {
 		observeHomePageView(deviceClassFromUserAgent(h.get('user-agent')));
@@ -43,12 +42,17 @@ export default async function HomePage() {
 	return (
 		<LenisProvider
 			id='mainSection'
-			className='no-scrollbar z-0 flex h-[100dvh] max-h-[100dvh] w-full min-w-0 flex-col items-center overflow-x-hidden overflow-y-auto max-xl:px-3 xl:px-8'
+			className='no-scrollbar z-0 flex h-[100dvh] max-h-[100dvh] w-full min-w-0 flex-col items-center overflow-x-hidden overflow-y-auto'
 		>
+			<ScrollProgressBar />
 			<div className='flex h-fit w-full flex-col items-center justify-start'>
-				<div className='flex h-[60dvh] w-full shrink-0 flex-col xl:h-[100dvh]'>
-					<SiteHeader variant='home' />
-					<BaseSection />
+				{/* Shared atmosphere behind menu + hero */}
+				<div className='relative flex min-h-[88dvh] w-full shrink-0 flex-col xl:min-h-[100dvh]'>
+					<HeroScene />
+					<div className='relative z-[1] flex min-h-0 w-full flex-1 flex-col'>
+						<SiteHeader variant='home' />
+						<BaseSection />
+					</div>
 				</div>
 				<div className='flex w-full flex-col'>
 					<AboutSection aboutText={data?.aboutMe && 'aboutMe' in data.aboutMe ? data.aboutMe.aboutMe : undefined} />
@@ -60,7 +64,6 @@ export default async function HomePage() {
 					<HomeFooter />
 				</div>
 			</div>
-			<ScrollToTop />
 			<KeyboardNavigation />
 		</LenisProvider>
 	);

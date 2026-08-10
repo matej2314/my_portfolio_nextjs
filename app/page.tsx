@@ -1,16 +1,14 @@
-import Intro from "@/components/Intro"
-import { generatePageMetadata } from "@/lib/generatePageMetadata"
-import { kanit } from "@/fonts/kanit"
+import Intro from '@/components/Intro';
+import { generatePageMetadata } from '@/lib/generatePageMetadata';
 
 export async function generateMetadata() {
-
-  return generatePageMetadata('page');
+	return generatePageMetadata('page');
 }
 
 export default function IntroPage() {
-  return (
-    <main className={`max-w-screen h-screen flex flex-col gap-2 justify-center bg-black`}>
-      <Intro />
-    </main>
-  )
+	return (
+		<main className='flex h-screen max-w-screen flex-col justify-center gap-2 bg-black'>
+			<Intro />
+		</main>
+	);
 }

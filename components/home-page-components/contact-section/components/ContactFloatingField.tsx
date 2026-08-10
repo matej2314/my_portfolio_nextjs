@@ -9,11 +9,11 @@ import DisplayFormMessage from './DisplayFormMessage';
 const fieldShell = 'flex w-full flex-col gap-1.5 pt-1';
 
 const labelBase =
-	'pointer-events-none absolute left-3 z-[1] max-w-[calc(100%-1.5rem)] origin-left truncate text-slate-500 transition-[top,transform,font-size,color] duration-200 ease-out motion-reduce:transition-none';
+	'pointer-events-none absolute left-3 z-[1] max-w-[calc(100%-1.5rem)] origin-left truncate text-ink-3 transition-[top,transform,font-size,color] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none';
 
 /** Nad inputem: dół labela tuż nad górną krawędzią pola (+ lekki odstęp). */
 const floatAboveInput =
-	'peer-focus:top-auto peer-focus:bottom-full peer-focus:mb-1 peer-focus:translate-y-0 peer-focus:text-xs peer-focus:text-slate-400 peer-[:not(:placeholder-shown)]:top-auto peer-[:not(:placeholder-shown)]:bottom-full peer-[:not(:placeholder-shown)]:mb-1 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-slate-400';
+	'peer-focus:top-auto peer-focus:bottom-full peer-focus:mb-1 peer-focus:translate-y-0 peer-focus:text-xs peer-focus:text-brand peer-[:not(:placeholder-shown)]:top-auto peer-[:not(:placeholder-shown)]:bottom-full peer-[:not(:placeholder-shown)]:mb-1 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-ink-3';
 
 type BaseProps = {
 	id: string;

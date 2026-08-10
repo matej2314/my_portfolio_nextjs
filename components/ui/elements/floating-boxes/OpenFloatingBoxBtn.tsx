@@ -46,7 +46,13 @@ export default function OpenFloatingBoxBtn({ open, regionId, openFloatingBox, re
 			tabIndex={open ? -1 : 0}
 			onClick={openFloatingBox}
 			title={t(translationKey)}
-			className={cn('pointer-events-auto absolute left-0 top-1/2 z-[5] flex size-14 cursor-pointer items-center justify-center rounded-full border-2 border-solid shadow-lg', 'outline-none ring-0 ring-offset-0 transition-[border-color] duration-400 ease-[cubic-bezier(0.4,0,0.2,1)]', 'hover:!border-[#ffdb70] focus:!border-[#ffdb70] focus-visible:!border-[#ffdb70]', 'focus:outline-none focus-visible:outline-none focus-visible:ring-0', open && 'pointer-events-none')}
+			className={cn(
+				'pointer-events-auto absolute left-0 top-1/2 z-[5] flex size-14 cursor-pointer items-center justify-center rounded-full border-2 border-solid shadow-lg',
+				'outline-none transition-[border-color,box-shadow] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]',
+				'hover:!border-[var(--color-brand)] focus:!border-[var(--color-brand)] focus-visible:!border-[var(--color-brand)]',
+				'focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/60 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-0',
+				open && 'pointer-events-none',
+			)}
 			style={{
 				backgroundColor: style.CARD_BG,
 				borderColor: style.BORDER,

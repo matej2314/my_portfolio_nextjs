@@ -1,10 +1,14 @@
 {
 	"homePage": {
 		"baseSection": {
-			"title": "Implementation, integration, optimization",
+			"title": "Implementation, integration, optimization.",
 			"baseDescription": "Self-taught programmer passionate about cybersecurity, especially in web application security. Always ready to take on new challenges - the more difficult, the better.",
 			"contactTxt": "Contact me",
-			"learnMoreTxt": "Learn more"
+			"learnMoreTxt": "Learn more",
+			"eyebrow": "available for work",
+			"scrollHint": "scroll",
+			"metaLocation": "Poland · remote",
+			"metaYear": "Building since 2024"
 		},
 		"experienceSection": {
 			"sectionIndex": "02",
@@ -113,7 +117,10 @@
 			"openDetails": "Open details →",
 			"backToProjects": "← Back to Home Page",
 			"breadcrumbPrefix": "Projects",
-			"fetchError": "Failed to load projects."
+			"fetchError": "Failed to load projects.",
+			"prevProject": "Previous project",
+			"nextProject": "Next project",
+			"progressLabel": "project {current} of {total}"
 		},
 		"contactSection": {
 			"sectionIndex": "06",
@@ -164,6 +171,14 @@
 			"copyright": "Mateusz Śliwowski. All rights reserved."
 		}
 	},
+	"common": {
+		"a11y": {
+			"skipToContent": "Skip to content",
+			"openActions": "Open quick actions",
+			"closeActions": "Close quick actions",
+			"backToTop": "Back to top"
+		}
+	},
 	"mainMenu": {
 		"Home": "Home",
 		"Demo": "Demo",
@@ -188,12 +203,20 @@
 		"descriptionLabel": "Project description:",
 		"assumptionsLabel": "Assumptions",
 		"metaDemo": "Demo",
-		"metaRepo": "Repo"
+		"metaRepo": "Repo",
+		"galleryLabel": "Gallery",
+		"openLightbox": "Open image",
+		"closeLightbox": "Close gallery",
+		"projectNavLabel": "Project navigation"
 	},
 	"references": {
 		"referencesText": "References available on request.",
 		"jsonCrew": "References from JSON Crew company",
 		"download": "Download",
-		"backToHome": "Back to home page"
+		"backToHome": "Back to home page",
+		"issuer": "JSON Crew",
+		"documentMeta": "Employment reference · PDF",
+		"lead": "Official reference letter confirming collaboration and responsibilities. Download the signed PDF below.",
+		"downloading": "Downloading…"
 	}
 }

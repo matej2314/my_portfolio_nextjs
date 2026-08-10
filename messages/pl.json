@@ -1,10 +1,14 @@
 {
 	"homePage": {
 		"baseSection": {
-			"title": "Implementacja, integracja, optymalizacja",
+			"title": "Implementacja, integracja, optymalizacja.",
 			"baseDescription": "Jestem programistą-samoukiem z pasją do cyberbezpieczeństwa, szczególnie w obszarze bezpieczeństwa aplikacji webowych. Zawsze gotowy na nowe wyzwania - im trudniejsze, tym lepsze.",
 			"contactTxt": "Napisz do mnie",
-			"learnMoreTxt": "Poznaj mnie"
+			"learnMoreTxt": "Poznaj mnie",
+			"eyebrow": "dostępny do współpracy",
+			"scrollHint": "przewiń",
+			"metaLocation": "Polska · praca zdalna",
+			"metaYear": "Buduję od 2024"
 		},
 		"aboutSection": {
 			"sectionIndex": "01",
@@ -113,7 +117,10 @@
 			"openDetails": "Otwórz szczegóły →",
 			"backToProjects": "← Wróć do strony głównej",
 			"breadcrumbPrefix": "Projekty",
-			"fetchError": "Nie udało się wczytać projektów."
+			"fetchError": "Nie udało się wczytać projektów.",
+			"prevProject": "Poprzedni projekt",
+			"nextProject": "Następny projekt",
+			"progressLabel": "projekt {current} z {total}"
 		},
 		"contactSection": {
 			"sectionIndex": "06",
@@ -164,6 +171,14 @@
 			"copyright": "Mateusz Śliwowski. Wszelkie prawa zastrzeżone."
 		}
 	},
+	"common": {
+		"a11y": {
+			"skipToContent": "Przejdź do treści",
+			"openActions": "Otwórz szybkie akcje",
+			"closeActions": "Zamknij szybkie akcje",
+			"backToTop": "Wróć na górę"
+		}
+	},
 	"mainMenu": {
 		"Home": "Strona główna",
 		"Demo": "Demo",
@@ -188,12 +203,20 @@
 		"descriptionLabel": "Opis projektu:",
 		"assumptionsLabel": "Założenia",
 		"metaDemo": "Demo",
-		"metaRepo": "Repo"
+		"metaRepo": "Repo",
+		"galleryLabel": "Galeria",
+		"openLightbox": "Otwórz zdjęcie",
+		"closeLightbox": "Zamknij galerię",
+		"projectNavLabel": "Nawigacja projektów"
 	},
 	"references": {
 		"referencesText": "Referencje dostępne na żądanie.",
 		"jsonCrew": "Referencje od firmy JSON Crew",
 		"download": "Pobierz",
-		"backToHome": "Wróć do strony głównej"
+		"backToHome": "Wróć do strony głównej",
+		"issuer": "JSON Crew",
+		"documentMeta": "Referencja zatrudnienia · PDF",
+		"lead": "Oficjalne pismo referencyjne potwierdzające współpracę i zakres obowiązków. Poniżej możesz pobrać podpisany PDF.",
+		"downloading": "Pobieranie…"
 	}
 }

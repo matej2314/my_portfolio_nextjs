@@ -1,39 +1,42 @@
-import Image from "next/image"
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from 'next-intl/server';
 
-import HomeSubHeader from "./components/HomeSubHeader"
+import { getCvHref } from '@/lib/utils/getCvHref';
+import { defaultData } from '@/lib/defaultData';
+
+import HeroTitle from './components/HeroTitle';
+import HomeSubHeader from './components/HomeSubHeader';
+import HeroCtas from './components/HeroCtas';
+import HeroScrollHint from './components/HeroScrollHint';
+import HeroEyebrow from './components/HeroEyebrow';
+import HeroMetaRail from './components/HeroMetaRail';
 
 export default async function BaseSection() {
+	const t = await getTranslations('homePage');
+	const locale = await getLocale();
+	const { cvHref, cvFileName } = getCvHref(locale);
+	const stack = defaultData.baseSectionSubHeader.content.join(' · ');
+	const availableForWork = defaultData.baseSectionSubHeader.availableForWork;
+	return (
+		<section id='baseSection' tabIndex={-1} className='relative z-[1] flex min-h-0 w-full flex-1 flex-col justify-center'>
+			<div className='relative mx-auto grid w-full max-w-[1440px] grid-cols-1 items-end gap-12 px-5 pb-16 pt-10 xl:grid-cols-12 xl:gap-10 xl:px-10 xl:pb-20 xl:pt-10'>
+				<div className='flex flex-col items-start xl:col-span-7'>
+					{availableForWork && <HeroEyebrow label={t('baseSection.eyebrow')} />}
+					<div className='mt-5 xl:mt-5'>
+						<HeroTitle title={t('baseSection.title')} />
+					</div>
+					<div className='mt-5'>
+						<HomeSubHeader />
+					</div>
+					<p className='mt-5 max-w-[58ch] text-pretty text-base leading-relaxed text-ink-1 xl:text-lg xl:leading-[1.65]'>{t('baseSection.baseDescription')}</p>
+					<HeroCtas cvHref={cvHref} cvFileName={cvFileName} />
+				</div>
 
-    const t = await getTranslations("homePage");
-   
-    return (
-        <section
-            id="baseSection"
-            tabIndex={-1}
-            className="relative isolate flex min-h-0 w-full flex-1 flex-col items-center justify-center font-jakarta max-xl:flex-col xl:flex-row xl:px-0 xl:pt-0 xl:gap-[21rem]"
-        >
-            <Image
-                src="/base-section-background.webp"
-                alt=""
-                fill
-                priority
-                className="object-cover object-center"
-                sizes="100vw"
-            />
-            <div className="pointer-events-none absolute inset-0 bg-black/50" aria-hidden />
-            <div className="relative z-[1] mt-0 flex w-full flex-col items-center justify-center gap-5 max-xl:px-3 max-xl:mt-0 xl:mt-[5rem] xl:px-6">
-                <h1 className="text-center font-jakarta text-[#f8fafc] max-xl:text-2xl max-xl:leading-tight xl:text-5xl">
-                   {t("baseSection.title")}
-                </h1>
-                <div className="w-fit">
-                    <HomeSubHeader/>
-                </div>
-                <p className="mb-5 mt-3 max-w-[80vw] text-justify tracking-wide text-white max-xl:max-w-[80vw] max-xl:text-sm max-xl:leading-[1.75rem] xl:max-w-[75%] xl:text-lg xl:leading-[2rem]">
-                    {t("baseSection.baseDescription")}
-                </p>
-            </div>
-        </section>
+				<div className='xl:col-span-5 xl:flex xl:justify-end'>
+					<HeroMetaRail location={t('baseSection.metaLocation')} stack={stack} year={t('baseSection.metaYear')} />
+				</div>
+			</div>
 
-    )
+			<HeroScrollHint />
+		</section>
+	);
 }

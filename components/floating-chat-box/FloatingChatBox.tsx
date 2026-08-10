@@ -5,6 +5,7 @@ import { motion } from 'motion/react';
 import { type CSSProperties } from 'react';
 
 import { useFloatingChatBox } from '@/hooks/useFloatingChatBox';
+import { useFloatingPanels } from '@/context/FloatingPanelsContext';
 
 import { cn } from '@/lib/utils/utils';
 import ResponseRenderer from '@/components/floating-chat-box/ResponseRenderer';
@@ -14,58 +15,115 @@ import FloatingBoxLayout from '@/components/ui/elements/floating-boxes/FloatingB
 import { refusalCopy } from '@/lib/assistant/refusalCopy';
 
 export default function FloatingChatBox() {
-	const { chatBoxState, setChatBoxState, handleSubmit, messagesEndRef, chatInputRef, regionId, locale, chatBoxPanelTransition, tuckAfterOpen, tuckDuration, revealAfterClose, revealDuration, subtitle, streamingAssistantLineId, CHAT_PANEL_WIDTH, ACCENT, CARD_BG, BORDER, SHOW_DELAY_CHAT_BOX, ENTER_DURATION_CHAT_BOX, reduced } = useFloatingChatBox();
+	const panels = useFloatingPanels();
+	const hideLauncher = Boolean(panels);
+	const {
+		chatBoxState,
+		setChatBoxState,
+		setOpen,
+		handleSubmit,
+		messagesEndRef,
+		chatInputRef,
+		regionId,
+		locale,
+		chatBoxPanelTransition,
+		tuckAfterOpen,
+		tuckDuration,
+		revealAfterClose,
+		revealDuration,
+		subtitle,
+		streamingAssistantLineId,
+		CHAT_PANEL_WIDTH,
+		ACCENT,
+		CARD_BG,
+		BORDER,
+		SHOW_DELAY_CHAT_BOX,
+		ENTER_DURATION_CHAT_BOX,
+		reduced,
+	} = useFloatingChatBox({
+		controlledOpen: panels?.isChatOpen,
+		onOpenChange: open => {
+			if (!panels) return;
+			if (open) panels.openChat();
+			else panels.close();
+		},
+	});
+
+	const openBox = () => (panels ? panels.openChat() : setOpen(true));
+	const closeBox = () => (panels ? panels.close() : setOpen(false));
 
 	return (
 		<FloatingBoxLayout
 			open={chatBoxState.open}
 			reduced={reduced}
 			regionId={regionId}
-			rootOverlayClassName={`top-[calc(50%+6.25rem)] ${chatBoxState.open ? 'z-30' : 'z-10'}`}
+			hideLauncher={hideLauncher}
+			rootOverlayClassName={
+				hideLauncher
+					? ''
+					: `max-md:bottom-[max(1.25rem,calc(env(safe-area-inset-bottom)+1rem))] max-md:top-auto md:top-[calc(50%+6.25rem)] ${chatBoxState.open ? 'z-30' : 'z-10'}`
+			}
 			enterDelay={SHOW_DELAY_CHAT_BOX}
 			enterDuration={ENTER_DURATION_CHAT_BOX}
 			panelTransition={chatBoxPanelTransition}
-			onOpenLauncher={() => setChatBoxState(prev => ({ ...prev, open: true }))}
+			onOpenLauncher={openBox}
 			launcherTranslationKey={`${chatBoxState.open ? 'homePage.floatingChat.toggleClose' : 'homePage.floatingChat.toggleOpen'}`}
-			launcherIconName='mdi:robot'
+			launcherIconName='ph:robot-light'
 			launcherStyle={{ CARD_BG, BORDER, ACCENT, tuckAfterOpen, tuckDuration, revealAfterClose, revealDuration }}
-			panelClassName='min-h-[500px] h-full flex align-stretch'
+			panelClassName='flex h-full min-h-[500px] align-stretch'
 			cardClassName={cn('max-h-[min(32rem,calc(100vh-4rem))]', CHAT_PANEL_WIDTH)}
 			regionAriaLabel={locale === 'pl' ? 'Okno czatu z asystentem AI' : 'AI assistant chat panel'}
 			cardBackgroundColor={CARD_BG}
 			cardBorderColor={BORDER}
 		>
 			<FloatingBoxHeader className='relative flex shrink-0 items-center gap-3 border-b p-4 pr-12' style={{ borderColor: BORDER }}>
-				<motion.button type='button' aria-label={locale === 'pl' ? 'Zamknij czat' : 'Close chat'} onClick={() => setChatBoxState(prev => ({ ...prev, open: false }))} className='absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1.5' style={{ color: ACCENT }} whileHover={reduced ? undefined : { opacity: 0.9 }} whileTap={reduced ? undefined : { scale: 0.95 }}>
-					<Icon icon='mdi:close' width={22} height={22} />
+				<motion.button
+					type='button'
+					aria-label={locale === 'pl' ? 'Zamknij czat' : 'Close chat'}
+					onClick={closeBox}
+					className='absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1.5'
+					style={{ color: ACCENT }}
+					whileHover={reduced ? undefined : { opacity: 0.9 }}
+					whileTap={reduced ? undefined : { scale: 0.95 }}
+				>
+					<Icon icon='ph:x-light' width={22} height={22} />
 				</motion.button>
 				<div className='flex size-11 shrink-0 items-center justify-center rounded-xl bg-[#2a2a2b]' aria-hidden>
-					<Icon icon='mdi:robot' width={24} height={24} style={{ color: ACCENT }} />
+					<Icon icon='ph:robot-light' width={24} height={24} style={{ color: ACCENT }} />
 				</div>
 				<div className='min-w-0'>
 					<p className='truncate text-lg font-semibold text-white'>{locale === 'pl' ? 'Asystent AI' : 'AI assistant'}</p>
 					<p className='truncate text-xs text-slate-400'>{subtitle}</p>
 				</div>
 			</FloatingBoxHeader>
-			<div className='flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto no-scrollbar px-3 py-3' style={{ scrollbarGutter: 'stable' }}>
-				{chatBoxState.lines.length === 0 && !chatBoxState.loading && <p className='px-1 text-center text-sm text-slate-500'>{locale === 'pl' ? 'Zadaj pytanie o projekty, umiejętności lub doświadczenie.' : 'Ask about projects, skills, or experience.'}</p>}
+			<div className='no-scrollbar flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-3 py-3' style={{ scrollbarGutter: 'stable' }}>
+				{chatBoxState.lines.length === 0 && !chatBoxState.loading && (
+					<p className='px-1 text-center text-sm text-slate-500'>
+						{locale === 'pl' ? 'Zadaj pytanie o projekty, umiejętności lub doświadczenie.' : 'Ask about projects, skills, or experience.'}
+					</p>
+				)}
 				{chatBoxState.lines.map(line =>
 					line.role === 'rejected' ? (
 						<div key={line.id} className='flex flex-col gap-2 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2.5 text-sm text-slate-200'>
 							<p>{refusalCopy(locale)}</p>
 							{line.topics.length > 0 && (
 								<ul className='list-inside list-disc text-xs text-slate-400'>
-									{line.topics.map(t => (
-										<li key={t}>{t}</li>
+									{line.topics.map(topic => (
+										<li key={topic}>{topic}</li>
 									))}
 								</ul>
 							)}
 						</div>
 					) : (
 						<div key={line.id} className={cn('flex flex-col gap-1', line.role === 'user' ? 'items-end' : 'items-start')}>
-							<span className='text-[0.65rem] font-medium uppercase tracking-wide text-slate-500'>{line.role === 'user' ? (locale === 'pl' ? 'Ty' : 'You') : locale === 'pl' ? 'Asystent' : 'Assistant'}</span>
+							<span className='text-[0.65rem] font-medium uppercase tracking-wide text-slate-500'>
+								{line.role === 'user' ? (locale === 'pl' ? 'Ty' : 'You') : locale === 'pl' ? 'Asystent' : 'Assistant'}
+							</span>
 							<div
-								className={cn('max-w-[95%] rounded-2xl px-3 py-2.5 text-sm leading-relaxed', line.role === 'user' ? 'rounded-br-md text-white' : 'rounded-bl-md border text-slate-200')}
+								className={cn(
+									'max-w-[95%] rounded-2xl px-3 py-2.5 text-sm leading-relaxed',
+									line.role === 'user' ? 'rounded-br-md text-white' : 'rounded-bl-md border text-slate-200',
+								)}
 								style={
 									line.role === 'user'
 										? { backgroundColor: 'rgb(30 58 138 / 0.55)' }
@@ -96,7 +154,7 @@ export default function FloatingChatBox() {
 						onChange={e => setChatBoxState(prev => ({ ...prev, input: e.target.value }))}
 						disabled={chatBoxState.loading}
 						placeholder={locale === 'pl' ? 'Napisz wiadomość…' : 'Type a message…'}
-						className='min-h-9 w-full flex-1 rounded-lg border bg-[#2a2a2b] px-3 py-2 text-sm text-white placeholder:text-slate-500 outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--chat-input-focus)] focus-visible:ring-offset-0 focus-visible:ring-offset-transparent disabled:opacity-60'
+						className='min-h-9 w-full flex-1 rounded-lg border bg-[#2a2a2b] px-3 py-2 text-sm text-white outline-none placeholder:text-slate-500 focus-visible:ring-2 focus-visible:ring-[color:var(--chat-input-focus)] focus-visible:ring-offset-0 focus-visible:ring-offset-transparent disabled:opacity-60'
 						style={
 							{
 								borderColor: BORDER,
@@ -105,7 +163,14 @@ export default function FloatingChatBox() {
 						}
 						autoComplete='off'
 					/>
-					<motion.button type='submit' disabled={chatBoxState.loading || !chatBoxState.input.trim()} className='shrink-0 rounded-lg px-4 py-2 text-sm font-medium text-[#1a1a1b] disabled:opacity-80' style={{ backgroundColor: ACCENT }} whileHover={reduced || chatBoxState.loading ? undefined : { filter: 'brightness(1.06)' }} whileTap={reduced || chatBoxState.loading ? undefined : { scale: 0.98 }}>
+					<motion.button
+						type='submit'
+						disabled={chatBoxState.loading || !chatBoxState.input.trim()}
+						className='shrink-0 rounded-lg px-4 py-2 text-sm font-medium text-[#1a1a1b] disabled:opacity-80'
+						style={{ backgroundColor: ACCENT }}
+						whileHover={reduced || chatBoxState.loading ? undefined : { filter: 'brightness(1.06)' }}
+						whileTap={reduced || chatBoxState.loading ? undefined : { scale: 0.98 }}
+					>
 						{locale === 'pl' ? 'Wyślij' : 'Send'}
 					</motion.button>
 				</form>

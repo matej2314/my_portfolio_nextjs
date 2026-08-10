@@ -5,6 +5,53 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+  Brand / portfolio tokens.
+  Uwaga: shadcn już zajmuje --color-accent → używamy --color-brand*,
+  żeby nie zepsuć utilities bg-accent w panelu /control.
+*/
+@theme {
+	--color-surface-0: oklch(0.16 0.005 255);
+	--color-surface-1: oklch(0.2 0.006 255);
+	--color-surface-2: oklch(0.24 0.007 255);
+	--color-surface-3: oklch(0.29 0.008 255);
+
+	--color-line-soft: oklch(1 0 0 / 6%);
+	--color-line: oklch(1 0 0 / 10%);
+	--color-line-strong: oklch(1 0 0 / 18%);
+
+	--color-brand: oklch(0.8 0.083 158);
+	--color-brand-deep: oklch(0.67 0.08 156);
+	--color-brand-bright: oklch(0.88 0.065 160);
+	--color-brand-tint: oklch(0.8 0.083 158 / 11%);
+	--color-brand-line: oklch(0.8 0.083 158 / 32%);
+
+	--color-ink-0: oklch(0.97 0.003 255);
+	--color-ink-1: oklch(0.82 0.006 255);
+	--color-ink-2: oklch(0.64 0.008 255);
+	--color-ink-3: oklch(0.5 0.01 255);
+
+	--color-state-success: oklch(0.84 0.13 128);
+	--color-state-error: oklch(0.68 0.17 25);
+	--color-state-warning: oklch(0.82 0.13 78);
+
+	--font-display: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+	--font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+	--font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+	--radius-shell: 1.75rem;
+	--radius-core: 1.375rem;
+	--radius-chip: 0.875rem;
+
+	--shadow-ambient: 0 30px 80px -40px oklch(0.1 0.02 255 / 0.95);
+	--shadow-lift: 0 40px 90px -45px oklch(0.08 0.02 255 / 1);
+	--shadow-inner-top: inset 0 1px 0 0 oklch(1 0 0 / 0.07);
+
+	--ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+	--ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+	--ease-drift: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
 @theme inline {
 	--radius-sm: calc(var(--radius) - 4px);
 	--radius-md: calc(var(--radius) - 2px);
@@ -119,18 +166,196 @@
 	body {
 		@apply bg-background text-foreground;
 	}
+
+	/* Keyboard focus — brand ring (mouse clicks stay clean via :focus-visible) */
+	:where(a, button, summary, [role='button'], input, textarea, select):focus-visible {
+		outline: 2px solid color-mix(in oklch, var(--color-brand) 65%, transparent);
+		outline-offset: 2px;
+	}
 }
 
-.text-glow {
-	text-shadow: 0 0 8px rgba(255, 238, 46, 1), 0 0 16px rgba(255, 238, 46, 1);
+/* Oświetlenie sceny — miękkie, wyśrodkowane wyżej w pierwszym viewporcie (bez pasa pod menu) */
+.bg-scene {
+	background:
+		radial-gradient(75rem 52rem at 42% 6%, var(--color-brand-tint), transparent 68%),
+		radial-gradient(55rem 42rem at 90% 22%, oklch(0.6 0.06 235 / 0.05), transparent 64%),
+		var(--color-surface-0);
 }
 
-.hover-shadow {
-	transition: box-shadow 0.2s ease-in;
+/* Ziarno — fixed, pointer-events-none, poza kontenerem scrolla */
+.grain::after {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: 60;
+	pointer-events: none;
+	opacity: 0.035;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-.hover-shadow:hover {
-	box-shadow: 0px 0px 35px 4px rgba(255, 255, 0, 1);
+/* Spotlight na krawędzi karty — --mx/--my z JS */
+.spotlight {
+	position: relative;
+}
+
+.spotlight::before {
+	content: '';
+	position: absolute;
+	inset: -1px;
+	border-radius: inherit;
+	padding: 1px;
+	background: radial-gradient(18rem 18rem at var(--mx, 50%) var(--my, 50%), var(--color-brand-line), transparent 70%);
+	-webkit-mask:
+		linear-gradient(#000 0 0) content-box,
+		linear-gradient(#000 0 0);
+	mask:
+		linear-gradient(#000 0 0) content-box,
+		linear-gradient(#000 0 0);
+	mask-composite: exclude;
+	-webkit-mask-composite: xor;
+	opacity: 0;
+	transition: opacity 0.4s var(--ease-expo);
+	pointer-events: none;
+}
+
+.spotlight:hover::before {
+	opacity: 1;
+}
+
+/* Separator sekcji — miękka radialna kreska zamiast naprzemiennych teł */
+.section-rail {
+	pointer-events: none;
+	position: relative;
+	height: 1px;
+	width: 100%;
+	background: radial-gradient(
+		48% 100% at 50% 50%,
+		var(--color-line-strong),
+		transparent 72%
+	);
+}
+
+.section-rail::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	height: 5rem;
+	background: radial-gradient(
+		42% 90% at 50% 0%,
+		var(--color-brand-tint),
+		transparent 70%
+	);
+	pointer-events: none;
+}
+
+/* Hero — dryf plam (tylko transform) */
+@keyframes hero-blob-drift-a {
+	0%,
+	100% {
+		transform: translate3d(0, 0, 0) scale(1);
+	}
+	50% {
+		transform: translate3d(4%, 6%, 0) scale(1.08);
+	}
+}
+
+@keyframes hero-blob-drift-b {
+	0%,
+	100% {
+		transform: translate3d(0, 0, 0) scale(1);
+	}
+	50% {
+		transform: translate3d(-5%, -4%, 0) scale(1.06);
+	}
+}
+
+@keyframes hero-blob-drift-c {
+	0%,
+	100% {
+		transform: translate3d(0, 0, 0) scale(1);
+	}
+	50% {
+		transform: translate3d(3%, -5%, 0) scale(1.1);
+	}
+}
+
+@keyframes hero-scroll-pulse {
+	0%,
+	100% {
+		transform: scaleY(0.35);
+		opacity: 0.35;
+	}
+	50% {
+		transform: scaleY(1);
+		opacity: 1;
+	}
+}
+
+.hero-blob {
+	position: absolute;
+	border-radius: 9999px;
+	filter: blur(80px);
+	will-change: transform;
+}
+
+.hero-blob-a {
+	top: -22%;
+	left: -8%;
+	width: 70vw;
+	height: 55vw;
+	max-width: 52rem;
+	max-height: 40rem;
+	background: var(--color-brand-tint);
+	animation: hero-blob-drift-a 30s var(--ease-drift) infinite;
+}
+
+.hero-blob-b {
+	top: 4%;
+	right: -18%;
+	width: 48vw;
+	height: 48vw;
+	max-width: 36rem;
+	max-height: 36rem;
+	background: oklch(0.55 0.06 235 / 0.12);
+	animation: hero-blob-drift-b 34s var(--ease-drift) infinite;
+}
+
+.hero-blob-c {
+	bottom: -20%;
+	left: 30%;
+	width: 40vw;
+	height: 40vw;
+	max-width: 28rem;
+	max-height: 28rem;
+	background: oklch(0.8 0.083 158 / 0.08);
+	animation: hero-blob-drift-c 38s var(--ease-drift) infinite;
+}
+
+.hero-grid {
+	position: absolute;
+	inset: 0;
+	background-image:
+		linear-gradient(oklch(1 0 0 / 0.03) 1px, transparent 1px),
+		linear-gradient(90deg, oklch(1 0 0 / 0.03) 1px, transparent 1px);
+	background-size: 64px 64px;
+	/* Full strength through the menu band; fade only toward the bottom of the hero */
+	mask-image: linear-gradient(to bottom, #000 0%, #000 58%, transparent 100%);
+}
+
+.hero-scroll-line {
+	transform-origin: top center;
+	animation: hero-scroll-pulse 2.4s var(--ease-drift) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hero-blob-a,
+	.hero-blob-b,
+	.hero-blob-c,
+	.hero-scroll-line {
+		animation: none;
+	}
 }
 
 .no-scrollbar::-webkit-scrollbar {

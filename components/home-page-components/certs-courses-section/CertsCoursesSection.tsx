@@ -4,6 +4,9 @@ import { type GetCoursesType } from '@/types/actionsTypes/actionsTypes';
 import { groupCoursesByCategory, skillCategorySlug } from '@/lib/utils/utils';
 
 import CoursesByCategoryGrid, { type CoursesColumn } from './components/CoursesByCategoryGrid';
+import SectionShell from '@/components/home-page-components/shared/SectionShell';
+import SectionHeading from '@/components/home-page-components/shared/SectionHeading';
+import SectionBody from '@/components/home-page-components/shared/SectionBody';
 
 export default async function CertsCoursesSection({ courses }: { courses: GetCoursesType | undefined }) {
 	const t = await getTranslations('homePage');
@@ -13,13 +16,9 @@ export default async function CertsCoursesSection({ courses }: { courses: GetCou
 
 	if (!courses || 'error' in courses) {
 		return (
-			<section
-				id="certsSection"
-				tabIndex={-1}
-				className="w-full bg-transparent max-xl:mx-auto max-xl:max-w-[100vw] max-xl:px-4 max-xl:py-8 xl:px-12 xl:py-12"
-			>
-				<p className="text-slate-400">{t('certsSection.fetchError')}</p>
-			</section>
+			<SectionShell id='certsSection'>
+				<p className='text-ink-2 xl:col-span-12'>{t('certsSection.fetchError')}</p>
+			</SectionShell>
 		);
 	}
 
@@ -30,30 +29,19 @@ export default async function CertsCoursesSection({ courses }: { courses: GetCou
 	}));
 
 	return (
-		<section
-			id="certsSection"
-			tabIndex={-1}
-			className="flex w-full flex-col gap-8 bg-transparent max-xl:mx-auto max-xl:max-w-[100vw] max-xl:px-4 max-xl:py-8 xl:px-12 xl:py-12"
-		>
-			<header className="flex flex-col gap-2 max-xl:gap-1.5 xl:gap-2">
-				<p className="font-semibold tracking-wide text-slate-500 max-xl:text-xs xl:text-[13px]">
-					{t('certsSection.sectionIndex')}
-				</p>
-				<h2 className="font-light leading-tight text-slate-50 max-xl:text-[1.625rem] max-xl:leading-snug xl:text-[2.375rem]">
-					{t('certsSection.title')}
-				</h2>
-				<div className="h-[3px] rounded-full bg-[#facc15] max-xl:w-10 xl:w-12" aria-hidden />
-			</header>
-
-			<p className="max-w-[640px] font-normal text-slate-400 max-xl:text-[15px] max-xl:leading-relaxed xl:text-base xl:leading-normal">
-				{t('certsSection.subtitle')}
-			</p>
-
-			{columns.length === 0 || columns.every((c) => c.items.length === 0) ? (
-				<p className="text-slate-500">{t('certsSection.emptyState')}</p>
-			) : (
-				<CoursesByCategoryGrid columns={columns.filter((c) => c.items.length > 0)} />
-			)}
-		</section>
+		<SectionShell id='certsSection'>
+			<SectionHeading
+				index={t('certsSection.sectionIndex')}
+				title={t('certsSection.title')}
+				lead={t('certsSection.subtitle')}
+			/>
+			<SectionBody>
+				{columns.length === 0 || columns.every(c => c.items.length === 0) ? (
+					<p className='text-ink-3'>{t('certsSection.emptyState')}</p>
+				) : (
+					<CoursesByCategoryGrid columns={columns.filter(c => c.items.length > 0)} />
+				)}
+			</SectionBody>
+		</SectionShell>
 	);
 }

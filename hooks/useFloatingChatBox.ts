@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useId, useEffect, useRef, useMemo, type FormEvent } from 'react';
+import { useState, useId, useEffect, useRef, useMemo, useCallback, type FormEvent } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { defaultData } from '@/lib/defaultData';
 import { useLocale } from 'next-intl';
@@ -18,8 +18,9 @@ import { type ChatResponse } from '@/lib/assistant/types';
 import { type FloatingChatBoxState } from '@/types/floatingChatBoxTypes';
 
 
-export const useFloatingChatBox = () => {
+export const useFloatingChatBox = (options?: { controlledOpen?: boolean; onOpenChange?: (open: boolean) => void }) => {
     const reduced = useReducedMotion();
+	const isControlled = options?.controlledOpen !== undefined;
 
 	const [chatBoxState, setChatBoxState] = useState<FloatingChatBoxState>({
 		open: false,
@@ -28,6 +29,24 @@ export const useFloatingChatBox = () => {
 		loading: false,
 		error: null,
 	});
+
+	const open = isControlled ? Boolean(options?.controlledOpen) : chatBoxState.open;
+
+	useEffect(() => {
+		if (!isControlled) return;
+		const next = Boolean(options?.controlledOpen);
+		setChatBoxState(prev => (prev.open === next ? prev : { ...prev, open: next }));
+	}, [isControlled, options?.controlledOpen]);
+
+	const setOpen = useCallback(
+		(next: boolean) => {
+			if (!isControlled) {
+				setChatBoxState(prev => ({ ...prev, open: next }));
+			}
+			options?.onOpenChange?.(next);
+		},
+		[isControlled, options],
+	);
 
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 	const chatInputRef = useRef<HTMLInputElement>(null);
@@ -38,7 +57,7 @@ export const useFloatingChatBox = () => {
 	const { accent: ACCENT, cardBg: CARD_BG, border: BORDER, calcPanelDuration, showDelayChatBox: SHOW_DELAY_CHAT_BOX, enterDurationBox: ENTER_DURATION_CHAT_BOX, chatBoxWidth: CHAT_PANEL_WIDTH } = config;
 
 	const CHAT_BOX_PANEL_DURATION = calcPanelDuration(reduced ?? false);
-	const chatBoxPanelTransition = reduced ? { duration: 0 } : { duration: CHAT_BOX_PANEL_DURATION, ease: 'easeInOut' as const };
+	const chatBoxPanelTransition = reduced ? { duration: 0 } : { duration: CHAT_BOX_PANEL_DURATION, ease: [0.16, 1, 0.3, 1] as const };
 
 	const tuckAfterOpen = reduced ? 0 : CHAT_BOX_PANEL_DURATION * 0.55;
 	const tuckDuration = config.calcTuckDuration(reduced ?? false);
@@ -163,8 +182,9 @@ export const useFloatingChatBox = () => {
     }
     
     return {
-        chatBoxState,
+        chatBoxState: { ...chatBoxState, open },
         setChatBoxState,
+        setOpen,
         handleSubmit,
         messagesEndRef,
         chatInputRef,

@@ -19,7 +19,7 @@ export default function BadgeList({ items, ...props }: BadgeListProps) {
                 <Badge
                     key={item.label}
                     variant={item.variant ?? 'default'}
-                    className={item.badgeClass || 'bg-slate-200 text-slate-950 border-2 border-green-500 font-kanit'}
+                    className={item.badgeClass || 'bg-slate-200 text-slate-950 border-2 border-green-500 font-display'}
                     {...props}
                 >
                     {item.label}

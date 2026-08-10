@@ -7,12 +7,12 @@ import { useRouter } from 'next/navigation';
 
 import type { ProjectEnterPayload } from '@/context/ProjectEnterTransitionContext';
 
-const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const MEASURE_TIMEOUT_MS = 2800;
 
-const REVEAL_DURATION = 0.55;
-const BACKDROP_FADE_DURATION = 0.48;
+const REVEAL_DURATION = 0.6;
+const BACKDROP_FADE_DURATION = 0.5;
 
 /** Czeka na pierwszy paint widoku projektu (marker z RSC) i zwraca prostokąt contentu w viewportcie. */
 async function waitForProjectContentRect(projectId: string, signal: { cancelled: boolean }): Promise<DOMRect | null> {
@@ -92,7 +92,7 @@ export default function ProjectEnterFlightPortal({
 					left: rect.left,
 					width: rect.width,
 					height: rect.height,
-					borderRadius: 12,
+					borderRadius: 28,
 					x: 0,
 					y: 0,
 					opacity: 1,
@@ -109,7 +109,7 @@ export default function ProjectEnterFlightPortal({
 					left: cLeft,
 					width: rect.width,
 					height: rect.height,
-					borderRadius: 12,
+					borderRadius: 28,
 					x: 0,
 					y: 0,
 					opacity: 1,
@@ -180,7 +180,7 @@ export default function ProjectEnterFlightPortal({
 			/>
 			<motion.div
 				ref={cardRef}
-				className='fixed z-[100] flex flex-col justify-end overflow-hidden border border-[#facc15] bg-[#0c0c0c] shadow-2xl'
+				className='fixed z-[100] flex flex-col justify-end overflow-hidden border border-brand-line bg-surface-0 shadow-lift'
 				initial={false}
 				style={{ willChange: 'top, left, width, height, border-radius, transform, opacity' }}
 			>
@@ -190,7 +190,7 @@ export default function ProjectEnterFlightPortal({
 					aria-hidden
 				/>
 				<div className='relative z-[1] bg-gradient-to-t from-black/80 via-black/50 to-transparent p-6 pt-14'>
-					<p className='truncate text-xl font-semibold text-[#fbbf24]'>{payload.title}</p>
+					<p className='truncate font-display text-xl font-medium text-ink-0'>{payload.title}</p>
 				</div>
 			</motion.div>
 		</>,

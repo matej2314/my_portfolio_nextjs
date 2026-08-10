@@ -15,7 +15,7 @@ export default function SignInForm() {
     return (
         <form
             action={formAction}
-            className="w-1/3 flex flex-col justify-center gap-3 px-5 py-10  text-slate-200 rounded-md border-1 border-green-800/75 font-jakarta"
+            className="w-1/3 flex flex-col justify-center gap-3 px-5 py-10  text-slate-200 rounded-md border-1 border-green-800/75 font-sans"
         >
             <h2 className="text-3xl">Panel kontrolny</h2>
             <p className="text-sm text-slate-400">Zaloguj się, aby uzyskać dostęp do panelu kontrolnego.</p>

@@ -1,17 +1,35 @@
 'use client';
 
 import { type ReactNode, useEffect, useState } from 'react';
+import { useReducedMotion } from 'motion/react';
+
 import LoadingScreen from '@/components/LoadingScreen';
 
+type Phase = 'pending' | 'draw' | 'exit' | 'done';
+
 export default function HomeContent({ children }: { children: ReactNode }) {
-	const [showLoading, setShowLoading] = useState(true);
+	const reduced = useReducedMotion();
+	const [phase, setPhase] = useState<Phase>('pending');
 
 	useEffect(() => {
-		const timer = setTimeout(() => setShowLoading(false), 2000);
-		return () => clearTimeout(timer);
-	}, []);
+		if (reduced == null) return;
 
-	if (showLoading) return <LoadingScreen />;
+		if (reduced) {
+			setPhase('done');
+			return;
+		}
 
-	return <>{children}</>;
+		setPhase('draw');
+		const timer = window.setTimeout(() => setPhase('exit'), 720);
+		return () => window.clearTimeout(timer);
+	}, [reduced]);
+
+	return (
+		<>
+			{children}
+			{phase === 'draw' || phase === 'exit' ? (
+				<LoadingScreen phase={phase === 'exit' ? 'exit' : 'draw'} onExitComplete={() => setPhase('done')} />
+			) : null}
+		</>
+	);
 }

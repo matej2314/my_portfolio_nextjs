@@ -3,30 +3,38 @@ import { getTranslations } from 'next-intl/server';
 import { type Project } from '@/types/actionsTypes/actionsTypes';
 
 export default async function DisplayConclusion({
-    selectedProject,
-    locale,
-    variant = 'default',
+	selectedProject,
+	locale,
+	variant = 'default',
 }: {
-    selectedProject: Project;
-    locale: string;
-    variant?: 'default' | 'pen';
+	selectedProject: Project;
+	locale: string;
+	variant?: 'default' | 'pen';
 }) {
-    const t = await getTranslations('projectDetailsPage');
-    const text = locale === 'en' ? selectedProject.conclusion : selectedProject.conclusion_pl;
+	const t = await getTranslations('projectDetailsPage');
+	const text = locale === 'en' ? selectedProject.conclusion : selectedProject.conclusion_pl;
 
-    if (variant === 'pen') {
-        return (
-            <section className="flex w-full min-w-0 flex-col gap-3">
-                <h2 className="text-[13px] font-semibold tracking-wide text-[#facc15]">{t('conclusion')}</h2>
-                <p className="text-sm font-normal leading-relaxed text-[#94a3b8]">{text}</p>
-            </section>
-        );
-    }
+	if (!text) return null;
 
-    return (
-        <div className="flex h-fit w-full flex-col items-center justify-center gap-4">
-            <h2 className="text-3xl text-yellow-300">{t('conclusion')}</h2>
-            <p className="text-justify font-kanit font-semibold tracking-wide">{text}</p>
-        </div>
-    );
+	if (variant === 'pen') {
+		return (
+			<section className='rounded-[var(--radius-shell)] border border-line bg-surface-1/50 p-1.5 shadow-ambient'>
+				<div className='rounded-[var(--radius-core)] border border-line-soft bg-surface-2 p-6 shadow-inner-top xl:p-8'>
+					<h2 className='font-mono text-[0.6875rem] font-medium uppercase tracking-[0.2em] text-brand'>
+						{t('conclusion')}
+					</h2>
+					<p className='mt-5 max-w-[70ch] text-pretty text-[15px] leading-relaxed text-ink-1 xl:text-base xl:leading-[1.7]'>
+						{text}
+					</p>
+				</div>
+			</section>
+		);
+	}
+
+	return (
+		<div className='flex h-fit w-full flex-col items-center justify-center gap-4'>
+			<h2 className='font-display text-3xl text-brand'>{t('conclusion')}</h2>
+			<p className='max-w-[70ch] text-pretty font-display tracking-wide text-ink-1'>{text}</p>
+		</div>
+	);
 }
