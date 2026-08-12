@@ -33,7 +33,7 @@ export default function ProjectsGrid({ projects, images }: ProjectsGalleryProps)
 			<AnimatePresence>
 				<div
 					ref={trackRef}
-					className='relative min-w-0 max-w-none self-stretch max-xl:w-[calc(100%+1rem)] max-xl:-mr-4 xl:w-[calc(100%+3rem)] xl:-mr-12'
+					className='relative w-full min-w-0 max-w-full self-stretch overflow-x-hidden max-xl:w-[calc(100%+1rem)] max-xl:max-w-[calc(100%+1rem)] max-xl:-mr-4 xl:w-[calc(100%+3rem)] xl:max-w-[calc(100%+3rem)] xl:-mr-12'
 				>
 					<ProjectsTrack
 						slides={slides}

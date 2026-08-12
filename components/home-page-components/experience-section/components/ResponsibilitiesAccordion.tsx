@@ -30,7 +30,7 @@ export default function ResponsibilitiesAccordion({
 				aria-controls={panelId}
 				onClick={() => setOpen(v => !v)}
 				className={cn(
-					'flex w-fit cursor-pointer items-center gap-2 rounded-sm text-left text-sm font-medium text-brand',
+					'flex min-h-11 w-fit cursor-pointer items-center gap-2 rounded-sm py-2 text-left text-sm font-medium text-brand',
 					'outline-none transition-colors duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]',
 					'hover:text-brand-bright focus-visible:text-brand-bright focus-visible:ring-2 focus-visible:ring-brand/60',
 				)}

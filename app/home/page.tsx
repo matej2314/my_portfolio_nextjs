@@ -42,10 +42,10 @@ export default async function HomePage() {
 	return (
 		<LenisProvider
 			id='mainSection'
-			className='no-scrollbar z-0 flex h-[100dvh] max-h-[100dvh] w-full min-w-0 flex-col items-center overflow-x-hidden overflow-y-auto'
+			className='no-scrollbar z-0 flex h-[100dvh] max-h-[100dvh] w-full min-w-0 flex-col items-stretch overflow-x-hidden overflow-y-auto'
 		>
 			<ScrollProgressBar />
-			<div className='flex h-fit w-full flex-col items-center justify-start'>
+			<div className='flex h-fit w-full min-w-0 flex-col items-stretch justify-start'>
 				{/* Shared atmosphere behind menu + hero */}
 				<div className='relative flex min-h-[88dvh] w-full shrink-0 flex-col xl:min-h-[100dvh]'>
 					<HeroScene />

@@ -9,7 +9,7 @@ export default function HeroTitle({ title }: { title: string }) {
 	const words = title.split(' ');
 
 	return (
-		<h1 className='max-w-[14ch] font-display text-[clamp(2.75rem,6vw,4.75rem)] font-medium leading-[0.95] tracking-[-0.035em] text-ink-0 text-balance'>
+		<h1 className='max-w-[14ch] font-display text-[clamp(2.75rem,6vw,4.75rem)] font-medium leading-[1.05] tracking-[-0.035em] text-ink-0 text-balance'>
 			{words.map((word, index) => (
 				<span key={`${word}-${index}`} className='mr-[0.22em] inline-block overflow-hidden align-bottom last:mr-0'>
 					<motion.span

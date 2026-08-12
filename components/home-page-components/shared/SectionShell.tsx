@@ -25,7 +25,7 @@ export default function SectionShell({
 
 			<div
 				className={cn(
-					'relative mx-auto w-full max-w-[1440px] px-4 py-28 xl:px-12 xl:py-40',
+					'relative mx-auto w-full max-w-[1440px] px-4 py-14 min-[481px]:py-28 xl:px-12 xl:py-40',
 					!ungrid && 'xl:grid xl:grid-cols-12 xl:gap-x-12 xl:gap-y-0',
 				)}
 			>

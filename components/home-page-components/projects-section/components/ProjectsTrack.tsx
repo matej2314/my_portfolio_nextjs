@@ -174,7 +174,10 @@ export const ProjectsTrack = ({
 							key={slide.project.id}
 							className={cn(
 								'pl-0',
-								index === 0 ? 'basis-[min(100%,32rem)] xl:basis-[58%]' : 'basis-full xl:basis-[42%]',
+								// vw-based basis avoids cyclic % sizing that inflated the page past the viewport
+								index === 0
+									? 'basis-[min(28rem,calc(100vw-2.5rem))] xl:basis-[58%]'
+									: 'basis-[min(22rem,calc(100vw-2.5rem))] xl:basis-[42%]',
 							)}
 						>
 							<motion.div

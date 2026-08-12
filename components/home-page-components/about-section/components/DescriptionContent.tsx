@@ -64,7 +64,7 @@ export default function DescriptionContent({ description, cvHref, cvFileName }: 
 					title={t('aboutSection.viewProjects')}
 					aria-label={t('aboutSection.viewProjects')}
 					linkClass={cn(
-						'relative text-sm font-medium text-ink-1',
+						'relative inline-flex min-h-11 items-center text-sm font-medium text-ink-1',
 						'bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_1px] bg-left-bottom bg-no-repeat',
 						'transition-[color,background-size] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]',
 						'hover:bg-[length:100%_1px] hover:text-brand',

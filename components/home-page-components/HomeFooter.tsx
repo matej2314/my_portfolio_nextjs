@@ -23,28 +23,30 @@ export default async function HomeFooter() {
 
 	return (
 		<footer className='w-full border-t border-line px-5 py-16 xl:px-10'>
-			<div className='mx-auto grid w-full max-w-[1440px] gap-10 md:grid-cols-3 md:gap-8'>
-				<p className='font-mono text-xs tracking-wide text-ink-3'>{`© ${date} ${t('homeFooter.copyright')}`}</p>
+			<div className='mx-auto grid w-full max-w-[1440px] grid-cols-2 gap-8 md:grid-cols-3 md:gap-8'>
+				<p className='col-span-2 font-mono text-xs tracking-wide text-ink-3 md:col-span-1'>
+					{`© ${date} ${t('homeFooter.copyright')}`}
+				</p>
 
-				<nav aria-label='Footer' className='flex flex-col gap-3 md:items-center'>
+				<nav aria-label='Footer' className='flex flex-col gap-1 md:items-center'>
 					{navLinks.map(link => (
 						<Link
 							key={link.href}
 							href={link.href}
-							className='text-sm text-ink-1 transition-colors duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/60'
+							className='inline-flex min-h-11 items-center text-sm text-ink-1 transition-colors duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/60'
 						>
 							{link.label}
 						</Link>
 					))}
 				</nav>
 
-				<div className='flex flex-col gap-3 md:items-end'>
+				<div className='flex flex-col gap-1 items-end'>
 					{channelLinks.map(link => (
 						<Link
 							key={link.href}
 							href={link.href}
 							{...(link.download ? { download: link.download } : {})}
-							className='text-sm text-brand transition-colors duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-brand-bright focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/60'
+							className='inline-flex min-h-11 items-center text-sm text-brand transition-colors duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-brand-bright focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/60'
 						>
 							{link.label}
 						</Link>

@@ -38,7 +38,7 @@ export default function ContactItems() {
 			initial='hidden'
 			whileInView='visible'
 			viewport={{ amount: 0.2, once: true }}
-			className='flex w-full max-w-[520px] flex-col md:max-w-none xl:max-w-[520px]'
+			className='flex w-full flex-col xl:max-w-[520px]'
 		>
 			{contactItems.map(item => (
 				<motion.li key={item.pathName} variants={itemVariants} className='border-b border-line first:border-t'>

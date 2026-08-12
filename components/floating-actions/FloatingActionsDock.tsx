@@ -7,7 +7,6 @@ import { useTranslations } from 'next-intl';
 
 import { useFloatingPanels } from '@/context/FloatingPanelsContext';
 import { useActiveSection } from '@/hooks/useActiveSection';
-import { useDeviceType } from '@/hooks/useDeviceType';
 import { sections } from '@/lib/arrays/homePageSectionsArr';
 import { scrollToSection } from '@/lib/utils/keyboard-navigation';
 import { cn } from '@/lib/utils/utils';
@@ -15,7 +14,7 @@ import { cn } from '@/lib/utils/utils';
 const EASE_SPRING = [0.32, 0.72, 0, 1] as const;
 
 type FanAction = {
-	id: 'contact' | 'chat' | 'top';
+	id: 'contact' | 'chat';
 	icon: string;
 	labelKey: string;
 	onClick: () => void;
@@ -35,8 +34,6 @@ export default function FloatingActionsDock({ showChat = true }: { showChat?: bo
 	const tChat = useTranslations('homePage.floatingChat');
 	const panels = useFloatingPanels();
 	const reduced = useReducedMotion();
-	const device = useDeviceType();
-	const isDesktop = device === 'desktop';
 	const [fanOpen, setFanOpen] = useState(false);
 	const activeSection = useActiveSection(sections);
 	const showTop = activeSection !== null && activeSection !== 'baseSection';
@@ -76,17 +73,6 @@ export default function FloatingActionsDock({ showChat = true }: { showChat?: bo
 					},
 				]
 			: []),
-		// Mobile / tablet: keep back-to-top inside the fan
-		...(!isDesktop && showTop
-			? [
-					{
-						id: 'top' as const,
-						icon: 'ph:arrow-up-light',
-						labelKey: t('backToTop'),
-						onClick: goTop,
-					},
-				]
-			: []),
 	];
 
 	const visibleActions = fanOpen ? actions : [];
@@ -99,10 +85,10 @@ export default function FloatingActionsDock({ showChat = true }: { showChat?: bo
 				'max-md:bottom-[max(1rem,calc(env(safe-area-inset-bottom)+0.75rem))] max-md:right-[max(1rem,calc(env(safe-area-inset-right)+0.75rem))]',
 			)}
 		>
-			{/* Bottom row: desktop back-to-top sits beside the fan launcher */}
+			{/* Bottom row: back-to-top sits beside the fan launcher on all breakpoints */}
 			<div className='pointer-events-none flex items-center gap-3'>
 				<AnimatePresence>
-					{isDesktop && showTop ? (
+					{showTop ? (
 						<motion.button
 							key='back-to-top'
 							type='button'
