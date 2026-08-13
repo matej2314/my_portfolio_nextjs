@@ -18,7 +18,7 @@ export default async function BaseSection() {
 	const availableForWork = defaultData.baseSectionSubHeader.availableForWork;
 	return (
 		<section id='baseSection' tabIndex={-1} className='relative z-[1] flex min-h-0 w-full flex-1 flex-col justify-center'>
-			<div className='relative mx-auto grid w-full max-w-[1440px] grid-cols-1 items-end gap-12 px-5 pb-16 pt-10 xl:grid-cols-12 xl:gap-10 xl:px-10 xl:pb-20 xl:pt-10'>
+			<div className='relative mx-auto grid w-full max-w-[1440px] grid-cols-1 items-end gap-12 px-5 pb-16 pt-20 xl:grid-cols-12 xl:gap-10 xl:px-10 xl:pb-20 xl:pt-10'>
 				<div className='flex flex-col items-start xl:col-span-7'>
 					{availableForWork && <HeroEyebrow label={t('baseSection.eyebrow')} />}
 					<div className='mt-5 xl:mt-5'>
