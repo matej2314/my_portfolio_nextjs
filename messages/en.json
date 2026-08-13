@@ -49,7 +49,7 @@
 			"downloadCv": "Download CV",
 			"viewProjects": "View projects",
 			"metricLabels": {
-				"years": "Experience",
+				"years": "{count, plural, one {Year of experience} other {Years of experience}}",
 				"projects": "Projects",
 				"commits": "Commits",
 				"english": "English"

@@ -10,14 +10,23 @@ import { metricsArray } from '@/lib/arrays/metricsArray';
 import { type AboutTextType } from '@/types/actionsTypes/actionsTypes';
 import { getCvHref } from '@/lib/utils/getCvHref';
 
+function leadingCount(stat: string): number | null {
+	const match = stat.match(/^(\d+)/);
+	return match ? Number(match[1]) : null;
+}
+
 export default async function AboutSection({ aboutText }: { aboutText: AboutTextType | null | undefined }) {
 	const t = await getTranslations('homePage');
 	const locale = await getLocale();
 	const { cvHref, cvFileName } = getCvHref(locale);
-	const metrics = metricsArray.map(m => ({
-		stat: m.stat,
-		label: t(`aboutSection.metricLabels.${m.id}`),
-	}));
+	const metrics = metricsArray.map(m => {
+		const count = leadingCount(m.stat);
+		const key = `aboutSection.metricLabels.${m.id}`;
+		return {
+			stat: m.stat,
+			label: count !== null ? t(key, { count }) : t(key),
+		};
+	});
 
 	const description = aboutText ? t('aboutSection.description') : 'Failed to load text.';
 

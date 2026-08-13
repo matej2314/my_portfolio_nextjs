@@ -17,7 +17,7 @@
 			"downloadCv": "Pobierz CV",
 			"viewProjects": "Zobacz projekty",
 			"metricLabels": {
-				"years": "Lat doświadczenia",
+				"years": "{count, plural, one {Rok doświadczenia} few {Lata doświadczenia} many {Lat doświadczenia} other {Lat doświadczenia}}",
 				"projects": "Projektów",
 				"commits": "Commitów",
 				"english": " Język Angielski"
