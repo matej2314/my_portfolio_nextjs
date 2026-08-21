@@ -48,3 +48,4 @@ logs
 .gitignore
 docs/documentation.md
 MCP.md
+semantic-cache.plan.md

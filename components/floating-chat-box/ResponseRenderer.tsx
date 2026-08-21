@@ -9,14 +9,15 @@ import { type ResponseRendererProps } from '@/lib/assistant/types';
 export default function ResponseRenderer({ content, isAnimating, className }: ResponseRendererProps) {
 	return (
 		<Streamdown
-			mode="streaming"
+			mode={isAnimating ? 'streaming' : 'static'}
 			parseIncompleteMarkdown
 			isAnimating={isAnimating}
 			animated={{
 				animation: 'fadeIn',
-				duration: 0.2,
-				easing: 'easeInOut',
+				duration: 120,
+				easing: 'easeOut',
 				sep: 'char',
+				stagger: 0,
 			}}
 			className={cn(
 				'break-words text-sm leading-relaxed text-slate-200',

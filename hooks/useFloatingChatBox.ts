@@ -6,20 +6,18 @@ import { defaultData } from '@/lib/defaultData';
 import { useLocale } from 'next-intl';
 import { useReducedMotion } from 'motion/react';
 
-import {buildChatHistory} from '@/lib/assistant/buildChatHistory';
+import { buildChatHistory } from '@/lib/assistant/buildChatHistory';
 import { handleLLMErrorResponse } from '@/lib/assistant/handleLLMErrorResponse';
 import { applyNonStreamingResponse } from '@/lib/assistant/applyNonStreamingResponse';
 import { handleAssistantFetchError } from '@/lib/assistant/handleAssistantFetchError';
-import { updateStreamingText } from '@/lib/assistant/updateStreamingText';
-import { finalizeStream } from '@/lib/assistant/finalizeStream';
+import { createAssistantTypewriter } from '@/lib/assistant/createAssistantTypewriter';
 
 import { type AssistantStreamServerEvent, type ChatLine } from '@/lib/assistant/types';
 import { type ChatResponse } from '@/lib/assistant/types';
 import { type FloatingChatBoxState } from '@/types/floatingChatBoxTypes';
 
-
 export const useFloatingChatBox = (options?: { controlledOpen?: boolean; onOpenChange?: (open: boolean) => void }) => {
-    const reduced = useReducedMotion();
+	const reduced = useReducedMotion();
 	const isControlled = options?.controlledOpen !== undefined;
 
 	const [chatBoxState, setChatBoxState] = useState<FloatingChatBoxState>({
@@ -50,6 +48,7 @@ export const useFloatingChatBox = (options?: { controlledOpen?: boolean; onOpenC
 
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 	const chatInputRef = useRef<HTMLInputElement>(null);
+	const typewriterRef = useRef<ReturnType<typeof createAssistantTypewriter> | null>(null);
 
 	const regionId = useId();
 	const locale = useLocale();
@@ -72,11 +71,23 @@ export const useFloatingChatBox = (options?: { controlledOpen?: boolean; onOpenC
 		return last.role === 'assistant' ? last.id : null;
 	}, [chatBoxState.loading, chatBoxState.lines]);
 
+	const streamingTextLength = useMemo(() => {
+		if (!streamingAssistantLineId) return 0;
+		const line = chatBoxState.lines.find(l => l.id === streamingAssistantLineId);
+		return line?.role === 'assistant' ? line.text.length : 0;
+	}, [chatBoxState.lines, streamingAssistantLineId]);
+
+	useEffect(() => {
+		return () => {
+			typewriterRef.current?.stop();
+		};
+	}, []);
+
 	useEffect(() => {
 		if (chatBoxState.loading && messagesEndRef.current) {
-			messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+			messagesEndRef.current.scrollIntoView({ behavior: 'auto', block: 'end' });
 		}
-	}, [chatBoxState.lines.length, chatBoxState.loading]);
+	}, [chatBoxState.loading, chatBoxState.lines.length, streamingTextLength]);
 
 	useEffect(() => {
 		if (!chatBoxState.open) return;
@@ -115,62 +126,82 @@ export const useFloatingChatBox = (options?: { controlledOpen?: boolean; onOpenC
 			const contentType = response.headers.get('content-type');
 			if (contentType?.includes('text/event-stream')) {
 				const assistantId = uuidv4();
+				typewriterRef.current?.stop();
+				const typewriter = createAssistantTypewriter({
+					assistantId,
+					reducedMotion: Boolean(reduced),
+					setChatBoxState,
+				});
+				typewriterRef.current = typewriter;
 				setChatBoxState(prev => ({
 					...prev,
 					lines: [...prev.lines, { id: assistantId, role: 'assistant', text: '' }],
 				}));
 				const reader = response.body?.getReader();
 				if (!reader) {
+					typewriter.stop();
 					throw new Error('No response body reader');
 				}
 				const decoder = new TextDecoder();
 				let buffer = '';
-				while (true) {
-					const { done, value } = await reader.read();
-					if (done) break;
-					buffer += decoder.decode(value, { stream: true });
-					const lines = buffer.split('\n\n');
-					buffer = lines.pop() ?? '';
-					for (const line of lines) {
-						if (!line.trim() || !line.startsWith('data: ')) continue;
-						try {
-							const jsonStr = line.slice(6);
-							const event = JSON.parse(jsonStr) as AssistantStreamServerEvent;
-							switch (event.type) {
-								case 'delta':
-									updateStreamingText(assistantId, event.text, setChatBoxState);
-									break;
-								case 'done':
-									finalizeStream(setChatBoxState);
-									break;
-								case 'error':
-									setChatBoxState(prev => ({
-										...prev,
-										lines: prev.lines.filter(l => l.id !== assistantId),
-										error: event.error,
-										loading: false,
-									}));
-									break;
-								case 'rejected':
-									setChatBoxState(prev => ({
-										...prev,
-										lines: [
-											...prev.lines.filter(l => l.id !== assistantId),
-											{
-												id: uuidv4(),
-												role: 'rejected',
-												topics: event.topics,
-												exampleQuestions: event.exampleQuestions,
-											} as ChatLine,
-										],
-										loading: false,
-									}));
-									break;
+				try {
+					while (true) {
+						const { done, value } = await reader.read();
+						if (done) break;
+						buffer += decoder.decode(value, { stream: true });
+						const lines = buffer.split('\n\n');
+						buffer = lines.pop() ?? '';
+						for (const line of lines) {
+							if (!line.trim() || !line.startsWith('data: ')) continue;
+							try {
+								const jsonStr = line.slice(6);
+								const event = JSON.parse(jsonStr) as AssistantStreamServerEvent;
+								switch (event.type) {
+									case 'delta':
+										typewriter.appendDelta(event.text);
+										break;
+									case 'done':
+										typewriter.markDone();
+										break;
+									case 'error':
+										typewriter.stop();
+										setChatBoxState(prev => ({
+											...prev,
+											lines: prev.lines.filter(l => l.id !== assistantId),
+											error: event.error,
+											loading: false,
+										}));
+										break;
+									case 'rejected':
+										typewriter.stop();
+										setChatBoxState(prev => ({
+											...prev,
+											lines: [
+												...prev.lines.filter(l => l.id !== assistantId),
+												{
+													id: uuidv4(),
+													role: 'rejected',
+													topics: event.topics,
+													exampleQuestions: event.exampleQuestions,
+												} as ChatLine,
+											],
+											loading: false,
+										}));
+										break;
+								}
+							} catch (parseError) {
+								console.error('[SSE PARSE ERROR]:', parseError, line);
 							}
-						} catch (parseError) {
-							console.error('[SSE PARSE ERROR]:', parseError, line);
 						}
 					}
+					typewriter.markDone();
+				} catch (streamError) {
+					typewriter.stop();
+					setChatBoxState(prev => ({
+						...prev,
+						lines: prev.lines.filter(l => l.id !== assistantId),
+					}));
+					throw streamError;
 				}
 				return;
 			}
@@ -179,32 +210,32 @@ export const useFloatingChatBox = (options?: { controlledOpen?: boolean; onOpenC
 		} catch (error) {
 			handleAssistantFetchError({ error, userId, locale, setChatBoxState });
 		}
-    }
-    
-    return {
-        chatBoxState: { ...chatBoxState, open },
-        setChatBoxState,
-        setOpen,
-        handleSubmit,
-        messagesEndRef,
-        chatInputRef,
-        regionId,
-        locale,
-        config,
-        CHAT_BOX_PANEL_DURATION,
-        chatBoxPanelTransition,
-        tuckAfterOpen,
-        tuckDuration,
-        revealAfterClose,
-        revealDuration,
-        subtitle,
-        streamingAssistantLineId,
-        CHAT_PANEL_WIDTH,
-        ACCENT,
-        CARD_BG,
-        BORDER,
-        SHOW_DELAY_CHAT_BOX,
-        ENTER_DURATION_CHAT_BOX,
-        reduced,
-    }
+	}
+
+	return {
+		chatBoxState: { ...chatBoxState, open },
+		setChatBoxState,
+		setOpen,
+		handleSubmit,
+		messagesEndRef,
+		chatInputRef,
+		regionId,
+		locale,
+		config,
+		CHAT_BOX_PANEL_DURATION,
+		chatBoxPanelTransition,
+		tuckAfterOpen,
+		tuckDuration,
+		revealAfterClose,
+		revealDuration,
+		subtitle,
+		streamingAssistantLineId,
+		CHAT_PANEL_WIDTH,
+		ACCENT,
+		CARD_BG,
+		BORDER,
+		SHOW_DELAY_CHAT_BOX,
+		ENTER_DURATION_CHAT_BOX,
+		reduced,
+	};
 };
