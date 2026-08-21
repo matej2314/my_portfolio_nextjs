@@ -42,6 +42,7 @@ export const APP_CONFIG = {
 		enableReadyCheck: true,
 		connectTimeout: 5000,
 		keyPrefix: 'portfolio:',
+		semanticKeyPrefix: 'portfolio:sem:',
 		defaultExpiration: 3600,
 		defaultHost: 'localhost',
 		defaultPort: 6379,
@@ -53,7 +54,7 @@ export const APP_CONFIG = {
 			user: process.env.MAIL_USER,
 			pass: process.env.MAIL_PASS,
 		},
-		to:'contact@msliwowski.net',
+		to: 'contact@msliwowski.net',
 	},
 	analytics: {
 		GA_ID: process.env.GA_ID,
@@ -73,5 +74,23 @@ export const APP_CONFIG = {
 		apiKey: process.env.ANTHROPIC_API_KEY,
 		model: process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-4-5-20250929',
 		maxIterations: Number.parseInt(process.env.ASSISTANT_MAX_ITERATIONS ?? '5'),
+	},
+	assistantCache: {
+		contentVersion: process.env.ASSISTANT_CONTENT_VERSION ?? '1.0.0',
+		ttlSeconds: Number(process.env.ASSISTANT_CACHE_TTL) || 60 * 60 * 24,
+		maxMessageLength: Number(process.env.ASSISTANT_MAX_MESSAGE_LENGTH) || 500,
+		semantic: {
+			enabled: process.env.ASSISTANT_SEMANTIC_CACHE_ENABLED === 'true',
+			similarityThreshold: Number(process.env.ASSISTANT_SEMANTIC_THRESHOLD) || 0.93,
+			circuitFailures: 5,
+			circuitCooldownMs: 60_000,
+		},
+	},
+	ollama: {
+		host: process.env.OLLAMA_BASE_URL || 'http://ollama:11434',
+		embedModel: process.env.OLLAMA_EMBED_MODEL || 'nomic-embed-text',
+		embedTimeoutMs: Number(process.env.OLLAMA_EMBED_TIMEOUT_MS) || 3000,
+		keepAlive: -1 as const,
+		embeddingDimensions: 768,
 	},
 } as const;

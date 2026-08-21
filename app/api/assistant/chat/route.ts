@@ -3,10 +3,7 @@ import { getLocale } from 'next-intl/server';
 import { APP_CONFIG } from '@/config/app.config';
 import { getCache, setCache } from '@/lib/redis/redis';
 import { checkTopic } from '@/lib/assistant/topicGate';
-import {
-	McpToolsUnavailableError,
-	runAssistantLoopStreaming,
-} from '@/lib/assistant/anthropicLoop';
+import { McpToolsUnavailableError, runAssistantLoopStreaming } from '@/lib/assistant/anthropicLoop';
 import { assistantReplyKey } from '@/lib/redis/redisKeys';
 import { cacheLocaleTag } from '@/lib/assistant/cacheLocaleTag';
 import { normalizeHistory } from '@/lib/assistant/normalizeHistory';
@@ -17,6 +14,9 @@ import { getAssistantChatErrorResponse } from '@/lib/assistant/getAssistantChatE
 import { sseResponse } from '@/lib/assistant/sseResponse';
 import { sseData } from '@/lib/assistant/streamSse';
 import { validateAssistantUserMessage } from '@/lib/assistant/validateAssistantUserMessage';
+import { replayCachedReplyStream } from '@/lib/assistant/replayCachedReply';
+import { lookupSemanticReply } from '@/lib/assistant/semantic-cache/lookupSemanticReply';
+import { storeSemanticReply } from '@/lib/assistant/semantic-cache/storeSemanticReply';
 import {
 	observeAssistantResult,
 	incrementAssistantRateLimitRejections,
@@ -25,12 +25,9 @@ import {
 	incrementAssistantCacheMisses,
 	incrementAssistantStreamErrors,
 } from '@/lib/metrics/assistantMetrics';
-
+import { incrementCacheHitKind } from '@/lib/metrics/semanticCacheMetrics';
 import { type ChatRequest, type ChatResponse, type AssistantStreamServerEvent } from '@/lib/assistant/types';
 
-const CONTENT_VERSION = process.env.ASSISTANT_CONTENT_VERSION || '1.0.0';
-const CACHE_TTL = Number(process.env.ASSISTANT_CACHE_TTL) || 60 * 60 * 24;
-const MAX_MESSAGE_LENGTH = Number(process.env.ASSISTANT_MAX_MESSAGE_LENGTH) || 500;
 const SSE_HEADERS = {
 	'Content-Type': 'text/event-stream',
 	'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -39,8 +36,24 @@ const SSE_HEADERS = {
 	'Transfer-Encoding': 'chunked',
 } as const;
 
+const cachedSse = (text: string, kind: 'exact' | 'semantic') => {
+	observeAssistantResult('cache_hit');
+	incrementAssistantCacheHits();
+	incrementCacheHitKind(kind);
+	return sseResponse({
+		stream: replayCachedReplyStream({ text }),
+		status: 200,
+		headers: SSE_HEADERS,
+	});
+};
+
 export async function POST(req: NextRequest) {
 	const redisOn = APP_CONFIG.redis.enabled;
+	const contentVersion = APP_CONFIG.assistantCache.contentVersion;
+	const cacheTtl = APP_CONFIG.assistantCache.ttlSeconds;
+	const maxMessageLength = APP_CONFIG.assistantCache.maxMessageLength;
+	const semanticOn = redisOn && APP_CONFIG.assistantCache.semantic.enabled;
+
 	try {
 		const body: ChatRequest = await req.json();
 		const { message } = body;
@@ -48,7 +61,7 @@ export async function POST(req: NextRequest) {
 
 		const invalidMessage = validateAssistantUserMessage({
 			message,
-			maxMessageLength: MAX_MESSAGE_LENGTH,
+			maxMessageLength,
 		});
 		if (invalidMessage) {
 			observeAssistantResult('validation_error');
@@ -56,7 +69,6 @@ export async function POST(req: NextRequest) {
 		}
 
 		const rateLimit = await consumeAssistantRateLimit(req);
-
 		if (!rateLimit.allowed) {
 			observeAssistantResult('rate_limited');
 			incrementAssistantRateLimitRejections();
@@ -76,43 +88,26 @@ export async function POST(req: NextRequest) {
 
 		const localeTag = cacheLocaleTag(await getLocale());
 		const useCache = redisOn && history.length === 0;
-
-		const cacheKey = assistantReplyKey(CONTENT_VERSION, localeTag, message);
+		const cacheKey = assistantReplyKey(contentVersion, localeTag, message);
 
 		if (useCache) {
-			const cached = await getCache<string>(cacheKey);
-			if (cached) {
-				const started = process.hrtime.bigint();
-				observeAssistantResult('cache_hit');
-				incrementAssistantCacheHits();
-				const stream = new ReadableStream({
-					async start(controller) {
-						try {
-							const chunkSize = 2;
-							const delayMs = 2;
-
-							for (let i = 0; i < cached.length; i += chunkSize) {
-								controller.enqueue(sseData({ type: 'delta', text: cached.slice(i, i + chunkSize) }));
-
-								if (i + chunkSize < cached.length) {
-									await new Promise(resolve => setTimeout(resolve, delayMs));
-								}
-							}
-
-							controller.enqueue(sseData({ type: 'done' }));
-							controller.close();
-						} finally {
-							observeAssistantRequestDuration(Number(process.hrtime.bigint() - started) / 1e9);
-						}
-					},
-				});
-				return sseResponse({ stream, status: 200, headers: SSE_HEADERS });
-			}
-			incrementAssistantCacheMisses();
+			const exact = await getCache<string>(cacheKey);
+			if (exact) return cachedSse(exact, 'exact');
 		}
 
 		const topicCheck = await checkTopic(message);
 		if (!topicCheck.allowed) return handleNotAllowedTopic({ topicCheck, SSE_HEADERS });
+
+		if (useCache && semanticOn) {
+			const semantic = await lookupSemanticReply({
+				message,
+				locale: localeTag,
+				contentVersion,
+			});
+			if (semantic) return cachedSse(semantic.reply, 'semantic');
+		}
+
+		if (useCache) incrementAssistantCacheMisses();
 
 		const stream = new ReadableStream({
 			async start(controller) {
@@ -149,7 +144,15 @@ export async function POST(req: NextRequest) {
 						observeAssistantResult('empty_response');
 					} else {
 						if (useCache) {
-							await setCache(cacheKey, fulltext, CACHE_TTL);
+							await setCache(cacheKey, fulltext, cacheTtl);
+							if (semanticOn) {
+								void storeSemanticReply({
+									message,
+									locale: localeTag,
+									contentVersion,
+									reply: fulltext,
+								});
+							}
 						}
 						observeAssistantResult('success');
 					}
@@ -157,16 +160,13 @@ export async function POST(req: NextRequest) {
 					push({ type: 'done' });
 				} catch (error: unknown) {
 					console.error('[ASSISTANT STREAM ERROR]:', error);
-					const kind =
-						error instanceof McpToolsUnavailableError ? 'mcp_error' : 'llm_error';
+					const kind = error instanceof McpToolsUnavailableError ? 'mcp_error' : 'llm_error';
 					incrementAssistantStreamErrors(kind);
 					observeAssistantResult(kind);
 					push({ type: 'error', error: getAssistantStreamErrorMsg(error) });
 					push({ type: 'done' });
 				} finally {
-					observeAssistantRequestDuration(
-						Number(process.hrtime.bigint() - started) / 1e9,
-					);
+					observeAssistantRequestDuration(Number(process.hrtime.bigint() - started) / 1e9);
 					closeSafe();
 				}
 			},

@@ -18,22 +18,28 @@ export const REDIS_KEYS = {
 	SITEMAP: 'sitemap:xml',
 };
 
+export function assistantMessageHash(message: string): string {
+	return crypto.createHash('sha256').update(message.toLocaleLowerCase().trim()).digest('hex').substring(0, 16);
+}
 
-export function assistantReplyKey(
-	version: string,
-	locale: string,
-	message: string
-): string {
-	const hash = crypto.createHash('sha256')
-		.update(message.toLocaleLowerCase().trim())
-		.digest('hex')
-		.substring(0, 16);
+export function assistantReplyKey(version: string, locale: string, message: string): string {
+	const hash = crypto.createHash('sha256').update(message.toLocaleLowerCase().trim()).digest('hex').substring(0, 16);
 	return `assistant:reply:${version}:${locale}:${hash}`;
 }
 
-export function assistantRateLimitKey(
-	fingerprint: string
-): string {
+export function assistantRateLimitKey(fingerprint: string): string {
 	return `assistant:rl:${fingerprint}`;
 }
 
+export function assistantSemanticReplyKey(prefix: string, versionTag: string, locale: string, message: string): string {
+	const hash = assistantMessageHash(message);
+	return `${prefix}reply:${versionTag}:${locale}:${hash}`;
+}
+
+export function assistantSemanticIndexName(prefix: string): string {
+	return `${prefix}idx:reply`;
+}
+
+export function assistantSemanticDocPrefix(prefix: string): string {
+	return `${prefix}reply:`;
+}

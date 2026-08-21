@@ -11,14 +11,6 @@ export default function ResponseRenderer({ content, isAnimating, className }: Re
 		<Streamdown
 			mode={isAnimating ? 'streaming' : 'static'}
 			parseIncompleteMarkdown
-			isAnimating={isAnimating}
-			animated={{
-				animation: 'fadeIn',
-				duration: 120,
-				easing: 'easeOut',
-				sep: 'char',
-				stagger: 0,
-			}}
 			className={cn(
 				'break-words text-sm leading-relaxed text-slate-200',
 				'[&_p]:m-0 [&_p+p]:mt-2',

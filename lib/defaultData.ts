@@ -1,6 +1,5 @@
 import { type ContactChannelItem } from '@/types/contactChannelTypes';
 import { type FloatingContactData} from '@/types/floatingContactTypes';
-import { firebaserules } from 'googleapis/build/src/apis/firebaserules';
 
 export const defaultData = {
 	auth: {
