@@ -9,7 +9,7 @@ type CvSelectorWrapperProps = {
 
 export default function CvSelectorWrapper({ cvLinksAsMenuItems }: CvSelectorWrapperProps) {
 	return (
-		<div className="absolute left-1/2 top-full z-50 mt-1 -translate-x-1/2">
+		<div className="absolute left-[5%] xl:left-1/2 top-full z-50 mt-[-1%] xl:mt-1 -translate-x-1/2">
 			<CvSelector isOpen={true} cvLinksAsMenuItems={cvLinksAsMenuItems} />
 		</div>
 	);
