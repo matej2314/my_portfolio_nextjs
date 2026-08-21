@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { useTranslations } from 'next-intl';
@@ -38,7 +39,17 @@ export default function MobileMenu({ array }: { array: MenuItem[] }) {
 	const menuToggleRef = useRef<HTMLButtonElement>(null);
 	const menuPanelRef = useRef<HTMLDivElement>(null);
 	const prevMenuOpen = useRef(false);
+	const [portalEl, setPortalEl] = useState<HTMLElement | null>(null);
+	const [portalLock, setPortalLock] = useState(false);
 	const t = useTranslations();
+
+	useLayoutEffect(() => {
+		setPortalEl(document.body);
+	}, []);
+
+	useLayoutEffect(() => {
+		if (isOpen.menu) setPortalLock(true);
+	}, [isOpen.menu]);
 
 	useClickOutside(cvRowRef, () => setIsOpen(prev => ({ ...prev, cv: false })));
 
@@ -105,7 +116,7 @@ export default function MobileMenu({ array }: { array: MenuItem[] }) {
 		}
 	}, []);
 
-	return (
+	const menu = (
 		<section aria-label='Mobile menu' role='navigation' id='mobile-menu-wrapper' className='pointer-events-none'>
 			<div className='pointer-events-auto fixed left-4 top-4 z-[60] flex size-11 items-center justify-center rounded-full border border-line bg-surface-1/80 text-brand backdrop-blur-xl'>
 				<MLetter mode='button' size={26} aria-hidden />
@@ -146,7 +157,7 @@ export default function MobileMenu({ array }: { array: MenuItem[] }) {
 				</span>
 			</button>
 
-			<AnimatePresence>
+			<AnimatePresence onExitComplete={() => setPortalLock(false)}>
 				{isOpen.menu ? (
 					<motion.div
 						ref={menuPanelRef}
@@ -161,7 +172,7 @@ export default function MobileMenu({ array }: { array: MenuItem[] }) {
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
 						transition={{ duration: 0.35, ease: EASE_SPRING }}
-						className='pointer-events-auto fixed inset-0 z-50 overflow-y-auto bg-surface-0/85 px-5 pb-10 pt-24 backdrop-blur-3xl'
+						className='pointer-events-auto fixed inset-0 z-[55] overflow-y-auto bg-surface-0/85 px-5 pb-10 pt-24 backdrop-blur-3xl'
 					>
 						{showLanguageSwitcher ? (
 							<motion.div
@@ -215,4 +226,7 @@ export default function MobileMenu({ array }: { array: MenuItem[] }) {
 			</AnimatePresence>
 		</section>
 	);
+
+	const shouldPortal = Boolean(portalEl) && (isOpen.menu || portalLock);
+	return shouldPortal && portalEl ? createPortal(menu, portalEl) : menu;
 }

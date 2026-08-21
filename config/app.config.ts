@@ -87,7 +87,7 @@ export const APP_CONFIG = {
 		},
 	},
 	ollama: {
-		host: process.env.OLLAMA_BASE_URL || 'http://ollama:11434',
+		host: process.env.OLLAMA_BASE_URL || 'http://ollama-embedding:11434',
 		embedModel: process.env.OLLAMA_EMBED_MODEL || 'nomic-embed-text',
 		embedTimeoutMs: Number(process.env.OLLAMA_EMBED_TIMEOUT_MS) || 3000,
 		keepAlive: -1 as const,
