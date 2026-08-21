@@ -91,6 +91,6 @@ export const APP_CONFIG = {
 		embedModel: process.env.OLLAMA_EMBED_MODEL || 'nomic-embed-text',
 		embedTimeoutMs: Number(process.env.OLLAMA_EMBED_TIMEOUT_MS) || 3000,
 		keepAlive: -1 as const,
-		embeddingDimensions: 768,
+		embeddingDimensions: 1024,
 	},
 } as const;
