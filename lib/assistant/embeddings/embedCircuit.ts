@@ -12,7 +12,7 @@ export function recordEmbedSuccess(): void {
 }
 
 export function recordEmbedFailure(): void {
-	failures == 1;
+	failures += 1;
 	const { circuitFailures, circuitCooldownMs } = APP_CONFIG.assistantCache.semantic;
 	if (failures >= circuitFailures) {
 		openUtilMs = Date.now() + circuitCooldownMs;

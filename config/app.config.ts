@@ -88,7 +88,7 @@ export const APP_CONFIG = {
 	},
 	ollama: {
 		host: process.env.OLLAMA_BASE_URL || 'http://ollama-embedding:11434',
-		embedModel: process.env.OLLAMA_EMBED_MODEL || 'mxbai-embed-large',
+		embedModel: process.env.OLLAMA_EMBED_MODEL || 'qwen3-embedding:0.6b',
 		embedTimeoutMs: Number(process.env.OLLAMA_EMBED_TIMEOUT_MS) || 3000,
 		keepAlive: -1 as const,
 		embeddingDimensions: 1024,

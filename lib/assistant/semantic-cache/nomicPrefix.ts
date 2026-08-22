@@ -1,1 +1,1 @@
-export const withNomicQueryPrefix = (text: string): string => `search_query:${text.trim()}`;
+export const withNomicQueryPrefix = (text: string): string => text.trim();

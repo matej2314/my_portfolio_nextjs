@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse, after } from 'next/server';
 import { getLocale } from 'next-intl/server';
 import { APP_CONFIG } from '@/config/app.config';
 import { getCache, setCache } from '@/lib/redis/redis';
@@ -17,14 +17,7 @@ import { validateAssistantUserMessage } from '@/lib/assistant/validateAssistantU
 import { replayCachedReplyStream } from '@/lib/assistant/replayCachedReply';
 import { lookupSemanticReply } from '@/lib/assistant/semantic-cache/lookupSemanticReply';
 import { storeSemanticReply } from '@/lib/assistant/semantic-cache/storeSemanticReply';
-import {
-	observeAssistantResult,
-	incrementAssistantRateLimitRejections,
-	incrementAssistantCacheHits,
-	observeAssistantRequestDuration,
-	incrementAssistantCacheMisses,
-	incrementAssistantStreamErrors,
-} from '@/lib/metrics/assistantMetrics';
+import { observeAssistantResult, incrementAssistantRateLimitRejections, incrementAssistantCacheHits, observeAssistantRequestDuration, incrementAssistantCacheMisses, incrementAssistantStreamErrors } from '@/lib/metrics/assistantMetrics';
 import { incrementCacheHitKind } from '@/lib/metrics/semanticCacheMetrics';
 import { type ChatRequest, type ChatResponse, type AssistantStreamServerEvent } from '@/lib/assistant/types';
 
@@ -146,12 +139,14 @@ export async function POST(req: NextRequest) {
 						if (useCache) {
 							await setCache(cacheKey, fulltext, cacheTtl);
 							if (semanticOn) {
-								void storeSemanticReply({
-									message,
-									locale: localeTag,
-									contentVersion,
-									reply: fulltext,
-								});
+								after(() =>
+									storeSemanticReply({
+										message,
+										locale: localeTag,
+										contentVersion,
+										reply: fulltext,
+									}),
+								);
 							}
 						}
 						observeAssistantResult('success');
