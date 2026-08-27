@@ -88,17 +88,19 @@ export async function POST(req: NextRequest) {
 			if (exact) return cachedSse(exact, 'exact');
 		}
 
-		const topicCheck = await checkTopic(message);
-		if (!topicCheck.allowed) return handleNotAllowedTopic({ topicCheck, SSE_HEADERS });
-
+		let semanticQueryVector: number[] | undefined;
 		if (useCache && semanticOn) {
 			const semantic = await lookupSemanticReply({
 				message,
 				locale: localeTag,
 				contentVersion,
 			});
-			if (semantic) return cachedSse(semantic.reply, 'semantic');
+			if (semantic.hit) return cachedSse(semantic.hit.reply, 'semantic');
+			semanticQueryVector = semantic.queryVector;
 		}
+
+		const topicCheck = await checkTopic(message);
+		if (!topicCheck.allowed) return handleNotAllowedTopic({ topicCheck, SSE_HEADERS });
 
 		if (useCache) incrementAssistantCacheMisses();
 
@@ -133,7 +135,7 @@ export async function POST(req: NextRequest) {
 					});
 
 					if (!fulltext || fulltext.trim() === '') {
-						push({ type: 'error', error: 'Assistatnt returned an empty response' });
+						push({ type: 'error', error: 'Assistant returned an empty response' });
 						observeAssistantResult('empty_response');
 					} else {
 						if (useCache) {
@@ -145,6 +147,7 @@ export async function POST(req: NextRequest) {
 										locale: localeTag,
 										contentVersion,
 										reply: fulltext,
+										queryVector: semanticQueryVector,
 									}),
 								);
 							}

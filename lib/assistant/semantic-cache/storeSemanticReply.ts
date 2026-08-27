@@ -4,7 +4,7 @@ import { isEmbedCircuitOpen } from '@/lib/assistant/embeddings/embedCircuit';
 import { assistantSemanticReplyKey } from '@/lib/redis/redisKeys';
 import { semanticHsetExpire, semanticRedisEnabled } from '@/lib/redis/semanticRedis';
 import { ensureSemanticIndex } from './ensureIndex';
-import { withNomicQueryPrefix } from './nomicPrefix';
+import { withEmbedDocumentPrefix } from './embedModelPrefix';
 import { toRedisTag } from './tagSafe';
 import { float32Buffer } from './vectorCodec';
 
@@ -13,6 +13,8 @@ type StoreInput = {
 	locale: string;
 	contentVersion: string;
 	reply: string;
+	/** Reuse vector from lookup on miss; only safe when embedPrefixMode is `none`. */
+	queryVector?: number[];
 };
 
 export async function storeSemanticReply(input: StoreInput): Promise<void> {
@@ -21,7 +23,11 @@ export async function storeSemanticReply(input: StoreInput): Promise<void> {
 	const indexed = await ensureSemanticIndex();
 	if (!indexed) return;
 
-	const vector = await ollamaEmbedder.embed(withNomicQueryPrefix(input.message));
+	const canReuseQueryVector = APP_CONFIG.assistantCache.semantic.embedPrefixMode === 'none';
+	const vector =
+		canReuseQueryVector && input.queryVector
+			? input.queryVector
+			: await ollamaEmbedder.embed(withEmbedDocumentPrefix(input.message));
 	if (!vector) return;
 
 	const prefix = APP_CONFIG.redis.semanticKeyPrefix;

@@ -3,7 +3,18 @@ import { assistantSemanticDocPrefix, assistantSemanticIndexName } from '@/lib/re
 import { getSemanticRedis, semanticRedisEnabled } from '@/lib/redis/semanticRedis';
 import logger from '@/lib/winston.config';
 
-let ensurePromise: Promise<boolean> | null = null;
+/** Cooldown before retrying index ensure after a failure (self-healing). */
+const ENSURE_RETRY_COOLDOWN_MS = 30_000;
+
+type EnsureState = {
+	ensurePromise: Promise<boolean> | null;
+	lastFailureAt: number | null;
+};
+
+const state: EnsureState = {
+	ensurePromise: null,
+	lastFailureAt: null,
+};
 
 const createIndex = async (): Promise<boolean> => {
 	const redis = getSemanticRedis();
@@ -35,6 +46,25 @@ const createIndex = async (): Promise<boolean> => {
 
 export const ensureSemanticIndex = (): Promise<boolean> => {
 	if (!semanticRedisEnabled()) return Promise.resolve(false);
-	if (!ensurePromise) ensurePromise = createIndex();
-	return ensurePromise;
+
+	if (state.ensurePromise) return state.ensurePromise;
+
+	if (state.lastFailureAt !== null) {
+		const elapsed = Date.now() - state.lastFailureAt;
+		if (elapsed < ENSURE_RETRY_COOLDOWN_MS) {
+			return Promise.resolve(false);
+		}
+	}
+
+	state.ensurePromise = createIndex().then(ok => {
+		if (ok) {
+			state.lastFailureAt = null;
+			return true;
+		}
+		state.ensurePromise = null;
+		state.lastFailureAt = Date.now();
+		return false;
+	});
+
+	return state.ensurePromise;
 };

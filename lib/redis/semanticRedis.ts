@@ -39,13 +39,32 @@ export async function semanticHsetExpire(
 ): Promise<boolean> {
 	if (!semanticRedis) return false;
 	const started = process.hrtime.bigint();
+	const elapsedSec = () => Number(process.hrtime.bigint() - started) / 1e9;
 	try {
-		await semanticRedis.hset(key, fields);
-		await semanticRedis.expire(key, ttlSeconds);
-		observeSemanticRedisOp('hset', 'ok', Number(process.hrtime.bigint() - started) / 1e9);
+		const results = await semanticRedis.multi().hset(key, fields).expire(key, ttlSeconds).exec();
+		if (!results) {
+			observeSemanticRedisOp('hset', 'error', elapsedSec());
+			return logErrAndReturn(`Semantic Redis HSET/EXPIRE ${key}:`, new Error('MULTI/EXEC discarded'), false);
+		}
+
+		const [hsetReply, expireReply] = results;
+		const hsetErr = hsetReply?.[0];
+		const expireErr = expireReply?.[0];
+		if (hsetErr || expireErr) {
+			observeSemanticRedisOp('hset', 'error', elapsedSec());
+			return logErrAndReturn(`Semantic Redis HSET/EXPIRE ${key}:`, hsetErr ?? expireErr, false);
+		}
+
+		// EXPIRE returns 1 when TTL was set; 0 means the key was missing — treat as failure.
+		if (expireReply?.[1] !== 1) {
+			observeSemanticRedisOp('hset', 'error', elapsedSec());
+			return logErrAndReturn(`Semantic Redis HSET/EXPIRE ${key}:`, new Error('EXPIRE did not set TTL'), false);
+		}
+
+		observeSemanticRedisOp('hset', 'ok', elapsedSec());
 		return true;
 	} catch (error) {
-		observeSemanticRedisOp('hset', 'error', Number(process.hrtime.bigint() - started) / 1e9);
+		observeSemanticRedisOp('hset', 'error', elapsedSec());
 		return logErrAndReturn(`Semantic Redis HSET/EXPIRE ${key}:`, error, false);
 	}
 }

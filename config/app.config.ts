@@ -1,3 +1,5 @@
+const DEFAULT_SEMANTIC_SIMILARITY_THRESHOLD = 0.93;
+
 export const APP_CONFIG = {
 	nodeEnv: process.env.NODE_ENV,
 	metrics: {
@@ -81,7 +83,9 @@ export const APP_CONFIG = {
 		maxMessageLength: Number(process.env.ASSISTANT_MAX_MESSAGE_LENGTH) || 500,
 		semantic: {
 			enabled: process.env.ASSISTANT_SEMANTIC_CACHE_ENABLED === 'true',
-			similarityThreshold: Number(process.env.ASSISTANT_SEMANTIC_THRESHOLD) || 0.93,
+			defaultSimilarityThreshold: DEFAULT_SEMANTIC_SIMILARITY_THRESHOLD,
+			similarityThreshold: Number(process.env.ASSISTANT_SEMANTIC_THRESHOLD) || DEFAULT_SEMANTIC_SIMILARITY_THRESHOLD,
+			embedPrefixMode: process.env.ASSISTANT_EMBED_PREFIX_MODE === 'query_document' ? 'query_document' : 'none',
 			circuitFailures: 5,
 			circuitCooldownMs: 60_000,
 		},

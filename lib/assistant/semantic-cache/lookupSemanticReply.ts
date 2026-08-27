@@ -5,7 +5,7 @@ import { assistantSemanticIndexName } from '@/lib/redis/redisKeys';
 import { semanticCall, semanticRedisEnabled } from '@/lib/redis/semanticRedis';
 import { assistantSemanticDistance, incrementSemanticLookup } from '@/lib/metrics/semanticCacheMetrics';
 import { ensureSemanticIndex } from './ensureIndex';
-import { withNomicQueryPrefix } from './nomicPrefix';
+import { withEmbedQueryPrefix } from './embedModelPrefix';
 import { parseFtSearchKnn } from './parseFtSearch';
 import { toRedisTag } from './tagSafe';
 import { float32Buffer, maxCosineDistance } from './vectorCodec';
@@ -16,32 +16,38 @@ export type SemanticHit = {
 	similarity: number;
 };
 
+export type LookupResult = {
+	hit: SemanticHit | null;
+	/** Embedding computed during lookup; reuse on miss to avoid a second embed call. */
+	queryVector?: number[];
+};
+
 type LookupInput = {
 	message: string;
 	locale: string;
 	contentVersion: string;
 };
 
-export async function lookupSemanticReply(input: LookupInput): Promise<SemanticHit | null> {
+export async function lookupSemanticReply(input: LookupInput): Promise<LookupResult> {
 	if (!semanticRedisEnabled()) {
 		incrementSemanticLookup('skipped_disabled');
-		return null;
+		return { hit: null };
 	}
 	if (isEmbedCircuitOpen()) {
 		incrementSemanticLookup('skipped_circuit');
-		return null;
+		return { hit: null };
 	}
 
 	const indexed = await ensureSemanticIndex();
 	if (!indexed) {
 		incrementSemanticLookup('error');
-		return null;
+		return { hit: null };
 	}
 
-	const vector = await ollamaEmbedder.embed(withNomicQueryPrefix(input.message));
+	const vector = await ollamaEmbedder.embed(withEmbedQueryPrefix(input.message));
 	if (!vector) {
 		incrementSemanticLookup('error');
-		return null;
+		return { hit: null };
 	}
 
 	const prefix = APP_CONFIG.redis.semanticKeyPrefix;
@@ -56,22 +62,25 @@ export async function lookupSemanticReply(input: LookupInput): Promise<SemanticH
 	const neighbour = parseFtSearchKnn(raw);
 	if (!neighbour) {
 		incrementSemanticLookup('miss');
-		return null;
+		return { hit: null, queryVector: vector };
 	}
 
 	assistantSemanticDistance.observe(neighbour.dist);
 
 	const threshold = APP_CONFIG.assistantCache.semantic.similarityThreshold;
-	const limit = maxCosineDistance(Number.isFinite(threshold) ? threshold : 0.93);
+	const fallback = APP_CONFIG.assistantCache.semantic.defaultSimilarityThreshold;
+	const limit = maxCosineDistance(Number.isFinite(threshold) ? threshold : fallback);
 	if (neighbour.dist > limit) {
 		incrementSemanticLookup('miss');
-		return null;
+		return { hit: null, queryVector: vector };
 	}
 
 	incrementSemanticLookup('hit');
 	return {
-		reply: neighbour.reply,
-		dist: neighbour.dist,
-		similarity: 1 - neighbour.dist,
+		hit: {
+			reply: neighbour.reply,
+			dist: neighbour.dist,
+			similarity: 1 - neighbour.dist,
+		},
 	};
 }
