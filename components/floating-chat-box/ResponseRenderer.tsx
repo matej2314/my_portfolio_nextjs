@@ -18,7 +18,7 @@ export default function ResponseRenderer({ content, isAnimating, className }: Re
 				'[&_ol]:my-2 [&_ol]:list-decimal [&_ol]:pl-4',
 				'[&_li]:my-0.5',
 				'[&_strong]:font-semibold [&_strong]:text-slate-100',
-				'[&_a]:underline [&_a]:text-slate-100',
+				'[&_[data-streamdown=link]]:text-slate-100 [&_[data-streamdown=link]]:underline',
 				'[&_h1]:mt-2 [&_h1]:mb-1 [&_h1]:text-base [&_h1]:font-semibold',
 				'[&_h2]:mt-2 [&_h2]:mb-1 [&_h2]:text-base [&_h2]:font-semibold',
 				'[&_h3]:mt-2 [&_h3]:mb-1 [&_h3]:text-sm [&_h3]:font-semibold',

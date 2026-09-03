@@ -8,11 +8,12 @@ import { useFloatingChatBox } from '@/hooks/useFloatingChatBox';
 import { useFloatingPanels } from '@/context/FloatingPanelsContext';
 
 import { cn } from '@/lib/utils/utils';
+import { defaultData } from '@/lib/defaultData';
 import ResponseRenderer from '@/components/floating-chat-box/ResponseRenderer';
 import { ChatStatusMessages } from '@/components/floating-chat-box/ChatStatusMessages';
 import FloatingBoxHeader from '@/components/ui/elements/floating-boxes/FloatingBoxHeader';
 import FloatingBoxLayout from '@/components/ui/elements/floating-boxes/FloatingBoxLayout';
-import { refusalCopy } from '@/lib/assistant/refusalCopy';
+import { refusalContactHeading, refusalCopy, refusalExamplesHeading } from '@/lib/assistant/refusalCopy';
 
 export default function FloatingChatBox() {
 	const panels = useFloatingPanels();
@@ -51,6 +52,10 @@ export default function FloatingChatBox() {
 
 	const openBox = () => (panels ? panels.openChat() : setOpen(true));
 	const closeBox = () => (panels ? panels.close() : setOpen(false));
+
+	const contactRows = defaultData.floatingBoxesData.contactRows;
+	const emailContact = contactRows.find(row => row.kind === 'email');
+	const phoneContact = contactRows.find(row => row.kind === 'phone');
 
 	return (
 		<FloatingBoxLayout
@@ -112,6 +117,35 @@ export default function FloatingChatBox() {
 										<li key={topic}>{topic}</li>
 									))}
 								</ul>
+							)}
+							{line.exampleQuestions && Object.keys(line.exampleQuestions).length > 0 && (
+								<div className='flex flex-col gap-1.5'>
+									<p className='text-xs font-medium text-slate-300'>{refusalExamplesHeading(locale)}</p>
+									{Object.entries(line.exampleQuestions).map(([topic, questions]) => (
+										<div key={topic} className='flex flex-col gap-0.5'>
+											<p className='text-xs text-slate-400'>{topic}</p>
+											<ul className='list-inside list-disc text-xs text-slate-400'>
+												{questions.map(question => (
+													<li key={question}>{question}</li>
+												))}
+											</ul>
+										</div>
+									))}
+								</div>
+							)}
+							{(phoneContact || emailContact) && (
+								<div className='flex flex-col gap-1 pt-0.5'>
+									<p className='text-xs font-medium text-slate-300'>{refusalContactHeading(locale)}</p>
+									{phoneContact && <p className='text-xs text-slate-200'>{phoneContact.value}</p>}
+									{emailContact?.href && (
+										<a
+											href={emailContact.href}
+											className='w-fit text-xs text-slate-200 underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-0'
+										>
+											{emailContact.value}
+										</a>
+									)}
+								</div>
 							)}
 						</div>
 					) : (

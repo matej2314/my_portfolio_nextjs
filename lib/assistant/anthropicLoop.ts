@@ -2,8 +2,7 @@ import Anthropic from '@anthropic-ai/sdk';
 
 import { getLocale } from 'next-intl/server';
 import { assertAllowedToolName, callTool, withMcpClient, getPortfolioTools } from '../mcp/client';
-import { injectAsOfDate } from './asOfDate';
-import { SYSTEM_PROMPTS, type AssistantLocale, toolResultPrefix, wrapUserContentForModel } from './prompts';
+import { prepareSystemPrompt, type AssistantLocale, toolResultPrefix, wrapUserContentForModel } from './prompts';
 
 import { APP_CONFIG } from '@/config/app.config';
 import {
@@ -124,7 +123,7 @@ export async function runAssistantLoopStreaming(
 		});
 
 		const messages = buildMessagesFromHistory(prior, userMessage, loc);
-		const system = injectAsOfDate(SYSTEM_PROMPTS[loc]);
+		const system = prepareSystemPrompt(loc);
 
 		for (let i = 0; i < MAX_ITERATIONS; i++) {
 			const toolChoice = i === 0 ? ({ type: 'any' } as const) : ({ type: 'auto' } as const);
