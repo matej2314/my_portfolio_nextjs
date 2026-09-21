@@ -51,34 +51,6 @@ function TrackChrome({
 					style={{ width: `${progress}%` }}
 				/>
 			</div>
-			<div className='flex items-center gap-2'>
-				<button
-					type='button'
-					aria-label={prevLabel}
-					onClick={() => api?.scrollPrev()}
-					className={cn(
-						'flex size-10 items-center justify-center rounded-full border border-line bg-surface-1/70 text-ink-1',
-						'transition-[border-color,color,transform] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]',
-						'hover:border-brand-line hover:text-brand active:scale-[0.96]',
-						'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/60',
-					)}
-				>
-					<Icon icon='ph:arrow-left-light' width={18} height={18} aria-hidden />
-				</button>
-				<button
-					type='button'
-					aria-label={nextLabel}
-					onClick={() => api?.scrollNext()}
-					className={cn(
-						'flex size-10 items-center justify-center rounded-full border border-line bg-surface-1/70 text-ink-1',
-						'transition-[border-color,color,transform] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]',
-						'hover:border-brand-line hover:text-brand active:scale-[0.96]',
-						'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/60',
-					)}
-				>
-					<Icon icon='ph:arrow-right-light' width={18} height={18} aria-hidden />
-				</button>
-			</div>
 		</div>
 	);
 }
