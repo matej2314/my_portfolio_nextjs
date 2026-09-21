@@ -122,11 +122,13 @@ export async function saveProject(prevState: ReturnedType, formData: FormData): 
 	}
 }
 
-export async function updateProject(prevState: ReturnedType, formData: FormData, clearExisting: boolean = false): Promise<ReturnedType> {
+export async function updateProject(prevState: ReturnedType, formData: FormData): Promise<ReturnedType> {
 	try {
 		const auth = await requireActionsAuth('updateProject');
 
 		if (!auth.success) return logErrAndReturn('updateProject', auth.error, { success: false, error: 'Authentication failed' });
+
+		const clearExisting = formData.has('clear_existing');
 
 		const { mainFiles, galleryFiles } = extractProjectImages(formData);
 		const projectTxtData = projectObjectForValidation(formData);

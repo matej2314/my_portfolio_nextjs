@@ -3,7 +3,7 @@
 import { useState, useActionState } from "react";
 
 import { saveProject, updateProject } from "@/actions/projects";
-import { getSubmitFunctionWithParams } from "@/lib/utils/getSubmitFunction"
+import { getSubmitFunction } from "@/lib/utils/getSubmitFunction"
 
 import LabelElement from "@/components/ui/elements/LabelElement"
 import InputElement from "@/components/ui/elements/InputElement"
@@ -34,14 +34,13 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
         selectedDifficulty: projectData?.difficulty as string || '',
         selectedTab: 'basic'
     });
-    const [clearExisting, setClearExisting] = useState<boolean>(false);
     const { dateInputRef, handleDateInputClick } = useDatePicker();
     const defaultState = defaultData.returnedTypeDefault as ReturnedType;
 
-    const submitFunction = getSubmitFunctionWithParams({
-        create: (prevState: ReturnedType, formData: FormData) => saveProject(prevState, formData),
-        edit: (prevState: ReturnedType, formData: FormData) => updateProject(prevState, formData, clearExisting)
-    }, mode, clearExisting);
+    const submitFunction = getSubmitFunction({
+        create: saveProject,
+        edit: updateProject,
+    }, mode);
 
     const [state, formAction] = useActionState(submitFunction, defaultState)
 
@@ -130,8 +129,7 @@ export default function ProjectForm({ projectData, mode = 'create' }: ProjectFor
                             <SwitchElement
                                 id="clear_existing"
                                 name="clear_existing"
-                                checked={clearExisting}
-                                onChange={() => setClearExisting(!clearExisting)}
+                                checked={false}
                                 label="Clear existing project files"
                                 labelPosition="right"
                                 size="md"

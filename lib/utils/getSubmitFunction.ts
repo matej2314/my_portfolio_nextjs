@@ -1,5 +1,5 @@
 import { type ReturnedType } from '@/types/actionsTypes/actionsTypes';
-import { type FormMode, type SubmitFunction, type SubmitCallbacks, type ExtendedSubmitFunction } from '@/types/utils/get-submit-function';
+import { type FormMode, type SubmitFunction, type SubmitCallbacks } from '@/types/utils/get-submit-function';
 
 export const isSupportedFormMode = (mode: string): mode is FormMode => {
 	return mode === 'create' || mode === 'edit';
@@ -23,14 +23,3 @@ export const getSubmitFunction = (callbacks: SubmitCallbacks, mode: FormMode): S
 	return submitFunction;
 };
 
-export const getSubmitFunctionWithParams = (callbacks: SubmitCallbacks, mode: FormMode, clearExisting: boolean = false): SubmitFunction => {
-	const baseFunction = getSubmitFunction(callbacks, mode);
-
-	return (prevState: ReturnedType, formData: FormData): Promise<ReturnedType> => {
-		if (mode === 'edit' && clearExisting !== undefined) {
-			return (baseFunction as ExtendedSubmitFunction)(prevState, formData, clearExisting);
-		}
-
-		return baseFunction(prevState, formData);
-	};
-};
