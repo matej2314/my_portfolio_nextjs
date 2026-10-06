@@ -52,7 +52,7 @@ function CourseCard({
 		>
 			<div
 				ref={cardRef}
-				className='spotlight flex flex-col gap-3 rounded-[var(--radius-core)] border border-line-soft bg-surface-2 p-5 shadow-inner-top'
+				className='spotlight h-full flex flex-col gap-3 rounded-[var(--radius-core)] border border-line-soft bg-surface-2 p-5 shadow-inner-top'
 			>
 				<p className='font-mono text-[0.6875rem] uppercase tracking-[0.16em] text-ink-3'>
 					{courseYear(course)}
