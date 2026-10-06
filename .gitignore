@@ -47,4 +47,5 @@ logs
 .gitignore
 .gitignore
 docs/documentation.md
+graphify-out/
 
