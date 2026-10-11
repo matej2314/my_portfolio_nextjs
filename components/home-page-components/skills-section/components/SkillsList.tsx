@@ -34,8 +34,8 @@ export default function SkillsList({ competenciesList }: { competenciesList: Ski
 					aria-label={t('competenciesSubsectionTitle')}
 				>
 					{competenciesList.map((competency, index) => (
-						<motion.li key={competency.id} variants={itemVariants} className='grid grid-cols-[auto_1fr] gap-4'>
-							<span className='font-mono text-xs tabular-nums text-ink-3'>
+						<motion.li key={competency.id} variants={itemVariants} className='grid grid-cols-[auto_1fr] gap-4 items-center'>
+							<span className='font-mono text-[14px] tabular-nums text-ink-3 flex'>
 								{String(index + 1).padStart(2, '0')}
 							</span>
 							<span className='text-[15px] leading-relaxed text-ink-0 xl:text-base'>
