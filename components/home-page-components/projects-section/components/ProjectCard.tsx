@@ -52,7 +52,7 @@ export const ProjectCard = ({ slide, openLabel }: { slide: ProjectSlide; openLab
 			>
 				<div
 					ref={shellRef}
-					className='spotlight relative overflow-hidden rounded-[var(--radius-shell)] border border-line bg-surface-1/50 p-1.5 shadow-ambient transition-[border-color,transform] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-0.5 group-hover:border-brand-line'
+					className='spotlight relative overflow-hidden rounded-[var(--radius-shell)] border border-line bg-surface-1/50 p-1.5 shadow-ambient transition-[border-color] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:border-brand-line'
 				>
 					<div className='overflow-hidden rounded-[var(--radius-core)] border border-line-soft bg-surface-2 shadow-inner-top'>
 						<div className='relative aspect-[16/10] w-full overflow-hidden'>
@@ -81,7 +81,7 @@ export const ProjectCard = ({ slide, openLabel }: { slide: ProjectSlide; openLab
 								<h3 className='font-display text-xl font-medium tracking-tight text-ink-0'>
 									{project.project_name}
 								</h3>
-								<span className='flex size-9 shrink-0 items-center justify-center rounded-full border border-line text-ink-2 transition-[transform,border-color,color] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:-translate-y-px group-hover:border-brand-line group-hover:text-brand'>
+								<span className='flex size-9 shrink-0 items-center justify-center rounded-full border border-line text-ink-2 transition-[border-color,color] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:border-brand-line group-hover:text-brand'>
 									<Icon icon='ph:arrow-up-right-light' width={16} height={16} aria-hidden />
 								</span>
 							</div>

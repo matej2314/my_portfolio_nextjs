@@ -134,7 +134,9 @@ export const ProjectsTrack = ({
 	}
 
 	return (
-		<div className='w-full min-w-0'>
+		// xl:pr-12 insets Embla to SectionBody width — cancels ProjectsGrid bleed (xl:-mr-12)
+		// so containScroll end-stop keeps the last card fully inside the overflow clip
+		<div className='w-full min-w-0 xl:pr-12'>
 			<Carousel
 				setApi={setApi}
 				className='w-full min-w-0 outline-none'
