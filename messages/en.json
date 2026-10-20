@@ -211,12 +211,12 @@
 	},
 	"references": {
 		"referencesText": "References available on request.",
-		"jsonCrew": "References from JSON Crew company",
-		"download": "Download",
-		"backToHome": "Back to home page",
+		"jsonCrew": "Reference from JSON Crew",
+		"download": "Download document",
+		"backToHome": "Back to homepage",
 		"issuer": "JSON Crew",
-		"documentMeta": "Employment reference · PDF",
-		"lead": "Official reference letter confirming collaboration and responsibilities. Download the signed PDF below.",
+		"documentMeta": "Professional reference · PDF",
+		"lead": "A reference letter from JSON Crew confirming the collaboration, responsibilities, and nature of the work delivered. You can download the signed PDF below.",
 		"downloading": "Downloading…"
 	}
 }
