@@ -132,6 +132,7 @@ export async function POST(req: NextRequest) {
 					const fulltext = await runAssistantLoopStreaming(message.trim(), {
 						history,
 						onTextDelta: chunk => push({ type: 'delta', text: chunk }),
+						onStatus: phase => push({ type: 'status', phase }),
 					});
 
 					if (!fulltext || fulltext.trim() === '') {

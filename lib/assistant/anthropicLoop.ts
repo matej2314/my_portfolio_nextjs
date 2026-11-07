@@ -21,7 +21,7 @@ import {
   incrementAssistantTokensTotal,
 } from "@/lib/metrics/assistantMetrics";
 
-import { type ChatHistoryTurn } from "./types";
+import { type AssistantStatusPhase, type ChatHistoryTurn } from "./types";
 import { type Client } from "@modelcontextprotocol/sdk/client";
 
 const MODEL = APP_CONFIG.assistantConfig.model;
@@ -131,6 +131,7 @@ export async function runAssistantLoopStreaming(
   options: {
     history?: ChatHistoryTurn[];
     onTextDelta: (chunk: string) => void;
+    onStatus: (phase: AssistantStatusPhase) => void;
   },
 ): Promise<string> {
   const loc = await resolveLocale();
@@ -177,10 +178,6 @@ export async function runAssistantLoopStreaming(
           output_config: { effort: EFFORT },
         });
 
-        stream.on("text", (textDelta: string) => {
-          options.onTextDelta(textDelta);
-        });
-
         return stream.finalMessage();
       });
 
@@ -198,9 +195,14 @@ export async function runAssistantLoopStreaming(
 
       if (toolUses.length === 0) {
         assistantLlmIterations.observe(i + 1);
-        const text = joinAssistantTextBlocks(finalMessage.content);
-        return text || "Przepraszam, nie mogę odpowiedzieć na Twoje pytanie.";
+        const text =
+          joinAssistantTextBlocks(finalMessage.content) ||
+          "Przepraszam, nie mogę odpowiedzieć na Twoje pytanie.";
+        options.onTextDelta(text);
+        return text;
       }
+
+      options.onStatus("searching");
 
       const prefix = toolResultPrefix(loc);
 
@@ -251,6 +253,8 @@ export async function runAssistantLoopStreaming(
         role: "user",
         content: toolResults,
       });
+
+      options.onStatus("composing");
     }
 
     throw new Error("Max iterations reached without a response");

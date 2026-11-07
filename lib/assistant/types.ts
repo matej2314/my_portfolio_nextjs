@@ -35,7 +35,9 @@ interface RejectedChatLine {
 
 export type ChatLine = PosChatLine | RejectedChatLine;
 
-export type AssistantStreamServerEvent = { type: 'delta'; text: string } | { type: 'done' } | { type: 'error'; error: string } | {type: 'rejected', topics: string[], exampleQuestions?: Record<string, string[]>};
+export type AssistantStatusPhase = 'searching' | 'composing';
+
+export type AssistantStreamServerEvent = { type: 'delta'; text: string } | { type: 'status'; phase: AssistantStatusPhase } | { type: 'done' } | { type: 'error'; error: string } | {type: 'rejected', topics: string[], exampleQuestions?: Record<string, string[]>};
 
 export interface ResponseRendererProps {
 	content: string;

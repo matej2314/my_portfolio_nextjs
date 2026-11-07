@@ -25,6 +25,7 @@ export const useFloatingChatBox = (options?: { controlledOpen?: boolean; onOpenC
 		lines: [],
 		input: '',
 		loading: false,
+		statusPhase: null,
 		error: null,
 	});
 
@@ -110,6 +111,7 @@ export const useFloatingChatBox = (options?: { controlledOpen?: boolean; onOpenC
 			input: '',
 			lines: [...prev.lines, { id: userId, role: 'user', text }],
 			loading: true,
+			statusPhase: null,
 		}));
 
 		const history = buildChatHistory(chatBoxState.lines);
@@ -158,7 +160,11 @@ export const useFloatingChatBox = (options?: { controlledOpen?: boolean; onOpenC
 								const event = JSON.parse(jsonStr) as AssistantStreamServerEvent;
 								switch (event.type) {
 									case 'delta':
+										setChatBoxState(prev => (prev.statusPhase === null ? prev : { ...prev, statusPhase: null }));
 										typewriter.appendDelta(event.text);
+										break;
+									case 'status':
+										setChatBoxState(prev => ({ ...prev, statusPhase: event.phase }));
 										break;
 									case 'done':
 										typewriter.markDone();

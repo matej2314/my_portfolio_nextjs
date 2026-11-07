@@ -107,7 +107,7 @@ export default function FloatingChatBox() {
 						{locale === 'pl' ? 'Zadaj pytanie o projekty, umiejętności lub doświadczenie.' : 'Ask about projects, skills, or experience.'}
 					</p>
 				)}
-				{chatBoxState.lines.map(line =>
+				{chatBoxState.lines.filter(line => line.role !== 'assistant' || line.text !== '').map(line =>
 					line.role === 'rejected' ? (
 						<div key={line.id} className='flex flex-col gap-2 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2.5 text-sm text-slate-200'>
 							<p>{refusalCopy(locale)}</p>
