@@ -74,8 +74,14 @@ export const APP_CONFIG = {
 	},
 	assistantConfig: {
 		apiKey: process.env.ANTHROPIC_API_KEY,
-		model: process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-4-5-20250929',
+		model: process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-5-5',
 		maxIterations: Number.parseInt(process.env.ASSISTANT_MAX_ITERATIONS ?? '5'),
+		/** Sonnet 5.5 + thinking.between_tools: tylko low|medium|high (xhigh/max → 400). */
+		effort: ((): 'low' | 'medium' | 'high' => {
+			const raw = process.env.ASSISTANT_EFFORT;
+			if (raw === 'low' || raw === 'medium' || raw === 'high') return raw;
+			return 'medium';
+		})(),
 	},
 	assistantCache: {
 		contentVersion: process.env.ASSISTANT_CONTENT_VERSION ?? '1.0.0',

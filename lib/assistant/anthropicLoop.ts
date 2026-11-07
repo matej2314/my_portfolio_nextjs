@@ -1,206 +1,258 @@
-import Anthropic from '@anthropic-ai/sdk';
+import Anthropic from "@anthropic-ai/sdk";
 
-import { getLocale } from 'next-intl/server';
-import { assertAllowedToolName, callTool, withMcpClient, getPortfolioTools } from '../mcp/client';
-import { prepareSystemPrompt, type AssistantLocale, toolResultPrefix, wrapUserContentForModel } from './prompts';
-
-import { APP_CONFIG } from '@/config/app.config';
+import { getLocale } from "next-intl/server";
 import {
-	assistantLlmIterations,
-	assistantLlmRetriesTotal,
-	incrementAssistantTokensTotal,
-} from '@/lib/metrics/assistantMetrics';
+  assertAllowedToolName,
+  callTool,
+  withMcpClient,
+  getPortfolioTools,
+} from "../mcp/client";
+import {
+  prepareSystemPrompt,
+  type AssistantLocale,
+  toolResultPrefix,
+  wrapUserContentForModel,
+} from "./prompts";
 
-import { type ChatHistoryTurn } from './types';
-import { type Client } from '@modelcontextprotocol/sdk/client';
+import { APP_CONFIG } from "@/config/app.config";
+import {
+  assistantLlmIterations,
+  assistantLlmRetriesTotal,
+  incrementAssistantTokensTotal,
+} from "@/lib/metrics/assistantMetrics";
+
+import { type ChatHistoryTurn } from "./types";
+import { type Client } from "@modelcontextprotocol/sdk/client";
 
 const MODEL = APP_CONFIG.assistantConfig.model;
 const API_KEY = APP_CONFIG.assistantConfig.apiKey;
 const MAX_ITERATIONS = APP_CONFIG.assistantConfig.maxIterations;
+const EFFORT = APP_CONFIG.assistantConfig.effort;
+
+const THINKING_BETWEEN_TOOLS = {
+  type: "between_tools",
+} as unknown as Anthropic.ThinkingConfigParam;
 
 const anthropic = new Anthropic({
-	apiKey: API_KEY,
+  apiKey: API_KEY,
 });
 
 export class McpToolsUnavailableError extends Error {
-	constructor(message: string) {
-		super(message);
-		this.name = 'McpToolsUnavailableError';
-	}
+  constructor(message: string) {
+    super(message);
+    this.name = "McpToolsUnavailableError";
+  }
 }
 
-async function callAnthropicWithRetry<T>(fn: () => Promise<T>, maxRetries: number = 3, baseDelay: number = 1000): Promise<T> {
-	for (let attempt = 0; attempt < maxRetries; attempt++) {
-		try {
-			return await fn();
-		} catch (error: any) {
-			const isOverloaded = error?.status === 529 || error?.type === 'overloaded_error';
-			const shouldRetry = error?.headers?.get?.('x-should-retry') === 'true' || error?.headers?.['x-should-retry'] === 'true';
+async function callAnthropicWithRetry<T>(
+  fn: () => Promise<T>,
+  maxRetries: number = 3,
+  baseDelay: number = 1000,
+): Promise<T> {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (error: any) {
+      const isOverloaded =
+        error?.status === 529 || error?.type === "overloaded_error";
+      const shouldRetry =
+        error?.headers?.get?.("x-should-retry") === "true" ||
+        error?.headers?.["x-should-retry"] === "true";
 
-			if (isOverloaded && shouldRetry && attempt < maxRetries - 1) {
-				assistantLlmRetriesTotal.inc();
-				const delay = baseDelay * Math.pow(2, attempt);
-				console.log(`[ANTHROPIC RETRY] Attempt ${attempt + 1}/${maxRetries}, waiting ${delay}ms before retrying...`);
-				await new Promise(resolve => setTimeout(resolve, delay));
-				continue;
-			}
+      if (isOverloaded && shouldRetry && attempt < maxRetries - 1) {
+        assistantLlmRetriesTotal.inc();
+        const delay = baseDelay * Math.pow(2, attempt);
+        console.log(
+          `[ANTHROPIC RETRY] Attempt ${attempt + 1}/${maxRetries}, waiting ${delay}ms before retrying...`,
+        );
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        continue;
+      }
 
-			console.error('[ANTHROPIC ERROR] Non-retryable or max retries reached:', {
-				status: error?.status,
-				type: error?.type,
-				attempt: attempt + 1,
-				maxRetries,
-			});
+      console.error("[ANTHROPIC ERROR] Non-retryable or max retries reached:", {
+        status: error?.status,
+        type: error?.type,
+        attempt: attempt + 1,
+        maxRetries,
+      });
 
-			throw error;
-		}
-	}
+      throw error;
+    }
+  }
 
-	throw new Error('Max retries reached for Anthropic API call');
+  throw new Error("Max retries reached for Anthropic API call");
 }
 
 async function resolveLocale(): Promise<AssistantLocale> {
-	const locale = await getLocale();
-	return locale === 'pl' ? 'pl' : 'en';
+  const locale = await getLocale();
+  return locale === "pl" ? "pl" : "en";
 }
 
-function joinToolTextParts(parts: Array<{ type: string; text: string }>): string {
-	return parts.map(p => p.text).join('\n');
+function joinToolTextParts(
+  parts: Array<{ type: string; text: string }>,
+): string {
+  return parts.map((p) => p.text).join("\n");
 }
 
-function buildMessagesFromHistory(priorTurns: ChatHistoryTurn[], latestUserMessage: string, loc: AssistantLocale): Anthropic.MessageParam[] {
-	const out: Anthropic.MessageParam[] = [];
-	for (const turn of priorTurns) {
-		const text = turn.text?.trim() ?? '';
-		if (!text) continue;
-		if (turn.role === 'user') {
-			out.push({
-				role: 'user',
-				content: wrapUserContentForModel(text, loc),
-			});
-		} else {
-			out.push({ role: 'assistant', content: text });
-		}
-	}
-	out.push({
-		role: 'user',
-		content: wrapUserContentForModel(latestUserMessage, loc),
-	});
-	return out;
+function joinAssistantTextBlocks(content: Anthropic.ContentBlock[]): string {
+  return content
+    .filter((block): block is Anthropic.TextBlock => block.type === "text")
+    .map((block) => block.text)
+    .join("");
+}
+
+function buildMessagesFromHistory(
+  priorTurns: ChatHistoryTurn[],
+  latestUserMessage: string,
+  loc: AssistantLocale,
+): Anthropic.MessageParam[] {
+  const out: Anthropic.MessageParam[] = [];
+  for (const turn of priorTurns) {
+    const text = turn.text?.trim() ?? "";
+    if (!text) continue;
+    if (turn.role === "user") {
+      out.push({
+        role: "user",
+        content: wrapUserContentForModel(text, loc),
+      });
+    } else {
+      out.push({ role: "assistant", content: text });
+    }
+  }
+  out.push({
+    role: "user",
+    content: wrapUserContentForModel(latestUserMessage, loc),
+  });
+  return out;
 }
 
 export async function runAssistantLoopStreaming(
-	userMessage: string,
-	options: {
-		history?: ChatHistoryTurn[];
-		onTextDelta: (chunk: string) => void;
-	},
+  userMessage: string,
+  options: {
+    history?: ChatHistoryTurn[];
+    onTextDelta: (chunk: string) => void;
+  },
 ): Promise<string> {
-	const loc = await resolveLocale();
-	const prior = options.history ?? [];
+  const loc = await resolveLocale();
+  const prior = options.history ?? [];
 
-	return withMcpClient(async (client: Client) => {
-		const tools = await getPortfolioTools(client);
-		if (tools.length === 0) {
-			throw new McpToolsUnavailableError(
-				'No MCP portfolio tools available. Align Next MCP_NAMESPACE with the MCP server PORTFOLIO_NAMESPACE (same prefix, e.g. portfolio_).',
-			);
-		}
+  return withMcpClient(async (client: Client) => {
+    const tools = await getPortfolioTools(client);
+    if (tools.length === 0) {
+      throw new McpToolsUnavailableError(
+        "No MCP portfolio tools available. Align Next MCP_NAMESPACE with the MCP server PORTFOLIO_NAMESPACE (same prefix, e.g. portfolio_).",
+      );
+    }
 
-		const allowedToolNames = new Set(tools.map(t => t.name));
+    const allowedToolNames = new Set(tools.map((t) => t.name));
 
-		const anthropicTools: Anthropic.Tool[] = tools.map(tool => {
-			const schema = tool.inputSchema;
-			return {
-				name: tool.name,
-				description: tool.description ?? '',
-				input_schema: {
-					type: 'object',
-					properties: schema?.properties ?? {},
-					...(schema?.required?.length ? { required: schema.required } : {}),
-				},
-			};
-		});
+    const anthropicTools: Anthropic.Tool[] = tools.map((tool) => {
+      const schema = tool.inputSchema;
+      return {
+        name: tool.name,
+        description: tool.description ?? "",
+        input_schema: {
+          type: "object",
+          properties: schema?.properties ?? {},
+          ...(schema?.required?.length ? { required: schema.required } : {}),
+        },
+      };
+    });
 
-		const messages = buildMessagesFromHistory(prior, userMessage, loc);
-		const system = prepareSystemPrompt(loc);
+    const messages = buildMessagesFromHistory(prior, userMessage, loc);
+    const system = prepareSystemPrompt(loc);
 
-		for (let i = 0; i < MAX_ITERATIONS; i++) {
-			const toolChoice = i === 0 ? ({ type: 'any' } as const) : ({ type: 'auto' } as const);
+    for (let i = 0; i < MAX_ITERATIONS; i++) {
+      const finalMessage = await callAnthropicWithRetry(async () => {
+        // Sonnet 5.5: bez temperature; bez tool_choice any/tool (400).
+        const stream = anthropic.messages.stream({
+          model: MODEL,
+          max_tokens: 1500,
+          system,
+          messages,
+          tools: anthropicTools,
+          stream: true,
+          tool_choice: { type: "auto" },
+          thinking: THINKING_BETWEEN_TOOLS,
+          output_config: { effort: EFFORT },
+        });
 
-			const finalMessage = await callAnthropicWithRetry(async () => {
-				const stream = anthropic.messages.stream({
-					model: MODEL,
-					max_tokens: 1500,
-					system,
-					messages,
-					tools: anthropicTools,
-					stream: true,
-					temperature: 0.4,
-					tool_choice: toolChoice,
-				});
+        stream.on("text", (textDelta: string) => {
+          options.onTextDelta(textDelta);
+        });
 
-				stream.on('text', (textDelta: string) => {
-					options.onTextDelta(textDelta);
-				});
+        return stream.finalMessage();
+      });
 
-				return stream.finalMessage();
-			});
+      if (finalMessage.usage) {
+        incrementAssistantTokensTotal("input", finalMessage.usage.input_tokens);
+        incrementAssistantTokensTotal(
+          "output",
+          finalMessage.usage.output_tokens,
+        );
+      }
 
-			if (finalMessage.usage) {
-				incrementAssistantTokensTotal('input', finalMessage.usage.input_tokens);
-				incrementAssistantTokensTotal('output', finalMessage.usage.output_tokens);
-			}
+      const toolUses = finalMessage.content.filter(
+        (block): block is Anthropic.ToolUseBlock => block.type === "tool_use",
+      );
 
-			const toolUses = finalMessage.content.filter((block): block is Anthropic.ToolUseBlock => block.type === 'tool_use');
+      if (toolUses.length === 0) {
+        assistantLlmIterations.observe(i + 1);
+        const text = joinAssistantTextBlocks(finalMessage.content);
+        return text || "Przepraszam, nie mogę odpowiedzieć na Twoje pytanie.";
+      }
 
-			if (toolUses.length === 0) {
-				assistantLlmIterations.observe(i + 1);
-				const textBlock = finalMessage.content.find((block): block is Anthropic.TextBlock => block.type === 'text');
-				return textBlock?.text ?? 'Przepraszam, nie mogę odpowiedzieć na Twoje pytanie.';
-			}
+      const prefix = toolResultPrefix(loc);
 
-			const prefix = toolResultPrefix(loc);
+      const toolResults = await Promise.all(
+        toolUses.map(async (toolUse) => {
+          try {
+            assertAllowedToolName(toolUse.name, allowedToolNames);
 
-			const toolResults = await Promise.all(
-				toolUses.map(async toolUse => {
-					try {
-						assertAllowedToolName(toolUse.name, allowedToolNames);
+            const result = await callTool(
+              client,
+              toolUse.name,
+              (toolUse.input as Record<string, unknown>) ?? {},
+            );
 
-						const result = await callTool(client, toolUse.name, (toolUse.input as Record<string, unknown>) ?? {});
+            const body = joinToolTextParts(result.content);
+            const payload = prefix + body;
 
-						const body = joinToolTextParts(result.content);
-						const payload = prefix + body;
+            return {
+              type: "tool_result" as const,
+              tool_use_id: toolUse.id,
+              content: payload,
+              is_error: result.isError === true,
+            };
+          } catch (error) {
+            console.error(
+              "[MCP TOOL ERROR] Error calling tool:",
+              toolUse.name,
+              error,
+            );
+            return {
+              type: "tool_result" as const,
+              tool_use_id: toolUse.id,
+              content:
+                prefix +
+                `Error: ${error instanceof Error ? error.message : String(JSON.stringify(error))}`,
+              is_error: true,
+            };
+          }
+        }),
+      );
 
-						return {
-							type: 'tool_result' as const,
-							tool_use_id: toolUse.id,
-							content: payload,
-							is_error: result.isError === true,
-						};
-					} catch (error) {
-						console.error('[MCP TOOL ERROR] Error calling tool:', toolUse.name, error);
-						return {
-							type: 'tool_result' as const,
-							tool_use_id: toolUse.id,
-							content: prefix + `Error: ${error instanceof Error ? error.message : String(JSON.stringify(error))}`,
-							is_error: true,
-						};
-					}
-				}),
-			);
+      messages.push({
+        role: "assistant",
+        content: finalMessage.content,
+      });
 
-			messages.push({
-				role: 'assistant',
-				content: finalMessage.content,
-			});
+      messages.push({
+        role: "user",
+        content: toolResults,
+      });
+    }
 
-			messages.push({
-				role: 'user',
-				content: toolResults,
-			});
-		}
-
-		throw new Error('Max iterations reached without a response');
-	});
+    throw new Error("Max iterations reached without a response");
+  });
 }
